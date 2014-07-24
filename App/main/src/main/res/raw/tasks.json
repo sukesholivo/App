@@ -1,0 +1,121 @@
+{
+    tasks: [
+        {
+             cardId:"GUID1",
+             eta:"DateTime",
+             createdOn:"DateTime",
+             modifiedOn:"DateTime",
+             state:"ACTIVE",
+             type:"MEDICINE",
+             templateIdentifier:"Medicine",
+             points:10,
+             medicines:[
+                {
+                    name:"Metformin",
+                    quantity:1,
+                    type:"CAPSULE",
+                    unit:"500mg",
+                    iconResourceId:"",
+                    instruction:"After Meal",
+                    notes:""
+                },
+                {
+                    name:"Sulfonylureas",
+                    quantity:2,
+                    type:"TABLET",
+                    unit:"200mg",
+                    iconResourceId:"",
+                    medicineInstruction:"After Meal",
+                    notes:""
+                },
+                {
+                    name:"Humalog",
+                    quantity:1,
+                    type:"INJECTION",
+                    unit:"20ml",
+                    iconResourceId:"",
+                    medicineInstruction:"After Meal",
+                    notes:""
+                }
+             ]
+        },
+        {
+             cardId:"GUID2",
+             eta:"DateTime",
+             createdOn:"DateTime",
+             modifiedOn:"DateTime",
+             state:"ACTIVE",
+             type:"MEDICINE",
+             templateIdentifier:"Medicine",
+             points:10,
+             medicines:[
+                {
+                    name:"Sulfonylureas",
+                    quantity:2,
+                    type:"TABLET",
+                    unit:"200mg",
+                    iconResourceId:"",
+                    medicineInstruction:"After Meal",
+                    notes:""
+                },
+                {
+                    name:"Humalog",
+                    quantity:1,
+                    type:"INJECTION",
+                    unit:"20ml",
+                    iconResourceId:"",
+                    medicineInstruction:"After Meal",
+                    notes:""
+                },
+                {
+                    name:"Metformin",
+                    quantity:1,
+                    type:"CAPSULE",
+                    unit:"500mg",
+                    iconResourceId:"",
+                    instruction:"After Meal",
+                    notes:""
+                }
+             ]
+        },
+        {
+             cardId:"GUID3",
+             eta:"DateTime",
+             createdOn:"DateTime",
+             modifiedOn:"DateTime",
+             state:"ACTIVE",
+             type:"MEDICINE",
+             templateIdentifier:"Medicine",
+             points:10,
+             medicines:[
+                {
+                    name:"Humalog",
+                    quantity:1,
+                    type:"INJECTION",
+                    unit:"20ml",
+                    iconResourceId:"",
+                    medicineInstruction:"After Meal",
+                    notes:""
+                },
+                {
+                    name:"Sulfonylureas",
+                    quantity:2,
+                    type:"TABLET",
+                    unit:"200mg",
+                    iconResourceId:"",
+                    medicineInstruction:"After Meal",
+                    notes:""
+                },
+                {
+                    name:"Metformin",
+                    quantity:1,
+                    type:"CAPSULE",
+                    unit:"500mg",
+                    iconResourceId:"",
+                    instruction:"After Meal",
+                    notes:""
+                }
+             ]
+        }
+    ]
+}

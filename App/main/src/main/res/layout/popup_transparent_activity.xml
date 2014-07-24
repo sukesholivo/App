@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#35C284">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#FFFFFF"
+        android:text="Take your medicines, Sir. It's time."
+        android:textSize="30dp"
+        android:padding="20dp"/>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <Button
+            android:id="@+id/popup_medicine_taken_button"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:layout_gravity="left"
+            android:text="TAKEN"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_style_border"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+            />
+
+        <Button
+            android:id="@+id/popup_medicine_snooze_button"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:layout_gravity="right"
+            android:text="SNOOZE"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_style_border"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+            />
+    </LinearLayout>
+</LinearLayout>

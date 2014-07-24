@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="card_background_color">#35C284</color>
+    <color name="card_background_color_pressed">#35F284</color>
+    <color name="color_yellow">#F1FD34</color>
+    <color name="color_mustard">#F5B021</color>
+    <color name="color_green">#35C284</color>
+    <color name="color_green_translucent">#9935C284</color>
+    <color name="color_blue">#9CA5FD</color>
+    <color name="color_blue_translucent">#999CA5FD</color>
+    <color name="color_white">#FFFFFF</color>
+    <color name="color_white_translucent">#99FFFFFF</color>
+    <color name="color_gray">#F5F5F5</color>
+    <color name="color_gray_translucent">#99F5F5F5</color>
+    <color name="main_background">#E7E7E8</color>
+
+    <!-- DASHBOARD -->
+    <color name="dashboard_background">#0099CC</color>
+    <color name="dashboard_text_main">#FFFF00</color>
+    <color name="dashboard_text_secondary">#FFFFFF</color>
+
+
+    <!-- CARD HEADER-->
+    <color name="card_header_main">#FF9800</color>
+    <color name="card_header_secondary">#FF9800</color>
+    <color name="card_header_meta">#999999</color>
+
+    <!-- CARD FOOTER -->
+    <color name="card_footer_main">#999999</color>
+    <color name="card_footer_secondary">#FF9800</color>
+
+    <!-- CARD BODY -->
+    <color name="card_body_text_main">#999999</color>
+    <color name="card_body_text_meta">#FF9800</color>
+
+    <!-- Vitals Value-->
+    <color name="vital_fine">#7C7C7C</color>
+    <color name="vital_over">#F26C6B</color>
+
+    <!--Transparent color here-->
+    <color name="transparent">#00000000</color>
+</resources>

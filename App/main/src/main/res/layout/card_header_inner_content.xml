@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/timeWhen"
+        android:gravity="top"
+        android:textSize="34sp"
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/card_header_main"
+        android:text="30"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/timeUnit"
+        android:textSize="14sp"
+        android:layout_marginTop="7dp"
+        android:layout_marginLeft="5dp"
+        android:textColor="@color/card_header_secondary"
+        android:layout_toRightOf="@id/timeWhen"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/extraInfo"
+        android:textSize="14sp"
+        android:layout_marginLeft="5dp"
+        android:textColor="@color/card_header_meta"
+        android:layout_toRightOf="@id/timeWhen"
+        android:layout_below="@id/timeUnit"/>
+
+</RelativeLayout>
+

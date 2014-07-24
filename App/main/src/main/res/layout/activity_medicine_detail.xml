@@ -1,0 +1,107 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.doctl.patientcare.main.MedicineDetailActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"
+        android:paddingRight="10dp"
+        android:background="#E6E6E6">
+        <com.doctl.patientcare.main.controls.RoundedImageView
+            android:id="@+id/doctorPic"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/me"/>
+        <TextView
+            android:id="@+id/header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:textSize="0sp"
+            android:layout_toRightOf="@id/doctorPic"
+            />
+
+        <TextView
+            android:id="@+id/doctorName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_alignLeft="@id/header"
+            android:layout_below="@id/header"
+            android:layout_toRightOf="@id/doctorPic"
+            android:text="DR. VISHAL CHITRAVANSHI"/>
+        <TextView
+            android:id="@+id/doctorHospital"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/doctorPic"
+            android:layout_below="@id/doctorName"
+            android:layout_alignLeft="@id/doctorName"
+            android:textSize="16sp"
+            android:text="GETWEL HOSPITAL"/>
+        <TextView
+            android:id="@+id/doctorAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/doctorPic"
+            android:layout_below="@id/doctorHospital"
+            android:layout_alignLeft="@id/doctorName"
+            android:textSize="16sp"
+            android:text="KONDAPUR HYDERABAD"/>
+        </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingBottom="10dp"
+        android:paddingRight="10dp"
+        android:background="#F3F2F2">
+        <TextView
+            android:id="@+id/dateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_alignParentTop="true"
+            android:text="1 Jan 2014"
+
+            />
+        <TextView
+            android:id="@+id/planText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_below="@id/dateText"
+            android:layout_alignLeft="@id/dateText"
+            android:text="30 DAYS PLAN (7 DAYS LEFT)"/>
+        <ProgressBar
+            android:layout_below="@id/planText"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progressDrawable="@drawable/custom_progressbar1"
+            android:layout_alignLeft="@id/planText"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="50dp"
+            android:progress="70"
+            />
+    </RelativeLayout>
+    <ListView
+        android:id="@+id/medicineDetailList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:background="#FFFFFF"
+        />
+
+</LinearLayout>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="10dp"
+    >
+
+    <ImageView
+        android:id="@+id/medicineIcon"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:paddingTop="10dp"
+        android:textColor="@color/card_body_text_main"
+        android:src="@drawable/pill_icon"
+        />
+    <TextView
+        android:id="@+id/medicineName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@id/medicineIcon"
+        android:layout_alignTop="@id/medicineIcon"
+        android:gravity="top"
+        android:textSize="@dimen/medicine_detail_text_main"
+        />
+    <TextView
+        android:id="@+id/medicineUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/medicineName"
+        android:layout_alignLeft="@id/medicineName"
+        android:layout_marginRight="2dp"
+        android:textSize="@dimen/medicine_detail_text_secondary"/>
+    <TextView
+        android:id="@+id/medicineType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/medicineName"
+        android:layout_toRightOf="@id/medicineUnit"
+        android:textSize="@dimen/medicine_detail_text_secondary"/>
+    <LinearLayout
+        android:id="@+id/medicineFrequencyLayout"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:layout_below="@id/medicineUnit"
+        android:layout_alignLeft="@id/medicineUnit">
+        </LinearLayout>
+    <TextView
+        android:id="@+id/medicineInstruction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/medicineFrequencyLayout"
+        android:layout_alignLeft="@id/medicineFrequencyLayout"
+        android:textSize="@dimen/medicine_detail_text_secondary"/>
+
+    <TextView
+        android:id="@+id/medicineNotes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/medicineInstruction"
+        android:layout_alignLeft="@id/medicineInstruction"
+        android:textSize="@dimen/medicine_detail_text_secondary"/>
+</RelativeLayout>

@@ -1,0 +1,40 @@
+package com.doctl.patientcare.main.Cards;
+
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.doctl.patientcare.main.R;
+
+import java.util.Random;
+
+import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardHeader;
+
+/**
+ * Created by Administrator on 6/24/2014.
+ */
+public class QuestionCard extends BaseCard {
+    public QuestionCard(Context context) {
+        this(context, R.layout.question_card_inner_content);
+    }
+
+    public QuestionCard(Context context, int innerLayout) {
+        super(context, innerLayout);
+    }
+
+    public QuestionCard(Context context, int innerLayout, CardHeader cardHeader){
+        super(context, innerLayout, cardHeader);
+    }
+
+    public QuestionCard(Context context, CardHeader cardHeader){
+        this(context, R.layout.question_card_inner_content, cardHeader);
+    }
+
+    @Override
+    public void setupInnerViewElements(ViewGroup parent, View view) {
+        this.setBackgroundResourceId(R.drawable.card_background_blue);
+    }
+}

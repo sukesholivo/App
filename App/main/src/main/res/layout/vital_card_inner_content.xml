@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:zeitdata="http://schemas.android.com/apk/res-auto"
+    style="@style/card_layout">
+
+    <RelativeLayout
+        android:id="@+id/mainVitalBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:text="FASTING SUGAR"
+            android:id="@+id/textView"
+            android:layout_alignParentLeft="true"
+            android:textSize="12sp"
+            android:textColor="@color/card_body_text_main"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="9dp"
+            android:layout_marginTop="20dip"
+            android:gravity="center_vertical" />
+
+        <EditText
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLength="4"
+            android:id="@+id/editText1"
+            android:layout_alignTop="@id/textView"
+            android:layout_toRightOf="@id/textView"
+            style="@style/edit_text_box"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MG/DL"
+            android:id="@+id/textView3"
+            android:textSize="8sp"
+            android:textColor="@color/card_body_text_main"
+            android:layout_alignTop="@id/textView"
+            android:layout_toRightOf="@id/editText1"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="9dp"
+            />
+
+        <TextView
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:text="POST MEAL SUGAR"
+            android:id="@+id/textView2"
+            android:textSize="12sp"
+            android:textColor="@color/card_body_text_main"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/textView"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="9dip"
+            android:layout_marginTop="15dip"
+            android:gravity="center_vertical" />
+
+        <TextView
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:text="2HRS AFTER MEAL"
+            android:id="@+id/textView5"
+            android:textSize="12sp"
+            android:textColor="@color/card_body_text_meta"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/textView2"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="9dp"
+            android:layout_marginTop="1dp"
+            android:gravity="center_vertical" />
+
+        <EditText
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLength="4"
+            android:id="@+id/editText2"
+            android:layout_alignTop="@id/textView2"
+            android:layout_below="@id/editText1"
+            android:layout_toRightOf="@id/textView2"
+            android:layout_alignLeft="@+id/editText1"
+            style="@style/edit_text_box"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MG/DL"
+            android:id="@+id/textView4"
+            android:textSize="8sp"
+            android:textColor="@color/card_body_text_main"
+            android:layout_alignTop="@id/textView2"
+            android:layout_toRightOf="@id/editText2"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="9dp"
+            />
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/vitalLineGraph"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/mainVitalBody"
+        android:background="@drawable/graph_background"/>
+    <TextView
+        android:id="@+id/graphMetaInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LAST 30 DAYS 90% NORMAL"
+
+        android:textSize="10sp"
+        android:textColor="@color/card_body_text_main"
+        android:layout_below="@id/vitalLineGraph"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="9dp"/>
+
+    <include layout="@layout/card_footer_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/vitalLineGraph"/>
+</RelativeLayout>

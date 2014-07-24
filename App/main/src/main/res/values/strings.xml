@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">DOCTL</string>
+    <string name="hello_world">Hello world!</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_new">New</string>
+    <string name="action_share">Share</string>
+    <string name="action_add_vital">Sugar</string>
+    <string name="action_add_symptoms">Symptom</string>
+
+    <string-array name="drawer_array">
+        <item>Profile</item>
+        <item>Awards</item>
+        <item>Settings</item>
+    </string-array>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="title_activity_vital_detail">VitalDetailActivity</string>
+    <string name="title_activity_medicine_detail">MedicineDetailActivity</string>
+
+</resources>
