@@ -51,7 +51,7 @@ public class ImageCard extends BaseCard {
 
         if (isInfluencerVisible) {
             ImageView influencerImage = (ImageView) view.findViewById(R.id.influencerImage);
-            influencerImage.setImageResource(R.drawable.me);
+            influencerImage.setImageResource(R.drawable.profile_dummy);
         }
     }
 }

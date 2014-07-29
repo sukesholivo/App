@@ -3,14 +3,10 @@ package com.doctl.patientcare.main.Cards;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.doctl.patientcare.main.R;
 
-import java.util.Random;
 
-import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 
 /**

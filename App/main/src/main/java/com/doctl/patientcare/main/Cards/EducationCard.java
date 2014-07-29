@@ -1,41 +1,24 @@
 package com.doctl.patientcare.main.Cards;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
+
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.doctl.patientcare.main.R;
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
 
-import org.achartengine.ChartFactory;
-import org.achartengine.model.XYMultipleSeriesDataset;
-import org.achartengine.model.XYSeries;
-import org.achartengine.renderer.XYMultipleSeriesRenderer;
-import org.achartengine.renderer.XYSeriesRenderer;
-
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.UUID;
-
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 
-import static android.support.v4.app.ActivityCompat.startActivity;
 
 public class EducationCard extends BaseCard{
     private static final String TAG = EducationCard.class.getSimpleName();
+    private static String ANDROID_DEVELOPER_KEY = "AIzaSyAWocbee6JmNy1KShjdNWy_v8_xEq0-gE0";
 
-    public EducationCard(Context context)
-    {
+    public EducationCard(Context context) {
         this(context, R.layout.education_video_card_inner_content);
     }
 
@@ -47,18 +30,25 @@ public class EducationCard extends BaseCard{
         super(context, innerLayout, cardHeader);
     }
 
-    public EducationCard(Context context, CardHeader cardHeader)
-    {
+    public EducationCard(Context context, CardHeader cardHeader) {
         this(context, R.layout.education_video_card_inner_content, cardHeader);
     }
 
     @Override
     public void setupInnerViewElements(ViewGroup parent, View view) {
-//        Log.d(TAG, "Setting up inner view element of card.");
-        Random r = new Random();
-        int n = r.nextInt() % 100;
-        n = n>0?n:-n;
-        setupCardFooter(view, "" + n);
+
+        setListnerToCard();
+    }
+
+    private void setListnerToCard(){
+        this.setOnClickListener(new Card.OnCardClickListener() {
+            @Override
+            public void onClick(Card card, View view) {
+                Context context = getContext();
+                Intent intent = YouTubeStandalonePlayer.createVideoIntent((Activity)context, ANDROID_DEVELOPER_KEY, "MGL6km1NBWE");
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.doctl.patientcare.main.fragments;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,36 +12,25 @@ import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 
 import com.doctl.patientcare.main.Cards.BaseCard;
-import com.doctl.patientcare.main.Cards.CardHeaderInnerView;
 import com.doctl.patientcare.main.Cards.DashboardCard;
-import com.doctl.patientcare.main.Cards.EducationCard;
-import com.doctl.patientcare.main.Cards.EducationRichtextCard;
-import com.doctl.patientcare.main.Cards.HowruFeelingCard;
-import com.doctl.patientcare.main.Cards.ImageCard;
 import com.doctl.patientcare.main.Cards.MedicineCard;
-import com.doctl.patientcare.main.Cards.MythCard;
-import com.doctl.patientcare.main.Cards.QuestionCard;
-import com.doctl.patientcare.main.Cards.VitalCard;
-import com.doctl.patientcare.main.Cards.WalkCard;
 import com.doctl.patientcare.main.R;
-import com.doctl.patientcare.main.constants.Constants;
-import com.doctl.patientcare.main.om.BaseTasks;
-import com.doctl.patientcare.main.om.MedicineTask;
-import com.doctl.patientcare.main.services.HTTPServiceHandler;
+import com.doctl.patientcare.main.constants.Utils;
+import com.doctl.patientcare.main.om.BaseTask;
+import com.doctl.patientcare.main.om.medicines.MedicineTask;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.nhaarman.listviewanimations.swinginadapters.AnimationAdapter;
 import com.nhaarman.listviewanimations.swinginadapters.prepared.ScaleInAnimationAdapter;
-import com.google.android.youtube.player.YouTubeStandalonePlayer;
 
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.UUID;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
@@ -58,12 +46,12 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
  * Created by Administrator on 6/13/2014.
  */
 public class CardListFragment extends BaseFragment implements OnRefreshListener {
-    private static final String TAG_TAKS = "tasks";
+    private static final String TAG_CARDS= "cards";
     private static final String TAG = CardListFragment.class.getSimpleName();
     private static String ANDROID_DEVELOPER_KEY = "AIzaSyAWocbee6JmNy1KShjdNWy_v8_xEq0-gE0";
     private CardView cardView;
     PullToRefreshLayout mPullToRefreshLayout;
-    public static final int SIMULATED_REFRESH_LENGTH = 5000;
+    public static final int SIMULATED_REFRESH_LENGTH = 1;
     ArrayList<Card> cards;
     CardArrayAdapter mCardArrayAdapter;
 
@@ -91,7 +79,6 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
     protected void initializeCardList() {
         cards = new ArrayList<Card>();
         DashboardCard card0 = new DashboardCard(getActivity(), null);
-        setListnerToCard(card0);
         card0.setShadow(false);
         card0.setSwipeable(false);
         cards.add(card0);
@@ -293,38 +280,23 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
     private ArrayList<BaseCard> parseCardData(String jsonStr){
         ArrayList<BaseCard> cards = new ArrayList<BaseCard>();
         DashboardCard card0 = new DashboardCard(getActivity(), null);
-        setListnerToCard(card0);
         card0.setShadow(false);
         card0.setSwipeable(false);
         cards.add(card0);
-        try {
-            JSONObject jsonObj = new JSONObject(jsonStr);
-            JSONArray tasks = jsonObj.getJSONArray(TAG_TAKS);
-            for (int i = 0; i < tasks.length(); i++) {
-                JSONObject task = tasks.getJSONObject(i);
-                Log.d(TAG, "************** Task Start *********************");
-                Log.e(TAG, task.toString());
-                Log.d(TAG, "************** Task Stop *********************");
-                Log.d(TAG, "************** Task Type Start *********************");
-                Log.e(TAG, task.getString(BaseTasks.TAG_TASK_TYPE));
-                Log.d(TAG, "************** Task Type Stop *********************");
-                switch (BaseTasks.CardType.valueOf(task.getString(BaseTasks.TAG_TASK_TYPE))){
-                    case MEDICINE:
-                        MedicineTask medicineTask = MedicineTask.parseJson(task);
-                        CardHeader medicineHeader = new CardHeaderInnerView(getActivity(), "30", "MINS FROM NOW", "BEFORE MEALS");
-                        MedicineCard medicineCard = new MedicineCard(getActivity(), medicineHeader, medicineTask); // pass medicine object
-                        medicineCard.setId(medicineTask.getCardId());
-                        medicineCard.getId();
-//                        setListnerToCard(medicineCard);
-                        cards.add(medicineCard);
 
-                }
+        JsonParser parser = new JsonParser();
+        JsonObject jsonObject = parser.parse(jsonStr).getAsJsonObject();
+        JsonArray cardsJsonArray = jsonObject.get("cards").getAsJsonArray();
+        for (JsonElement cardJson : cardsJsonArray) {
+            JsonObject cardJsonObj = cardJson.getAsJsonObject();
+            switch (BaseTask.CardType.valueOf(cardJsonObj.get("type").getAsString())) {
+                case MEDICINE:
+                    MedicineTask medicineTask = new Gson().fromJson(cardJson, MedicineTask.class);
+                    CardHeader medicineHeader = Utils.getCardHeader(getActivity(), medicineTask);
+                    MedicineCard medicineCard = new MedicineCard(getActivity(), medicineHeader, medicineTask); // pass medicine object
+                    cards.add(medicineCard);
+                    Log.d(TAG, medicineTask.getCardId());
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.d(TAG, "************** JSONException Message Start *********************");
-            Log.e(TAG, e.getMessage());
-            Log.d(TAG, "************** JSONException Message Stop *********************");
         }
         return cards;
     }
@@ -337,23 +309,8 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
                 }
                 mCardArrayAdapter.clear();
                 mCardArrayAdapter.addAll(cardArrayList);
+                mCardArrayAdapter.setEnableUndo(true);
                 mCardArrayAdapter.notifyDataSetChanged();
-            }
-        });
-    }
-
-    private void setListnerToCard(BaseCard card){
-        card.setId(UUID.randomUUID().toString());
-    }
-
-    private void setListnerToEducationCard(BaseCard card){
-        card.setId(UUID.randomUUID().toString());
-        boolean clickable = card.isClickable();
-        card.setOnClickListener(new Card.OnCardClickListener() {
-            @Override
-            public void onClick(Card card, View view) {
-                Intent intent = YouTubeStandalonePlayer.createVideoIntent(getActivity(), ANDROID_DEVELOPER_KEY, "MGL6km1NBWE");
-                startActivity(intent);
             }
         });
     }
@@ -391,6 +348,5 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
             super.onPostExecute(result);
             mPullToRefreshLayout.setRefreshing(false);
         }
-
     }
 }

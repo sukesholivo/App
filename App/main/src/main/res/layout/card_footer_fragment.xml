@@ -9,7 +9,7 @@
         android:layout_height="@dimen/influencer_image_height"
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
-        android:src="@drawable/me"
+        android:src="@drawable/profile_dummy"
         />
     <TextView
         android:id="@+id/pointText"

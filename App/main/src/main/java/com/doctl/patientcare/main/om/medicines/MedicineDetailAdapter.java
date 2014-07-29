@@ -1,12 +1,9 @@
-package com.doctl.patientcare.main.medicines;
+package com.doctl.patientcare.main.om.medicines;
 
 import android.content.Context;
-import android.nfc.Tag;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -87,7 +84,7 @@ public class MedicineDetailAdapter extends ArrayAdapter<Medicine> {
         medicineInstruction.setText(builder);
 
         TextView medicineNotes = (TextView)view.findViewById(R.id.medicineNotes);
-        medicineNotes.setText("Notes: " + item.getNotes().toString());
+        medicineNotes.setText("Notes: " + item.getInstruction().toString());
 
         return view;
     }

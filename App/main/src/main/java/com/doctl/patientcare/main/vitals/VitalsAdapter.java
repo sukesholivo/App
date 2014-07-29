@@ -5,11 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.doctl.patientcare.main.R;
-import com.doctl.patientcare.main.medicines.Medicine;
 
 import java.util.List;
 

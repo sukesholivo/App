@@ -1,17 +1,13 @@
 package com.doctl.patientcare.main.Cards;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.doctl.patientcare.main.R;
-
-import java.util.Random;
 
 import it.gmariotti.cardslib.library.internal.CardHeader;
 
@@ -23,8 +19,7 @@ import static android.view.View.OnClickListener;
 public class HowruFeelingCard extends BaseCard{
     private static final String TAG = HowruFeelingCard.class.getSimpleName();
 
-    public HowruFeelingCard(Context context)
-    {
+    public HowruFeelingCard(Context context) {
         this(context, R.layout.how_are_you_feeling_card);
     }
 
@@ -36,8 +31,7 @@ public class HowruFeelingCard extends BaseCard{
         super(context, innerLayout, cardHeader);
     }
 
-    public HowruFeelingCard(Context context, CardHeader cardHeader)
-    {
+    public HowruFeelingCard(Context context, CardHeader cardHeader) {
         this(context, R.layout.how_are_you_feeling_card, cardHeader);
     }
 

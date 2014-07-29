@@ -243,9 +243,6 @@ public class MainActivity extends ActionBarActivity {
 
     private BaseFragment selectFragment() {
         BaseFragment baseFragment = null;
-//        baseFragment = new VitalCardFragment();
-//        baseFragment = new MedicineCardFragment();
-//        baseFragment = new WalkCardFragment();
         baseFragment = new CardListFragment();
         return baseFragment;
     }

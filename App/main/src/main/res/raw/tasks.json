@@ -1,121 +1,154 @@
 {
-    tasks: [
+    cards: [
         {
-             cardId:"GUID1",
-             eta:"DateTime",
-             createdOn:"DateTime",
-             modifiedOn:"DateTime",
-             state:"ACTIVE",
-             type:"MEDICINE",
-             templateIdentifier:"Medicine",
-             points:10,
-             medicines:[
-                {
-                    name:"Metformin",
-                    quantity:1,
-                    type:"CAPSULE",
-                    unit:"500mg",
-                    iconResourceId:"",
-                    instruction:"After Meal",
-                    notes:""
-                },
-                {
-                    name:"Sulfonylureas",
-                    quantity:2,
-                    type:"TABLET",
-                    unit:"200mg",
-                    iconResourceId:"",
-                    medicineInstruction:"After Meal",
-                    notes:""
-                },
-                {
-                    name:"Humalog",
-                    quantity:1,
-                    type:"INJECTION",
-                    unit:"20ml",
-                    iconResourceId:"",
-                    medicineInstruction:"After Meal",
-                    notes:""
-                }
-             ]
+            cardId:"GUID1",
+            etaType: "PRECISE",
+            eta:"2014-07-29T09:10:34Z",
+            createdOn:"2014-07-28T06:07:34Z",
+            modifiedOn:"2014-07-28T06:07:34Z",
+            state:"ACTIVE",
+            type:"MEDICINE",
+            points:10,
+            source:{
+                id:"userid1",
+                displayName:"Vishal Chitravanshi",
+                profilePicUrl:"http://doctl.com/static/unify/assets/img/profile_pic/vishal.jpg"
+            },
+            data:{
+                prescriptionId: "prescription1",
+                medicines:[
+                    {
+                        id: "med1",
+                        name: "Metformin",
+                        quantity: 1,
+                        type:"CAPSULE",
+                        dosage: "",
+                        unit: "",
+                        instruction:"After Meal",
+                        showInfoIcon: false
+                    },
+                    {
+                        id: "med2",
+                        name: "Sulfonylureas",
+                        quantity: 2,
+                        type:"TABLET",
+                        dosage: "",
+                        unit: "",
+                        instruction:"After Meal",
+                        showInfoIcon: false
+                    },
+                    {
+                        id: "med3",
+                        name: "Humalog",
+                        quantity: 1,
+                        type:"INJECTION",
+                        dosage: "",
+                        unit: "",
+                        instruction:"After Meal",
+                        showInfoIcon: false
+                    }
+                ]
+            }
         },
         {
-             cardId:"GUID2",
-             eta:"DateTime",
-             createdOn:"DateTime",
-             modifiedOn:"DateTime",
-             state:"ACTIVE",
-             type:"MEDICINE",
-             templateIdentifier:"Medicine",
-             points:10,
-             medicines:[
-                {
-                    name:"Sulfonylureas",
-                    quantity:2,
-                    type:"TABLET",
-                    unit:"200mg",
-                    iconResourceId:"",
-                    medicineInstruction:"After Meal",
-                    notes:""
-                },
-                {
-                    name:"Humalog",
-                    quantity:1,
-                    type:"INJECTION",
-                    unit:"20ml",
-                    iconResourceId:"",
-                    medicineInstruction:"After Meal",
-                    notes:""
-                },
-                {
-                    name:"Metformin",
-                    quantity:1,
-                    type:"CAPSULE",
-                    unit:"500mg",
-                    iconResourceId:"",
-                    instruction:"After Meal",
-                    notes:""
-                }
-             ]
+            cardId:"GUID2",
+            etaType: "PRECISE",
+            eta:"2014-07-29T13:10:34Z",
+            createdOn:"2014-07-28T06:07:34Z",
+            modifiedOn:"2014-07-28T06:07:34Z",
+            state:"ACTIVE",
+            type:"MEDICINE",
+            points:15,
+            source:{
+                id:"userid1",
+                displayName:"Vishal Chitravanshi",
+                profilePicUrl:"http://doctl.com/static/unify/assets/img/profile_pic/komal.jpg"
+            },
+            data:{
+                prescriptionId: "prescription2",
+                medicines:[
+                    {
+                        id: "med1",
+                        name:"Sulfonylureas",
+                        quantity:2,
+                        type:"TABLET",
+                        dosage: "",
+                        unit:"",
+                        instruction:"After Meal",
+                        showInfoIcon:false
+                    },
+                    {
+                        id: "med2",
+                        name:"Humalog",
+                        quantity:1,
+                        type:"INJECTION",
+                        dosage: "",
+                        unit:"",
+                        instruction:"After Meal",
+                        showInfoIcon:false
+                    },
+                    {
+                        id: "med3",
+                        name:"Metformin",
+                        quantity:1,
+                        type:"CAPSULE",
+                        dosage: "",
+                        unit:"",
+                        instruction:"After Meal",
+                        showInfoIcon:false
+                    }
+                ]
+            }
         },
         {
-             cardId:"GUID3",
-             eta:"DateTime",
-             createdOn:"DateTime",
-             modifiedOn:"DateTime",
-             state:"ACTIVE",
-             type:"MEDICINE",
-             templateIdentifier:"Medicine",
-             points:10,
-             medicines:[
-                {
-                    name:"Humalog",
-                    quantity:1,
-                    type:"INJECTION",
-                    unit:"20ml",
-                    iconResourceId:"",
-                    medicineInstruction:"After Meal",
-                    notes:""
-                },
-                {
-                    name:"Sulfonylureas",
-                    quantity:2,
-                    type:"TABLET",
-                    unit:"200mg",
-                    iconResourceId:"",
-                    medicineInstruction:"After Meal",
-                    notes:""
-                },
-                {
-                    name:"Metformin",
-                    quantity:1,
-                    type:"CAPSULE",
-                    unit:"500mg",
-                    iconResourceId:"",
-                    instruction:"After Meal",
-                    notes:""
-                }
-             ]
+            cardId:"GUID3",
+            etaType: "DAYLONG",
+            eta:"2014-07-28T06:07:34Z",
+            createdOn:"2014-07-28T06:07:34Z",
+            modifiedOn:"2014-07-28T06:07:34Z",
+            state:"ACTIVE",
+            type:"MEDICINE",
+            points:20,
+            source:{
+                id:"userid1",
+                displayName:"Vishal Chitravanshi",
+                profilePicUrl:"http://doctl.com/static/unify/assets/img/profile_pic/vikas.jpg"
+            },
+            data:{
+                prescriptionId: "prescription3",
+                medicines:[
+                    {
+                        id: "med1",
+                        name:"Humalog",
+                        quantity:1,
+                        type:"INJECTION",
+                        dosage: "",
+                        unit:"",
+                        instruction:"After Meal",
+                        showInfoIcon:false
+                    },
+                    {
+                        id: "med2",
+                        name:"Sulfonylureas",
+                        quantity:2,
+                        type:"TABLET",
+                        dosage: "",
+                        unit:"",
+                        instruction:"After Meal",
+                        showInfoIcon:false
+                    },
+                    {
+                        id: "med3",
+                        name:"Metformin",
+                        quantity:1,
+                        type:"CAPSULE",
+                        dosage: "",
+                        unit:"",
+                        instruction:"After Meal",
+                        showInfoIcon:false
+                    }
+                ]
+            }
         }
     ]
 }

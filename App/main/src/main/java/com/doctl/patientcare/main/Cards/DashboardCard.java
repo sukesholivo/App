@@ -3,11 +3,8 @@ package com.doctl.patientcare.main.Cards;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.doctl.patientcare.main.R;
-
-import java.util.Random;
 
 import it.gmariotti.cardslib.library.internal.CardHeader;
 
@@ -34,7 +31,6 @@ public class DashboardCard extends BaseCard{
 
     @Override
     public void setupInnerViewElements(ViewGroup parent, View view) {
-//        Log.d(TAG, "Setting up inner view element of card.");
 
     }
 

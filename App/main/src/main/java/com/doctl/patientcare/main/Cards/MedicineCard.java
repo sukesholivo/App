@@ -9,9 +9,9 @@ import android.widget.ListView;
 
 import com.doctl.patientcare.main.MedicineDetailActivity;
 import com.doctl.patientcare.main.R;
-import com.doctl.patientcare.main.medicines.Medicine;
-import com.doctl.patientcare.main.medicines.MedicineAdapter;
-import com.doctl.patientcare.main.om.MedicineTask;
+import com.doctl.patientcare.main.om.medicines.Medicine;
+import com.doctl.patientcare.main.om.medicines.MedicineAdapter;
+import com.doctl.patientcare.main.om.medicines.MedicineTask;
 
 import java.util.ArrayList;
 
@@ -37,6 +37,7 @@ public class MedicineCard extends BaseCard {
     public MedicineCard(Context context, int innerLayout, CardHeader cardHeader, MedicineTask medicineTask){
         super(context, innerLayout, cardHeader);
         this.medicineTask = medicineTask;
+        this.setId(medicineTask.getCardId());
     }
 
     public MedicineCard(Context context, CardHeader cardHeader, MedicineTask medicineTask) {
@@ -45,11 +46,11 @@ public class MedicineCard extends BaseCard {
 
     @Override
     public void setupInnerViewElements(ViewGroup parent, View view) {
-        MedicineAdapter medicines = new MedicineAdapter(getContext(), medicineTask.getMedicines());
+        MedicineAdapter medicines = new MedicineAdapter(getContext(), medicineTask.getPayload().getMedicines());
         ListView list = (ListView)view.findViewById(R.id.medicationList);
         list.setAdapter(medicines);
 
-        setupCardFooter(view, "" + medicineTask.getPoints());
+        setupCardFooter(view, medicineTask);
         setListnerToCard();
     }
 
@@ -71,9 +72,9 @@ public class MedicineCard extends BaseCard {
     }
 
     public ArrayList<Medicine> buildArrayHelper() {
-        Medicine m1 = new Medicine("Metformin", 1, Medicine.MedicineType.CAPSULE, "500mg");
-        Medicine m2 = new Medicine("Sulfonylureas", 2, Medicine.MedicineType.TABLET, "200mg");
-        Medicine m3 = new Medicine("Humalog", 1, Medicine.MedicineType.INJECTION, "20ml");
+        Medicine m1 = new Medicine("", "Metformin", 1, Medicine.MedicineType.CAPSULE, "", "500mg", "", false);
+        Medicine m2 = new Medicine("", "Sulfonylureas", 2, Medicine.MedicineType.TABLET, "", "200mg", "", false);
+        Medicine m3 = new Medicine("", "Humalog", 1, Medicine.MedicineType.INJECTION, "", "20ml", "", false);
         ArrayList<Medicine> list = new ArrayList<Medicine>();
         list.add(m1);
         list.add(m2);

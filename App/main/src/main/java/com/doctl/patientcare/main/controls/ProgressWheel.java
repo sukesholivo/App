@@ -9,7 +9,6 @@ import android.graphics.Shader;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.doctl.patientcare.main.R;
