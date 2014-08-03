@@ -25,6 +25,7 @@ dependencies {
     compile 'com.github.gabrielemariotti.cards:library:1.7.3'
     compile 'com.nhaarman.listviewanimations:library:2.6.0'
     compile 'com.github.chrisbanes.actionbarpulltorefresh:library:+'
+    compile 'com.squareup.picasso:picasso:2.3.3'
     compile files('libs/achartengine-1.1.0.jar')
     compile files('libs/YouTubeAndroidPlayerApi.jar')
     compile files('libs/gson-2.2.4.jar')

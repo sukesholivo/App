@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.BaseTask;
-import com.doctl.patientcare.main.services.DownloadImageTask;
+import com.squareup.picasso.Picasso;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
@@ -51,6 +51,9 @@ public abstract class BaseCard extends Card {
         TextView targetPointTextView = (TextView)view.findViewById(R.id.targetPoint);
         targetPointTextView.setText("" + task.getPoints());
 
-        new DownloadImageTask((ImageView) view.findViewById(R.id.influencerImage)).execute(task.getSource().getProfilePicUrl());
+        Picasso.with(getContext())
+                .load(task.getSource()
+                .getProfilePicUrl())
+                .into((ImageView) view.findViewById(R.id.influencerImage));
     }
 }

@@ -21,4 +21,5 @@
     <string name="title_activity_vital_detail">VitalDetailActivity</string>
     <string name="title_activity_medicine_detail">MedicineDetailActivity</string>
 
+    <string name="medicine_card_remove_meassage">Have you taken medicine?</string>
 </resources>

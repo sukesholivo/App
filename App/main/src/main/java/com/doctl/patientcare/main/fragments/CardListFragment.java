@@ -38,6 +38,7 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.view.CardListView;
 import it.gmariotti.cardslib.library.view.CardView;
 import it.gmariotti.cardslib.library.view.listener.SwipeOnScrollListener;
+import it.gmariotti.cardslib.library.view.listener.UndoBarController;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
@@ -46,10 +47,8 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
  * Created by Administrator on 6/13/2014.
  */
 public class CardListFragment extends BaseFragment implements OnRefreshListener {
-    private static final String TAG_CARDS= "cards";
     private static final String TAG = CardListFragment.class.getSimpleName();
     private static String ANDROID_DEVELOPER_KEY = "AIzaSyAWocbee6JmNy1KShjdNWy_v8_xEq0-gE0";
-    private CardView cardView;
     PullToRefreshLayout mPullToRefreshLayout;
     public static final int SIMULATED_REFRESH_LENGTH = 1;
     ArrayList<Card> cards;
@@ -84,6 +83,24 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
         cards.add(card0);
 
         mCardArrayAdapter = new CardArrayAdapter(getActivity(), cards);
+        mCardArrayAdapter.setUndoBarUIElements(new UndoBarController.DefaultUndoBarUIElements(){
+            @Override
+            public String getMessageUndo(CardArrayAdapter cardArrayAdapter, String[] itemIds, int[] itemPositions) {
+                StringBuffer message=new StringBuffer();
+                for (int id:itemPositions){
+                    Card card = cards.get(id);
+                    switch(card.getType()){
+                        case BaseCard.MEDICINE_CARD_TYPE:
+                            message.append(getResources().getString(R.string.medicine_card_remove_meassage));
+                            break;
+                        default:
+                            message.append("one card removed");
+                            break;
+                    }
+                }
+                return message.toString();
+            }
+        });
         mCardArrayAdapter.setEnableUndo(true);
         CardListView listView = (CardListView) getActivity().findViewById(R.id.card_list_layout);
         listView.setOnScrollListener(
