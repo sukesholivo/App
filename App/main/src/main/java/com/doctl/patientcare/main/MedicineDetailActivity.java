@@ -8,7 +8,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.doctl.patientcare.main.constants.Utils;
+import com.doctl.patientcare.main.controls.ProgressBarAnimation;
+import com.doctl.patientcare.main.utility.Utils;
 import com.doctl.patientcare.main.om.medicines.Medicine;
 import com.doctl.patientcare.main.om.medicines.MedicineDetailAdapter;
 import com.doctl.patientcare.main.om.medicines.Prescription;
@@ -18,6 +19,7 @@ import com.google.gson.JsonParser;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MedicineDetailActivity extends Activity {
@@ -28,8 +30,8 @@ public class MedicineDetailActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medicine_detail);
         Bundle bundle = getIntent().getExtras();
-        String prescrioptionId = bundle.getString("prescriptionId");
-        new GetPrescription().execute(prescrioptionId);
+        String prescriptionId = bundle.getString("prescriptionId");
+        new GetPrescription().execute(prescriptionId);
     }
 
     private String downloadPrescriptionData(String prescriptionId) {
@@ -54,15 +56,23 @@ public class MedicineDetailActivity extends Activity {
                 .load(prescription.getDoctor().getProfilePicUrl())
                 .into((ImageView) findViewById(R.id.doctorPic));
 
-
         TextView prescriptionDate = (TextView) findViewById(R.id.dateText);
-        prescriptionDate.setText(prescription.getStartDate().toString());
+        prescriptionDate.setText(Utils.getDateString(prescription.getStartDate()));
 
+        long milliSecondsInDay = 24 * 60 * 60 * 1000;
+        long treatmentDays = (prescription.getEndDate().getTime() - prescription.getStartDate().getTime())/ milliSecondsInDay;
+        long pendingDays = (prescription.getEndDate().getTime() - new Date().getTime())/ milliSecondsInDay;
         TextView prescriptionPlanText = (TextView) findViewById(R.id.planText);
-        prescriptionPlanText.setText("30 DAYS PLAN (5 DAYS LEFT)");
+        String message = pendingDays>0?
+                String.format(getString(R.string.treatment_plan_remaining), treatmentDays, pendingDays):
+                String.format(getString(R.string.treatment_plan_completed), treatmentDays);
+        prescriptionPlanText.setText(message);
 
+        pendingDays = pendingDays < 0 ? 0 : pendingDays;
         ProgressBar treatmentProgress = (ProgressBar) findViewById(R.id.treatmentProgress);
-        treatmentProgress.setProgress(70);
+        ProgressBarAnimation anim = new ProgressBarAnimation(treatmentProgress, 0, (treatmentDays - pendingDays) * 100 /treatmentDays);
+        anim.setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime));
+        treatmentProgress.startAnimation(anim);
 
         MedicineDetailAdapter medicines = new MedicineDetailAdapter(this, prescription.getMedicines());
         ListView list = (ListView)this.findViewById(R.id.medicineDetailList);
@@ -91,8 +101,8 @@ public class MedicineDetailActivity extends Activity {
         }
     }
 
-    private void refreshActivity(String prescrioptionId) {
-        String jsonStr = downloadPrescriptionData(prescrioptionId);
+    private void refreshActivity(String prescriptionId) {
+        String jsonStr = downloadPrescriptionData(prescriptionId);
         final Prescription prescription =  parsePrescriptionData(jsonStr);
 
         runOnUiThread(new Runnable() {

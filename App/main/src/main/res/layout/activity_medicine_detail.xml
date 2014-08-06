@@ -36,8 +36,7 @@
             android:textSize="18sp"
             android:layout_alignLeft="@id/header"
             android:layout_below="@id/header"
-            android:layout_toRightOf="@id/doctorPic"
-            android:text="DR. VISHAL CHITRAVANSHI"/>
+            android:layout_toRightOf="@id/doctorPic"/>
         <TextView
             android:id="@+id/doctorHospital"
             android:layout_width="wrap_content"
@@ -45,8 +44,7 @@
             android:layout_toRightOf="@id/doctorPic"
             android:layout_below="@id/doctorName"
             android:layout_alignLeft="@id/doctorName"
-            android:textSize="16sp"
-            android:text="GETWEL HOSPITAL"/>
+            android:textSize="16sp"/>
         <TextView
             android:id="@+id/doctorAddress"
             android:layout_width="wrap_content"
@@ -54,8 +52,7 @@
             android:layout_toRightOf="@id/doctorPic"
             android:layout_below="@id/doctorHospital"
             android:layout_alignLeft="@id/doctorName"
-            android:textSize="16sp"
-            android:text="KONDAPUR HYDERABAD"/>
+            android:textSize="16sp"/>
         </RelativeLayout>
 
     <RelativeLayout
@@ -72,8 +69,6 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:layout_alignParentTop="true"
-            android:text="1 Jan 2014"
-
             />
         <TextView
             android:id="@+id/planText"
@@ -81,8 +76,7 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:layout_below="@id/dateText"
-            android:layout_alignLeft="@id/dateText"
-            android:text="30 DAYS PLAN (7 DAYS LEFT)"/>
+            android:layout_alignLeft="@id/dateText"/>
         <ProgressBar
             android:id="@+id/treatmentProgress"
             android:layout_below="@id/planText"
@@ -93,7 +87,6 @@
             android:layout_alignLeft="@id/planText"
             android:layout_marginBottom="10dp"
             android:layout_marginRight="50dp"
-            android:progress="70"
             />
     </RelativeLayout>
     <ListView

@@ -15,7 +15,7 @@ import com.doctl.patientcare.main.Cards.BaseCard;
 import com.doctl.patientcare.main.Cards.DashboardCard;
 import com.doctl.patientcare.main.Cards.MedicineCard;
 import com.doctl.patientcare.main.R;
-import com.doctl.patientcare.main.constants.Utils;
+import com.doctl.patientcare.main.utility.Utils;
 import com.doctl.patientcare.main.om.BaseTask;
 import com.doctl.patientcare.main.om.CustomCardArrayAdapter;
 import com.doctl.patientcare.main.om.medicines.MedicineTask;

@@ -1,4 +1,4 @@
-package com.doctl.patientcare.main.constants;
+package com.doctl.patientcare.main.utility;
 
 import android.content.Context;
 
@@ -32,6 +32,10 @@ public final class Utils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static String getDateString(Date date) {
+        return new SimpleDateFormat("dd MMM yyyy").format(date);
     }
 
     public static CardHeader getCardHeader(Context context, BaseTask task){

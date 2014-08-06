@@ -1,4 +1,4 @@
-package com.doctl.patientcare.main.constants;
+package com.doctl.patientcare.main.utility;
 
 /**
  * Created by Administrator on 7/11/2014.

@@ -2,15 +2,12 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/card_layout">
-    <ListView
+    <LinearLayout
+        android:orientation="vertical"
         android:id="@+id/medicationList"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:layout_weight="1.0"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:divider="#00000000"
-        android:dividerHeight="0dp"
-        android:clickable="false"
         />
     <include layout="@layout/card_footer_fragment"
         android:layout_width="match_parent"

@@ -13,7 +13,6 @@
         android:layout_marginLeft="10dp"
         android:paddingTop="10dp"
         android:textColor="@color/card_body_text_main"
-        android:src="@drawable/pill_icon"
         />
     <TextView
         android:id="@+id/medicineName"

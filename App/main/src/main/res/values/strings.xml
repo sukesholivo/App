@@ -22,4 +22,9 @@
     <string name="title_activity_medicine_detail">MedicineDetailActivity</string>
 
     <string name="medicine_card_remove_meassage">Have you taken medicine?</string>
+
+    <string name="treatment_plan_remaining" formatted="false">%d DAYS PLAN (%d DAYS LEFT)</string>
+    <string name="treatment_plan_completed" formatted="false">%d DAYS PLAN (COMPLETED)</string>
+
+    <string name="notes">Notes</string>
 </resources>

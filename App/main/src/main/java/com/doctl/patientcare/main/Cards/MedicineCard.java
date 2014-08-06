@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 
 import com.doctl.patientcare.main.MedicineDetailActivity;
 import com.doctl.patientcare.main.R;
@@ -48,9 +48,13 @@ public class MedicineCard extends BaseCard {
     @Override
     public void setupInnerViewElements(ViewGroup parent, View view) {
         MedicineAdapter medicines = new MedicineAdapter(getContext(), medicineTask.getPayload().getMedicines());
-        ListView list = (ListView)view.findViewById(R.id.medicationList);
-        list.setAdapter(medicines);
-
+        LinearLayout list = (LinearLayout)view.findViewById(R.id.medicationList);
+        if (medicines != null) {
+            for (int i = 0; i < medicines.getCount(); i++) {
+                View listView = medicines.getView(i, null, null);
+                list.addView(listView);
+            }
+        }
         setupCardFooter(view, medicineTask);
         setListnerToCard();
     }

@@ -44,7 +44,7 @@ public class MedicineDetailAdapter extends ArrayAdapter<PrescriptionMedicine> {
                 medicineImage.setImageResource(R.drawable.injection_green);
                 break;
             default:
-                medicineImage.setImageResource(R.drawable.capsule_green);
+                medicineImage.setImageResource(R.drawable.tablet_green);
                 break;
         }
 
@@ -55,23 +55,24 @@ public class MedicineDetailAdapter extends ArrayAdapter<PrescriptionMedicine> {
         medicineType.setText(item.getType().toString());
 
         String builder = "";
-
         for (int i = 0; i< item.getDosage().size();i++){
             PrescriptionMedicine.Dosage dosage = item.getDosage().get(i);
             int quantity = dosage.getQuantity();
 
             if (quantity > 0){
+                builder += i > 0 ? ", " : "";
                 builder += quantity;
+                builder += " in ";
+                builder += item.getDosage().get(i).getWhen();
                 builder += " ";
                 builder += item.getDosage().get(i).getConstraint();
-                builder += " ";
             }
         }
         TextView medicineInstruction = (TextView)view.findViewById(R.id.medicineInstruction);
         medicineInstruction.setText(builder);
 
         TextView medicineNotes = (TextView)view.findViewById(R.id.medicineNotes);
-        medicineNotes.setText("Notes: " + item.getNotes());
+        medicineNotes.setText(getContext().getString(R.string.notes) + ": " + item.getNotes());
 
         return view;
     }
