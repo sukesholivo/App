@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.doctl.patientcare.main.R;
@@ -16,16 +15,16 @@ import java.util.List;
 /**
  * Created by Administrator on 6/27/2014.
  */
-public class MedicineDetailAdapter extends ArrayAdapter<Medicine> {
+public class MedicineDetailAdapter extends ArrayAdapter<PrescriptionMedicine> {
     private static final String TAG = MedicineDetailAdapter.class.getSimpleName();
 
-    public MedicineDetailAdapter(Context context, List<Medicine> objects) {
+    public MedicineDetailAdapter(Context context, List<PrescriptionMedicine> objects) {
         super(context, 0, objects);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Medicine item = getItem(position);
+        PrescriptionMedicine item = getItem(position);
         View view = convertView;
         if (view == null) {
             LayoutInflater li =
@@ -50,33 +49,21 @@ public class MedicineDetailAdapter extends ArrayAdapter<Medicine> {
         }
 
         TextView medicineName = (TextView)view.findViewById(R.id.medicineName);
-        medicineName.setText(item.getName());
-
-        TextView medicineUnit = (TextView)view.findViewById(R.id.medicineUnit);
-        medicineUnit.setText(item.getUnit());
+        medicineName.setText(item.getBrand());
 
         TextView medicineType = (TextView)view.findViewById(R.id.medicineType);
         medicineType.setText(item.getType().toString());
 
-        LinearLayout frequencyLayout = (LinearLayout)view.findViewById(R.id.medicineFrequencyLayout);
-        frequencyLayout.removeAllViews();
-        for (int i = 0; i <item.getQuantityToTake().length; i++){
-            int quantity = item.getQuantityToTake()[i];
-            LinearLayout taken = new LinearLayout(getContext());
-            taken.setBackgroundResource(quantity > 0 ? R.drawable.circular_green : R.drawable.circular_green_empty);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            lp.setMargins(0, 0, 10, 0);
-            taken.setLayoutParams(lp);
-            frequencyLayout.addView(taken);
-        }
-
         String builder = "";
-        for (int i = 0; i< item.getQuantityToTake().length;i++){
-            int quantity = item.getQuantityToTake()[i];
+
+        for (int i = 0; i< item.getDosage().size();i++){
+            PrescriptionMedicine.Dosage dosage = item.getDosage().get(i);
+            int quantity = dosage.getQuantity();
+
             if (quantity > 0){
                 builder += quantity;
                 builder += " ";
-                builder += item.getMedicineInstruction()[i];
+                builder += item.getDosage().get(i).getConstraint();
                 builder += " ";
             }
         }
@@ -84,7 +71,7 @@ public class MedicineDetailAdapter extends ArrayAdapter<Medicine> {
         medicineInstruction.setText(builder);
 
         TextView medicineNotes = (TextView)view.findViewById(R.id.medicineNotes);
-        medicineNotes.setText("Notes: " + item.getInstruction().toString());
+        medicineNotes.setText("Notes: " + item.getNotes());
 
         return view;
     }

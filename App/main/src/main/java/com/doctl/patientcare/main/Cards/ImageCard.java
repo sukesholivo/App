@@ -54,4 +54,9 @@ public class ImageCard extends BaseCard {
             influencerImage.setImageResource(R.drawable.profile_dummy);
         }
     }
+
+    @Override
+    public int getType() {
+        return CardType.DUMMY_CARD_TYPE.ordinal();
+    }
 }

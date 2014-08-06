@@ -77,4 +77,9 @@ public class HowruFeelingCard extends BaseCard{
         }
 
     }
+
+    @Override
+    public int getType() {
+        return CardType.DUMMY_CARD_TYPE.ordinal();
+    }
 }

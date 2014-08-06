@@ -2,6 +2,7 @@ package com.doctl.patientcare.main.Cards;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +62,9 @@ public class MedicineCard extends BaseCard {
                 Log.d("postInitCard", "Card clicked " + card.getId());
                 Context context = getContext();
                 Intent intent = new Intent(context, MedicineDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("prescriptionId", medicineTask.getPayload().getPrescriptionId());
+                intent.putExtras(bundle);
                 context.startActivity(intent);
             }
         });
@@ -68,7 +72,7 @@ public class MedicineCard extends BaseCard {
 
     @Override
     public int getType() {
-        return MEDICINE_CARD_TYPE;
+        return CardType.MEDICINE_CARD_TYPE.ordinal();
     }
 
     public ArrayList<Medicine> buildArrayHelper() {

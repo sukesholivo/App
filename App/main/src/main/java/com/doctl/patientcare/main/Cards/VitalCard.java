@@ -73,7 +73,7 @@ public class VitalCard extends BaseCard {
 
     @Override
     public int getType() {
-        return VITAL_CARD_TYPE;
+        return CardType.DUMMY_CARD_TYPE.ordinal();
     }
 
     private void openChart(View view){

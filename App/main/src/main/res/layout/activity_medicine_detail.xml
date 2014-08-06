@@ -84,6 +84,7 @@
             android:layout_alignLeft="@id/dateText"
             android:text="30 DAYS PLAN (7 DAYS LEFT)"/>
         <ProgressBar
+            android:id="@+id/treatmentProgress"
             android:layout_below="@id/planText"
             android:layout_width="match_parent"
             android:layout_height="10dp"

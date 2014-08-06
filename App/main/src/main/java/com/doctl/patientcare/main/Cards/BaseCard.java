@@ -18,10 +18,6 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
 public abstract class BaseCard extends Card {
     private static final String TAG = BaseCard.class.getSimpleName();
 
-    public final static int VITAL_CARD_TYPE = 1;
-    public final static int MEDICINE_CARD_TYPE = 2;
-    public final static int EDUCATION_CARD_TYPE = 3;
-
     public BaseCard(Context context, int layout){
         super(context, layout);
         setupCard(new CardHeaderInnerView(getContext()));
@@ -55,5 +51,15 @@ public abstract class BaseCard extends Card {
                 .load(task.getSource()
                 .getProfilePicUrl())
                 .into((ImageView) view.findViewById(R.id.influencerImage));
+    }
+
+    @Override
+    public abstract int getType();
+
+    public enum CardType{
+        DUMMY_CARD_TYPE,
+        MEDICINE_CARD_TYPE,
+        VITAL_CARD_TYPE,
+        EDUCATION_CARD_TYPE
     }
 }

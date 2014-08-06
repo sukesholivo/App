@@ -47,4 +47,9 @@ public class MythCard extends BaseCard {
                 "and a diet high in calories from any source contributes to weight gain.");
         mythDescription.bringToFront();
     }
+
+    @Override
+    public int getType() {
+        return CardType.DUMMY_CARD_TYPE.ordinal();
+    }
 }

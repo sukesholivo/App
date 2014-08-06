@@ -1,0 +1,79 @@
+{
+    id: "prescription1",
+    startDate: "2014-07-29T09:10:34Z",
+    endDate: "2014-08-19T09:10:34Z",
+    createdOn: "2014-07-29T09:10:34Z",
+    modifiedOn: "2014-07-29T09:10:34Z",
+    notes: "prescription level notes",
+    medicines: [
+        {
+            id: "med1",
+            brand: "Metformin",
+            manufacture: "manufacture",
+            type: "CAPSULE",
+            dosageUnit: "capsule",
+            notes: "These are for lowering sugar level. These need to be taken 15 in after taking food",
+            daysInterval: 1,
+            dosage: [
+                {
+                    when: "morning",
+                    quantity: 1,
+                    constraint: "After Breakfast"
+                },
+                {
+                    when: "night",
+                    quantity: 1,
+                    constraint: "After Dinner"
+                }
+            ]
+        },
+        {
+            id: "med2",
+            brand: "Sulfonylureas",
+            manufacture: "manufacture",
+            type: "TABLET",
+            dosageUnit: "tablet",
+            notes: "These are for lowering sugar level. These need to be taken 15 in after taking food",
+            daysInterval: 1,
+            dosage: [
+                {
+                    when: "morning",
+                    quantity: 1,
+                    constraint: "Before Breakfast"
+                },
+                {
+                    when: "night",
+                    quantity: 1,
+                    constraint: "Before Dinner"
+                }
+            ]
+        },
+        {
+            id: "med3",
+            brand: "Humalog",
+            manufacture: "manufacture",
+            type: "INJECTION",
+            dosageUnit: "injection",
+            notes: "These are for lowering sugar level. These need to be taken 15 in after taking food",
+            daysInterval: 1,
+            dosage: [
+                {
+                    when: "morning",
+                    quantity: 1,
+                    constraint: "After Breakfast"
+                },
+                {
+                    when: "night",
+                    quantity: 1,
+                    constraint: "After Dinner"
+                }
+            ]
+        }
+    ],
+    doctor: {
+        id: "userid1",
+        displayName: "Dr. Komal Prajapati",
+        profilePicUrl: "http://doctl.com/static/unify/assets/img/profile_pic/komal.jpg",
+        address: "This Hospital"
+    }
+}

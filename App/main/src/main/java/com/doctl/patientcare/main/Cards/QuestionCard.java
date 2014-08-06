@@ -33,4 +33,9 @@ public class QuestionCard extends BaseCard {
     public void setupInnerViewElements(ViewGroup parent, View view) {
         this.setBackgroundResourceId(R.drawable.card_background_blue);
     }
+
+    @Override
+    public int getType() {
+        return CardType.DUMMY_CARD_TYPE.ordinal();
+    }
 }

@@ -17,6 +17,7 @@ import com.doctl.patientcare.main.Cards.MedicineCard;
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.constants.Utils;
 import com.doctl.patientcare.main.om.BaseTask;
+import com.doctl.patientcare.main.om.CustomCardArrayAdapter;
 import com.doctl.patientcare.main.om.medicines.MedicineTask;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -26,19 +27,12 @@ import com.google.gson.JsonParser;
 import com.nhaarman.listviewanimations.swinginadapters.AnimationAdapter;
 import com.nhaarman.listviewanimations.swinginadapters.prepared.ScaleInAnimationAdapter;
 
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 import it.gmariotti.cardslib.library.internal.Card;
-import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.view.CardListView;
-import it.gmariotti.cardslib.library.view.CardView;
 import it.gmariotti.cardslib.library.view.listener.SwipeOnScrollListener;
-import it.gmariotti.cardslib.library.view.listener.UndoBarController;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
@@ -52,7 +46,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
     PullToRefreshLayout mPullToRefreshLayout;
     public static final int SIMULATED_REFRESH_LENGTH = 1;
     ArrayList<Card> cards;
-    CardArrayAdapter mCardArrayAdapter;
+    CustomCardArrayAdapter mCardArrayAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,25 +76,8 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
         card0.setSwipeable(false);
         cards.add(card0);
 
-        mCardArrayAdapter = new CardArrayAdapter(getActivity(), cards);
-        mCardArrayAdapter.setUndoBarUIElements(new UndoBarController.DefaultUndoBarUIElements(){
-            @Override
-            public String getMessageUndo(CardArrayAdapter cardArrayAdapter, String[] itemIds, int[] itemPositions) {
-                StringBuffer message=new StringBuffer();
-                for (int id:itemPositions){
-                    Card card = cards.get(id);
-                    switch(card.getType()){
-                        case BaseCard.MEDICINE_CARD_TYPE:
-                            message.append(getResources().getString(R.string.medicine_card_remove_meassage));
-                            break;
-                        default:
-                            message.append("one card removed");
-                            break;
-                    }
-                }
-                return message.toString();
-            }
-        });
+        mCardArrayAdapter = new CustomCardArrayAdapter(getActivity(), cards);
+
         mCardArrayAdapter.setEnableUndo(true);
         CardListView listView = (CardListView) getActivity().findViewById(R.id.card_list_layout);
         listView.setOnScrollListener(
@@ -180,20 +157,8 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
     }
 
     private String downloadCardData(){
-        InputStream inputStream = getResources().openRawResource(R.raw.tasks);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        int ctr;
-        try {
-            ctr = inputStream.read();
-            while (ctr != -1) {
-                byteArrayOutputStream.write(ctr);
-                ctr = inputStream.read();
-            }
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return byteArrayOutputStream.toString();
+        return Utils.parsonJsonFromFile(getActivity(), R.raw.tasks);
+
         //convert to object
 
 //        cards = new ArrayList<Card>();

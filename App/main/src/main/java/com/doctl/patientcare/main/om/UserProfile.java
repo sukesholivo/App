@@ -15,6 +15,9 @@ public class UserProfile {
     @SerializedName("profilePicUrl")
     private String profilePicUrl;
 
+    @SerializedName("address")
+    private String address;
+
     public String getId() {
         return id;
     }
@@ -25,5 +28,9 @@ public class UserProfile {
 
     public String getProfilePicUrl() {
         return profilePicUrl;
+    }
+
+    public String getAddress() {
+        return address;
     }
 }

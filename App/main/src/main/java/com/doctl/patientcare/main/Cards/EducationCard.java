@@ -53,7 +53,6 @@ public class EducationCard extends BaseCard{
 
     @Override
     public int getType() {
-        return EDUCATION_CARD_TYPE;
+        return CardType.EDUCATION_CARD_TYPE.ordinal();
     }
-
 }

@@ -5,6 +5,9 @@ import android.content.Context;
 import com.doctl.patientcare.main.Cards.CardHeaderInnerView;
 import com.doctl.patientcare.main.om.BaseTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -53,5 +56,22 @@ public final class Utils {
             }
         }
         return cardHeader;
+    }
+
+    public static String parsonJsonFromFile(Context context,int resourceId){
+        InputStream inputStream = context.getResources().openRawResource(resourceId);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        int ctr;
+        try {
+            ctr = inputStream.read();
+            while (ctr != -1) {
+                byteArrayOutputStream.write(ctr);
+                ctr = inputStream.read();
+            }
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return byteArrayOutputStream.toString();
     }
 }
