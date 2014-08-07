@@ -23,10 +23,9 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
  * Created by Administrator on 6/12/2014.
  */
 public class MedicineCard extends BaseCard {
-
     private static final String TAG = MedicineCard.class.getSimpleName();
     private MedicineTask medicineTask;
-
+    
     public MedicineCard(Context context) {
         this(context, R.layout.medication_card_inner_content);
     }
@@ -47,9 +46,20 @@ public class MedicineCard extends BaseCard {
 
     @Override
     public void setupInnerViewElements(ViewGroup parent, View view) {
-        MedicineAdapter medicines = new MedicineAdapter(getContext(), medicineTask.getPayload().getMedicines());
-        LinearLayout list = (LinearLayout)view.findViewById(R.id.medicationList);
+        ViewHolder viewHolder;
+        if(view.getTag() == null) {
+            viewHolder = new ViewHolder();
+            viewHolder.linearLayout = (LinearLayout) view.findViewById(R.id.medicationList);
+            view.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) view.getTag();
+        }
+
+        MedicineAdapter medicines = new MedicineAdapter(getContext(),medicineTask.getPayload().getMedicines());
+
+        LinearLayout list =  viewHolder.linearLayout;
         if (medicines != null) {
+            list.removeAllViews();
             for (int i = 0; i < medicines.getCount(); i++) {
                 View listView = medicines.getView(i, null, null);
                 list.addView(listView);
@@ -88,5 +98,9 @@ public class MedicineCard extends BaseCard {
         list.add(m2);
         list.add(m3);
         return list;
+    }
+
+    private static class ViewHolder extends BaseViewHolder {
+        LinearLayout linearLayout;
     }
  }

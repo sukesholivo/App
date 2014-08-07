@@ -61,23 +61,4 @@ public class MedicineAdapter extends ArrayAdapter<Medicine>{
 
         return view;
     }
-
-    @Override
-    public boolean isEnabled(int position) {
-        return false;
-    }
-
-    @Override
-    public boolean areAllItemsEnabled() {
-        return false;
-    }
-
-    @Override
-    public int getViewTypeCount() {
-        return 1;
-    }
-
-    private static class ViewHolder {
-        public TextView text;
-    }
 }

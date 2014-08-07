@@ -1,6 +1,7 @@
 package com.doctl.patientcare.main.Cards;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -44,13 +45,30 @@ public abstract class BaseCard extends Card {
     }
 
     public void setupCardFooter(View view, BaseTask task){
-        TextView targetPointTextView = (TextView)view.findViewById(R.id.targetPoint);
-        targetPointTextView.setText("" + task.getPoints());
+        BaseViewHolder viewHolder;
+        if(view.getTag() == null) {
+            viewHolder = new BaseViewHolder();
+            viewHolder.textView = (TextView) view.findViewById(R.id.targetPoint);
+            viewHolder.imageView = (ImageView) view.findViewById(R.id.influencerImage);
+            viewHolder.footerSet = true;
+            view.setTag(viewHolder);
+        } else {
+            viewHolder = (BaseViewHolder) view.getTag();
+            if (!viewHolder.footerSet){
+                viewHolder.textView = (TextView) view.findViewById(R.id.targetPoint);
+                viewHolder.imageView = (ImageView) view.findViewById(R.id.influencerImage);
+                viewHolder.footerSet = true;
+            }
+        }
 
+        TextView targetPointTextView = viewHolder.textView;
+        ImageView influencerImage = viewHolder.imageView;
+
+        targetPointTextView.setText("" + task.getPoints());
         Picasso.with(getContext())
                 .load(task.getSource()
                 .getProfilePicUrl())
-                .into((ImageView) view.findViewById(R.id.influencerImage));
+                .into(influencerImage);
     }
 
     @Override
@@ -61,5 +79,11 @@ public abstract class BaseCard extends Card {
         MEDICINE_CARD_TYPE,
         VITAL_CARD_TYPE,
         EDUCATION_CARD_TYPE
+    }
+
+    protected static class BaseViewHolder {
+        TextView textView;
+        ImageView imageView;
+        boolean footerSet = false;
     }
 }
