@@ -14,7 +14,9 @@ import android.widget.AbsListView;
 import com.doctl.patientcare.main.Cards.BaseCard;
 import com.doctl.patientcare.main.Cards.DashboardCard;
 import com.doctl.patientcare.main.Cards.MedicineCard;
+import com.doctl.patientcare.main.Cards.VitalCard;
 import com.doctl.patientcare.main.R;
+import com.doctl.patientcare.main.om.vitals.VitalTask;
 import com.doctl.patientcare.main.utility.Utils;
 import com.doctl.patientcare.main.om.BaseTask;
 import com.doctl.patientcare.main.om.CustomCardArrayAdapter;
@@ -275,9 +277,15 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
                 case MEDICINE:
                     MedicineTask medicineTask = new Gson().fromJson(cardJson, MedicineTask.class);
                     CardHeader medicineHeader = Utils.getCardHeader(getActivity(), medicineTask);
-                    MedicineCard medicineCard = new MedicineCard(getActivity(), medicineHeader, medicineTask); // pass medicine object
+                    MedicineCard medicineCard = new MedicineCard(getActivity(), medicineHeader, medicineTask);
                     cards.add(medicineCard);
-                    Log.d(TAG, medicineTask.getCardId());
+                    break;
+                case VITAL:
+                    VitalTask vitalTask = new Gson().fromJson(cardJson, VitalTask.class);
+                    CardHeader vitalHeader = Utils.getCardHeader(getActivity(), vitalTask);
+                    VitalCard vitalCard = new VitalCard(getActivity(), vitalHeader, vitalTask);
+                    cards.add(vitalCard);
+                    break;
             }
         }
         return cards;
@@ -301,7 +309,6 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
     public void onRefreshStarted(View view) {
         new GetTasks().execute();
     }
-
 
     /**
      * Async task class to get json by making HTTP call

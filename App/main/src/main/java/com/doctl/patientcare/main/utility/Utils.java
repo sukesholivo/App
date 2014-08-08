@@ -1,15 +1,25 @@
 package com.doctl.patientcare.main.utility;
 
 import android.content.Context;
+import android.graphics.Color;
 
 import com.doctl.patientcare.main.Cards.CardHeaderInnerView;
 import com.doctl.patientcare.main.om.BaseTask;
+import com.doctl.patientcare.main.om.GraphData;
+
+import org.achartengine.ChartFactory;
+import org.achartengine.GraphicalView;
+import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.model.XYSeries;
+import org.achartengine.renderer.XYMultipleSeriesRenderer;
+import org.achartengine.renderer.XYSeriesRenderer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import it.gmariotti.cardslib.library.internal.CardHeader;
@@ -77,5 +87,35 @@ public final class Utils {
             e.printStackTrace();
         }
         return byteArrayOutputStream.toString();
+    }
+
+    public static GraphicalView getGraph(Context context, ArrayList<GraphData>graph){
+        XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
+        XYMultipleSeriesRenderer multiRenderer = new XYMultipleSeriesRenderer();
+        multiRenderer.setApplyBackgroundColor(true);
+        multiRenderer.setBackgroundColor(Color.parseColor("#00010101"));
+        multiRenderer.setMarginsColor(Color.parseColor("#00010101"));
+        multiRenderer.setMargins(new int[]{5,2,-15,0});
+        multiRenderer.setShowLegend(false);
+        multiRenderer.setShowAxes(false);
+        multiRenderer.setXLabels(0);
+        multiRenderer.setYLabels(0);
+        multiRenderer.setZoomEnabled(false, false);
+        multiRenderer.setPanEnabled(false, false);
+
+        for (int i = 0; i<graph.size(); i++){
+            GraphData g = graph.get(i);
+            XYSeries series = new XYSeries(g.getTitle());
+
+            for(int j=0; j<g.getX().size(); j++){
+                series.add(g.getX().get(j), g.getY().get(j));
+            }
+            dataset.addSeries(series);
+            XYSeriesRenderer graphRenderer = new XYSeriesRenderer();
+            graphRenderer.setColor(g.getLineColor());
+            graphRenderer.setLineWidth(g.getLineWidth());
+            multiRenderer.addSeriesRenderer(graphRenderer);
+        }
+        return ChartFactory.getLineChartView(context, dataset, multiRenderer);
     }
 }

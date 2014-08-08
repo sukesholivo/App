@@ -52,100 +52,38 @@
         },
         {
             cardId:"GUID2",
-            etaType: "PRECISE",
-            eta:"2014-07-29T13:10:34Z",
+            etaType: "DAYLONG",
+            eta:"2014-07-29T09:10:34Z",
             createdOn:"2014-07-28T06:07:34Z",
             modifiedOn:"2014-07-28T06:07:34Z",
             state:"ACTIVE",
-            type:"MEDICINE",
-            points:15,
+            type:"VITAL",
+            points:10,
             source:{
                 id:"userid1",
                 displayName:"Vishal Chitravanshi",
                 profilePicUrl:"http://doctl.com/static/unify/assets/img/profile_pic/komal.jpg"
             },
             data:{
-                prescriptionId: "prescription2",
-                medicines:[
+                id: "vital1",
+                title: "Enter sugar values",
+                vitals:[
                     {
-                        id: "med1",
-                        name:"Sulfonylureas",
-                        quantity:2,
-                        type:"TABLET",
-                        dosage: "",
-                        unit:"",
-                        instruction:"After Meal",
-                        showInfoIcon:false
+                        name: "Fasting Sugar",
+                        unit: "MG/DL",
+                        past:{
+                            timeStamps:[1,2,3,4,5,6,7,8,9,10],
+                            values:[90,94,107,114,110,91,97,90,88,99]
+                        }
                     },
                     {
-                        id: "med2",
-                        name:"Humalog",
-                        quantity:1,
-                        type:"INJECTION",
-                        dosage: "",
-                        unit:"",
-                        instruction:"After Meal",
-                        showInfoIcon:false
-                    },
-                    {
-                        id: "med3",
-                        name:"Metformin",
-                        quantity:1,
-                        type:"CAPSULE",
-                        dosage: "",
-                        unit:"",
-                        instruction:"After Meal",
-                        showInfoIcon:false
-                    }
-                ]
-            }
-        },
-        {
-            cardId:"GUID3",
-            etaType: "DAYLONG",
-            eta:"2014-07-28T06:07:34Z",
-            createdOn:"2014-07-28T06:07:34Z",
-            modifiedOn:"2014-07-28T06:07:34Z",
-            state:"ACTIVE",
-            type:"MEDICINE",
-            points:20,
-            source:{
-                id:"userid1",
-                displayName:"Vishal Chitravanshi",
-                profilePicUrl:"http://doctl.com/static/unify/assets/img/profile_pic/vikas.jpg"
-            },
-            data:{
-                prescriptionId: "prescription3",
-                medicines:[
-                    {
-                        id: "med1",
-                        name:"Humalog",
-                        quantity:1,
-                        type:"INJECTION",
-                        dosage: "",
-                        unit:"",
-                        instruction:"After Meal",
-                        showInfoIcon:false
-                    },
-                    {
-                        id: "med2",
-                        name:"Sulfonylureas",
-                        quantity:2,
-                        type:"TABLET",
-                        dosage: "",
-                        unit:"",
-                        instruction:"After Meal",
-                        showInfoIcon:false
-                    },
-                    {
-                        id: "med3",
-                        name:"Metformin",
-                        quantity:1,
-                        type:"CAPSULE",
-                        dosage: "",
-                        unit:"",
-                        instruction:"After Meal",
-                        showInfoIcon:false
+                        name: "Post Meal Sugar",
+                        condition: "2 hrs after meal",
+                        unit: "MG/DL",
+                        past: {
+                            timeStamps:[1,2,3,4,5,6,7,8,9,10],
+                            values:[130,150,110,170,170,140,140,155,155,145]
+                        }
                     }
                 ]
             }

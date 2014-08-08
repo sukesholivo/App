@@ -33,7 +33,6 @@ public class MedicineAdapter extends ArrayAdapter<Medicine>{
         TextView medicineQuantity = (TextView)view.findViewById(R.id.medicineQuantity);
         medicineQuantity.setText("" + item.getQuantity());
 
-
         ImageView medicineImage = (ImageView)view.findViewById(R.id.medicineIcon);
         switch(item.getType()){
             case CAPSULE:

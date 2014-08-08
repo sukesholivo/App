@@ -6,19 +6,19 @@ import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.VitalDetailActivity;
+import com.doctl.patientcare.main.om.GraphData;
+import com.doctl.patientcare.main.om.vitals.VitalAdapter;
+import com.doctl.patientcare.main.om.vitals.VitalTask;
+import com.doctl.patientcare.main.om.vitals.Vitals;
+import com.doctl.patientcare.main.utility.Utils;
 
-import org.achartengine.ChartFactory;
-import org.achartengine.model.XYMultipleSeriesDataset;
-import org.achartengine.model.XYSeries;
-import org.achartengine.renderer.XYMultipleSeriesRenderer;
-import org.achartengine.renderer.XYSeriesRenderer;
+import org.achartengine.GraphicalView;
 
-import java.util.Random;
+import java.util.ArrayList;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
@@ -28,8 +28,8 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
  */
 public class VitalCard extends BaseCard {
     private static final String TAG = VitalCard.class.getSimpleName();
-    private View mChart;
 
+    private VitalTask vitalTask;
     public VitalCard(Context context) {
         this(context, R.layout.vital_card_inner_content);
     }
@@ -38,23 +38,55 @@ public class VitalCard extends BaseCard {
         super(context, innerLayout);
     }
 
-    public VitalCard(Context context, int innerLayout, CardHeader cardHeader){
+    public VitalCard(Context context, int innerLayout, CardHeader cardHeader, VitalTask vitalTask){
         super(context, innerLayout, cardHeader);
+        this.vitalTask = vitalTask;
+        this.setId(vitalTask.getCardId());
     }
 
-    public VitalCard(Context context, CardHeader cardHeader) {
-        this(context, R.layout.vital_card_inner_content, cardHeader);
+    public VitalCard(Context context, CardHeader cardHeader, VitalTask vitalTask) {
+        this(context, R.layout.vital_card_inner_content, cardHeader, vitalTask);
     }
 
     @Override
     public void setupInnerViewElements(ViewGroup parent, View view) {
-        EditText editText1 = (EditText)view.findViewById(R.id.editText1);
-        EditText editText2 = (EditText)view.findViewById(R.id.editText2);
-        openChart(view);
-        Random r = new Random();
-        int n = r.nextInt() % 100;
-        n = n>0?n:-n;
-        setupCardFooter(view, "" + n);
+        ViewHolder viewHolder;
+        if(view.getTag() == null) {
+            viewHolder = new ViewHolder();
+            viewHolder.vitalLinearLayout = (LinearLayout) view.findViewById(R.id.vitalList);
+            viewHolder.graphLinearLayout = (LinearLayout) view.findViewById(R.id.vitalLineGraph);
+            view.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) view.getTag();
+        }
+
+        ArrayList<Vitals> vitalData = vitalTask.getPayload().getVitals();
+        VitalAdapter vitals = new VitalAdapter(getContext(), vitalData);
+        LinearLayout list =  viewHolder.vitalLinearLayout;
+
+        if (vitals != null) {
+            list.removeAllViews();
+            for (int i = 0; i < vitals.getCount(); i++) {
+                View listView = vitals.getView(i, null, null);
+                list.addView(listView);
+            }
+        }
+
+        ArrayList<GraphData> graphList = new ArrayList<GraphData>();
+        for (int i = 0; i < vitalData.size(); i++) {
+            Vitals vital = vitalData.get(i);
+            GraphData graph = new GraphData(vital.getName(),
+                    vital.getPast().getTimeStamps(),
+                    vital.getPast().getValues(),
+                    Color.RED,3);
+            graphList.add(graph);
+        }
+
+        GraphicalView graphicalView = Utils.getGraph(getContext(), graphList);
+        LinearLayout chartContainer = viewHolder.graphLinearLayout;
+        chartContainer.addView(graphicalView);
+
+        setupCardFooter(view, vitalTask);
         setListnerToCard();
     }
 
@@ -62,7 +94,6 @@ public class VitalCard extends BaseCard {
         this.setOnClickListener(new Card.OnCardClickListener() {
             @Override
             public void onClick(Card card, View view) {
-//                Toast.makeText(getContext(), "Card clicked: " + card.getId(), Toast.LENGTH_LONG).show();
                 Log.d("postInitCard", "Card clicked " + card.getId());
                 Context context = getContext();
                 Intent intent = new Intent(context, VitalDetailActivity.class);
@@ -73,40 +104,11 @@ public class VitalCard extends BaseCard {
 
     @Override
     public int getType() {
-        return CardType.DUMMY_CARD_TYPE.ordinal();
+        return CardType.VITAL_CARD_TYPE.ordinal();
     }
 
-    private void openChart(View view){
-        int[] x = { 1,2,3,4,5,6,7,8,9,10 };
-        int[] vitals = { 130,150,110,170,170,140,140,155,155,145};
-
-        XYSeries vitalSeries = new XYSeries("Vital");
-        for(int i=0;i<x.length;i++){
-            vitalSeries.add(x[i], vitals[i]);
-        }
-
-        XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
-        dataset.addSeries(vitalSeries);
-
-        XYSeriesRenderer vitalRenderer = new XYSeriesRenderer();
-        vitalRenderer.setColor(Color.WHITE);
-        vitalRenderer.setLineWidth(3);
-
-        XYMultipleSeriesRenderer multiRenderer = new XYMultipleSeriesRenderer();
-        multiRenderer.setApplyBackgroundColor(true);
-        multiRenderer.setBackgroundColor(Color.parseColor("#00010101"));
-        multiRenderer.setMarginsColor(Color.parseColor("#00010101"));
-        multiRenderer.setMargins(new int[]{5,2,-15,0});
-        multiRenderer.setShowLegend(false);
-        multiRenderer.setShowAxes(false);
-        multiRenderer.setXLabels(0);
-        multiRenderer.setYLabels(0);
-        multiRenderer.setZoomEnabled(false, false);
-        multiRenderer.setPanEnabled(false, false);
-        multiRenderer.addSeriesRenderer(vitalRenderer);
-
-        LinearLayout chartContainer = (LinearLayout) view.findViewById(R.id.vitalLineGraph);
-        mChart = ChartFactory.getLineChartView(getContext(), dataset, multiRenderer);
-        chartContainer.addView(mChart);
+    private static class ViewHolder extends BaseViewHolder {
+        LinearLayout vitalLinearLayout;
+        LinearLayout graphLinearLayout;
     }
 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/vitalTitle"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:textSize="12sp"
+        android:textColor="@color/card_body_text_main"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="9dp"
+        android:layout_marginTop="20dip"
+        android:gravity="center_vertical"/>
+
+    <TextView
+        android:id="@+id/vitalCondition"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="@color/card_body_text_meta"
+        android:layout_below="@id/vitalTitle"
+        android:layout_alignLeft="@id/vitalTitle"
+        android:layout_marginTop="1dp"
+        android:gravity="center_vertical"/>
+    <EditText
+        android:id="@+id/vitalValue"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:maxLength="4"
+        android:layout_alignTop="@id/vitalTitle"
+        android:layout_toRightOf="@id/vitalTitle"
+        style="@style/edit_text_box"/>
+    <TextView
+        android:id="@+id/vitalUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="8sp"
+        android:textColor="@color/card_body_text_main"
+        android:layout_alignTop="@id/vitalTitle"
+        android:layout_toRightOf="@id/vitalValue"
+        android:layout_marginLeft="5dp"/>
+</RelativeLayout>

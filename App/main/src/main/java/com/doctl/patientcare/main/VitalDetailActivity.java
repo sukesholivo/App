@@ -3,26 +3,18 @@ package com.doctl.patientcare.main;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.doctl.patientcare.main.R;
-import com.doctl.patientcare.main.vitals.Vitals;
-import com.doctl.patientcare.main.vitals.VitalsAdapter;
+import com.doctl.patientcare.main.om.vitals.VitalsDetailAdapter;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
 import org.achartengine.chart.PointStyle;
 import org.achartengine.model.TimeSeries;
 import org.achartengine.model.XYMultipleSeriesDataset;
-import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class VitalDetailActivity extends Activity {
 
@@ -86,27 +78,8 @@ public class VitalDetailActivity extends Activity {
     }
 
     private void populateVitalListData() {
-        VitalsAdapter vitals = new VitalsAdapter(this, buildArrayHelper());
+        VitalsDetailAdapter vitals = new VitalsDetailAdapter(this, null);
         ListView list = (ListView)findViewById(R.id.vitalEntryList);
         list.setAdapter(vitals);
-    }
-
-    private List<Vitals> buildArrayHelper() {
-        Vitals v1 = new Vitals(90, "8:13 AM", 160, "2:33 PM", "TUE", "8 APR");
-        Vitals v2 = new Vitals(94, "8:16 AM", 165, "2:09 PM", "WED", "9 APR");
-        Vitals v3 = new Vitals(107, "8:36 AM", 189, "2:45 PM", "THU", "10 APR");
-        Vitals v4 = new Vitals(114, "7:55 AM", 197, "2:56 PM", "FRI", "11 APR");
-        Vitals v5 = new Vitals(110, "8:12 AM", 194, "2:29 PM", "SAT", "12 APR");
-        Vitals v6 = new Vitals(91, "7:59 AM", 162, "2:16 PM", "SUN", "13 APR");
-        Vitals v7 = new Vitals(97, "8:23 AM", 171, "2:21 PM", "MON", "14 APR");
-        ArrayList<Vitals> list = new ArrayList<Vitals>();
-        list.add(v1);
-        list.add(v2);
-        list.add(v3);
-        list.add(v4);
-        list.add(v5);
-        list.add(v6);
-        list.add(v7);
-        return list;
     }
 }
