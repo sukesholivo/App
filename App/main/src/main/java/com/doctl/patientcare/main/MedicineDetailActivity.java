@@ -3,24 +3,23 @@ package com.doctl.patientcare.main;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.doctl.patientcare.main.controls.ProgressBarAnimation;
-import com.doctl.patientcare.main.utility.Utils;
-import com.doctl.patientcare.main.om.medicines.Medicine;
 import com.doctl.patientcare.main.om.medicines.MedicineDetailAdapter;
 import com.doctl.patientcare.main.om.medicines.Prescription;
+import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class MedicineDetailActivity extends Activity {
     public final static String TAG = MedicineDetailActivity.class.getSimpleName();
@@ -34,6 +33,13 @@ public class MedicineDetailActivity extends Activity {
         new GetPrescription().execute(prescriptionId);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.medicine_detail, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     private String downloadPrescriptionData(String prescriptionId) {
         return Utils.parsonJsonFromFile(this, R.raw.prescription);
     }
@@ -41,8 +47,7 @@ public class MedicineDetailActivity extends Activity {
     private Prescription parsePrescriptionData(String jsonStr){
         JsonParser parser = new JsonParser();
         JsonObject jsonObject = parser.parse(jsonStr).getAsJsonObject();
-        Prescription prescription = new Gson().fromJson(jsonObject, Prescription.class);
-        return prescription;
+        return new Gson().fromJson(jsonObject, Prescription.class);
     }
 
     private void updateUI(final Prescription prescription){
@@ -85,11 +90,6 @@ public class MedicineDetailActivity extends Activity {
     private class GetPrescription extends AsyncTask<String, Void, Void> {
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
         protected Void doInBackground(String... arg0) {
             refreshActivity(arg0[0]);
             return null;
@@ -110,22 +110,5 @@ public class MedicineDetailActivity extends Activity {
                 updateUI(prescription);
             }
         });
-    }
-
-    private List<Medicine> buildArrayHelper() {
-        Medicine m1 = new Medicine("","Metformin", 1, Medicine.MedicineType.CAPSULE, "", "500mg",
-                "These are for lowering sugar level levels. These need to be taken 15 after taking food", false,
-                new int[]{1,0,1}, new String[]{"After Breakfast", "", "After Dinner"});
-        Medicine m2 = new Medicine("", "Sulfonylureas", 2, Medicine.MedicineType.TABLET, "", "200mg",
-                "These are for lowering sugar level levels. These need to be taken 15 after taking food", false,
-                new int[]{1,0,1}, new String[]{"Before Meal", "Before Meal", "After Meal"});
-        Medicine m3 = new Medicine("", "Humalog", 1, Medicine.MedicineType.INJECTION, "", "20ml",
-                "These are for lowering sugar level levels. These need to be taken 15 after taking food", false,
-                new int[]{1,0,1}, new String[]{"After Breakfast", "", "After Dinner"});
-        ArrayList<Medicine> list = new ArrayList<Medicine>();
-        list.add(m1);
-        list.add(m2);
-        list.add(m3);
-        return list;
     }
 }

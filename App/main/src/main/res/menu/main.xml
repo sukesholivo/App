@@ -1,11 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.doctl.patientcare.main.MainActivity" >
+    tools:context="com.doctl.patientcare.main.MainActivity">
     <item android:id="@+id/action_new"
         android:icon="@drawable/ic_action_new"
         android:title="@string/action_new"
-        app:showAsAction="ifRoom">
+        android:showAsAction="ifRoom">
         <menu>
             <item android:id="@+id/action_add_vital"
                 android:title="@string/action_add_vital"
@@ -14,15 +13,15 @@
                 android:title="@string/action_add_symptoms"
                 />
         </menu>
-        </item>
+
+    </item>
     <item android:id="@+id/action_share"
         android:icon="@drawable/ic_action_share"
         android:title="@string/action_share"
-        app:showAsAction="ifRoom"
-
+        android:showAsAction="ifRoom"
         />
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
-        app:showAsAction="never"/>
+        android:showAsAction="never"/>
 
 </menu>

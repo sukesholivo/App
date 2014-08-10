@@ -11,8 +11,7 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
 public class DashboardCard extends BaseCard{
     private static final String TAG = EducationCard.class.getSimpleName();
 
-    public DashboardCard(Context context)
-    {
+    public DashboardCard(Context context) {
         this(context, R.layout.dummy_dashboard_stub_card);
     }
 
@@ -24,8 +23,7 @@ public class DashboardCard extends BaseCard{
         super(context, innerLayout, cardHeader);
     }
 
-    public DashboardCard(Context context, CardHeader cardHeader)
-    {
+    public DashboardCard(Context context, CardHeader cardHeader) {
         this(context, R.layout.dummy_dashboard_stub_card, cardHeader);
     }
 

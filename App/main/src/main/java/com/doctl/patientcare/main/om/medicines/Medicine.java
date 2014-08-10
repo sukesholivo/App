@@ -34,25 +34,6 @@ public class Medicine {
     private int quantityToTake[];
     private String medicineInstruction[];
 
-    public Medicine(String id, String name, int quantity, MedicineType type,
-                    String dosage, String unit, String instruction, boolean showInfoIcon){
-        this(id, name, quantity, type, dosage, unit, instruction, showInfoIcon, null, null);
-    }
-    public Medicine(String id, String name, int quantity, MedicineType type,
-                    String dosage, String unit, String instruction, boolean showInfoIcon,
-                    int[] quantityToTake, String[] medicineInstruction){
-        this.id = id;
-        this.name = name;
-        this.quantity = quantity;
-        this.type = type;
-        this.dosage = dosage;
-        this.unit = unit;
-        this.instruction = instruction;
-        this.showInfoIcon = showInfoIcon;
-        this.quantityToTake = quantityToTake;
-        this.medicineInstruction = medicineInstruction;
-    }
-
     //region getter
     public String getId() {
         return id;

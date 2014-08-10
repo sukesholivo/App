@@ -11,7 +11,7 @@
         android:layout_gravity="center_horizontal"
         android:textColor="#FFFFFF"
         android:text="Take your medicines, Sir. It's time."
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:padding="20dp"/>
 
     <LinearLayout

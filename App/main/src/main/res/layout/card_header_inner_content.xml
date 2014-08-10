@@ -13,8 +13,7 @@
         android:gravity="top"
         android:textSize="34sp"
         android:layout_marginLeft="10dp"
-        android:textColor="@color/card_header_main"
-        android:text="30"/>
+        android:textColor="@color/card_header_main"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

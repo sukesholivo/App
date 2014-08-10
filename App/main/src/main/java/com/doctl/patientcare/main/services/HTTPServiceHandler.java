@@ -43,7 +43,7 @@ public class HTTPServiceHandler {
         try {
             // http client
             DefaultHttpClient httpClient = new DefaultHttpClient();
-            HttpEntity httpEntity = null;
+            HttpEntity httpEntity;
             HttpResponse httpResponse = null;
 
             // Checking http request method type
@@ -67,6 +67,7 @@ public class HTTPServiceHandler {
                 httpResponse = httpClient.execute(httpGet);
 
             }
+            assert httpResponse != null;
             httpEntity = httpResponse.getEntity();
             response = EntityUtils.toString(httpEntity);
         } catch (UnsupportedEncodingException e) {

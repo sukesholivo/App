@@ -10,11 +10,8 @@ import android.widget.LinearLayout;
 
 import com.doctl.patientcare.main.MedicineDetailActivity;
 import com.doctl.patientcare.main.R;
-import com.doctl.patientcare.main.om.medicines.Medicine;
 import com.doctl.patientcare.main.om.medicines.MedicineAdapter;
 import com.doctl.patientcare.main.om.medicines.MedicineTask;
-
-import java.util.ArrayList;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
@@ -58,12 +55,10 @@ public class MedicineCard extends BaseCard {
         MedicineAdapter medicines = new MedicineAdapter(getContext(),medicineTask.getPayload().getMedicines());
 
         LinearLayout list =  viewHolder.linearLayout;
-        if (medicines != null) {
-            list.removeAllViews();
-            for (int i = 0; i < medicines.getCount(); i++) {
-                View listView = medicines.getView(i, null, null);
-                list.addView(listView);
-            }
+        list.removeAllViews();
+        for (int i = 0; i < medicines.getCount(); i++) {
+            View listView = medicines.getView(i, null, null);
+            list.addView(listView);
         }
         setupCardFooter(view, medicineTask);
         setListnerToCard();
@@ -87,17 +82,6 @@ public class MedicineCard extends BaseCard {
     @Override
     public int getType() {
         return CardType.MEDICINE_CARD_TYPE.ordinal();
-    }
-
-    public ArrayList<Medicine> buildArrayHelper() {
-        Medicine m1 = new Medicine("", "Metformin", 1, Medicine.MedicineType.CAPSULE, "", "500mg", "", false);
-        Medicine m2 = new Medicine("", "Sulfonylureas", 2, Medicine.MedicineType.TABLET, "", "200mg", "", false);
-        Medicine m3 = new Medicine("", "Humalog", 1, Medicine.MedicineType.INJECTION, "", "20ml", "", false);
-        ArrayList<Medicine> list = new ArrayList<Medicine>();
-        list.add(m1);
-        list.add(m2);
-        list.add(m3);
-        return list;
     }
 
     private static class ViewHolder extends BaseViewHolder {

@@ -145,7 +145,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Comments"
+        android:hint="@string/comments"
         style="@style/edit_text_two_line"
         android:layout_margin="10dp"
         android:background="@drawable/edit_box_background"

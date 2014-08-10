@@ -6,7 +6,6 @@
         android:id="@+id/vitalEntry1"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="90"
         android:textSize="40sp"
         android:gravity="center"
         />
@@ -15,7 +14,6 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="160"
         android:layout_alignParentRight="true"
         android:textSize="40sp"
         />
@@ -24,9 +22,7 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:gravity="center|top"
-        android:text="8:13 AM"
         android:textSize="13sp"
-
         android:layout_alignLeft="@id/vitalEntry1"
         android:layout_below="@id/vitalEntry1"
         android:textColor="#FFFFFF"
@@ -36,7 +32,6 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:gravity="center|top"
-        android:text="2:33 PM"
         android:textSize="13sp"
         android:textColor="#FFFFFF"
         android:layout_alignLeft="@id/vitalEntry2"
@@ -49,7 +44,6 @@
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:layout_marginTop="10dp"
-        android:text="TUE"
         android:textSize="15sp"
         android:textColor="#ABABAB"
         />
@@ -58,7 +52,6 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="8 APR"
         android:textSize="15sp"
         android:textColor="#ABABAB"
         android:layout_alignLeft="@id/vitalEntryDay"

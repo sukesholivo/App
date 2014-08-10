@@ -22,8 +22,6 @@ import it.gmariotti.cardslib.library.utils.BitmapUtils;
  */
 public class WalkCard extends BaseCard {
     private static final String TAG = WalkCard.class.getSimpleName();
-    private int walkTargetKms = 21;
-    private int walkCompletedKms = 15;
 
     public WalkCard(Context context) {
         this(context, R.layout.walk_card_inner_content);
@@ -46,9 +44,11 @@ public class WalkCard extends BaseCard {
         walkMain.setText("WALK 45 MINS (3 KM)");
 
         TextView walkCompleted = (TextView)view.findViewById(R.id.walkCompleted);
+        int walkCompletedKms = 15;
         walkCompleted.setText("COMPLETED THIS WEEK ("+ walkCompletedKms +" KM)");
 
         ProgressBar walkProgress = (ProgressBar)view.findViewById(R.id.walkProgress);
+        int walkTargetKms = 21;
         walkProgress.setMax(walkTargetKms);
         walkProgress.setProgress(walkCompletedKms);
 

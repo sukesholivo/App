@@ -47,7 +47,7 @@ public class HowruFeelingCard extends BaseCard{
             OnClickListener clickListener = new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    RelativeLayout parentLY = (RelativeLayout)((ViewGroup)view).getParent();
+                    RelativeLayout parentLY = (RelativeLayout) view.getParent();
 
                     ImageView iv1 = (ImageView)parentLY.findViewById(R.id.feeling_normal_unit_tick);
                     iv1.setVisibility(View.INVISIBLE);

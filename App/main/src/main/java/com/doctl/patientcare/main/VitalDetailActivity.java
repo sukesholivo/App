@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -32,6 +34,13 @@ public class VitalDetailActivity extends Activity {
         new GetVitals().execute(vitalId);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.vital_detail, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     private String downloadVitalsData(String vitalId) {
         return Utils.parsonJsonFromFile(this, R.raw.vitals);
     }
@@ -54,11 +63,6 @@ public class VitalDetailActivity extends Activity {
     }
 
     private class GetVitals extends AsyncTask<String, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
 
         @Override
         protected Void doInBackground(String... arg0) {

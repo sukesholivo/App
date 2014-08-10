@@ -8,9 +8,9 @@ import android.widget.ProgressBar;
  * Created by Administrator on 8/7/2014.
  */
 public class ProgressBarAnimation extends Animation {
-    private ProgressBar progressBar;
-    private float from;
-    private float  to;
+    private final ProgressBar progressBar;
+    private final float from;
+    private final float  to;
 
     public ProgressBarAnimation(ProgressBar progressBar, float from, float to) {
         super();

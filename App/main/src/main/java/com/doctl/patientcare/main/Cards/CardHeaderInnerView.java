@@ -13,9 +13,9 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
  * Created by Administrator on 6/10/2014.
  */
 public class CardHeaderInnerView extends CardHeader{
-    private String timeWhen;
-    private String timeUnit;
-    private String extraInfo;
+    private final String timeWhen;
+    private final String timeUnit;
+    private final String extraInfo;
 
     public CardHeaderInnerView(Context context) {
         this(context, R.layout.card_header_inner_content);

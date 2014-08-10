@@ -17,7 +17,7 @@ import java.net.URL;
  * Created by Administrator on 7/29/2014.
  */
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-    ImageView bmImage;
+    final ImageView bmImage;
     boolean exception = false;
     public DownloadImageTask(ImageView bmImage) {
         this.bmImage = bmImage;
@@ -39,7 +39,7 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     }
 
     protected void onPostExecute(Bitmap result) {
-        if (exception == false) {
+        if (!exception) {
             bmImage.setImageBitmap(result);
         } else {
             bmImage.setImageResource(R.drawable.profile_dummy);

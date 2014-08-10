@@ -1,17 +1,19 @@
 package com.doctl.patientcare.main;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,11 +22,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.content.Context;
 
 import com.doctl.patientcare.main.controls.ProgressWheel;
 import com.doctl.patientcare.main.fragments.BaseFragment;
@@ -34,13 +34,11 @@ import java.io.File;
 
 import it.gmariotti.cardslib.library.utils.BitmapUtils;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getSimpleName();
-    private BaseFragment mBaseFragment;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-    private String[] mNavigationItems;
     private ShareActionProvider mShareActionProvider;
 
     @Override
@@ -83,7 +81,6 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -164,7 +161,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void setupNavigationDrawer(){
-        mNavigationItems = getResources().getStringArray(R.array.drawer_array);
+        String[] mNavigationItems = getResources().getStringArray(R.array.drawer_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mNavigationItems));
@@ -175,13 +172,6 @@ public class MainActivity extends ActionBarActivity {
                                                     R.string.drawer_open,
                                                     R.string.drawer_close) {
 
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-            }
-
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-            }
         };
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
@@ -237,12 +227,12 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void setCards(){
-        mBaseFragment = selectFragment();
+        BaseFragment mBaseFragment = selectFragment();
         openFragment(mBaseFragment);
     }
 
     private BaseFragment selectFragment() {
-        BaseFragment baseFragment = null;
+        BaseFragment baseFragment;
         baseFragment = new CardListFragment();
         return baseFragment;
     }

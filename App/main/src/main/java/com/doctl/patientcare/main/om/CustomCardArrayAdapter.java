@@ -51,7 +51,7 @@ public class CustomCardArrayAdapter extends CardArrayAdapter {
         }
     }
 
-    public SwipeDismissListViewTouchListener.DismissCallbacks mCallback = new SwipeDismissListViewTouchListener.DismissCallbacks() {
+    private final SwipeDismissListViewTouchListener.DismissCallbacks mCallback = new SwipeDismissListViewTouchListener.DismissCallbacks() {
 
         @Override
         public boolean canDismiss(int position, Card card) {

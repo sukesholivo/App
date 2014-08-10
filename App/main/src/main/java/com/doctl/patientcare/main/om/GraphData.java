@@ -1,18 +1,16 @@
 package com.doctl.patientcare.main.om;
 
-import android.graphics.Color;
-
 import java.util.ArrayList;
 
 /**
  * Created by Administrator on 8/8/2014.
  */
 public class GraphData {
-    private String title;
-    private ArrayList<Double> X;
-    private ArrayList<Double> Y;
-    private int lineColor;
-    private int lineWidth;
+    private final String title;
+    private final ArrayList<Double> X;
+    private final ArrayList<Double> Y;
+    private final int lineColor;
+    private final int lineWidth;
 
     public GraphData(String title, ArrayList<Double> X, ArrayList<Double> Y, int lineColor, int lineWidth){
         this.title = title;

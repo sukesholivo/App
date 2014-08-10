@@ -1,41 +1,13 @@
 package com.doctl.patientcare.main;
 
-import java.io.BufferedReader;
-import android.os.AsyncTask;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
-import android.content.SharedPreferences.Editor;
-import android.sax.StartElementListener;
-import android.util.Log;
-import android.widget.Toast;
 import android.support.v4.app.NotificationCompat;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpVersion;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.conn.ConnectTimeoutException;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.CoreProtocolPNames;
-import org.apache.http.params.HttpParams;
+import android.util.Log;
 
 
 /**
@@ -99,17 +71,17 @@ public class MyC2dmReceiver extends BroadcastReceiver {
 
             String error = intent.getStringExtra("error");
             Log.d("c2dm Error", error);
-            if(error == "SERVICE_NOT_AVAILABLE"){
+            if(error.equals("SERVICE_NOT_AVAILABLE")){
                 Log.d("c2dm", "SERVICE_NOT_AVAILABLE");
-            }else if(error == "ACCOUNT_MISSING"){
+            }else if(error.equals("ACCOUNT_MISSING")){
                 Log.d("c2dm", "ACCOUNT_MISSING");
-            }else if(error == "AUTHENTICATION_FAILED"){
+            }else if(error.equals("AUTHENTICATION_FAILED")){
                 Log.d("c2dm", "AUTHENTICATION_FAILED");
-            }else if(error == "TOO_MANY_REGISTRATIONS"){
+            }else if(error.equals("TOO_MANY_REGISTRATIONS")){
                 Log.d("c2dm", "TOO_MANY_REGISTRATIONS");
-            }else if(error == "INVALID_SENDER"){
+            }else if(error.equals("INVALID_SENDER")){
                 Log.d("c2dm", "INVALID_SENDER");
-            }else if(error == "PHONE_REGISTRATION_ERROR"){
+            }else if(error.equals("PHONE_REGISTRATION_ERROR")){
                 Log.d("c2dm", "PHONE_REGISTRATION_ERROR");
             }
         } else if (intent.getStringExtra("unregistered") != null) {

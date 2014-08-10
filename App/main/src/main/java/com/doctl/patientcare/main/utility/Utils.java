@@ -36,8 +36,7 @@ public final class Utils {
             } catch (IndexOutOfBoundsException e) {
                 throw new ParseException("Invalid length", 0);
             }
-            Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").parse(s);
-            return date;
+            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").parse(s);
         } catch (ParseException e){
             e.printStackTrace();
         }
@@ -49,7 +48,7 @@ public final class Utils {
     }
 
     public static CardHeader getCardHeader(Context context, BaseTask task){
-        CardHeader cardHeader = null;
+        CardHeader cardHeader;
         boolean pastTask = false;
         int seconds  = (int)( (task.getETA().getTime() - new Date().getTime())/1000);
         if (seconds < 0) { // future tasks
@@ -103,11 +102,10 @@ public final class Utils {
         multiRenderer.setZoomEnabled(false, false);
         multiRenderer.setPanEnabled(false, false);
 
-        for (int i = 0; i<graph.size(); i++){
-            GraphData g = graph.get(i);
+        for (GraphData g : graph) {
             XYSeries series = new XYSeries(g.getTitle());
 
-            for(int j=0; j<g.getX().size(); j++){
+            for (int j = 0; j < g.getX().size(); j++) {
                 series.add(g.getX().get(j), g.getY().get(j));
             }
             dataset.addSeries(series);

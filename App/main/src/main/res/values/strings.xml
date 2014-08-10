@@ -31,4 +31,6 @@
     <string name="treatment_plan_completed" formatted="false">%d DAYS PLAN (COMPLETED)</string>
 
     <string name="notes">Notes</string>
+    <string name="comments">Comments</string>
+    <string name="points">Points</string>
 </resources>

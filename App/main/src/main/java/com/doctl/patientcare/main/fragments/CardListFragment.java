@@ -53,11 +53,6 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
     CustomCardArrayAdapter mCardArrayAdapter;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(TAG, " OnCreateView: START");
         return inflater.inflate(R.layout.fragment_card_list, container, false);
@@ -68,9 +63,6 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
         super.onActivityCreated(savedInstanceState);
         initializeCardList();
         new GetTasks().execute();
-    }
-
-    protected void initCard(){
     }
 
     protected void initializeCardList() {
