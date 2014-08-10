@@ -1,0 +1,23 @@
+{
+    id : "vital1",
+    title : "Sugar",
+    vitals:[
+        {
+            name: "Fasting Sugar",
+            unit: "MG/DL",
+            past:{
+                timeStamps:[1,2,3,4,5,6,7,8,9,10],
+                values:[90,94,107,114,110,91,97,90,88,99]
+            }
+        },
+        {
+            name: "Post Meal Sugar",
+            condition: "2 hrs after meal",
+            unit: "MG/DL",
+            past: {
+                timeStamps:[1,2,3,4,5,6,7,8,9,10],
+                values:[130,150,110,170,170,140,140,155,155,145]
+            }
+        }
+    ]
+}
