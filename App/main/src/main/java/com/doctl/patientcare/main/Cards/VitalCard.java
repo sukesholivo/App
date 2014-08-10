@@ -64,17 +64,14 @@ public class VitalCard extends BaseCard {
         VitalAdapter vitals = new VitalAdapter(getContext(), vitalData);
         LinearLayout list =  viewHolder.vitalLinearLayout;
 
-        if (vitals != null) {
-            list.removeAllViews();
-            for (int i = 0; i < vitals.getCount(); i++) {
-                View listView = vitals.getView(i, null, null);
-                list.addView(listView);
-            }
+        list.removeAllViews();
+        for (int i = 0; i < vitals.getCount(); i++) {
+            View listView = vitals.getView(i, null, null);
+            list.addView(listView);
         }
 
         ArrayList<GraphData> graphList = new ArrayList<GraphData>();
-        for (int i = 0; i < vitalData.size(); i++) {
-            Vitals vital = vitalData.get(i);
+        for (Vitals vital : vitalData) {
             GraphData graph = new GraphData(vital.getName(),
                     vital.getPast().getTimeStamps(),
                     vital.getPast().getValues(),
@@ -97,6 +94,7 @@ public class VitalCard extends BaseCard {
                 Log.d("postInitCard", "Card clicked " + card.getId());
                 Context context = getContext();
                 Intent intent = new Intent(context, VitalDetailActivity.class);
+                intent.putExtra("vitalId", vitalTask.getPayload().getId());
                 context.startActivity(intent);
             }
         });

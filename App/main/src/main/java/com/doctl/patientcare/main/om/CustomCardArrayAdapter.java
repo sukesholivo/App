@@ -1,16 +1,11 @@
 package com.doctl.patientcare.main.om;
 
 import android.app.AlertDialog;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Resources;
 import android.util.Log;
-import android.view.View;
 import android.widget.AbsListView;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.doctl.patientcare.main.Cards.BaseCard;
 import com.doctl.patientcare.main.R;
@@ -22,7 +17,6 @@ import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.view.CardView;
 import it.gmariotti.cardslib.library.view.listener.SwipeDismissListViewTouchListener;
 import it.gmariotti.cardslib.library.view.listener.SwipeOnScrollListener;
-import it.gmariotti.cardslib.library.view.listener.UndoBarController;
 import it.gmariotti.cardslib.library.view.listener.UndoCard;
 
 /**
@@ -92,20 +86,26 @@ public class CustomCardArrayAdapter extends CardArrayAdapter {
 
     private AlertDialog.Builder getAlertDialog(final Card card, final UndoCard undoCard){
         String dismissDialogTitle = "CARD DISMISSED";
-        String dismissMessage = "";
+        String dismissMessage;
         String undoMessage = "UNDO";
         String sendMessage = "SEND";
         BaseCard.CardType type = BaseCard.CardType.values()[card.getType()];
         switch(type){
             case MEDICINE_CARD_TYPE:
-                dismissMessage = getContext().getResources().getString(R.string.medicine_card_remove_meassage);
+                dismissMessage = getContext().getResources().getString(R.string.medicine_card_remove_message);
+                break;
+            case VITAL_CARD_TYPE:
+                dismissMessage = getContext().getResources().getString(R.string.vital_card_remove_message);
+                break;
+            case FOLLOWUP_CARD_TYPE:
+                dismissMessage = getContext().getResources().getString(R.string.followup_card_remove_message);
                 break;
             default:
-                dismissMessage = "one card removed";
+                dismissMessage = getContext().getResources().getString(R.string.default_card_remove_message);
                 break;
         }
 
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext())
+        return new AlertDialog.Builder(getContext())
                 .setTitle(dismissDialogTitle)
                 .setIcon(0)
                 .setCancelable(false)
@@ -127,7 +127,6 @@ public class CustomCardArrayAdapter extends CardArrayAdapter {
                         Log.d(TAG, "OK CLICKED");
                     }
                 });
-        return alertDialog;
     }
 
 }

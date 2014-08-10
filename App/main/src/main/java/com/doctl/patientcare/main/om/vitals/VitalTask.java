@@ -26,8 +26,9 @@ public class VitalTask extends BaseTask {
         @SerializedName("vitals")
         private ArrayList<Vitals> vitals;
 
-        @SerializedName("pastVitals")
-        private ArrayList<Vitals> pastVitals;
+        public String getId() {
+            return id;
+        }
 
         public String getTitle() {
             return title;
@@ -35,10 +36,6 @@ public class VitalTask extends BaseTask {
 
         public ArrayList<Vitals> getVitals() {
             return vitals;
-        }
-
-        public ArrayList<Vitals> getPastVitals() {
-            return pastVitals;
         }
     }
 }

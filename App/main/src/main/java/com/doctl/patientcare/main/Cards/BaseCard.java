@@ -1,7 +1,6 @@
 package com.doctl.patientcare.main.Cards;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -78,7 +77,8 @@ public abstract class BaseCard extends Card {
         DUMMY_CARD_TYPE,
         MEDICINE_CARD_TYPE,
         VITAL_CARD_TYPE,
-        EDUCATION_CARD_TYPE
+        EDUCATION_CARD_TYPE,
+        FOLLOWUP_CARD_TYPE
     }
 
     protected static class BaseViewHolder {

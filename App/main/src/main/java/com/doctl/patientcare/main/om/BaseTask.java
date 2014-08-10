@@ -83,7 +83,8 @@ public abstract class BaseTask {
         MEDICINE,
         VITAL,
         EDUCATION,
-        WALK
+        WALK,
+        FOLLOWUP,
     }
 
     public enum CardState {

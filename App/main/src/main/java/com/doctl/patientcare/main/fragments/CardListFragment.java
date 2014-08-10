@@ -13,14 +13,16 @@ import android.widget.AbsListView;
 
 import com.doctl.patientcare.main.Cards.BaseCard;
 import com.doctl.patientcare.main.Cards.DashboardCard;
+import com.doctl.patientcare.main.Cards.FollowupCard;
 import com.doctl.patientcare.main.Cards.MedicineCard;
 import com.doctl.patientcare.main.Cards.VitalCard;
 import com.doctl.patientcare.main.R;
-import com.doctl.patientcare.main.om.vitals.VitalTask;
-import com.doctl.patientcare.main.utility.Utils;
 import com.doctl.patientcare.main.om.BaseTask;
 import com.doctl.patientcare.main.om.CustomCardArrayAdapter;
+import com.doctl.patientcare.main.om.followup.FollowupTask;
 import com.doctl.patientcare.main.om.medicines.MedicineTask;
+import com.doctl.patientcare.main.om.vitals.VitalTask;
+import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -285,6 +287,12 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
                     CardHeader vitalHeader = Utils.getCardHeader(getActivity(), vitalTask);
                     VitalCard vitalCard = new VitalCard(getActivity(), vitalHeader, vitalTask);
                     cards.add(vitalCard);
+                    break;
+                case FOLLOWUP:
+                    FollowupTask followupTask = new Gson().fromJson(cardJson, FollowupTask.class);
+                    CardHeader followupHeader = Utils.getCardHeader(getActivity(), followupTask);
+                    FollowupCard followupCard = new FollowupCard(getActivity(), followupHeader, followupTask);
+                    cards.add(followupCard);
                     break;
             }
         }

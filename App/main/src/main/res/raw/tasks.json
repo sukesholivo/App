@@ -87,6 +87,29 @@
                     }
                 ]
             }
+        },
+        {
+            cardId:"GUID3",
+            etaType: "DAYLONG",
+            eta:"2014-07-29T09:10:34Z",
+            createdOn:"2014-07-28T06:07:34Z",
+            modifiedOn:"2014-07-28T06:07:34Z",
+            state:"ACTIVE",
+            type:"FOLLOWUP",
+            points:10,
+            source:{
+                id:"userid1",
+                displayName:"Vishal Chitravanshi",
+                profilePicUrl:"http://doctl.com/static/unify/assets/img/profile_pic/vikas.jpg"
+            },
+            data:{
+                id: "followup1",
+                title: "How do you rate your health today",
+                multipleChoice: false,
+                options: [
+                    "Excelent","Good","Fair","Poor"
+                ]
+            }
         }
     ]
 }
