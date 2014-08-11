@@ -20,7 +20,7 @@ public class HowruFeelingCard extends BaseCard{
     private static final String TAG = HowruFeelingCard.class.getSimpleName();
 
     public HowruFeelingCard(Context context) {
-        this(context, R.layout.how_are_you_feeling_card);
+        this(context, R.layout.card_inner_content_how_are_you_feeling);
     }
 
     public HowruFeelingCard(Context context, int innerLayout) {
@@ -32,7 +32,7 @@ public class HowruFeelingCard extends BaseCard{
     }
 
     public HowruFeelingCard(Context context, CardHeader cardHeader) {
-        this(context, R.layout.how_are_you_feeling_card, cardHeader);
+        this(context, R.layout.card_inner_content_how_are_you_feeling, cardHeader);
     }
 
     @Override

@@ -17,7 +17,7 @@ public class ImageCard extends BaseCard {
     private boolean isInfluencerVisible = false;
     private int imageResourceId;
     public ImageCard(Context context) {
-        this(context, R.layout.image_card_inner_content);
+        this(context, R.layout.card_inner_content_image);
     }
 
     public ImageCard(Context context, int innerLayout) {
@@ -31,7 +31,7 @@ public class ImageCard extends BaseCard {
     }
 
     public ImageCard(Context context, CardHeader cardHeader) {
-        this(context, R.layout.image_card_inner_content, cardHeader);
+        this(context, R.layout.card_inner_content_image, cardHeader);
     }
 
     public void setImageResourceId(int imageResourceId) {

@@ -18,7 +18,7 @@ public class EducationCard extends BaseCard{
     private static final String ANDROID_DEVELOPER_KEY = "AIzaSyAWocbee6JmNy1KShjdNWy_v8_xEq0-gE0";
 
     public EducationCard(Context context) {
-        this(context, R.layout.education_video_card_inner_content);
+        this(context, R.layout.card_inner_content_education_video);
     }
 
     public EducationCard(Context context, int innerLayout) {
@@ -30,7 +30,7 @@ public class EducationCard extends BaseCard{
     }
 
     public EducationCard(Context context, CardHeader cardHeader) {
-        this(context, R.layout.education_video_card_inner_content, cardHeader);
+        this(context, R.layout.card_inner_content_education_video, cardHeader);
     }
 
     @Override

@@ -26,7 +26,7 @@ public class FollowupCard extends BaseCard {
     private FollowupTask followupTask;
 
     public FollowupCard(Context context) {
-        this(context, R.layout.followup_card_inner_content);
+        this(context, R.layout.card_inner_content_followup);
     }
 
     public FollowupCard(Context context, int innerLayout) {
@@ -40,7 +40,7 @@ public class FollowupCard extends BaseCard {
     }
 
     public FollowupCard(Context context, CardHeader cardHeader, FollowupTask followupTask) {
-        this(context, R.layout.followup_card_inner_content, cardHeader, followupTask);
+        this(context, R.layout.card_inner_content_followup, cardHeader, followupTask);
     }
 
     @Override

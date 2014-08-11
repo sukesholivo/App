@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -24,7 +25,7 @@ public class WalkCard extends BaseCard {
     private static final String TAG = WalkCard.class.getSimpleName();
 
     public WalkCard(Context context) {
-        this(context, R.layout.walk_card_inner_content);
+        this(context, R.layout.card_inner_content_walk);
     }
 
     public WalkCard(Context context, int innerLayout) {
@@ -35,30 +36,21 @@ public class WalkCard extends BaseCard {
         super(context, innerLayout, cardHeader);
     }
     public WalkCard(Context context, CardHeader cardHeader) {
-        this(context, R.layout.walk_card_inner_content, cardHeader);
+        this(context, R.layout.card_inner_content_walk, cardHeader);
     }
 
     @Override
     public void setupInnerViewElements(ViewGroup parent, View view) {
-        TextView walkMain = (TextView)view.findViewById(R.id.walkMain);
-        walkMain.setText("WALK 45 MINS (3 KM)");
+        final TextView progressText = (TextView)view.findViewById(R.id.progressText);
+        Button button = (Button)view.findViewById(R.id.walkStart);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        TextView walkCompleted = (TextView)view.findViewById(R.id.walkCompleted);
-        int walkCompletedKms = 15;
-        walkCompleted.setText("COMPLETED THIS WEEK ("+ walkCompletedKms +" KM)");
+            }
+        });
 
-        ProgressBar walkProgress = (ProgressBar)view.findViewById(R.id.walkProgress);
-        int walkTargetKms = 21;
-        walkProgress.setMax(walkTargetKms);
-        walkProgress.setProgress(walkCompletedKms);
-
-        TextView walkTarget = (TextView)view.findViewById(R.id.walkTarget);
-        walkTarget.setText("TARGET : "+ walkTargetKms +" KM");
-
-        Random r = new Random();
-        int n = r.nextInt() % 100;
-        n = n>0?n:-n;
-        setupCardFooter(view, "" + n);
+        setupCardFooter(view, "" + 10);
         setListnerToCard();
     }
 

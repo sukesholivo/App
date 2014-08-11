@@ -29,6 +29,7 @@ public class CustomCardArrayAdapter extends CardArrayAdapter {
         super(context, cards);
     }
 
+    @Override
     protected void setupSwipeableAnimation(final Card card, CardView cardView) {
         if (card.isSwipeable()){
             if (mOnTouchListener == null){

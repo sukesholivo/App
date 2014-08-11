@@ -113,7 +113,7 @@ public class MainActivity extends Activity {
                 new AlertDialog.Builder(this)
                         .setTitle("Add Sugar")
                         .setIcon(0)
-                        .setView(getLayoutInflater().inflate(R.layout.vital_entry_dialog_inner_content, null))
+                        .setView(getLayoutInflater().inflate(R.layout.dialog_inner_content_vital_entry, null))
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 Toast.makeText(MainActivity.this, "Value submitted", Toast.LENGTH_LONG).show();
@@ -131,7 +131,7 @@ public class MainActivity extends Activity {
                         .setTitle("Record Symptom" +
                                 "")
                         .setIcon(0)
-                        .setView(getLayoutInflater().inflate(R.layout.symptom_entry_diaolg_inner_content, null))
+                        .setView(getLayoutInflater().inflate(R.layout.diaolg_inner_content_symptom_entry, null))
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 Toast.makeText(MainActivity.this, "Symptom submitted", Toast.LENGTH_LONG).show();

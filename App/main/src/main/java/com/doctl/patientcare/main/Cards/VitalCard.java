@@ -31,7 +31,7 @@ public class VitalCard extends BaseCard {
 
     private VitalTask vitalTask;
     public VitalCard(Context context) {
-        this(context, R.layout.vital_card_inner_content);
+        this(context, R.layout.card_inner_content_vital);
     }
 
     public VitalCard(Context context, int innerLayout) {
@@ -45,7 +45,7 @@ public class VitalCard extends BaseCard {
     }
 
     public VitalCard(Context context, CardHeader cardHeader, VitalTask vitalTask) {
-        this(context, R.layout.vital_card_inner_content, cardHeader, vitalTask);
+        this(context, R.layout.card_inner_content_vital, cardHeader, vitalTask);
     }
 
     @Override

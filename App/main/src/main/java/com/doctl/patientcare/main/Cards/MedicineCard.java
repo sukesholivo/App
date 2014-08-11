@@ -24,7 +24,7 @@ public class MedicineCard extends BaseCard {
     private MedicineTask medicineTask;
     
     public MedicineCard(Context context) {
-        this(context, R.layout.medication_card_inner_content);
+        this(context, R.layout.card_inner_content_medication);
     }
 
     public MedicineCard(Context context, int innerLayout) {
@@ -38,7 +38,7 @@ public class MedicineCard extends BaseCard {
     }
 
     public MedicineCard(Context context, CardHeader cardHeader, MedicineTask medicineTask) {
-        this(context, R.layout.medication_card_inner_content, cardHeader, medicineTask);
+        this(context, R.layout.card_inner_content_medication, cardHeader, medicineTask);
     }
 
     @Override

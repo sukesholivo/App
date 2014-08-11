@@ -14,7 +14,7 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
  */
 public class QuestionCard extends BaseCard {
     public QuestionCard(Context context) {
-        this(context, R.layout.question_card_inner_content);
+        this(context, R.layout.card_inner_content_question);
     }
 
     public QuestionCard(Context context, int innerLayout) {
@@ -26,7 +26,7 @@ public class QuestionCard extends BaseCard {
     }
 
     public QuestionCard(Context context, CardHeader cardHeader){
-        this(context, R.layout.question_card_inner_content, cardHeader);
+        this(context, R.layout.card_inner_content_question, cardHeader);
     }
 
     @Override

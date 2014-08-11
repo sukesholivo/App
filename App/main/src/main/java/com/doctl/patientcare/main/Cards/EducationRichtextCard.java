@@ -20,7 +20,7 @@ public class EducationRichtextCard extends BaseCard {
     private static final String TAG = EducationCard.class.getSimpleName();
 
     public EducationRichtextCard(Context context) {
-        this(context, R.layout.education_richtext_card_inner_content);
+        this(context, R.layout.card_inner_content_education_richtext);
     }
 
     public EducationRichtextCard(Context context, int innerLayout) {
@@ -32,7 +32,7 @@ public class EducationRichtextCard extends BaseCard {
     }
 
     public EducationRichtextCard(Context context, CardHeader cardHeader) {
-        this(context, R.layout.education_richtext_card_inner_content, cardHeader);
+        this(context, R.layout.card_inner_content_education_richtext, cardHeader);
     }
 
     @Override

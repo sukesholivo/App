@@ -17,7 +17,7 @@ public class MythCard extends BaseCard {
     private static final String TAG = MythCard.class.getSimpleName();
 
     public MythCard(Context context) {
-        this(context, R.layout.myth_card_inner_content);
+        this(context, R.layout.card_inner_content_myth);
     }
 
     public MythCard(Context context, int innerLayout) {
@@ -28,7 +28,7 @@ public class MythCard extends BaseCard {
         super(context, innerLayout, cardHeader);
     }
     public MythCard(Context context, CardHeader cardHeader) {
-        this(context, R.layout.myth_card_inner_content, cardHeader);
+        this(context, R.layout.card_inner_content_myth, cardHeader);
     }
 
     @Override
