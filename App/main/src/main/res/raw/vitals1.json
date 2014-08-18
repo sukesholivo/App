@@ -1,0 +1,72 @@
+[
+    {
+        date:"10 AUG",
+        time1:"8:13 AM",
+        value1:90,
+        time2:"2:37 PM",
+        value2:130
+    },
+    {
+        date:"9 AUG",
+        time1:"8:21 AM",
+        value1:94,
+        time2:"2:03 PM",
+        value2:150
+    },
+    {
+        date:"8 AUG",
+        time1:"8:07 AM",
+        value1:107,
+        time2:"2:11 PM",
+        value2:110
+    },
+    {
+        date:"7 AUG",
+        time1:"7:56 AM",
+        value1:114,
+        time2:"2:15 PM",
+        value2:170
+    },
+    {
+        date:"6 AUG",
+        time1:"8:12 AM",
+        value1:110,
+        time2:"1:49 PM",
+        value2:170
+    },
+    {
+        date:"5 AUG",
+        time1:"8:43 AM",
+        value1:91,
+        time2:"3:16 PM",
+        value2:140
+    },
+    {
+        date:"4 AUG",
+        time1:"8:26 AM",
+        value1:97,
+        time2:"1:58 PM",
+        value2:140
+    },
+    {
+        date:"3 AUG",
+        time1:"9:03 AM",
+        value1:90,
+        time2:"2:31 PM",
+        value2:155
+    },
+    {
+        date:"2 AUG",
+        time1:"7:52 AM",
+        value1:88,
+        time2:"2:51 PM",
+        value2:155
+    },
+    {
+        date:"1 AUG",
+        time1:"9:11 AM",
+        value1:99,
+        time2:"2:42 PM",
+        value2:145
+    }
+]

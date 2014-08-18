@@ -32,6 +32,12 @@ public class FollowupTask extends BaseTask {
         @SerializedName("selected")
         private ArrayList<Integer> selected;
 
+        @SerializedName("getComments")
+        private boolean getComments;
+
+        @SerializedName("comment")
+        private String comment;
+
         public String getId() {
             return id;
         }
@@ -54,6 +60,18 @@ public class FollowupTask extends BaseTask {
 
         public void setSelected(ArrayList<Integer> selected) {
             this.selected = selected;
+        }
+
+        public boolean isGetComments() {
+            return getComments;
+        }
+
+        public String getComment() {
+            return comment;
+        }
+
+        public void setComment(String comment) {
+            this.comment = comment;
         }
     }
 }

@@ -31,7 +31,7 @@ public class QuestionCard extends BaseCard {
 
     @Override
     public void setupInnerViewElements(ViewGroup parent, View view) {
-        this.setBackgroundResourceId(R.drawable.card_background_blue);
+//        this.setBackgroundResourceId(R.drawable.card_background_blue);
     }
 
     @Override

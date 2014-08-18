@@ -89,7 +89,7 @@ public class CustomCardArrayAdapter extends CardArrayAdapter {
         String dismissDialogTitle = "CARD DISMISSED";
         String dismissMessage;
         String undoMessage = "UNDO";
-        String sendMessage = "SEND";
+        String sendMessage = "OK";
         BaseCard.CardType type = BaseCard.CardType.values()[card.getType()];
         switch(type){
             case MEDICINE_CARD_TYPE:

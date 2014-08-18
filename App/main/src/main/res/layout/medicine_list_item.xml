@@ -12,7 +12,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="30dp"
         android:textColor="@color/card_body_text_main"
-        android:textSize="28sp"
+        android:textSize="@dimen/text_size_xl"
         />
     <ImageView
         android:id="@+id/medicineIcon"
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_toRightOf="@id/medicineIcon"
-        android:textSize="20sp"
+        android:textSize="@dimen/text_size_m"
         android:textColor="@color/card_body_text_main"
         />
     <TextView
@@ -38,7 +38,7 @@
         android:layout_below="@id/medicineName"
         android:layout_toRightOf="@id/medicineIcon"
         android:layout_alignLeft="@id/medicineName"
-        android:textSize="10sp"
+        android:textSize="@dimen/text_size_xxs"
         android:textColor="@color/card_body_text_main"/>
     <TextView
         android:id="@+id/medicineType"
@@ -47,6 +47,6 @@
         android:layout_below="@id/medicineName"
         android:layout_toRightOf="@id/medicineUnit"
         android:layout_marginLeft="5dp"
-        android:textSize="10sp"
+        android:textSize="@dimen/text_size_xxs"
         android:textColor="@color/card_body_text_main"/>
 </RelativeLayout>

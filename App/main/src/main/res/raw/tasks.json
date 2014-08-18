@@ -108,7 +108,32 @@
                 multipleChoice: false,
                 options: [
                     "Excelent","Good","Fair","Poor"
-                ]
+                ],
+                getComments:true
+            }
+        },
+        {
+            cardId:"GUID4",
+            etaType: "DAYLONG",
+            eta:"2014-07-29T09:10:34Z",
+            createdOn:"2014-07-28T06:07:34Z",
+            modifiedOn:"2014-07-28T06:07:34Z",
+            state:"ACTIVE",
+            type:"FOLLOWUP",
+            points:10,
+            source:{
+                id:"userid1",
+                displayName:"Vishal Chitravanshi",
+                profilePicUrl:"http://doctl.com/static/unify/assets/img/profile_pic/vikas.jpg"
+            },
+            data:{
+                id: "followup1",
+                title: "Do you have any of these?",
+                multipleChoice: true,
+                options: [
+                    "Low in energy","Dizziness","Not Hungry"
+                ],
+                getComments:true
             }
         }
     ]

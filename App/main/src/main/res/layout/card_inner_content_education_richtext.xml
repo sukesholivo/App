@@ -12,7 +12,7 @@
             android:layout_height="wrap_content"
             android:text="STEP BY STEP INSTRUCTIONS"
             android:layout_alignParentLeft="true"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_s"
             android:textColor="@color/card_body_text_main"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"

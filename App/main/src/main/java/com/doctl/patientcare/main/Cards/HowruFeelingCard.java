@@ -37,7 +37,7 @@ public class HowruFeelingCard extends BaseCard{
 
     @Override
     public void setupInnerViewElements(final ViewGroup parent, View view) {
-        this.setBackgroundResourceId(R.drawable.card_background_blue);
+//        this.setBackgroundResourceId(R.drawable.card_background_blue);
         RelativeLayout ly = (RelativeLayout)view.findViewById(R.id.smiley_images);
         int lyChildCount = ly.getChildCount();
         for(int i=0;i<lyChildCount; i++)

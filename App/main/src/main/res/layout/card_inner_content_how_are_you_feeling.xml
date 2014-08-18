@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/card_layout"
     android:orientation="vertical"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:paddingLeft="10dp"
+    android:layout_width="match_parent"
     android:paddingRight="10dp"
     >
 
@@ -54,8 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="NORMAL"
-                    android:textColor="#FFFFFF"/>
+                    android:text="NORMAL"/>
             </LinearLayout>
 
             <LinearLayout
@@ -94,8 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="OK"
-                    android:textColor="#FFFFFF"/>
+                    android:text="OK"/>
             </LinearLayout>
 
             <LinearLayout
@@ -134,8 +132,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="NOT GOOD"
-                    android:textColor="#FFFFFF"/>
+                    android:text="NOT GOOD"/>
             </LinearLayout>
 
          </RelativeLayout>

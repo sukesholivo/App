@@ -1,6 +1,5 @@
 package com.doctl.patientcare.main;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -21,7 +20,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 
-public class MedicineDetailActivity extends Activity {
+public class MedicineDetailActivity extends BaseActivity {
     public final static String TAG = MedicineDetailActivity.class.getSimpleName();
 
     @Override
@@ -29,6 +28,9 @@ public class MedicineDetailActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medicine_detail);
         Bundle bundle = getIntent().getExtras();
+        if (bundle == null){
+            return;
+        }
         String prescriptionId = bundle.getString("prescriptionId");
         new GetPrescription().execute(prescriptionId);
     }

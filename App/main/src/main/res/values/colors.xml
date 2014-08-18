@@ -35,8 +35,10 @@
 
     <!-- Vitals Value-->
     <color name="vital_fine">#7C7C7C</color>
-    <color name="vital_over">#F26C6B</color>
+    <color name="vital_over">#FB6D6D</color>
 
     <!--Transparent color here-->
     <color name="transparent">#00000000</color>
+
+    <color name="drawer_background">#111</color>
 </resources>

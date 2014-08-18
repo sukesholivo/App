@@ -4,10 +4,10 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
     <TextView
         android:id="@+id/vitalTitle"
-        android:layout_width="125dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:textSize="12sp"
+        android:textSize="@dimen/text_size_s"
         android:textColor="@color/card_body_text_main"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="9dp"
@@ -16,9 +16,9 @@
 
     <TextView
         android:id="@+id/vitalCondition"
-        android:layout_width="125dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
+        android:textSize="@dimen/text_size_xs"
         android:textColor="@color/card_body_text_meta"
         android:layout_below="@id/vitalTitle"
         android:layout_alignLeft="@id/vitalTitle"
@@ -37,7 +37,7 @@
         android:id="@+id/vitalUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="8sp"
+        android:textSize="@dimen/text_size_xxs"
         android:textColor="@color/card_body_text_main"
         android:layout_alignTop="@id/vitalTitle"
         android:layout_toRightOf="@id/vitalValue"

@@ -1,6 +1,5 @@
 package com.doctl.patientcare.main;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -19,7 +18,7 @@ import it.gmariotti.cardslib.library.utils.BitmapUtils;
 /**
  * Created by mailtovishal.r on 6/25/2014.
  */
-public class RichTextEducationDetailActivity extends Activity {
+public class RichTextEducationDetailActivity extends BaseActivity {
     private ShareActionProvider mShareActionProvider;
 
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,10 +1,13 @@
 package com.doctl.patientcare.main.Cards;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -50,12 +53,15 @@ public class FollowupCard extends BaseCard {
             viewHolder = new ViewHolder();
             viewHolder.textView = (TextView) view.findViewById(R.id.followupQuestion);
             viewHolder.linearLayout = (LinearLayout) view.findViewById(R.id.followupOptions);
+            viewHolder.editText = (EditText) view.findViewById(R.id.followupComments);
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
 
         final FollowupTask.FollowupData followupData = followupTask.getPayload();
+        viewHolder.textView.setText(followupData.getTitle());
+
         LinearLayout list =  viewHolder.linearLayout;
         list.removeAllViews();
         if (followupData.isMultipleChoice()){
@@ -79,8 +85,10 @@ public class FollowupCard extends BaseCard {
                         followupTask.getPayload().setSelected(selected);
                     }
                 });
+                cb.setTextSize(20);
                 cb.setText(str);
                 list.addView(cb);
+                cb.setChecked(followupTask.getPayload().getSelected() != null && followupTask.getPayload().getSelected().contains(i));
             }
         } else {
             RadioGroup rg = new RadioGroup(getContext());
@@ -100,10 +108,33 @@ public class FollowupCard extends BaseCard {
                         followupTask.getPayload().setSelected(selected);
                     }
                 });
+                rb.setTextSize(20);
                 rb.setText(str);
+                rb.setChecked(followupTask.getPayload().getSelected() != null && followupTask.getPayload().getSelected().contains(i));
                 rg.addView(rb);
             }
+
             list.addView(rg);
+        }
+
+        if (followupData.isGetComments()){
+            viewHolder.editText.setVisibility(View.VISIBLE);
+            viewHolder.editText.addTextChangedListener(new TextWatcher() {
+
+                public void afterTextChanged(Editable s) {
+                }
+
+                public void beforeTextChanged(CharSequence s, int start,
+                                              int count, int after) {
+                }
+
+                public void onTextChanged(CharSequence s, int start,
+                                          int before, int count) {
+
+                    followupTask.getPayload().setComment(s.toString());
+                }
+            });
+            viewHolder.editText.setText(followupTask.getPayload().getComment());
         }
 
         setupCardFooter(view, followupTask);
@@ -117,5 +148,6 @@ public class FollowupCard extends BaseCard {
     private static class ViewHolder extends BaseViewHolder {
         TextView textView;
         LinearLayout linearLayout;
+        EditText editText;
     }
 }

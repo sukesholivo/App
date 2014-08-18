@@ -22,7 +22,7 @@
         android:layout_toRightOf="@id/medicineIcon"
         android:layout_alignTop="@id/medicineIcon"
         android:gravity="top"
-        android:textSize="@dimen/medicine_detail_text_main"
+        android:textSize="@dimen/text_size_l"
         />
     <TextView
         android:id="@+id/medicineUnit"
@@ -31,14 +31,14 @@
         android:layout_below="@id/medicineName"
         android:layout_alignLeft="@id/medicineName"
         android:layout_marginRight="2dp"
-        android:textSize="@dimen/medicine_detail_text_secondary"/>
+        android:textSize="@dimen/text_size_xs"/>
     <TextView
         android:id="@+id/medicineType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/medicineName"
         android:layout_toRightOf="@id/medicineUnit"
-        android:textSize="@dimen/medicine_detail_text_secondary"/>
+        android:textSize="@dimen/text_size_xs"/>
     <LinearLayout
         android:id="@+id/medicineFrequencyLayout"
         android:orientation="horizontal"
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/medicineFrequencyLayout"
         android:layout_alignLeft="@id/medicineFrequencyLayout"
-        android:textSize="@dimen/medicine_detail_text_secondary"/>
+        android:textSize="@dimen/text_size_xs"/>
 
     <TextView
         android:id="@+id/medicineNotes"
@@ -63,5 +63,5 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/medicineInstruction"
         android:layout_alignLeft="@id/medicineInstruction"
-        android:textSize="@dimen/medicine_detail_text_secondary"/>
+        android:textSize="@dimen/text_size_xs"/>
 </RelativeLayout>
