@@ -1,6 +1,8 @@
 package com.doctl.patientcare.main.om.medicines;
 
 
+import android.util.SparseArray;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -17,7 +19,8 @@ public class Medicine {
     private int quantity;
 
     @SerializedName("type")
-    private MedicineType type;
+//    private MedicineType type;
+    private int type;
 
     @SerializedName("dosage")
     private String dosage;
@@ -47,7 +50,8 @@ public class Medicine {
         return quantity;
     }
 
-    public MedicineType getType() {
+//    public MedicineType getType() {
+    public int getType() {
         return type;
     }
 
@@ -80,6 +84,16 @@ public class Medicine {
     public enum MedicineType{
         CAPSULE,
         TABLET,
-        INJECTION
+        INJECTION,
+        SYRUP,
+        DROPS
     }
+
+    static final SparseArray<String> MedicineMap = new SparseArray<String>() {{
+        put(1, MedicineType.TABLET.toString());
+        put(2, MedicineType.CAPSULE.toString());
+        put(3, MedicineType.INJECTION.toString());
+        put(4, MedicineType.SYRUP.toString());
+        put(5, MedicineType.DROPS.toString());
+    }};
 }

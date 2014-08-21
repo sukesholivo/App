@@ -64,10 +64,12 @@ public abstract class BaseCard extends Card {
         ImageView influencerImage = viewHolder.imageView;
 
         targetPointTextView.setText("" + task.getPoints());
-        Picasso.with(getContext())
-                .load(task.getSource()
-                .getProfilePicUrl())
-                .into(influencerImage);
+        if (task.getSource() != null) {
+            Picasso.with(getContext())
+                    .load(task.getSource()
+                            .getProfilePicUrl())
+                    .into(influencerImage);
+        }
     }
 
     @Override

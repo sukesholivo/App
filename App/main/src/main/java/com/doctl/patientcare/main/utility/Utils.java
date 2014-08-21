@@ -13,6 +13,8 @@ import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -20,7 +22,10 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 import it.gmariotti.cardslib.library.internal.CardHeader;
 
@@ -45,6 +50,31 @@ public final class Utils {
 
     public static String getDateString(Date date) {
         return new SimpleDateFormat("dd MMM yyyy").format(date);
+    }
+
+    public static String getIsoDateString(Calendar date) {
+        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").format(date.getTime());
+    }
+
+    public static List<NameValuePair> getCardsHTTPGetQueryParam(){
+        Calendar startDate = new GregorianCalendar();
+        startDate.set(Calendar.HOUR_OF_DAY, 0);
+        startDate.set(Calendar.MINUTE, 0);
+        startDate.set(Calendar.SECOND, 0);
+        startDate.set(Calendar.MILLISECOND, 0);
+
+        Calendar endDate = new GregorianCalendar();
+        endDate.set(Calendar.HOUR_OF_DAY, 0);
+        endDate.set(Calendar.MINUTE, 0);
+        endDate.set(Calendar.SECOND, 0);
+        endDate.set(Calendar.MILLISECOND, 0);
+        endDate.add(Calendar.DAY_OF_MONTH, 1);
+
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("startDate", Utils.getIsoDateString(startDate)));
+        params.add(new BasicNameValuePair("endDate", Utils.getIsoDateString(endDate)));
+        params.add(new BasicNameValuePair("orderBy", "eta"));
+        return params;
     }
 
     public static CardHeader getCardHeader(Context context, BaseTask task){

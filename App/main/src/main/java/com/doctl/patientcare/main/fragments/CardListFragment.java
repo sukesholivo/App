@@ -30,6 +30,8 @@ import com.doctl.patientcare.main.om.CustomCardArrayAdapter;
 import com.doctl.patientcare.main.om.followup.FollowupTask;
 import com.doctl.patientcare.main.om.medicines.MedicineTask;
 import com.doctl.patientcare.main.om.vitals.VitalTask;
+import com.doctl.patientcare.main.services.HTTPServiceHandler;
+import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -161,7 +163,9 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
     }
 
     private String downloadCardData(){
-        return Utils.parsonJsonFromFile(getActivity(), R.raw.tasks);
+        HTTPServiceHandler serviceHandler = new HTTPServiceHandler();
+        String response = serviceHandler.makeServiceCall(Constants.CARDS_URL, HTTPServiceHandler.HTTPMethod.GET, Utils.getCardsHTTPGetQueryParam());
+        return response;
     }
 
     private ArrayList<BaseCard> parseCardData(String jsonStr){
@@ -172,11 +176,10 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
         cards.add(card0);
 
         JsonParser parser = new JsonParser();
-        JsonObject jsonObject = parser.parse(jsonStr).getAsJsonObject();
-        JsonArray cardsJsonArray = jsonObject.get("cards").getAsJsonArray();
+        JsonArray cardsJsonArray = parser.parse(jsonStr).getAsJsonArray();
         for (JsonElement cardJson : cardsJsonArray) {
             JsonObject cardJsonObj = cardJson.getAsJsonObject();
-            switch (BaseTask.CardType.valueOf(cardJsonObj.get("type").getAsString())) {
+            switch (BaseTask.CardType.valueOf(cardJsonObj.get("type").getAsString().toUpperCase())) {
                 case MEDICINE:
                     MedicineTask medicineTask = new Gson().fromJson(cardJson, MedicineTask.class);
                     CardHeader medicineHeader = Utils.getCardHeader(getActivity(), medicineTask);
