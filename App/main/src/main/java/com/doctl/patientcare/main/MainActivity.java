@@ -15,7 +15,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +28,6 @@ import it.gmariotti.cardslib.library.utils.BitmapUtils;
 
 public class MainActivity extends BaseActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
-    private ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +50,6 @@ public class MainActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
-
-//        MenuItem shareItem = menu.findItem(R.id.action_share);
-//        mShareActionProvider = (ShareActionProvider)MenuItemCompat.getActionProvider(shareItem);
-//        mShareActionProvider.setShareIntent(getDefaultIntent());
-
         return super.onCreateOptionsMenu(menu);
     }
 

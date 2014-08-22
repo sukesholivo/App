@@ -80,8 +80,12 @@ public class VitalCard extends BaseCard {
         }
 
         GraphicalView graphicalView = Utils.getGraph(getContext(), graphList);
-        LinearLayout chartContainer = viewHolder.graphLinearLayout;
-        chartContainer.addView(graphicalView);
+
+        if (graphicalView != null) {
+            LinearLayout chartContainer = viewHolder.graphLinearLayout;
+            chartContainer.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 50));
+            chartContainer.addView(graphicalView);
+        }
 
         setupCardFooter(view, vitalTask);
         setListnerToCard();

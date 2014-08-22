@@ -15,7 +15,7 @@ public class Vitals {
     private String condition;
 
     @SerializedName("value")
-    private int value;
+    private double value;
 
     @SerializedName("unit")
     private String unit;
@@ -31,7 +31,7 @@ public class Vitals {
         return condition;
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 

@@ -119,6 +119,7 @@ public final class Utils {
     }
 
     public static GraphicalView getGraph(Context context, ArrayList<GraphData>graph){
+        boolean seriesAdded = false;
         XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
         XYMultipleSeriesRenderer multiRenderer = new XYMultipleSeriesRenderer();
         multiRenderer.setApplyBackgroundColor(true);
@@ -133,17 +134,19 @@ public final class Utils {
         multiRenderer.setPanEnabled(false, false);
 
         for (GraphData g : graph) {
+            if (g.getX()!= null) {
             XYSeries series = new XYSeries(g.getTitle());
-
-            for (int j = 0; j < g.getX().size(); j++) {
-                series.add(g.getX().get(j), g.getY().get(j));
+                for (int j = 0; j < g.getX().size(); j++) {
+                    series.add(g.getX().get(j), g.getY().get(j));
+                }
+                dataset.addSeries(series);
+                XYSeriesRenderer graphRenderer = new XYSeriesRenderer();
+                graphRenderer.setColor(g.getLineColor());
+                graphRenderer.setLineWidth(g.getLineWidth());
+                multiRenderer.addSeriesRenderer(graphRenderer);
+                seriesAdded = true;
             }
-            dataset.addSeries(series);
-            XYSeriesRenderer graphRenderer = new XYSeriesRenderer();
-            graphRenderer.setColor(g.getLineColor());
-            graphRenderer.setLineWidth(g.getLineWidth());
-            multiRenderer.addSeriesRenderer(graphRenderer);
         }
-        return ChartFactory.getLineChartView(context, dataset, multiRenderer);
+        return seriesAdded? ChartFactory.getLineChartView(context, dataset, multiRenderer): null;
     }
 }

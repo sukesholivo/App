@@ -72,6 +72,11 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initializeCardList();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         new GetTasks().execute();
     }
 
@@ -164,8 +169,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
 
     private String downloadCardData(){
         HTTPServiceHandler serviceHandler = new HTTPServiceHandler();
-        String response = serviceHandler.makeServiceCall(Constants.CARDS_URL, HTTPServiceHandler.HTTPMethod.GET, Utils.getCardsHTTPGetQueryParam());
-        return response;
+        return serviceHandler.makeServiceCall(Constants.CARDS_URL, HTTPServiceHandler.HTTPMethod.GET, Utils.getCardsHTTPGetQueryParam());
     }
 
     private ArrayList<BaseCard> parseCardData(String jsonStr){
@@ -177,6 +181,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
 
         JsonParser parser = new JsonParser();
         JsonArray cardsJsonArray = parser.parse(jsonStr).getAsJsonArray();
+//        JsonArray cardsJsonArray = jsonObject.get("cards").getAsJsonArray();
         for (JsonElement cardJson : cardsJsonArray) {
             JsonObject cardJsonObj = cardJson.getAsJsonObject();
             switch (BaseTask.CardType.valueOf(cardJsonObj.get("type").getAsString().toUpperCase())) {
