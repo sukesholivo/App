@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.doctl.patientcare.main.controls.ProgressWheel;
 import com.doctl.patientcare.main.fragments.BaseFragment;
 import com.doctl.patientcare.main.fragments.CardListFragment;
+import com.doctl.patientcare.main.utility.GetServerAuthTokenAsync;
 
 import java.io.File;
 
@@ -36,6 +37,14 @@ public class MainActivity extends BaseActivity {
         setPoints();
         setCards();
         setupGCMRegistration();
+        setupServerAuthToken();
+    }
+
+    public void setupServerAuthToken() {
+        String username = "doctor@doctl.com";
+        String password = "test";
+        new GetServerAuthTokenAsync(MainActivity.this).execute(username, password);
+        return;
     }
 
     public void setupGCMRegistration() {

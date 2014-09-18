@@ -168,7 +168,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
     }
 
     private String downloadCardData(){
-        HTTPServiceHandler serviceHandler = new HTTPServiceHandler();
+        HTTPServiceHandler serviceHandler = new HTTPServiceHandler(getActivity());
         return serviceHandler.makeServiceCall(Constants.CARDS_URL, HTTPServiceHandler.HTTPMethod.GET, Utils.getCardsHTTPGetQueryParam());
     }
 

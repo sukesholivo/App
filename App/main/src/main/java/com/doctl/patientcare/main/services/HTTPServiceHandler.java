@@ -1,5 +1,9 @@
 package com.doctl.patientcare.main.services;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -20,8 +24,9 @@ import java.util.List;
  */
 public class HTTPServiceHandler {
     static String response = null;
-
-    public HTTPServiceHandler() {
+    private Context c;
+    public HTTPServiceHandler(Context c) {
+        this.c = c;
     }
 
     /**
@@ -46,6 +51,10 @@ public class HTTPServiceHandler {
             HttpEntity httpEntity;
             HttpResponse httpResponse = null;
 
+            //Extract the auth token from user preferences
+            SharedPreferences sp = c.getSharedPreferences("auth_prefs", Activity.MODE_PRIVATE);
+            String ServerAccessToken = sp.getString("serveraccesstoken", "");
+
             // Checking http request method type
             if (method == HTTPMethod.POST) {
                 HttpPost httpPost = new HttpPost(url);
@@ -53,6 +62,7 @@ public class HTTPServiceHandler {
                 if (params != null) {
                     httpPost.setEntity(new UrlEncodedFormEntity(params));
                 }
+                httpPost.setHeader("Authorization", "Token "+ServerAccessToken);
                 httpResponse = httpClient.execute(httpPost);
 
             } else if (method == HTTPMethod.GET) {
@@ -63,6 +73,7 @@ public class HTTPServiceHandler {
                     url += "?" + paramString;
                 }
                 HttpGet httpGet = new HttpGet(url);
+                httpGet.setHeader("Authorization", "Token "+ServerAccessToken);
 
                 httpResponse = httpClient.execute(httpGet);
 
