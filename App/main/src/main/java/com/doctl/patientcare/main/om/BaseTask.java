@@ -71,6 +71,10 @@ public abstract class BaseTask {
         return State;
     }
 
+    public void setState(CardState state) {
+        State = state;
+    }
+
     public CardType getType() {
         return Type;
     }

@@ -13,3 +13,5 @@ App/.gradle
 /.idea/workspace.xml
 .DS_Store
 
+*.sublime-project
+*.sublime-workspace

@@ -13,7 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/vitalList"
-        android:background="@drawable/graph_background"/>
+        android:background="@drawable/graph_background">
+        </LinearLayout>
     <include layout="@layout/card_footer_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

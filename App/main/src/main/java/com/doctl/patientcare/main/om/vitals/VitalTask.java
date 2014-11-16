@@ -3,7 +3,8 @@ package com.doctl.patientcare.main.om.vitals;
 import com.doctl.patientcare.main.om.BaseTask;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Administrator on 8/8/2014.
@@ -17,25 +18,47 @@ public class VitalTask extends BaseTask {
     }
 
     public class VitalData{
-        @SerializedName("id")
-        private String id;
+        @SerializedName("vitalPlanId")
+        private String planId;
+
+        @SerializedName("vitalId")
+        private String vitalId;
 
         @SerializedName("title")
         private String title;
 
         @SerializedName("vitals")
-        private ArrayList<Vitals> vitals;
+        private Vitals vitals;
 
-        public String getId() {
-            return id;
+        public String getPlanId() {
+            return planId;
+        }
+
+        public String getVitalId() {
+            return vitalId;
         }
 
         public String getTitle() {
             return title;
         }
 
-        public ArrayList<Vitals> getVitals() {
+        public Vitals getVitals() {
             return vitals;
         }
+
+        public JSONObject getDataToPatch() throws JSONException{
+            JSONObject data = new JSONObject();
+            data.put("vitalPlanId", this.getPlanId());
+            data.put("vitalId", this.getVitalId());
+            data.put("vitals", this.getVitals().getDataToPatch());
+            return data;
+        }
+    }
+
+    public JSONObject getDataToPatch() throws JSONException {
+        JSONObject data = new JSONObject();
+        data.put("data", this.getPayload().getDataToPatch());
+        data.put("state", this.getState().toString());
+        return data;
     }
 }

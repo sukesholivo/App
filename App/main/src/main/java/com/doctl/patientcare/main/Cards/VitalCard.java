@@ -1,22 +1,25 @@
 package com.doctl.patientcare.main.Cards;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.doctl.patientcare.main.R;
-import com.doctl.patientcare.main.VitalDetailActivity;
+import com.doctl.patientcare.main.om.BaseTask;
 import com.doctl.patientcare.main.om.GraphData;
-import com.doctl.patientcare.main.om.vitals.VitalAdapter;
 import com.doctl.patientcare.main.om.vitals.VitalTask;
 import com.doctl.patientcare.main.om.vitals.Vitals;
-import com.doctl.patientcare.main.utility.Utils;
 
 import org.achartengine.GraphicalView;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -60,26 +63,76 @@ public class VitalCard extends BaseCard {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        ArrayList<Vitals> vitalData = vitalTask.getPayload().getVitals();
-        VitalAdapter vitals = new VitalAdapter(getContext(), vitalData);
+        final Vitals vitalData = vitalTask.getPayload().getVitals();
         LinearLayout list =  viewHolder.vitalLinearLayout;
-
         list.removeAllViews();
-        for (int i = 0; i < vitals.getCount(); i++) {
-            View listView = vitals.getView(i, null, null);
-            list.addView(listView);
+
+        View view1 = getView(list, vitalData.getName1(),
+                vitalData.getCondition1(),
+                vitalData.getUnit1(),
+                vitalData.getValue1(),
+                new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        Log.d(TAG, charSequence.toString());
+                        try {
+                            double val = Double.parseDouble(charSequence.toString());
+                            vitalData.setValue1(val);
+                        } catch (NumberFormatException e){
+                            // Ignore
+                        }
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
+        list.addView(view1);
+        View view2;
+        if (vitalData.getName2() != null && !vitalData.getName2().isEmpty()){
+            view2 = getView(list,
+                    vitalData.getName2(),
+                    vitalData.getCondition2(),
+                    vitalData.getUnit2(),
+                    vitalData.getValue2(),
+                    new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                            Log.d(TAG, charSequence.toString());
+                            try {
+                                double val = Double.parseDouble(charSequence.toString());
+                                vitalData.setValue2(val);
+                            } catch (NumberFormatException e){
+                                // Ignore
+                            }
+                        }
+                        @Override
+                        public void afterTextChanged(Editable editable) {
+                        }
+                    });
+            list.addView(view2);
         }
 
+//        TODO: Fix graph.
         ArrayList<GraphData> graphList = new ArrayList<GraphData>();
-        for (Vitals vital : vitalData) {
-            GraphData graph = new GraphData(vital.getName(),
-                    vital.getPast().getTimeStamps(),
-                    vital.getPast().getValues(),
-                    Color.RED,3);
-            graphList.add(graph);
-        }
+//        for (Vitals vital : vitalData) {
+//            GraphData graph = new GraphData(vital.getName(),
+//                    vital.getPast().getTimeStamps(),
+//                    vital.getPast().getValues(),
+//                    Color.RED,3);
+//            graphList.add(graph);
+//        }
 
-        GraphicalView graphicalView = Utils.getGraph(getContext(), graphList);
+        GraphicalView graphicalView = null; //Utils.getGraph(getContext(), graphList);
 
         if (graphicalView != null) {
             LinearLayout chartContainer = viewHolder.graphLinearLayout;
@@ -91,15 +144,31 @@ public class VitalCard extends BaseCard {
         setListnerToCard();
     }
 
+    private View getView(ViewGroup parent, String name, String condition, String unit, double value, TextWatcher textWatcher){
+        LayoutInflater li = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = li.inflate(R.layout.vital_card_list_item, parent, false);
+        TextView vitalTitle = (TextView)view.findViewById(R.id.vitalTitle);
+        vitalTitle.setText(name);
+        TextView vitalCondition = (TextView)view.findViewById(R.id.vitalCondition);
+        vitalCondition.setText(condition);
+        TextView vitalUnit = (TextView)view.findViewById(R.id.vitalUnit);
+        vitalUnit.setText(unit);
+        EditText vitalValue = (EditText)view.findViewById(R.id.vitalValue);
+        vitalValue.setText(String.valueOf(value));
+        vitalValue.addTextChangedListener(textWatcher);
+        return view;
+    }
+
     private void setListnerToCard(){
         this.setOnClickListener(new Card.OnCardClickListener() {
             @Override
             public void onClick(Card card, View view) {
                 Log.d("postInitCard", "Card clicked " + card.getId());
-                Context context = getContext();
-                Intent intent = new Intent(context, VitalDetailActivity.class);
-                intent.putExtra("vitalId", vitalTask.getPayload().getId());
-                context.startActivity(intent);
+//                TODO: Enable Vital detail later with new UI.
+//                Context context = getContext();
+//                Intent intent = new Intent(context, VitalDetailActivity.class);
+//                intent.putExtra("vitalId", vitalTask.getPayload().getVitalId());
+//                context.startActivity(intent);
             }
         });
     }
@@ -107,6 +176,20 @@ public class VitalCard extends BaseCard {
     @Override
     public int getType() {
         return CardType.VITAL_CARD_TYPE.ordinal();
+    }
+
+    @Override
+    public void UpdateTask(){
+        JSONObject data;
+        vitalTask.setState(BaseTask.CardState.DONE);
+        String cardId = vitalTask.getCardId();
+        try {
+            data = vitalTask.getDataToPatch();
+            Log.d(TAG, data.toString());
+            UpdateTask(cardId, data);
+        }catch (JSONException e){
+            Log.e(TAG, e.toString());
+        }
     }
 
     private static class ViewHolder extends BaseViewHolder {

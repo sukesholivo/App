@@ -2,45 +2,122 @@ package com.doctl.patientcare.main.om.vitals;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
  * Created by Administrator on 6/22/2014.
  */
 public class Vitals {
-    @SerializedName("name")
-    private String name;
+    @SerializedName("name1")
+    private String name1;
 
-    @SerializedName("condition")
-    private String condition;
+    @SerializedName("condition1")
+    private String condition1;
 
-    @SerializedName("value")
-    private double value;
+    @SerializedName("value1")
+    private double value1;
 
-    @SerializedName("unit")
-    private String unit;
+    @SerializedName("unit1")
+    private String unit1;
+
+    @SerializedName("valueMin1")
+    private String valueMin1;
+
+    @SerializedName("valueMax1")
+    private String valueMax1;
+
+    @SerializedName("name2")
+    private String name2;
+
+    @SerializedName("condition2")
+    private String condition2;
+
+    @SerializedName("value2")
+    private double value2;
+
+    @SerializedName("unit2")
+    private String unit2;
+
+    @SerializedName("valueMin2")
+    private String valueMin2;
+
+    @SerializedName("valueMax2")
+    private String valueMax2;
 
     @SerializedName("past")
     private GraphSeries past;
 
-    public String getName() {
-        return name;
+    private String timestamp;
+
+    public String getName1() {
+        return name1;
     }
 
-    public String getCondition() {
-        return condition;
+    public String getCondition1() {
+        return condition1;
     }
 
-    public double getValue() {
-        return value;
+    public double getValue1() {
+        return value1;
     }
 
-    public String getUnit() {
-        return unit;
+    public String getUnit1() {
+        return unit1;
+    }
+
+    public String getValueMin1() {
+        return valueMin1;
+    }
+
+    public String getValueMax1() {
+        return valueMax1;
+    }
+
+    public String getName2() {
+        return name2;
+    }
+
+    public String getCondition2() {
+        return condition2;
+    }
+
+    public double getValue2() {
+        return value2;
+    }
+
+    public String getUnit2() {
+        return unit2;
+    }
+
+    public String getValueMin2() {
+        return valueMin2;
+    }
+
+    public String getValueMax2() {
+        return valueMax2;
+    }
+
+    public void setValue1(double value1) {
+        this.value1 = value1;
+    }
+
+    public void setValue2(double value2) {
+        this.value2 = value2;
     }
 
     public GraphSeries getPast() {
         return past;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 
     public class GraphSeries {
@@ -59,4 +136,11 @@ public class Vitals {
         }
     }
 
+    public JSONObject getDataToPatch() throws JSONException {
+        JSONObject data = new JSONObject();
+        data.put("timeStamp", this.getTimestamp());
+        data.put("value1", this.getValue1());
+        data.put("value2", this.getValue1());
+        return data;
+    }
 }

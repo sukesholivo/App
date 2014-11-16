@@ -5,6 +5,9 @@ import android.util.SparseArray;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by Administrator on 6/12/2014.
  */
@@ -34,7 +37,12 @@ public class Medicine {
     @SerializedName("showInfoIcon")
     private boolean showInfoIcon;
 
+    private String timestamp;
+
+    private int state;
+
     private int quantityToTake[];
+
     private String medicineInstruction[];
 
     //region getter
@@ -79,6 +87,29 @@ public class Medicine {
         return medicineInstruction;
     }
 
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    public JSONObject getDataToPatch() throws JSONException{
+        JSONObject data = new JSONObject();
+        data.put("id", this.getId());
+        data.put("timeStamp", this.getTimestamp());
+        data.put("state", this.getState());
+        return data;
+    }
     //endregion
 
     public enum MedicineType{

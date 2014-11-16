@@ -3,6 +3,9 @@ package com.doctl.patientcare.main.om.followup;
 import com.doctl.patientcare.main.om.BaseTask;
 import com.google.gson.annotations.SerializedName;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
@@ -17,11 +20,20 @@ public class FollowupTask extends BaseTask {
     }
 
     public class FollowupData{
-        @SerializedName("id")
-        private String id;
+        @SerializedName("followupId")
+        private String followupId;
+
+        @SerializedName("planId")
+        private String planId;
+
+        @SerializedName("type")
+        private String type;
 
         @SerializedName("title")
         private String title;
+
+        @SerializedName("notes")
+        private String notes;
 
         @SerializedName("multipleChoice")
         private boolean multipleChoice;
@@ -38,12 +50,26 @@ public class FollowupTask extends BaseTask {
         @SerializedName("comment")
         private String comment;
 
-        public String getId() {
-            return id;
+        private String timestamp;
+
+        public String getFollowupId() {
+            return followupId;
+        }
+
+        public String getPlanId() {
+            return planId;
+        }
+
+        public String getType() {
+            return type;
         }
 
         public String getTitle() {
             return title;
+        }
+
+        public String getNotes() {
+            return notes;
         }
 
         public boolean isMultipleChoice() {
@@ -73,5 +99,34 @@ public class FollowupTask extends BaseTask {
         public void setComment(String comment) {
             this.comment = comment;
         }
+
+        public String getTimestamp() {
+            return timestamp;
+        }
+
+        public void setTimestamp(String timestamp) {
+            this.timestamp = timestamp;
+        }
+
+        public JSONObject getDataToPatch() throws JSONException{
+            JSONObject data = new JSONObject();
+            data.put("followupPlanId", this.getPlanId());
+            data.put("followupId", this.getFollowupId());
+            data.put("timestamp", this.getTimestamp());
+            ArrayList<String> selected = new ArrayList<String>();
+            for (int i : this.getSelected()){
+                selected.add(this.getOptions().get(i));
+            }
+            data.put("selected", selected);
+            data.put("notes", this.getComment());
+            return data;
+        }
+    }
+
+    public JSONObject getDataToPatch() throws JSONException {
+        JSONObject data = new JSONObject();
+        data.put("data", this.getPayload().getDataToPatch());
+        data.put("state", this.getState().toString());
+        return data;
     }
 }

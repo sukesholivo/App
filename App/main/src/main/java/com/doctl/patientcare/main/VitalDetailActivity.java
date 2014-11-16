@@ -1,16 +1,12 @@
 package com.doctl.patientcare.main;
 
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.doctl.patientcare.main.om.GraphData;
 import com.doctl.patientcare.main.om.vitals.VitalTask;
-import com.doctl.patientcare.main.om.vitals.Vitals;
 import com.doctl.patientcare.main.om.vitals.VitalsDetailAdapter;
 import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
@@ -18,9 +14,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.annotations.SerializedName;
 
-import org.achartengine.GraphicalView;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class VitalDetailActivity extends BaseActivity {
@@ -94,18 +88,19 @@ public class VitalDetailActivity extends BaseActivity {
     }
 
     private void populateVitalGraphData(VitalTask.VitalData vitalData) {
-        ArrayList<Vitals> vitals = vitalData.getVitals();
-        ArrayList<GraphData> graphList = new ArrayList<GraphData>();
-        for (Vitals vital : vitals) {
-            GraphData graph = new GraphData(vital.getName(),
-                    vital.getPast().getTimeStamps(),
-                    vital.getPast().getValues(),
-                    Color.RED,3);
-            graphList.add(graph);
-        }
-        GraphicalView graphicalView = Utils.getGraph(this, graphList);
-        LinearLayout chartContainer = (LinearLayout) findViewById(R.id.vitalDetailLineGraph);
-        chartContainer.addView(graphicalView);
+//        TODO: FIX this when new UI comes using new OM definition
+//        ArrayList<Vitals> vitals = vitalData.getVitals();
+//        ArrayList<GraphData> graphList = new ArrayList<GraphData>();
+//        for (Vitals vital : vitals) {
+//            GraphData graph = new GraphData(vital.getName(),
+//                    vital.getPast().getTimeStamps(),
+//                    vital.getPast().getValues(),
+//                    Color.RED,3);
+//            graphList.add(graph);
+//        }
+//        GraphicalView graphicalView = Utils.getGraph(this, graphList);
+//        LinearLayout chartContainer = (LinearLayout) findViewById(R.id.vitalDetailLineGraph);
+//        chartContainer.addView(graphicalView);
     }
 
     private void populateVitalListData(VitalDetailData[] vitalData) {

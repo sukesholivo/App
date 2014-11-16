@@ -1,13 +1,19 @@
 package com.doctl.patientcare.main.Cards;
 
 import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.BaseTask;
+import com.doctl.patientcare.main.services.HTTPServiceHandler;
+import com.doctl.patientcare.main.utility.Constants;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONObject;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
@@ -75,6 +81,13 @@ public abstract class BaseCard extends Card {
     @Override
     public abstract int getType();
 
+    public void UpdateTask(){
+
+    }
+
+    public void UpdateTask(String cardId, JSONObject data){
+        new UpdateTasks().execute(Constants.CARDS_URL + cardId + "/", data);
+    }
     public enum CardType{
         DUMMY_CARD_TYPE,
         MEDICINE_CARD_TYPE,
@@ -87,5 +100,29 @@ public abstract class BaseCard extends Card {
         TextView textView;
         ImageView imageView;
         boolean footerSet = false;
+    }
+
+    private class UpdateTasks extends AsyncTask<Object, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Object... arg0) {
+            String url = (String)arg0[0];
+            JSONObject data= (JSONObject)arg0[1];
+
+            HTTPServiceHandler serviceHandler = new HTTPServiceHandler(getContext());
+            String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.PATCH, null, data);
+            Log.d(TAG, response);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
     }
 }

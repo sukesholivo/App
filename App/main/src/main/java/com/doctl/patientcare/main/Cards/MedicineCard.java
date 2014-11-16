@@ -10,8 +10,17 @@ import android.widget.LinearLayout;
 
 import com.doctl.patientcare.main.MedicineDetailActivity;
 import com.doctl.patientcare.main.R;
+import com.doctl.patientcare.main.om.BaseTask;
+import com.doctl.patientcare.main.om.medicines.Medicine;
 import com.doctl.patientcare.main.om.medicines.MedicineAdapter;
 import com.doctl.patientcare.main.om.medicines.MedicineTask;
+import com.doctl.patientcare.main.utility.Utils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
@@ -82,6 +91,25 @@ public class MedicineCard extends BaseCard {
     @Override
     public int getType() {
         return CardType.MEDICINE_CARD_TYPE.ordinal();
+    }
+
+    @Override
+    public void UpdateTask(){
+        JSONObject data;
+        ArrayList<Medicine> meds = medicineTask.getPayload().getMedicines();
+        medicineTask.setState(BaseTask.CardState.DONE);
+        String cardId = medicineTask.getCardId();
+        for (Medicine med : meds){
+            med.setTimestamp(Utils.getIsoDateString(new GregorianCalendar()));
+            med.setState(1);
+        }
+        try {
+            data = medicineTask.getDataToPatch();
+            Log.d(TAG, data.toString());
+            UpdateTask(cardId, data);
+        }catch (JSONException e){
+            Log.e(TAG, e.toString());
+        }
     }
 
     private static class ViewHolder extends BaseViewHolder {

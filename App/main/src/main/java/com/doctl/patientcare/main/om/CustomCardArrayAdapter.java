@@ -126,6 +126,7 @@ public class CustomCardArrayAdapter extends CardArrayAdapter {
                 .setNegativeButton(sendMessage, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Log.d(TAG, "OK CLICKED");
+                        ((BaseCard)card).UpdateTask();
                     }
                 });
     }

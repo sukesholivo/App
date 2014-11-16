@@ -58,7 +58,6 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
     private static final String TAG = CardListFragment.class.getSimpleName();
     private static String ANDROID_DEVELOPER_KEY = "AIzaSyAWocbee6JmNy1KShjdNWy_v8_xEq0-gE0";
     PullToRefreshLayout mPullToRefreshLayout;
-    public static final int SIMULATED_REFRESH_LENGTH = 1;
     ArrayList<Card> cards;
     CustomCardArrayAdapter mCardArrayAdapter;
 
@@ -169,7 +168,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
 
     private String downloadCardData(){
         HTTPServiceHandler serviceHandler = new HTTPServiceHandler(getActivity());
-        return serviceHandler.makeServiceCall(Constants.CARDS_URL, HTTPServiceHandler.HTTPMethod.GET, Utils.getCardsHTTPGetQueryParam());
+        return serviceHandler.makeServiceCall(Constants.CARDS_URL, HTTPServiceHandler.HTTPMethod.GET, Utils.getCardsHTTPGetQueryParam(), null);
     }
 
     private ArrayList<BaseCard> parseCardData(String jsonStr){
@@ -178,7 +177,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
         card0.setShadow(false);
         card0.setSwipeable(false);
         cards.add(card0);
-
+        Log.d(TAG, jsonStr);
         JsonParser parser = new JsonParser();
         JsonArray cardsJsonArray = parser.parse(jsonStr).getAsJsonArray();
 //        JsonArray cardsJsonArray = jsonObject.get("cards").getAsJsonArray();
@@ -294,12 +293,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
 
         @Override
         protected Void doInBackground(Void... arg0) {
-            try {
-                Thread.sleep(SIMULATED_REFRESH_LENGTH);
-                refreshCard();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            refreshCard();
             return null;
         }
 

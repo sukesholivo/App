@@ -44,7 +44,6 @@ public class MainActivity extends BaseActivity {
         String username = "doctor@doctl.com";
         String password = "test";
         new GetServerAuthTokenAsync(MainActivity.this).execute(username, password);
-        return;
     }
 
     public void setupGCMRegistration() {
