@@ -26,10 +26,10 @@
         android:gravity="center_vertical"/>
     <EditText
         android:id="@+id/vitalValue"
-        android:layout_width="70dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:inputType="number"
-        android:maxLength="4"
+        android:inputType="numberDecimal"
+        android:maxLength="5"
         android:layout_alignTop="@id/vitalTitle"
         android:textColor="@android:color/black"
         android:layout_toRightOf="@id/vitalTitle"/>

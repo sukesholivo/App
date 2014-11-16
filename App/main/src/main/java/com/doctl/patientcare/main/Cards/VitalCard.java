@@ -21,6 +21,7 @@ import org.achartengine.GraphicalView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import it.gmariotti.cardslib.library.internal.Card;
@@ -80,7 +81,7 @@ public class VitalCard extends BaseCard {
                     public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
                         Log.d(TAG, charSequence.toString());
                         try {
-                            double val = Double.parseDouble(charSequence.toString());
+                            Double val = Double.parseDouble(charSequence.toString());
                             vitalData.setValue1(val);
                         } catch (NumberFormatException e){
                             // Ignore
@@ -109,7 +110,7 @@ public class VitalCard extends BaseCard {
                         public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
                             Log.d(TAG, charSequence.toString());
                             try {
-                                double val = Double.parseDouble(charSequence.toString());
+                                Double val = Double.parseDouble(charSequence.toString());
                                 vitalData.setValue2(val);
                             } catch (NumberFormatException e){
                                 // Ignore
@@ -144,7 +145,7 @@ public class VitalCard extends BaseCard {
         setListnerToCard();
     }
 
-    private View getView(ViewGroup parent, String name, String condition, String unit, double value, TextWatcher textWatcher){
+    private View getView(ViewGroup parent, String name, String condition, String unit, Double value, TextWatcher textWatcher){
         LayoutInflater li = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = li.inflate(R.layout.vital_card_list_item, parent, false);
         TextView vitalTitle = (TextView)view.findViewById(R.id.vitalTitle);
@@ -154,7 +155,10 @@ public class VitalCard extends BaseCard {
         TextView vitalUnit = (TextView)view.findViewById(R.id.vitalUnit);
         vitalUnit.setText(unit);
         EditText vitalValue = (EditText)view.findViewById(R.id.vitalValue);
-        vitalValue.setText(String.valueOf(value));
+        if (value != null) {
+            DecimalFormat df = new DecimalFormat("###.#");
+            vitalValue.setText(df.format(value));
+        }
         vitalValue.addTextChangedListener(textWatcher);
         return view;
     }

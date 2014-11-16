@@ -18,7 +18,7 @@ public class Vitals {
     private String condition1;
 
     @SerializedName("value1")
-    private double value1;
+    private Double value1;
 
     @SerializedName("unit1")
     private String unit1;
@@ -36,7 +36,7 @@ public class Vitals {
     private String condition2;
 
     @SerializedName("value2")
-    private double value2;
+    private Double value2;
 
     @SerializedName("unit2")
     private String unit2;
@@ -60,7 +60,7 @@ public class Vitals {
         return condition1;
     }
 
-    public double getValue1() {
+    public Double getValue1() {
         return value1;
     }
 
@@ -84,7 +84,7 @@ public class Vitals {
         return condition2;
     }
 
-    public double getValue2() {
+    public Double getValue2() {
         return value2;
     }
 
@@ -100,11 +100,11 @@ public class Vitals {
         return valueMax2;
     }
 
-    public void setValue1(double value1) {
+    public void setValue1(Double value1) {
         this.value1 = value1;
     }
 
-    public void setValue2(double value2) {
+    public void setValue2(Double value2) {
         this.value2 = value2;
     }
 
