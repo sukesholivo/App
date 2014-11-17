@@ -198,7 +198,15 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
                     break;
                 case FOLLOWUP:
                     FollowupTask followupTask = new Gson().fromJson(cardJson, FollowupTask.class);
-                    CardHeader followupHeader = Utils.getCardHeader(getActivity(), followupTask);
+                    final String title = followupTask.getPayload().getTitle();
+                    CardHeader followupHeader = new CardHeaderInnerView(getActivity()){
+                        @Override
+                        public void setupInnerViewElements(ViewGroup parent, View view) {
+                            TextView textView1 = (TextView)view.findViewById(R.id.timeWhen);
+                            textView1.setText(title);
+                            textView1.setTextSize(20);
+                        }
+                    };
                     FollowupCard followupCard = new FollowupCard(getActivity(), followupHeader, followupTask);
                     cards.add(followupCard);
                     break;

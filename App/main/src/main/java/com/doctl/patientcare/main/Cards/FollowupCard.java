@@ -1,6 +1,8 @@
 package com.doctl.patientcare.main.Cards;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -14,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
-import android.widget.TextView;
 
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.BaseTask;
@@ -58,7 +59,6 @@ public class FollowupCard extends BaseCard {
         ViewHolder viewHolder;
         if (view.getTag() == null) {
             viewHolder = new ViewHolder();
-            viewHolder.textView = (TextView) view.findViewById(R.id.followupQuestion);
             viewHolder.linearLayout = (LinearLayout) view.findViewById(R.id.followupOptions);
             viewHolder.editText = (EditText) view.findViewById(R.id.followupComments);
             view.setTag(viewHolder);
@@ -67,7 +67,6 @@ public class FollowupCard extends BaseCard {
         }
 
         final FollowupTask.FollowupData followupData = followupTask.getPayload();
-        viewHolder.textView.setText(followupData.getTitle());
 
         LinearLayout list = viewHolder.linearLayout;
         list.removeAllViews();
@@ -77,6 +76,8 @@ public class FollowupCard extends BaseCard {
             View ratingContainer = li.inflate(R.layout.rating_bar, parent, false);
 
             RatingBar ratingBar = (RatingBar)ratingContainer.findViewById(R.id.rating_bar);
+            LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+            stars.getDrawable(2).setColorFilter(0xff42BD41, PorterDuff.Mode.SRC_ATOP);
             ratingBar.setNumStars(followupData.getOptions().size());
             ratingBar.setRating(0);
             ratingBar.setStepSize(1);
@@ -88,7 +89,7 @@ public class FollowupCard extends BaseCard {
                         selected = new ArrayList<Integer>();
                     }
                     selected.clear();
-                    selected.add((int)rating);
+                    selected.add((int) rating);
                     followupTask.getPayload().setSelected(selected);
                 }
             });
@@ -125,7 +126,8 @@ public class FollowupCard extends BaseCard {
                 RadioGroup rg = new RadioGroup(getContext());
                 for (int i = 0; i < followupData.getOptions().size(); i++) {
                     String str = followupData.getOptions().get(i);
-                    RadioButton rb = new RadioButton(getContext());
+                    LayoutInflater li = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    RadioButton rb = (RadioButton) li.inflate(R.layout.radio_button, null);
                     rb.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -148,25 +150,23 @@ public class FollowupCard extends BaseCard {
                 list.addView(rg);
             }
         }
-        if (followupData.isGetComments()){
-            viewHolder.editText.setVisibility(View.VISIBLE);
-            viewHolder.editText.addTextChangedListener(new TextWatcher() {
+        viewHolder.editText.setVisibility(View.VISIBLE);
+        viewHolder.editText.addTextChangedListener(new TextWatcher() {
 
-                public void afterTextChanged(Editable s) {
-                }
+            public void afterTextChanged(Editable s) {
+            }
 
-                public void beforeTextChanged(CharSequence s, int start,
-                                              int count, int after) {
-                }
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
 
-                public void onTextChanged(CharSequence s, int start,
-                                          int before, int count) {
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
 
-                    followupTask.getPayload().setComment(s.toString());
-                }
-            });
-            viewHolder.editText.setText(followupTask.getPayload().getComment());
-        }
+                followupTask.getPayload().setComment(s.toString());
+            }
+        });
+        viewHolder.editText.setText(followupTask.getPayload().getComment());
 
         setupCardFooter(view, followupTask);
     }
@@ -190,7 +190,6 @@ public class FollowupCard extends BaseCard {
         }
     }
     private static class ViewHolder extends BaseViewHolder {
-        TextView textView;
         LinearLayout linearLayout;
         EditText editText;
     }

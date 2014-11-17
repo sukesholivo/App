@@ -6,13 +6,6 @@
     android:paddingRight="10dp"
     style="@style/card_layout">
 
-    <TextView
-        android:id="@+id/followupQuestion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_m"
-        android:layout_marginBottom="10dp"
-        />
     <LinearLayout
         android:id="@+id/followupOptions"
         android:orientation="vertical"
