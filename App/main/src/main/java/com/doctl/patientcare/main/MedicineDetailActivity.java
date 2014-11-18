@@ -2,6 +2,7 @@ package com.doctl.patientcare.main;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.ImageView;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import com.doctl.patientcare.main.controls.ProgressBarAnimation;
 import com.doctl.patientcare.main.om.medicines.MedicineDetailAdapter;
 import com.doctl.patientcare.main.om.medicines.Prescription;
+import com.doctl.patientcare.main.services.HTTPServiceHandler;
+import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -43,12 +46,17 @@ public class MedicineDetailActivity extends BaseActivity {
     }
 
     private String downloadPrescriptionData(String prescriptionId) {
-        return Utils.parsonJsonFromFile(this, R.raw.prescription);
+        String url = Constants.PRESCRIPTION_URL + prescriptionId;
+        HTTPServiceHandler serviceHandler = new HTTPServiceHandler(this);
+        String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.GET, null, null);
+        Log.d(TAG, response);
+        return response;
     }
 
     private Prescription parsePrescriptionData(String jsonStr){
         JsonParser parser = new JsonParser();
         JsonObject jsonObject = parser.parse(jsonStr).getAsJsonObject();
+
         return new Gson().fromJson(jsonObject, Prescription.class);
     }
 
@@ -60,7 +68,7 @@ public class MedicineDetailActivity extends BaseActivity {
         doctorAddress.setText(prescription.getDoctor().getAddress());
 
         Picasso.with(this)
-                .load(prescription.getDoctor().getProfilePicUrl())
+                .load(Constants.SERVER_URL + prescription.getDoctor().getProfilePicUrl())
                 .into((ImageView) findViewById(R.id.doctorPic));
 
         TextView prescriptionDate = (TextView) findViewById(R.id.dateText);

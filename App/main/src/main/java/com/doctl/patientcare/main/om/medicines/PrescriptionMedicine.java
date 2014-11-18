@@ -27,17 +27,23 @@ public class PrescriptionMedicine {
     @SerializedName("type")
     private Medicine.MedicineType type;
 
+    @SerializedName("days")
+    private int days;
+
+    @SerializedName("beforeMeal")
+    private boolean beforeMeal;
+
     @SerializedName("dosageUnit")
     private String dosageUnit;
 
     @SerializedName("notes")
     private String notes;
 
-    @SerializedName("daysInterval")
+    @SerializedName("frequency")
     private int daysInterval;
 
     @SerializedName("dosage")
-    private ArrayList<Dosage> dosage;
+    private Dosage dosage;
 
     @SerializedName("sideEffect")
     private String sideEffect;
@@ -78,8 +84,16 @@ public class PrescriptionMedicine {
         return daysInterval;
     }
 
-    public ArrayList<Dosage> getDosage() {
+    public Dosage getDosage() {
         return dosage;
+    }
+
+    public boolean isBeforeMeal() {
+        return beforeMeal;
+    }
+
+    public int getDays() {
+        return days;
     }
 
     public String getSideEffect() {
@@ -87,21 +101,35 @@ public class PrescriptionMedicine {
     }
 
     public class Dosage{
-        @SerializedName("when")
-        private String when;
+        @SerializedName("night")
+        private String night;
 
-        @SerializedName("quantity")
-        private int quantity;
+        @SerializedName("noon")
+        private String noon;
+
+        @SerializedName("evening")
+        private String evening;
+
+        @SerializedName("morning")
+        private String morning;
 
         @SerializedName("constraint")
         private String constraint;
 
-        public String getWhen() {
-            return when;
+        public String getNight() {
+            return night;
         }
 
-        public int getQuantity() {
-            return quantity;
+        public String getNoon() {
+            return noon;
+        }
+
+        public String getEvening() {
+            return evening;
+        }
+
+        public String getMorning() {
+            return morning;
         }
 
         public String getConstraint() {

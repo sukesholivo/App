@@ -15,6 +15,18 @@ public class UserProfile {
     @SerializedName("profilePicUrl")
     private String profilePicUrl;
 
+    @SerializedName("email")
+    private String email;
+
+    @SerializedName("phone")
+    private String phone;
+
+    @SerializedName("dob")
+    private String dob;
+
+    @SerializedName("sex")
+    private String sex;
+
     @SerializedName("address")
     private String address;
 
