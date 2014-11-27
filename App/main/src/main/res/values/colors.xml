@@ -45,5 +45,5 @@
     <!--Transparent color here-->
     <color name="transparent">#00000000</color>
 
-    <color name="drawer_background">#111</color>
+    <color name="drawer_background">#ffff</color>
 </resources>
