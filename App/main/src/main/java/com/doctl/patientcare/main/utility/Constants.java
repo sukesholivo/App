@@ -10,4 +10,5 @@ public final class Constants {
     public final static String PATIENT_ID = "80bcd1c8-6a34-440e-a871-0ccc61a64806";
     public final static String CARDS_URL = SERVER_URL + "/card/v1.0/"+ PATIENT_ID +"/cards/";
     public final static String PRESCRIPTION_URL = SERVER_URL + "/patient/v1.0/patients/prescription/";
+    public final static String PROGRESS_DATA_URL = SERVER_URL + "/patient/v1.0/patients/progress/" + PATIENT_ID;
 }

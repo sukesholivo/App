@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,9 +22,17 @@ import android.widget.Toast;
 import com.doctl.patientcare.main.controls.ProgressWheel;
 import com.doctl.patientcare.main.fragments.BaseFragment;
 import com.doctl.patientcare.main.fragments.CardListFragment;
+import com.doctl.patientcare.main.om.dashboard.Dashboard;
+import com.doctl.patientcare.main.services.HTTPServiceHandler;
+import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.GetServerAuthTokenAsync;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.File;
+import java.text.DecimalFormat;
+import java.util.Date;
 
 import it.gmariotti.cardslib.library.utils.BitmapUtils;
 
@@ -34,7 +43,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setPoints();
+        new GetProgress().execute();
         setCards();
         setupGCMRegistration();
         setupServerAuthToken();
@@ -137,10 +146,43 @@ public class MainActivity extends BaseActivity {
 //        progress.setVisibility(b);
     }
 
-    private void setPoints() {
-        updateAdherencePercentage(80);
-        updateTotalPoints(600);
-        setTreatmentProgress(40,90);
+    private void getProgress(){
+        String progressData = downloadProgressData();
+        final Dashboard dashboard = parseProgressData(progressData);
+        runOnUiThread(new Runnable() {
+            public void run() {
+                updateProgress(dashboard);
+            }
+        });
+    }
+
+    private String downloadProgressData() {
+        HTTPServiceHandler serviceHandler = new HTTPServiceHandler(this);
+        return serviceHandler.makeServiceCall(Constants.PROGRESS_DATA_URL, HTTPServiceHandler.HTTPMethod.GET, null, null);
+    }
+
+    private Dashboard parseProgressData(String progressData){
+        JsonParser parser = new JsonParser();
+        JsonObject progressJson = parser.parse(progressData).getAsJsonObject();
+        return new Gson().fromJson(progressJson, Dashboard.class);
+    }
+
+    private void updateProgress(Dashboard dashboardData) {
+        updateAdherencePercentage(dashboardData.getAdherence().intValue());
+
+        updateTotalPoints(dashboardData.getPoints());
+
+        long milliSecondsInDay = 24 * 60 * 60 * 1000;
+        Date start = dashboardData.getProgress().getStartTime();
+        Date end = dashboardData.getProgress().getEndTime();
+        long treatmentDays = (end.getTime() - start.getTime())/ milliSecondsInDay;
+        long pendingDays = (end.getTime() - new Date().getTime())/ milliSecondsInDay;
+        setTreatmentProgress((int) pendingDays, (int) treatmentDays);
+
+        setVitalValue(dashboardData.getVital().getTimeStamp(),
+                        dashboardData.getVital().getValue1(),
+                        dashboardData.getVital().getValue2(),
+                        dashboardData.getVital().getUnit1());
     }
 
     private void updateAdherencePercentage(int per){
@@ -164,6 +206,43 @@ public class MainActivity extends BaseActivity {
         progressText.setText(progress + "/" + max + " DAYS");
     }
 
+    private void setVitalValue(Date timestamp, Double value1, Double value2, String unit){
+        DecimalFormat df = new DecimalFormat("###.#");
+        TextView vitalValue1 = (TextView) findViewById(R.id.vitalValue1);
+        vitalValue1.setText(df.format(value1));
+
+        TextView vitalValue2 = (TextView) findViewById(R.id.vitalValue2);
+        TextView vitalValueSeparator = (TextView) findViewById(R.id.vitalValueSeparator);
+        if (value2 != null) {
+            vitalValue2.setVisibility(View.VISIBLE);
+            vitalValueSeparator.setVisibility(View.VISIBLE);
+            vitalValue2.setText(df.format(value2));
+        } else {
+            vitalValue2.setVisibility(View.GONE);
+            vitalValueSeparator.setVisibility(View.GONE);
+        }
+
+        TextView vitalValueUnit = (TextView) findViewById(R.id.vitalValueUnit);
+        vitalValueUnit.setText(unit);
+
+        TextView vitalLastEntryDate = (TextView) findViewById(R.id.vitalLastEntryDate);
+        String lastVitalEntryTimeString = "";
+        long totalSecond = (new Date().getTime() - timestamp.getTime())/ 1000;
+        if (totalSecond < 60){ // Less than one min
+            lastVitalEntryTimeString = totalSecond + (totalSecond == 1 ? " SEC AGO" : " SECS AGO");
+        } else if (totalSecond < 60 * 60){ // less than one hour
+            long mins = totalSecond / 60;
+            lastVitalEntryTimeString = mins + (mins == 1 ? " MIN AGO" : " MINS AGO");
+        } else if (totalSecond < 60 * 60 * 24){ // less than one day
+            long hour = totalSecond / (60 * 60);
+            lastVitalEntryTimeString = hour + (hour == 1 ? " HOUR AGO" :  " HOURS AGO");
+        } else { // More than one day
+            long day = totalSecond / (60 * 60 * 24);
+            lastVitalEntryTimeString = day + (day == 1 ? " DAY AGO" :  " DAYS AGO");
+        }
+        vitalLastEntryDate.setText(lastVitalEntryTimeString);
+    }
+
     private void setCards(){
         BaseFragment mBaseFragment = selectFragment();
         openFragment(mBaseFragment);
@@ -182,6 +261,25 @@ public class MainActivity extends BaseActivity {
             fragmentTransaction.replace(R.id.fragment_main, baseFragment);
             //fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
+        }
+    }
+
+    private class GetProgress extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            getProgress();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
         }
     }
 }

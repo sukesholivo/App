@@ -140,7 +140,9 @@ public class Vitals {
         JSONObject data = new JSONObject();
         data.put("timeStamp", this.getTimestamp());
         data.put("value1", this.getValue1());
-        data.put("value2", this.getValue1());
+        if (this.getValue2() != null) {
+            data.put("value2", this.getValue2());
+        }
         return data;
     }
 }
