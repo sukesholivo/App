@@ -124,6 +124,7 @@ public class HTTPServiceHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Log.d(TAG, response);
         return response;
     }
 

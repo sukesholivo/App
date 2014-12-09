@@ -149,8 +149,8 @@
                     android:id="@+id/vitalLastEntryDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textColor="@color/dashboard_text_secondary"
+                    android:textSize="12sp"
+                    android:textColor="@color/dashboard_text_tertiary"
                     android:layout_below="@id/vitalValue1"
                     android:layout_centerHorizontal="true"/>
             </RelativeLayout>

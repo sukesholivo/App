@@ -65,8 +65,9 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
+//        TODO: Removing menu as of now
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -176,8 +177,13 @@ public class MainActivity extends BaseActivity {
         Date start = dashboardData.getProgress().getStartTime();
         Date end = dashboardData.getProgress().getEndTime();
         long treatmentDays = (end.getTime() - start.getTime())/ milliSecondsInDay;
-        long pendingDays = (end.getTime() - new Date().getTime())/ milliSecondsInDay;
-        setTreatmentProgress((int) pendingDays, (int) treatmentDays);
+        long completedDays = (new Date().getTime() - start.getTime())/ milliSecondsInDay;
+        if (completedDays < 0 ) {
+            completedDays = 0;
+        } else if (completedDays > treatmentDays ){
+            completedDays = treatmentDays;
+        }
+        setTreatmentProgress((int) completedDays, (int) treatmentDays);
 
         setVitalValue(dashboardData.getVital().getTimeStamp(),
                         dashboardData.getVital().getValue1(),
