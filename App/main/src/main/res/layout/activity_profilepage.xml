@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:id="@+id/activityRoot">
+
+    <TextView
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="Username:"
+        android:id="@+id/tvUsername"
+        android:tag="Mandatory_Field"
+        android:layout_alignParentLeft="true"
+        android:textSize="20sp"
+        android:textColor="@color/card_body_text_main"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dip"
+        android:gravity="center_vertical" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:inputType="textEmailAddress"
+        android:hint=" username"
+        android:textSize="20sp"
+        android:id="@+id/etUsername"
+        android:layout_alignTop="@id/tvUsername"
+        android:layout_toRightOf="@id/tvUsername"
+        style="@style/edit_text_box"/>
+
+    <TextView
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="Password:"
+        android:id="@+id/tvPassword"
+        android:tag="Mandatory_Field"
+        android:layout_alignParentLeft="true"
+        android:textSize="20sp"
+        android:textColor="@color/card_body_text_main"
+        android:layout_below="@id/tvUsername"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dip"
+        android:gravity="center_vertical" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:inputType="textPassword"
+        android:textSize="20sp"
+        android:id="@+id/etPassword"
+        android:layout_alignTop="@id/tvPassword"
+        android:layout_toRightOf="@id/tvPassword"
+        style="@style/edit_text_box"
+        />
+
+    <Button
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginTop="20dip"
+        android:id="@+id/LoginButton"
+        android:text="Login"
+        android:textColor="#555555"
+        android:layout_below="@id/tvPassword"
+        android:layout_alignRight="@id/etPassword"
+    />
+    <RelativeLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+    </RelativeLayout>
+</RelativeLayout>

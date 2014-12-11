@@ -1,5 +1,6 @@
 package com.doctl.patientcare.main;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -7,6 +8,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.AsyncTask;
@@ -46,14 +48,19 @@ public class MainActivity extends BaseActivity {
         new GetProgress().execute();
         setCards();
         setupGCMRegistration();
-        setupServerAuthToken();
+//        setupServerAuthToken();
     }
 
-    public void setupServerAuthToken() {
-        String username = "doctor@doctl.com";
-        String password = "test";
-        new GetServerAuthTokenAsync(MainActivity.this).execute(username, password);
-    }
+//    public void setupServerAuthToken() {
+//        Context context = MainActivity.this;
+//        SharedPreferences sp = context.getSharedPreferences("auth_prefs", Activity.MODE_PRIVATE);
+//        String ServerAccessToken = sp.getString("serveraccesstoken", "");
+//        if(ServerAccessToken.isEmpty()) {
+//            Intent intent = new Intent(context, ProfilePageActivity.class);
+//            context.startActivity(intent);
+//        }
+//        return;
+//    }
 
     public void setupGCMRegistration() {
         Context appContext = this.getApplicationContext();

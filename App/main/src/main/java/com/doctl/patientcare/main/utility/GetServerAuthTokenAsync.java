@@ -1,9 +1,18 @@
 package com.doctl.patientcare.main.utility;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.Toast;
+
+import com.doctl.patientcare.main.MainActivity;
+import com.doctl.patientcare.main.R;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.NameValuePair;
@@ -35,7 +44,8 @@ import java.util.List;
 public class GetServerAuthTokenAsync extends AsyncTask<String, String, String> {
 
     private Context c;
-
+    private String err = "";
+    private int status = 0;
     public GetServerAuthTokenAsync(Context c) {
         this.c = c;
     }
@@ -43,15 +53,15 @@ public class GetServerAuthTokenAsync extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... params) {
         String result = null;
-
         //Extract the auth token from user preferences
         SharedPreferences sp = c.getSharedPreferences("auth_prefs", Activity.MODE_PRIVATE);
         String ServerAccessToken = sp.getString("serveraccesstoken", "");
 
         if(ServerAccessToken.isEmpty()) {
             try {
-                result = "Error: device reg id expected in params";
-                if (params.length > 0) {
+                err = "Error: device reg id expected in params";
+                if (params.length > 1)
+                {
                     String registration = params[0];
                     HttpParams httpParams = new BasicHttpParams();
                     httpParams.setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
@@ -76,13 +86,13 @@ public class GetServerAuthTokenAsync extends AsyncTask<String, String, String> {
                         response = client.execute(request);
                     } catch (ConnectTimeoutException e) {
                         e.printStackTrace();
-                        result = "NetError: ConnectionTimedOut";
+                        err = "NetError: ConnectionTimedOut";
                     } catch (ClientProtocolException e) {
                         e.printStackTrace();
-                        result = "NetError: Some error, please try again later";
+                        err = "NetError: Some error, please try again later";
                     } catch (IOException e) {
                         e.printStackTrace();
-                        result = "NetError: Please report this error to DocTL team";
+                        err = "NetError: Please report this error to DocTL team";
                     }
 
                     if (response != null) {
@@ -94,19 +104,32 @@ public class GetServerAuthTokenAsync extends AsyncTask<String, String, String> {
                             sb.append(line).append("\n");
                         }
 
-                        result = sb.toString();
-                        JSONTokener tokener = new JSONTokener(result);
+                        String temp = sb.toString();
+                        JSONTokener tokener = new JSONTokener(temp);
                         JSONObject jsonResponse = new JSONObject(tokener);
 
-                        String ServerAcessToken = jsonResponse.getString("token");
-
-                        SharedPreferences.Editor editor = sp.edit();
-                        editor.putString("serveraccesstoken", ServerAcessToken);
-                        editor.commit();
+                        if(jsonResponse.has("non_field_errors"))
+                        {
+                            err = "Error: Unable to login with provided credentials.";
+                            status = 1;
+                        }
+                        else if(jsonResponse.has("token"))
+                        {
+                            String ServerAcessToken = jsonResponse.getString("token");
+                            SharedPreferences.Editor editor = sp.edit();
+                            editor.putString("serveraccesstoken", ServerAcessToken);
+                            editor.commit();
+                            result = ServerAcessToken;
+                        }
+                        else
+                        {
+                            throw new Exception("Error:Invalid response");
+                        }
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                err = "Error: "+e.toString();
             }
         }
 
@@ -115,10 +138,29 @@ public class GetServerAuthTokenAsync extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String result) {
+        //Unset the loader
+        Activity activity = (Activity)c;
+        activity.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
+        //Check for results
         if (result != null) {
-            // do something
+            Intent intent = new Intent(c, MainActivity.class);
+            c.startActivity(intent);
         } else {
-            // error occured
+            //show modal for error
+            AlertDialog.Builder alert = new AlertDialog.Builder(c);
+            String title = "Error occured: "+err+". Try again after sometime. For repeated error, please write to contact@DOCTL.com.";
+            if(status == 1)
+            {
+                title = "Invalid Credentials Provided. Please try again with correct credentials.";
+            }
+            alert.setTitle(title);
+            alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    dialog.cancel();
+                }
+            });
+            alert.show();
         }
     }
 }
