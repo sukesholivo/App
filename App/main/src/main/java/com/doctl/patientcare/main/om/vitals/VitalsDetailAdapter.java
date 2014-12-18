@@ -8,21 +8,21 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.doctl.patientcare.main.R;
-import com.doctl.patientcare.main.VitalDetailActivity;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
  * Created by Administrator on 6/22/2014.
  */
-public class VitalsDetailAdapter extends ArrayAdapter<VitalDetailActivity.VitalDetailData> {
-    public VitalsDetailAdapter(Context context, List<VitalDetailActivity.VitalDetailData> objects) {
+public class VitalsDetailAdapter extends ArrayAdapter<VitalDetailData.VitalDetailValue> {
+    public VitalsDetailAdapter(Context context, List<VitalDetailData.VitalDetailValue> objects) {
         super(context, 0, objects);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        VitalDetailActivity.VitalDetailData item = getItem(position);
+        VitalDetailData.VitalDetailValue item = getItem(position);
         View view = convertView;
         if (view == null) {
             LayoutInflater li =
@@ -31,33 +31,39 @@ public class VitalsDetailAdapter extends ArrayAdapter<VitalDetailActivity.VitalD
             view = li.inflate(R.layout.vital_entry_list_item, parent, false);
         }
 
-        int vitalEntryValue1 = item.getValue1();
-        TextView vitalEntry1 = (TextView)view.findViewById(R.id.vitalEntry1);
+        Double vitalEntryValue1 = item.getValue1();
+        TextView vitalEntry1 = (TextView)view.findViewById(R.id.vitalData1);
         vitalEntry1.setText("" + vitalEntryValue1);
         vitalEntry1.setTextColor(vitalEntryValue1 < 100 ?
                 getContext().getResources().getColor(R.color.vital_fine)
                 :getContext().getResources().getColor(R.color.vital_over));
 
 
-        int vitalEntryValue2 = item.getValue2();
-        TextView vitalEntry2 = (TextView)view.findViewById(R.id.vitalEntry2);
+        Double vitalEntryValue2 = item.getValue2();
+        TextView vitalEntry2 = (TextView)view.findViewById(R.id.vitalData2);
         vitalEntry2.setText("" + vitalEntryValue2);
         vitalEntry2.setTextColor(vitalEntryValue1 < 100 ?
                 getContext().getResources().getColor(R.color.vital_fine)
                 :getContext().getResources().getColor(R.color.vital_over));
 
 
-        TextView vitalEntryTime1 = (TextView)view.findViewById(R.id.vitalEntryTime1);
-        vitalEntryTime1.setText("" + item.getTime1());
+        TextView vitalEntryTime1 = (TextView)view.findViewById(R.id.vitalDataCondition1);
+        vitalEntryTime1.setText("");
 
-        TextView vitalEntryTime2 = (TextView)view.findViewById(R.id.vitalEntryTime2);
-        vitalEntryTime2.setText("" + item.getTime2());
+        TextView vitalEntryTime2 = (TextView)view.findViewById(R.id.vitalDataCondition2);
+        vitalEntryTime2.setText("");
 
-//        TextView vitalEntryDay = (TextView)view.findViewById(R.id.vitalEntryDay);
-//        vitalEntryDay.setText("" + item.getReadingDay());
+        Calendar c = Calendar.getInstance();
+        c.setTime(item.getTime());
+
+        String[] days = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
+        String[] months = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"};
+
+        TextView vitalEntryDay = (TextView)view.findViewById(R.id.vitalEntryDay);
+        vitalEntryDay.setText(days[c.get(Calendar.DAY_OF_WEEK)]);
 
         TextView vitalEntryDate = (TextView)view.findViewById(R.id.vitalEntryDate);
-        vitalEntryDate.setText("" + item.getDate());
+        vitalEntryDate.setText(c.get(Calendar.DAY_OF_MONTH) + " " + months[c.get(Calendar.MONTH)]);
         return view;
     }
 }

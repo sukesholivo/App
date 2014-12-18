@@ -1,6 +1,7 @@
 package com.doctl.patientcare.main.Cards;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.doctl.patientcare.main.R;
+import com.doctl.patientcare.main.VitalDetailActivity;
 import com.doctl.patientcare.main.om.BaseTask;
 import com.doctl.patientcare.main.om.GraphData;
 import com.doctl.patientcare.main.om.vitals.VitalTask;
@@ -168,11 +170,10 @@ public class VitalCard extends BaseCard {
             @Override
             public void onClick(Card card, View view) {
                 Log.d("postInitCard", "Card clicked " + card.getId());
-//                TODO: Enable Vital detail later with new UI.
-//                Context context = getContext();
-//                Intent intent = new Intent(context, VitalDetailActivity.class);
-//                intent.putExtra("vitalId", vitalTask.getPayload().getVitalId());
-//                context.startActivity(intent);
+                Context context = getContext();
+                Intent intent = new Intent(context, VitalDetailActivity.class);
+                intent.putExtra("vitalId", vitalTask.getPayload().getVitalId());
+                context.startActivity(intent);
             }
         });
     }

@@ -1,49 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/vitalEntry1"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_xxxl"
-        android:gravity="center"
-        />
-    <TextView
-        android:id="@+id/vitalEntry2"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_alignParentRight="true"
-        android:textSize="@dimen/text_size_xxxl"
-        />
-    <TextView
-        android:id="@+id/vitalEntryTime1"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:gravity="center|top"
-        android:textSize="@dimen/text_size_xs"
-        android:layout_alignLeft="@id/vitalEntry1"
-        android:layout_below="@id/vitalEntry1"
-        android:textColor="#999999"
-        android:layout_marginBottom="5dp"
-        />
-    <TextView
-        android:id="@+id/vitalEntryTime2"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:gravity="center|top"
-        android:textSize="@dimen/text_size_xs"
-        android:textColor="#999999"
-        android:layout_alignLeft="@id/vitalEntry2"
-        android:layout_below="@id/vitalEntry2"
-        android:layout_marginBottom="5dp"
-        />
+android:layout_width="match_parent" android:layout_height="match_parent">
     <TextView
         android:id="@+id/vitalEntryDay"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:gravity="center"
         android:layout_marginTop="10dp"
         android:textSize="@dimen/text_size_s"
@@ -57,6 +19,44 @@
         android:textSize="@dimen/text_size_s"
         android:textColor="#ABABAB"
         android:layout_alignLeft="@id/vitalEntryDay"
-        android:layout_below="@id/vitalEntryDay"
+        android:layout_below="@id/vitalEntryDay"/>
+    <TextView
+        android:id="@+id/vitalData1"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_xxxl"
+        android:gravity="center"
+        android:layout_toRightOf="@id/vitalEntryDay"
+        />
+    <TextView
+        android:id="@+id/vitalDataCondition1"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:gravity="center|top"
+        android:textSize="@dimen/text_size_xs"
+        android:layout_alignLeft="@id/vitalData1"
+        android:layout_below="@id/vitalData1"
+        android:textColor="#999999"
+        android:layout_marginBottom="5dp"
+        />
+
+    <TextView
+        android:id="@+id/vitalData2"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_xxxl"
+        android:gravity="center"
+        android:layout_toRightOf="@id/vitalData1"
+        />
+    <TextView
+        android:id="@+id/vitalDataCondition2"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:gravity="center|top"
+        android:textSize="@dimen/text_size_xs"
+        android:layout_alignLeft="@id/vitalData2"
+        android:layout_below="@id/vitalData2"
+        android:textColor="#999999"
+        android:layout_marginBottom="5dp"
         />
 </RelativeLayout>

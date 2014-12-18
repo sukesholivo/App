@@ -40,7 +40,7 @@ import it.gmariotti.cardslib.library.utils.BitmapUtils;
 
 public class MainActivity extends BaseActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
-
+    static boolean active = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +49,18 @@ public class MainActivity extends BaseActivity {
         setCards();
         setupGCMRegistration();
 //        setupServerAuthToken();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        active = true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        active = false;
     }
 
 //    public void setupServerAuthToken() {

@@ -9,8 +9,9 @@ import com.doctl.patientcare.main.om.GraphData;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
+import org.achartengine.chart.PointStyle;
+import org.achartengine.model.TimeSeries;
 import org.achartengine.model.XYMultipleSeriesDataset;
-import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 import org.apache.http.NameValuePair;
@@ -126,17 +127,17 @@ public final class Utils {
         multiRenderer.setApplyBackgroundColor(true);
         multiRenderer.setBackgroundColor(Color.parseColor("#00010101"));
         multiRenderer.setMarginsColor(Color.parseColor("#00010101"));
-        multiRenderer.setMargins(new int[]{5,2,-15,0});
         multiRenderer.setShowLegend(false);
         multiRenderer.setShowAxes(false);
-        multiRenderer.setXLabels(0);
-        multiRenderer.setYLabels(0);
+        multiRenderer.setXTitle("Days");
+        multiRenderer.setShowGrid(true);
+        multiRenderer.setGridColor(Color.WHITE);
+
         multiRenderer.setZoomEnabled(false, false);
         multiRenderer.setPanEnabled(false, false);
-
         for (GraphData g : graph) {
             if (g.getX()!= null) {
-            XYSeries series = new XYSeries(g.getTitle());
+                TimeSeries series = new TimeSeries(g.getTitle());
                 for (int j = 0; j < g.getX().size(); j++) {
                     series.add(g.getX().get(j), g.getY().get(j));
                 }
@@ -144,10 +145,13 @@ public final class Utils {
                 XYSeriesRenderer graphRenderer = new XYSeriesRenderer();
                 graphRenderer.setColor(g.getLineColor());
                 graphRenderer.setLineWidth(g.getLineWidth());
+                graphRenderer.setPointStyle(PointStyle.CIRCLE);
+                graphRenderer.setPointStrokeWidth(50);
+                graphRenderer.setFillPoints(true);
                 multiRenderer.addSeriesRenderer(graphRenderer);
                 seriesAdded = true;
             }
         }
-        return seriesAdded? ChartFactory.getLineChartView(context, dataset, multiRenderer): null;
+        return seriesAdded? ChartFactory.getTimeChartView(context, dataset, multiRenderer, "dd-MMM-yyyy"): null;
     }
 }

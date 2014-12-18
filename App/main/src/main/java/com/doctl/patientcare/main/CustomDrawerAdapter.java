@@ -1,14 +1,12 @@
 package com.doctl.patientcare.main;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.List;
@@ -64,6 +62,9 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem> {
             drawerHolder.profileLayout.setVisibility(LinearLayout.VISIBLE);
             drawerHolder.headerLayout.setVisibility(LinearLayout.GONE);
             drawerHolder.itemLayout.setVisibility(LinearLayout.GONE);
+            drawerHolder.profileName.setText("Vishal Chitravanshi");
+            drawerHolder.profileEmail.setText("vishal@doctl.com");
+            drawerHolder.profilePic.setImageResource(R.drawable.profile_dummy);
         } else if (dItem.getTitle() != null) {
             drawerHolder.profileLayout.setVisibility(LinearLayout.GONE);
             drawerHolder.headerLayout.setVisibility(LinearLayout.VISIBLE);

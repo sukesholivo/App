@@ -56,7 +56,6 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
  */
 public class CardListFragment extends BaseFragment implements OnRefreshListener {
     private static final String TAG = CardListFragment.class.getSimpleName();
-    private static String ANDROID_DEVELOPER_KEY = "AIzaSyAWocbee6JmNy1KShjdNWy_v8_xEq0-gE0";
     PullToRefreshLayout mPullToRefreshLayout;
     ArrayList<Card> cards;
     CustomCardArrayAdapter mCardArrayAdapter;
@@ -270,17 +269,20 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
     }
 
     private void resetCardList(final ArrayList<BaseCard> cardArrayList){
-        getActivity().runOnUiThread(new Runnable() {
-            public void run() {
-                if (mCardArrayAdapter == null){
-                    Log.d(TAG, "mCardArrayAdapter is null");
+        Activity activity = getActivity();
+        if (activity !=null) {
+            activity.runOnUiThread(new Runnable() {
+                public void run() {
+                    if (mCardArrayAdapter == null) {
+                        Log.d(TAG, "mCardArrayAdapter is null");
+                    }
+                    mCardArrayAdapter.clear();
+                    mCardArrayAdapter.addAll(cardArrayList);
+                    mCardArrayAdapter.setEnableUndo(true);
+                    mCardArrayAdapter.notifyDataSetChanged();
                 }
-                mCardArrayAdapter.clear();
-                mCardArrayAdapter.addAll(cardArrayList);
-                mCardArrayAdapter.setEnableUndo(true);
-                mCardArrayAdapter.notifyDataSetChanged();
-            }
-        });
+            });
+        }
     }
 
     @Override

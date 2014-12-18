@@ -1,24 +1,34 @@
 package com.doctl.patientcare.main;
 
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.doctl.patientcare.main.om.vitals.VitalTask;
+import com.doctl.patientcare.main.om.GraphData;
+import com.doctl.patientcare.main.om.vitals.VitalDetailData;
 import com.doctl.patientcare.main.om.vitals.VitalsDetailAdapter;
+import com.doctl.patientcare.main.services.HTTPServiceHandler;
+import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.annotations.SerializedName;
 
+import org.achartengine.GraphicalView;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VitalDetailActivity extends BaseActivity {
     private static final String TAG = VitalDetailActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +39,12 @@ public class VitalDetailActivity extends BaseActivity {
             return;
         }
         String vitalId = bundle.getString("vitalId");
-        new GetVitals().execute(vitalId);
+        String vitalType = bundle.getString("vitalType");
+        String vitalName = bundle.getString("vitalName");
+        if (vitalName != null) {
+            getActionBar().setTitle(vitalName);
+        }
+        new GetVitals().execute(vitalId, vitalType);
     }
 
     @Override
@@ -39,36 +54,35 @@ public class VitalDetailActivity extends BaseActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    private String downloadVitalsData(String vitalId) {
-        return Utils.parsonJsonFromFile(this, R.raw.vitals);
+    private String downloadVitalsData(String vitalId, String vitalType) {
+        String url = Constants.VITAL_DETAIL_URL;
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        if (vitalId != null) {
+            params.add(new BasicNameValuePair("vitalId", vitalId));
+        } else if (vitalType != null) {
+            params.add(new BasicNameValuePair("vitalType", vitalType));
+        }
+        HTTPServiceHandler serviceHandler = new HTTPServiceHandler(this);
+        String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.GET, params, null);
+        Log.d(TAG, response);
+        return response;
     }
 
-    private String downloadVitalsData1() {
-        return Utils.parsonJsonFromFile(this, R.raw.vitals1);
-    }
-
-    private VitalTask.VitalData parseVitalsData(String jsonStr){
+    private VitalDetailData parseVitalsData(String jsonStr){
         JsonParser parser = new JsonParser();
         JsonObject jsonObject = parser.parse(jsonStr).getAsJsonObject();
-        return new Gson().fromJson(jsonObject, VitalTask.VitalData.class);
+        return new Gson().fromJson(jsonObject, VitalDetailData.class);
     }
 
-    private VitalDetailData[] parseVitalsData1(String jsonStr){
-//        JsonParser parser = new JsonParser();
-//        JsonArray jsonArray = parser.parse(jsonStr).getAsJsonArray();
-        return new Gson().fromJson(jsonStr, VitalDetailData[].class);
-    }
+    private void refreshActivity(String vitalId, String vitalType) {
+        String jsonStr = downloadVitalsData(vitalId, vitalType);
+        final VitalDetailData vitalData =  parseVitalsData(jsonStr);
 
-    private void refreshActivity(String vitalId) {
-        String jsonStr = downloadVitalsData(vitalId);
-        final VitalTask.VitalData vitalData =  parseVitalsData(jsonStr);
 
-        String jsonStr1 = downloadVitalsData1();
-        final VitalDetailData[] vitalData1 = parseVitalsData1(jsonStr1);
         runOnUiThread(new Runnable() {
             public void run() {
                 populateVitalGraphData(vitalData);
-                populateVitalListData(vitalData1);
+                populateVitalListData(vitalData);
             }
         });
     }
@@ -77,7 +91,7 @@ public class VitalDetailActivity extends BaseActivity {
 
         @Override
         protected Void doInBackground(String... arg0) {
-            refreshActivity(arg0[0]);
+            refreshActivity(arg0[0], arg0[1]);
             return null;
         }
 
@@ -87,62 +101,34 @@ public class VitalDetailActivity extends BaseActivity {
         }
     }
 
-    private void populateVitalGraphData(VitalTask.VitalData vitalData) {
-//        TODO: FIX this when new UI comes using new OM definition
-//        ArrayList<Vitals> vitals = vitalData.getVitals();
-//        ArrayList<GraphData> graphList = new ArrayList<GraphData>();
-//        for (Vitals vital : vitals) {
-//            GraphData graph = new GraphData(vital.getName(),
-//                    vital.getPast().getTimeStamps(),
-//                    vital.getPast().getValues(),
-//                    Color.RED,3);
-//            graphList.add(graph);
-//        }
-//        GraphicalView graphicalView = Utils.getGraph(this, graphList);
-//        LinearLayout chartContainer = (LinearLayout) findViewById(R.id.vitalDetailLineGraph);
-//        chartContainer.addView(graphicalView);
+    private void populateVitalGraphData(VitalDetailData vitalData) {
+        ArrayList<VitalDetailData.VitalDetailValue> vitals = vitalData.getData();
+        ArrayList<GraphData> graphList = new ArrayList<GraphData>();
+        ArrayList<Double> X1 = new ArrayList<Double>();
+        ArrayList<Double> Y1 = new ArrayList<Double>();
+        ArrayList<Double> X2 = new ArrayList<Double>();
+        ArrayList<Double> Y2 = new ArrayList<Double>();
+        for (VitalDetailData.VitalDetailValue vital : vitals) {
+            X1.add(Double.valueOf(vital.getTime().getTime()));
+            Y1.add(vital.getValue1());
+            if (vital.getValue2() != null) {
+                X2.add(Double.valueOf(vital.getTime().getTime()));
+                Y2.add(vital.getValue2());
+            }
+        }
+
+        GraphData graph1 = new GraphData(vitalData.getName1(), X1, Y1, Color.WHITE, 5);
+        graphList.add(graph1);
+        GraphData graph2 = new GraphData(vitalData.getName1(), X2, Y2, Color.WHITE, 5);
+        graphList.add(graph2);
+        GraphicalView graphicalView = Utils.getGraph(this, graphList);
+        LinearLayout chartContainer = (LinearLayout) findViewById(R.id.vitalDetailLineGraph);
+        chartContainer.addView(graphicalView);
     }
 
-    private void populateVitalListData(VitalDetailData[] vitalData) {
-        VitalsDetailAdapter vitals = new VitalsDetailAdapter(this, Arrays.asList(vitalData));
+    private void populateVitalListData(VitalDetailData vitalData) {
+        VitalsDetailAdapter vitals = new VitalsDetailAdapter(this, vitalData.getData());
         ListView list = (ListView)findViewById(R.id.vitalEntryList);
         list.setAdapter(vitals);
-    }
-
-    public class VitalDetailData{
-        @SerializedName("date")
-        private String date;
-
-        @SerializedName("time1")
-        private String time1;
-
-        @SerializedName("value1")
-        private int value1;
-
-        @SerializedName("time2")
-        private String time2;
-
-        @SerializedName("value2")
-        private int value2;
-
-        public String getDate() {
-            return date;
-        }
-
-        public String getTime1() {
-            return time1;
-        }
-
-        public int getValue1() {
-            return value1;
-        }
-
-        public String getTime2() {
-            return time2;
-        }
-
-        public int getValue2() {
-            return value2;
-        }
     }
 }

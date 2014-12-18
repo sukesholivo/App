@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.doctl.patientcare.main.utility.GetServerAuthTokenAsync;
@@ -38,9 +37,8 @@ public class ProfilePageActivity extends Activity  {
         if(!ServerAccessToken.isEmpty()) {
             Intent intent = new Intent(context, MainActivity.class);
             context.startActivity(intent);
+            this.finishActivity(0);
         }
-
-        return;
     }
 
     private void SetLoginListener(){

@@ -25,17 +25,32 @@ import java.util.Date;
 
 public class MedicineDetailActivity extends BaseActivity {
     public final static String TAG = MedicineDetailActivity.class.getSimpleName();
+    static boolean active = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medicine_detail);
+        getActionBar().setTitle("Prescription");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.e(TAG, "On start MedicineDetailActivity");
+        String prescriptionId = "";
+        active = true;
         Bundle bundle = getIntent().getExtras();
-        if (bundle == null){
-            return;
+        if (bundle != null){
+            prescriptionId = bundle.getString("prescriptionId");
         }
-        String prescriptionId = bundle.getString("prescriptionId");
         new GetPrescription().execute(prescriptionId);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        active = false;
     }
 
     @Override
@@ -46,7 +61,11 @@ public class MedicineDetailActivity extends BaseActivity {
     }
 
     private String downloadPrescriptionData(String prescriptionId) {
+        if (prescriptionId == null){
+            prescriptionId = "";
+        }
         String url = Constants.PRESCRIPTION_URL + prescriptionId;
+        Log.e(TAG, url);
         HTTPServiceHandler serviceHandler = new HTTPServiceHandler(this);
         String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.GET, null, null);
         Log.d(TAG, response);

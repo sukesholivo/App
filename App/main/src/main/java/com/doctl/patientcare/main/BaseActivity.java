@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -82,7 +81,6 @@ public class BaseActivity extends Activity implements ListView.OnItemClickListen
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.e("BaseActivity: ", "Item Selected with position: " + position);
         if (dataList.get(position).getTitle() == null) {
             selectItem(position);
         }
@@ -113,6 +111,7 @@ public class BaseActivity extends Activity implements ListView.OnItemClickListen
     /** Swaps fragments in the main content view */
     private void selectItem(int position) {
         boolean closeDrawer = true;
+        Intent intent;
         switch (position) {
             case 0:
                 Log.d("BaseActivity: ", "Profile Clicked");
@@ -120,9 +119,17 @@ public class BaseActivity extends Activity implements ListView.OnItemClickListen
                 break;
             case 1:
                 Log.d("BaseActivity: ", "Home Clicked");
+                if (!MainActivity.active) {
+                    intent = new Intent(this, MainActivity.class);
+                    this.startActivity(intent);
+                }
                 break;
             case 2:
                 Log.d("BaseActivity: ", "Prescription Clicked");
+                if (!MedicineDetailActivity.active) {
+                    intent = new Intent(this, MedicineDetailActivity.class);
+                    this.startActivity(intent);
+                }
                 break;
             case 3:
                 Log.d("BaseActivity: ", "Vital Clicked");
@@ -130,15 +137,31 @@ public class BaseActivity extends Activity implements ListView.OnItemClickListen
                 break;
             case 4:
                 Log.d("BaseActivity: ", "Blood Sugar Clicked");
+                intent = new Intent(this, VitalDetailActivity.class);
+                intent.putExtra("vitalType", "sugar");
+                intent.putExtra("vitalName", "Blood Sugar");
+                this.startActivity(intent);
                 break;
             case 5:
                 Log.d("BaseActivity: ", "Blood Pressure Clicked");
+                intent = new Intent(this, VitalDetailActivity.class);
+                intent.putExtra("vitalType", "bp");
+                intent.putExtra("vitalName", "Blood Pressure");
+                this.startActivity(intent);
                 break;
             case 6:
                 Log.d("BaseActivity: ", "Temperature Clicked");
+                intent = new Intent(this, VitalDetailActivity.class);
+                intent.putExtra("vitalType", "temperature");
+                intent.putExtra("vitalName", "Temperature");
+                this.startActivity(intent);
                 break;
             case 7:
                 Log.d("BaseActivity: ", "Pulse Clicked");
+                intent = new Intent(this, VitalDetailActivity.class);
+                intent.putExtra("vitalType", "pulse");
+                intent.putExtra("vitalName", "Pulse");
+                this.startActivity(intent);
                 break;
             case 8:
                 Log.d("BaseActivity: ", "Account Clicked");
@@ -154,10 +177,9 @@ public class BaseActivity extends Activity implements ListView.OnItemClickListen
                 break;
         }
 
-        Log.d("BaseActivity: ", "Item Clicked with position: " + position);
         if (closeDrawer) {
             mDrawerList.setItemChecked(position, true);
-            Toast.makeText(this, "Item Selected: " + position, Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Item Selected: " + position, Toast.LENGTH_LONG).show();
             mDrawerLayout.closeDrawer(mDrawerList);
         }
     }
@@ -178,7 +200,6 @@ public class BaseActivity extends Activity implements ListView.OnItemClickListen
         dataList.add(new DrawerItem("Accounts"));
         dataList.add(new DrawerItem("Change Password", R.drawable.ic_password));
         dataList.add(new DrawerItem("Signout", R.drawable.ic_action_refresh));
-
         return dataList;
     }
 }
