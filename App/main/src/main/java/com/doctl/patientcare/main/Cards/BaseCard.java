@@ -93,7 +93,8 @@ public abstract class BaseCard extends Card {
         MEDICINE_CARD_TYPE,
         VITAL_CARD_TYPE,
         EDUCATION_CARD_TYPE,
-        FOLLOWUP_CARD_TYPE
+        FOLLOWUP_CARD_TYPE,
+        MESSAGE_CARD_TYPE
     }
 
     protected static class BaseViewHolder {

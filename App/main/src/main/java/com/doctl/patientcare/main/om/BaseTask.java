@@ -89,6 +89,7 @@ public abstract class BaseTask {
         EDUCATION,
         WALK,
         FOLLOWUP,
+        SIMPLEREMINDER,
     }
 
     public enum CardState {

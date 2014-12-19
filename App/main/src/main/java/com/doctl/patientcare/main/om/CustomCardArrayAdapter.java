@@ -101,6 +101,9 @@ public class CustomCardArrayAdapter extends CardArrayAdapter {
             case FOLLOWUP_CARD_TYPE:
                 dismissMessage = getContext().getResources().getString(R.string.followup_card_remove_message);
                 break;
+            case MESSAGE_CARD_TYPE:
+                dismissMessage = getContext().getResources().getString(R.string.message_card_remove_message);
+                break;
             default:
                 dismissMessage = getContext().getResources().getString(R.string.default_card_remove_message);
                 break;

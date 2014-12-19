@@ -22,6 +22,7 @@ import com.doctl.patientcare.main.Cards.FollowupCard;
 import com.doctl.patientcare.main.Cards.HowruFeelingCard;
 import com.doctl.patientcare.main.Cards.ImageCard;
 import com.doctl.patientcare.main.Cards.MedicineCard;
+import com.doctl.patientcare.main.Cards.MessageCard;
 import com.doctl.patientcare.main.Cards.VitalCard;
 import com.doctl.patientcare.main.Cards.WalkCard;
 import com.doctl.patientcare.main.R;
@@ -29,6 +30,7 @@ import com.doctl.patientcare.main.om.BaseTask;
 import com.doctl.patientcare.main.om.CustomCardArrayAdapter;
 import com.doctl.patientcare.main.om.followup.FollowupTask;
 import com.doctl.patientcare.main.om.medicines.MedicineTask;
+import com.doctl.patientcare.main.om.message.MessageTask;
 import com.doctl.patientcare.main.om.vitals.VitalTask;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
@@ -208,6 +210,20 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
                     };
                     FollowupCard followupCard = new FollowupCard(getActivity(), followupHeader, followupTask);
                     cards.add(followupCard);
+                    break;
+                case SIMPLEREMINDER:
+                    MessageTask messageTask = new Gson().fromJson(cardJson, MessageTask.class);
+                    final String messageTitle = messageTask.getPayload().getTitle();
+                    CardHeader messageHeader = new CardHeaderInnerView(getActivity()){
+                        @Override
+                        public void setupInnerViewElements(ViewGroup parent, View view) {
+                            TextView textView1 = (TextView)view.findViewById(R.id.timeWhen);
+                            textView1.setText(messageTitle);
+                            textView1.setTextSize(25);
+                        }
+                    };
+                    MessageCard messageCard = new MessageCard(getActivity(), messageHeader, messageTask);
+                    cards.add(messageCard);
                     break;
             }
         }
