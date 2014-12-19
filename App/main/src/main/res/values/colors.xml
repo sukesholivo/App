@@ -14,8 +14,10 @@
     <color name="color_blue">#9CA5FD</color>
     <color name="color_blue_translucent">#999CA5FD</color>
     <color name="color_white">#FFFFFF</color>
+    <color name="color_black">#000000</color>
     <color name="color_white_translucent">#99FFFFFF</color>
     <color name="color_gray">#F5F5F5</color>
+    <color name="color_dark_gray">#A5A5A5</color>
     <color name="color_gray_translucent">#99F5F5F5</color>
     <color name="main_background">#E7E7E8</color>
 

@@ -1,6 +1,5 @@
 package com.doctl.patientcare.main;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -8,13 +7,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -27,7 +24,6 @@ import com.doctl.patientcare.main.fragments.CardListFragment;
 import com.doctl.patientcare.main.om.dashboard.Dashboard;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
-import com.doctl.patientcare.main.utility.GetServerAuthTokenAsync;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -68,7 +64,7 @@ public class MainActivity extends BaseActivity {
 //        SharedPreferences sp = context.getSharedPreferences("auth_prefs", Activity.MODE_PRIVATE);
 //        String ServerAccessToken = sp.getString("serveraccesstoken", "");
 //        if(ServerAccessToken.isEmpty()) {
-//            Intent intent = new Intent(context, ProfilePageActivity.class);
+//            Intent intent = new Intent(context, StartPageActivity.class);
 //            context.startActivity(intent);
 //        }
 //        return;

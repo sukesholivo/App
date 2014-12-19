@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.view.View;
-import android.widget.Toast;
 
 import com.doctl.patientcare.main.MainActivity;
 import com.doctl.patientcare.main.R;
@@ -19,7 +18,6 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -28,7 +26,6 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -62,7 +59,6 @@ public class GetServerAuthTokenAsync extends AsyncTask<String, String, String> {
                 err = "Error: device reg id expected in params";
                 if (params.length > 1)
                 {
-                    String registration = params[0];
                     HttpParams httpParams = new BasicHttpParams();
                     httpParams.setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
                     int timeoutConnection = 4000;
@@ -98,7 +94,7 @@ public class GetServerAuthTokenAsync extends AsyncTask<String, String, String> {
                     if (response != null) {
                         BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "iso-8859-1"), 8);
                         StringBuilder sb = new StringBuilder();
-                        sb.append(reader.readLine() + "\n");
+                        sb.append(reader.readLine()).append("\n");
                         String line;
                         while ((line = reader.readLine()) != null) {
                             sb.append(line).append("\n");
