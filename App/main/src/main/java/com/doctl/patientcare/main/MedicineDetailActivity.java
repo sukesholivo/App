@@ -37,7 +37,6 @@ public class MedicineDetailActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.e(TAG, "On start MedicineDetailActivity");
         String prescriptionId = "";
         active = true;
         Bundle bundle = getIntent().getExtras();
@@ -65,10 +64,8 @@ public class MedicineDetailActivity extends BaseActivity {
             prescriptionId = "";
         }
         String url = Constants.PRESCRIPTION_URL + prescriptionId;
-        Log.e(TAG, url);
         HTTPServiceHandler serviceHandler = new HTTPServiceHandler(this);
         String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.GET, null, null);
-        Log.d(TAG, response);
         return response;
     }
 

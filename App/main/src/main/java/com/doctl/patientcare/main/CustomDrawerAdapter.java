@@ -9,6 +9,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.doctl.patientcare.main.om.UserProfile;
+import com.doctl.patientcare.main.utility.Constants;
+import com.doctl.patientcare.main.utility.Utils;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 /**
@@ -62,9 +67,17 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem> {
             drawerHolder.profileLayout.setVisibility(LinearLayout.VISIBLE);
             drawerHolder.headerLayout.setVisibility(LinearLayout.GONE);
             drawerHolder.itemLayout.setVisibility(LinearLayout.GONE);
-            drawerHolder.profileName.setText("Vishal Chitravanshi");
-            drawerHolder.profileEmail.setText("vishal@doctl.com");
-            drawerHolder.profilePic.setImageResource(R.drawable.profile_dummy);
+            UserProfile userProfile = Utils.getUserDataFromSharedPreference(getContext());
+            drawerHolder.profileName.setText(userProfile.getDisplayName());
+            drawerHolder.profileEmail.setText(userProfile.getEmail());
+
+            if (!userProfile.getProfilePicUrl().isEmpty()) {
+                Picasso.with(getContext())
+                        .load(Constants.SERVER_URL + userProfile.getProfilePicUrl())
+                        .into(drawerHolder.profilePic);
+            } else {
+                drawerHolder.profilePic.setImageResource(R.drawable.profile_dummy);
+            }
         } else if (dItem.getTitle() != null) {
             drawerHolder.profileLayout.setVisibility(LinearLayout.GONE);
             drawerHolder.headerLayout.setVisibility(LinearLayout.VISIBLE);

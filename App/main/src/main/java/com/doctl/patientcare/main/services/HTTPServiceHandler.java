@@ -2,8 +2,9 @@ package com.doctl.patientcare.main.services;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
+
+import com.doctl.patientcare.main.utility.Utils;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -67,8 +68,7 @@ public class HTTPServiceHandler {
             HttpResponse httpResponse = null;
 
             //Extract the auth token from user preferences
-            SharedPreferences sp = c.getSharedPreferences("auth_prefs", Activity.MODE_PRIVATE);
-            String ServerAccessToken = sp.getString("serveraccesstoken", "");
+            String ServerAccessToken = Utils.getAuthTokenFromSharedPreference(c);
             Log.d(TAG, url);
             // Checking http request method type
             if (method == HTTPMethod.POST) {

@@ -11,6 +11,7 @@ import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.BaseTask;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
+import com.doctl.patientcare.main.utility.Utils;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
@@ -72,7 +73,7 @@ public abstract class BaseCard extends Card {
         targetPointTextView.setText("" + task.getPoints());
         if (task.getSource() != null) {
             Picasso.with(getContext())
-                    .load(task.getSource()
+                    .load(Constants.SERVER_URL + task.getSource()
                             .getProfilePicUrl())
                     .into(influencerImage);
         }
@@ -86,7 +87,7 @@ public abstract class BaseCard extends Card {
     }
 
     public void UpdateTask(String cardId, JSONObject data){
-        new UpdateTasks().execute(Constants.CARDS_URL + cardId + "/", data);
+        new UpdateTasks().execute(Utils.getCardsUrl(getContext()) + cardId + "/", data);
     }
     public enum CardType{
         DUMMY_CARD_TYPE,

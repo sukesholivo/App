@@ -45,4 +45,8 @@
     <string name="hint_register_password">set a password</string>
     <string name="hint_register_password_confirm">set the password again</string>
 
+    <string name="signout_title">Signout</string>
+    <string name="signout_body">Are you sure?</string>
+    <string name="signout_yes">Yes</string>
+    <string name="signout_no">No</string>
 </resources>

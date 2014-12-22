@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.doctl.patientcare.main.utility.GetServerAuthTokenAsync;
+import com.doctl.patientcare.main.utility.Utils;
 
 /**
  * Created by Leak on 12/11/2014.
@@ -45,12 +46,11 @@ public class StartPageActivity extends FragmentActivity {
 
     private void setupServerAuthToken() {
         Context context = StartPageActivity.this;
-        SharedPreferences sp = context.getSharedPreferences("auth_prefs", Activity.MODE_PRIVATE);
-        String ServerAccessToken = sp.getString("serveraccesstoken", "");
+        String ServerAccessToken = Utils.getAuthTokenFromSharedPreference(context);
         if(!ServerAccessToken.isEmpty()) {
             Intent intent = new Intent(context, MainActivity.class);
             context.startActivity(intent);
-            this.finishActivity(0);
+            this.finish();
         }
     }
 

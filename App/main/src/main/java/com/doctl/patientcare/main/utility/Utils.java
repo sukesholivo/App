@@ -1,11 +1,14 @@
 package com.doctl.patientcare.main.utility;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 
 import com.doctl.patientcare.main.Cards.CardHeaderInnerView;
 import com.doctl.patientcare.main.om.BaseTask;
 import com.doctl.patientcare.main.om.GraphData;
+import com.doctl.patientcare.main.om.UserProfile;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
@@ -153,5 +156,45 @@ public final class Utils {
             }
         }
         return seriesAdded? ChartFactory.getTimeChartView(context, dataset, multiRenderer, "dd-MMM-yyyy"): null;
+    }
+
+    public static String getCardsUrl(Context context){
+        String patientId = getUserDataFromSharedPreference(context).getId();
+        if (patientId.isEmpty()){
+            patientId = Constants.PATIENT_ID;
+        }
+        return Constants.SERVER_URL + "/api/card/v1.0/"+ patientId +"/cards/";
+    }
+
+    public static UserProfile getUserDataFromSharedPreference(Context context){
+        SharedPreferences sp = context.getSharedPreferences(Constants.PERSONAL_DETAIL_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE);
+        return new UserProfile(
+                sp.getString("id", ""),
+                sp.getString("displayName", ""),
+                sp.getString("profilePicUrl", ""),
+                sp.getString("email", ""),
+                sp.getString("phone", ""),
+                sp.getString("dob", ""),
+                sp.getString("sex", ""),
+                sp.getString("address", "")
+        );
+    }
+
+    public static String getAuthTokenFromSharedPreference(Context context){
+        SharedPreferences sp = context.getSharedPreferences(Constants.AUTH_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE);
+        return sp.getString(Constants.AUTH_SHARED_PREFERENCE_KEY, "");
+    }
+
+    public static String setAuthTokenFromSharedPreference(Context context, String auth_token){
+        SharedPreferences sp = context.getSharedPreferences(Constants.AUTH_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(Constants.AUTH_SHARED_PREFERENCE_KEY, auth_token);
+        editor.commit();
+        return sp.getString(Constants.AUTH_SHARED_PREFERENCE_KEY, "");
+    }
+
+    public static void cleanupSharedPreference(Context context){
+        context.getSharedPreferences(Constants.AUTH_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE).edit().clear().commit();
+        context.getSharedPreferences(Constants.PERSONAL_DETAIL_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE).edit().clear().commit();
     }
 }

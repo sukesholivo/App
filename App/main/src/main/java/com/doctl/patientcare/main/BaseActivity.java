@@ -2,6 +2,8 @@ package com.doctl.patientcare.main;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -13,6 +15,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.doctl.patientcare.main.utility.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -172,6 +176,7 @@ public class BaseActivity extends Activity implements ListView.OnItemClickListen
                 break;
             case 10:
                 Log.d("BaseActivity: ", "Signout Clicked");
+                signoutUser();
                 break;
             default:
                 break;
@@ -184,6 +189,24 @@ public class BaseActivity extends Activity implements ListView.OnItemClickListen
         }
     }
 
+    private void signoutUser(){
+        final Activity ctx = this;
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle(R.string.signout_title)
+                .setMessage(R.string.signout_body)
+                .setPositiveButton(R.string.signout_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Utils.cleanupSharedPreference(ctx);
+                        Intent intent = new Intent(ctx, StartPageActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        ctx.startActivity(intent);
+                    }
+                })
+                .setNegativeButton(R.string.signout_no, null)
+                .show();
+    }
     private List<DrawerItem> getDrawerItemList(){
         dataList = new ArrayList<DrawerItem>();
 

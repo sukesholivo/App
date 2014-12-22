@@ -11,6 +11,11 @@ import android.view.View;
 
 import com.doctl.patientcare.main.MainActivity;
 import com.doctl.patientcare.main.R;
+import com.doctl.patientcare.main.om.UserProfile;
+import com.doctl.patientcare.main.services.HTTPServiceHandler;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -51,8 +56,7 @@ public class GetServerAuthTokenAsync extends AsyncTask<String, String, String> {
     protected String doInBackground(String... params) {
         String result = null;
         //Extract the auth token from user preferences
-        SharedPreferences sp = c.getSharedPreferences("auth_prefs", Activity.MODE_PRIVATE);
-        String ServerAccessToken = sp.getString("serveraccesstoken", "");
+        String ServerAccessToken = Utils.getAuthTokenFromSharedPreference(c);
 
         if(ServerAccessToken.isEmpty()) {
             try {
@@ -73,7 +77,7 @@ public class GetServerAuthTokenAsync extends AsyncTask<String, String, String> {
                     nameValuePairs.add(new BasicNameValuePair("password", password));
 
                     HttpClient client = new DefaultHttpClient(httpParams);
-                    String url = "http://test.doctl.com/api-token-auth/";
+                    String url = Constants.SERVER_URL + "/api-token-auth/";
                     HttpPost request = new HttpPost(url);
                     request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                     HttpResponse response = null;
@@ -111,17 +115,17 @@ public class GetServerAuthTokenAsync extends AsyncTask<String, String, String> {
                         }
                         else if(jsonResponse.has("token"))
                         {
-                            String ServerAcessToken = jsonResponse.getString("token");
-                            SharedPreferences.Editor editor = sp.edit();
-                            editor.putString("serveraccesstoken", ServerAcessToken);
-                            editor.commit();
-                            result = ServerAcessToken;
+                            String serverAccessToken = jsonResponse.getString("token");
+                            Utils.setAuthTokenFromSharedPreference(c, serverAccessToken);
+                            result = serverAccessToken;
                         }
                         else
                         {
                             throw new Exception("Error:Invalid response");
                         }
                     }
+                    getPersonalDetail(c);
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -130,6 +134,25 @@ public class GetServerAuthTokenAsync extends AsyncTask<String, String, String> {
         }
 
         return result;
+    }
+
+    private void getPersonalDetail(Context c){
+        String response = new HTTPServiceHandler(c).makeServiceCall(Constants.PERSONAL_DETAIL_URL, HTTPServiceHandler.HTTPMethod.GET, null, null);
+        JsonParser parser = new JsonParser();
+        JsonObject personalDetail = parser.parse(response).getAsJsonObject();
+        UserProfile userProfile = new Gson().fromJson(personalDetail, UserProfile.class);
+
+        SharedPreferences sp = c.getSharedPreferences(Constants.PERSONAL_DETAIL_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("id", userProfile.getId());
+        editor.putString("displayName", userProfile.getDisplayName());
+        editor.putString("email", userProfile.getEmail());
+        editor.putString("dob", userProfile.getDob());
+        editor.putString("phone", userProfile.getPhone());
+        editor.putString("sex", userProfile.getSex());
+        editor.putString("profilePicUrl", userProfile.getProfilePicUrl());
+        editor.commit();
     }
 
     @Override
@@ -142,10 +165,11 @@ public class GetServerAuthTokenAsync extends AsyncTask<String, String, String> {
         if (result != null) {
             Intent intent = new Intent(c, MainActivity.class);
             c.startActivity(intent);
+            activity.finish();
         } else {
             //show modal for error
             AlertDialog.Builder alert = new AlertDialog.Builder(c);
-            String title = "Error occured: "+err+". Try again after sometime. For repeated error, please write to contact@DOCTL.com.";
+            String title = "Error occurred: "+err+". Try again after sometime. For repeated error, please write to contact@DOCTL.com.";
             if(status == 1)
             {
                 title = "Invalid Credentials Provided. Please try again with correct credentials.";

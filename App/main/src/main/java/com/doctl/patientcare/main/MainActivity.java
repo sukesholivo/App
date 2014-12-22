@@ -44,7 +44,6 @@ public class MainActivity extends BaseActivity {
         new GetProgress().execute();
         setCards();
         setupGCMRegistration();
-//        setupServerAuthToken();
     }
 
     @Override
@@ -58,17 +57,6 @@ public class MainActivity extends BaseActivity {
         super.onStop();
         active = false;
     }
-
-//    public void setupServerAuthToken() {
-//        Context context = MainActivity.this;
-//        SharedPreferences sp = context.getSharedPreferences("auth_prefs", Activity.MODE_PRIVATE);
-//        String ServerAccessToken = sp.getString("serveraccesstoken", "");
-//        if(ServerAccessToken.isEmpty()) {
-//            Intent intent = new Intent(context, StartPageActivity.class);
-//            context.startActivity(intent);
-//        }
-//        return;
-//    }
 
     public void setupGCMRegistration() {
         Context appContext = this.getApplicationContext();
