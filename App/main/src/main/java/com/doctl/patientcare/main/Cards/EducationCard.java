@@ -3,11 +3,24 @@ package com.doctl.patientcare.main.Cards;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.opengl.Visibility;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.doctl.patientcare.main.R;
+import com.doctl.patientcare.main.om.BaseTask;
+import com.doctl.patientcare.main.om.education.EducationTask;
+import com.doctl.patientcare.main.utility.Constants;
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.URL;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
@@ -17,6 +30,8 @@ public class EducationCard extends BaseCard{
     private static final String TAG = EducationCard.class.getSimpleName();
     private static final String ANDROID_DEVELOPER_KEY = "AIzaSyAWocbee6JmNy1KShjdNWy_v8_xEq0-gE0";
 
+    private EducationTask educationTask;
+
     public EducationCard(Context context) {
         this(context, R.layout.card_inner_content_education_video);
     }
@@ -25,18 +40,50 @@ public class EducationCard extends BaseCard{
         super(context, innerLayout);
     }
 
-    public EducationCard(Context context, int innerLayout, CardHeader cardHeader){
+    public EducationCard(Context context, int innerLayout, CardHeader cardHeader, EducationTask educationTask){
         super(context, innerLayout, cardHeader);
+        this.educationTask = educationTask;
+        this.setId(educationTask.getCardId());
     }
 
-    public EducationCard(Context context, CardHeader cardHeader) {
-        this(context, R.layout.card_inner_content_education_video, cardHeader);
+    public EducationCard(Context context, CardHeader cardHeader, EducationTask educationTask) {
+        this(context, R.layout.card_inner_content_education_video, cardHeader, educationTask);
     }
 
     @Override
     public void setupInnerViewElements(ViewGroup parent, View view) {
-
         setListnerToCard();
+        final EducationTask.EducationData educationData = educationTask.getPayload();
+        String thumbnail_url = educationData.getThumbnail();
+        Activity activity = (Activity)getContext();
+        ImageView imageView = (ImageView)view.findViewById(R.id.videoPreview);
+        try {
+            URL url = new URL(Constants.SERVER_URL + thumbnail_url);
+//            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+//            imageView.setImageBitmap(bmp);
+            Picasso.with(getContext())
+                        .load(Constants.SERVER_URL + thumbnail_url)
+                        .into(imageView);
+
+            //set right icon on thumbnail.
+
+            String content_url = educationData.getUrl();
+            if(content_url.toUpperCase().contains("YOUTUBE.COM"))
+            {
+                ImageView iconView = (ImageView)view.findViewById(R.id.playIcon);
+                iconView.setImageResource(R.drawable.play_icon);
+                iconView.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                ImageView iconView = (ImageView)view.findViewById(R.id.redirectIcon);
+                iconView.setImageResource(R.drawable.redirect_icon);
+                iconView.setVisibility(View.VISIBLE);
+            }
+        }
+        catch (Exception e) {
+            Log.e(TAG, e.toString());
+        }
     }
 
     private void setListnerToCard(){
@@ -44,8 +91,24 @@ public class EducationCard extends BaseCard{
             @Override
             public void onClick(Card card, View view) {
                 Context context = getContext();
-                Intent intent = YouTubeStandalonePlayer.createVideoIntent((Activity)context, ANDROID_DEVELOPER_KEY, "MGL6km1NBWE");
-                context.startActivity(intent);
+                final EducationTask.EducationData educationData = educationTask.getPayload();
+                String content_url = educationData.getUrl();
+                if(content_url.toUpperCase().contains("YOUTUBE.COM"))
+                {
+                    final String delimiter = "=";
+                    String video_id = content_url.split(delimiter)[1];
+                    if(video_id.contains("&"))
+                    {
+                        video_id = video_id.split("&")[0];
+                    }
+                    Intent intent = YouTubeStandalonePlayer.createVideoIntent((Activity)context, ANDROID_DEVELOPER_KEY, video_id);
+                    context.startActivity(intent);
+                }
+                else{
+                    Intent httpIntent = new Intent(Intent.ACTION_VIEW);
+                    httpIntent.setData(Uri.parse(content_url));
+                    context.startActivity(httpIntent);
+                }
             }
         });
     }
@@ -53,5 +116,19 @@ public class EducationCard extends BaseCard{
     @Override
     public int getType() {
         return CardType.EDUCATION_CARD_TYPE.ordinal();
+    }
+
+    @Override
+    public void UpdateTask(){
+        JSONObject data;
+        educationTask.setState(BaseTask.CardState.DONE);
+        String cardId = educationTask.getCardId();
+        try {
+            data = educationTask.getDataToPatch();
+            Log.d(TAG, data.toString());
+            UpdateTask(cardId, data);
+        }catch (JSONException e){
+            Log.e(TAG, e.toString());
+        }
     }
 }

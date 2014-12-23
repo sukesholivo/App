@@ -28,6 +28,7 @@ import com.doctl.patientcare.main.Cards.WalkCard;
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.BaseTask;
 import com.doctl.patientcare.main.om.CustomCardArrayAdapter;
+import com.doctl.patientcare.main.om.education.EducationTask;
 import com.doctl.patientcare.main.om.followup.FollowupTask;
 import com.doctl.patientcare.main.om.medicines.MedicineTask;
 import com.doctl.patientcare.main.om.message.MessageTask;
@@ -225,19 +226,22 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
                     };
                     MessageCard messageCard = new MessageCard(getActivity(), messageHeader, messageTask);
                     cards.add(messageCard);
+                case EDUCATION:
+                    EducationTask educationTask = new Gson().fromJson(cardJson, EducationTask.class);
+                    final String eduTitle = educationTask.getPayload().getTitle();
+                    CardHeader educationHeader = new CardHeaderInnerView(getActivity()){
+                        @Override
+                        public void setupInnerViewElements(ViewGroup parent, View view) {
+                            TextView textView1 = (TextView)view.findViewById(R.id.timeWhen);
+                            textView1.setText(eduTitle);
+                            textView1.setTextSize(15);
+                        }
+                    };
+                    EducationCard educationCard = new EducationCard(getActivity(), educationHeader, educationTask);
+                    cards.add(educationCard);
                     break;
             }
         }
-        CardHeader educationHeader = new CardHeaderInnerView(getActivity()){
-            @Override
-            public void setupInnerViewElements(ViewGroup parent, View view) {
-                TextView textView1 = (TextView)view.findViewById(R.id.timeWhen);
-                textView1.setText("WHAT IS DIABETES?");
-                textView1.setTextSize(28);
-            }
-        };
-
-        EducationCard card2 = new EducationCard(getActivity(), educationHeader);
 
         CardHeader walkHeader = new CardHeaderInnerView(getActivity(), "TODAY", "", "");
         WalkCard card4 = new WalkCard(getActivity(), walkHeader);
@@ -275,7 +279,6 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
         ImageCard card11 = new ImageCard(getActivity(), null);
         card11.setImageResourceId(R.drawable.education_myths_weightloss_full);
 
-        cards.add(card2);
         cards.add(card4);
         cards.add(card5);
         cards.add(card7);

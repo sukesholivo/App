@@ -20,4 +20,5 @@ public final class Constants {
     public final static String PERSONAL_DETAIL_SHARED_PREFERENCE_NAME= "personal_detail";
     public final static String AUTH_SHARED_PREFERENCE_NAME= "auth_prefs";
     public final static String AUTH_SHARED_PREFERENCE_KEY= "serveraccesstoken";
+
 }

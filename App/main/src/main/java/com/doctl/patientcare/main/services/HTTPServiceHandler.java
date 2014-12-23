@@ -70,6 +70,7 @@ public class HTTPServiceHandler {
             //Extract the auth token from user preferences
             String ServerAccessToken = Utils.getAuthTokenFromSharedPreference(c);
             Log.d(TAG, url);
+
             // Checking http request method type
             if (method == HTTPMethod.POST) {
                 Log.d(TAG, "Sending POST");

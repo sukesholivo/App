@@ -172,15 +172,15 @@ public class MainActivity extends BaseActivity {
     }
 
     private void updateProgress(Dashboard dashboardData) {
-        updateAdherencePercentage(dashboardData.getAdherence().intValue());
+            updateAdherencePercentage(dashboardData.getAdherence().intValue());
 
-        updateTotalPoints(dashboardData.getPoints());
+            updateTotalPoints(dashboardData.getPoints());
 
-        long milliSecondsInDay = 24 * 60 * 60 * 1000;
-        Date start = dashboardData.getProgress().getStartTime();
-        Date end = dashboardData.getProgress().getEndTime();
-        long treatmentDays = (end.getTime() - start.getTime())/ milliSecondsInDay;
-        long completedDays = (new Date().getTime() - start.getTime())/ milliSecondsInDay;
+            long milliSecondsInDay = 24 * 60 * 60 * 1000;
+            Date start = dashboardData.getProgress().getStartTime();
+            Date end = dashboardData.getProgress().getEndTime();
+            long treatmentDays = (end.getTime() - start.getTime())/ milliSecondsInDay;
+            long completedDays = (new Date().getTime() - start.getTime())/ milliSecondsInDay;
         if (completedDays < 0 ) {
             completedDays = 0;
         } else if (completedDays > treatmentDays ){

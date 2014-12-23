@@ -33,17 +33,17 @@ public class BaseActivity extends Activity implements ListView.OnItemClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            public void uncaughtException(Thread paramThread, Throwable paramThrowable) {
-                Log.e("Error:" + Thread.currentThread().getStackTrace()[2], paramThrowable.getLocalizedMessage());
-                Log.e("Error:" + Thread.currentThread().getStackTrace()[2], paramThrowable.getClass().getName());
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(getApplicationContext(), "Some Error occured", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
+//        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+//            public void uncaughtException(Thread paramThread, Throwable paramThrowable) {
+//                Log.e("Error:" + Thread.currentThread().getStackTrace()[2], paramThrowable.getLocalizedMessage());
+//                Log.e("Error:" + Thread.currentThread().getStackTrace()[2], paramThrowable.getClass().getName());
+//                runOnUiThread(new Runnable() {
+//                    public void run() {
+//                        Toast.makeText(getApplicationContext(), "Some Error occured", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//            }
+//        });
     }
 
     @Override
