@@ -37,102 +37,57 @@ import org.json.JSONTokener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Komal on 9/17/2014.
  */
-public class GetServerAuthTokenAsync extends AsyncTask<String, String, String> {
+public class GetServerAuthTokenAsync extends AsyncTask<Void, String, String> {
 
     private Context c;
     private String err = "";
     private int status = 0;
+    private String url;
+    private List<NameValuePair> nameValuePairs;
     public GetServerAuthTokenAsync(Context c) {
         this.c = c;
     }
 
+    public GetServerAuthTokenAsync(Context c, String url, List<NameValuePair> nameValuePairs) {
+        this.c = c;
+        this.url = url;
+        this.nameValuePairs = nameValuePairs;
+    }
+
     @Override
-    protected String doInBackground(String... params) {
+    protected String doInBackground(Void... params) {
         String result = null;
         //Extract the auth token from user preferences
         String ServerAccessToken = Utils.getAuthTokenFromSharedPreference(c);
 
         if(ServerAccessToken.isEmpty()) {
             try {
-                err = "Error: device reg id expected in params";
-                if (params.length > 1)
-                {
-                    HttpParams httpParams = new BasicHttpParams();
-                    httpParams.setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
-                    int timeoutConnection = 4000;
-                    HttpConnectionParams.setConnectionTimeout(httpParams, timeoutConnection);
-                    int timeoutSocket = 6000;
-                    HttpConnectionParams.setSoTimeout(httpParams, timeoutSocket);
-
-                    String username = params[0];
-                    String password = params[1];
-                    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-                    nameValuePairs.add(new BasicNameValuePair("username", username));
-                    nameValuePairs.add(new BasicNameValuePair("password", password));
-
-                    HttpClient client = new DefaultHttpClient(httpParams);
-                    String url = Constants.SERVER_URL + "/api-token-auth/";
-                    HttpPost request = new HttpPost(url);
-                    request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                    HttpResponse response = null;
-
-                    try {
-                        response = client.execute(request);
-                    } catch (ConnectTimeoutException e) {
-                        e.printStackTrace();
-                        err = "NetError: ConnectionTimedOut";
-                    } catch (ClientProtocolException e) {
-                        e.printStackTrace();
-                        err = "NetError: Some error, please try again later";
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        err = "NetError: Please report this error to DocTL team";
+                JSONObject jsonResponse = networkCall(url, nameValuePairs);
+                if (jsonResponse != null) {
+                    if(jsonResponse.has("non_field_errors")) {
+                        err = "Error: Unable to login with provided credentials.";
+                        status = 1;
                     }
-
-                    if (response != null) {
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "iso-8859-1"), 8);
-                        StringBuilder sb = new StringBuilder();
-                        sb.append(reader.readLine()).append("\n");
-                        String line;
-                        while ((line = reader.readLine()) != null) {
-                            sb.append(line).append("\n");
-                        }
-
-                        String temp = sb.toString();
-                        JSONTokener tokener = new JSONTokener(temp);
-                        JSONObject jsonResponse = new JSONObject(tokener);
-
-                        if(jsonResponse.has("non_field_errors"))
-                        {
-                            err = "Error: Unable to login with provided credentials.";
-                            status = 1;
-                        }
-                        else if(jsonResponse.has("token"))
-                        {
-                            String serverAccessToken = jsonResponse.getString("token");
-                            Utils.setAuthTokenFromSharedPreference(c, serverAccessToken);
-                            result = serverAccessToken;
-                        }
-                        else
-                        {
-                            throw new Exception("Error:Invalid response");
-                        }
+                    else if(jsonResponse.has("token")) {
+                        String serverAccessToken = jsonResponse.getString("token");
+                        Utils.setAuthTokenFromSharedPreference(c, serverAccessToken);
+                        result = serverAccessToken;
+                    }
+                    else {
+                        throw new Exception("Error:Invalid response");
                     }
                     getPersonalDetail(c);
-
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 err = "Error: "+e.toString();
             }
         }
-
         return result;
     }
 
@@ -182,5 +137,55 @@ public class GetServerAuthTokenAsync extends AsyncTask<String, String, String> {
             });
             alert.show();
         }
+    }
+
+    private JSONObject networkCall(String url, List<NameValuePair> nameValuePairs){
+        try {
+            err = "Error: device reg id expected in params";
+
+            HttpParams httpParams = new BasicHttpParams();
+            httpParams.setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
+            int timeoutConnection = 4000;
+            HttpConnectionParams.setConnectionTimeout(httpParams, timeoutConnection);
+            int timeoutSocket = 6000;
+            HttpConnectionParams.setSoTimeout(httpParams, timeoutSocket);
+
+            HttpClient client = new DefaultHttpClient(httpParams);
+            HttpPost request = new HttpPost(url);
+            request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            HttpResponse response = null;
+
+            try {
+                response = client.execute(request);
+            } catch (ConnectTimeoutException e) {
+                e.printStackTrace();
+                err = "NetError: ConnectionTimedOut";
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+                err = "NetError: Some error, please try again later";
+            } catch (IOException e) {
+                e.printStackTrace();
+                err = "NetError: Please report this error to DocTL team";
+            }
+
+            if (response != null) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "iso-8859-1"), 8);
+                StringBuilder sb = new StringBuilder();
+                sb.append(reader.readLine()).append("\n");
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line).append("\n");
+                }
+
+                String temp = sb.toString();
+                JSONTokener tokener = new JSONTokener(temp);
+                JSONObject jsonResponse = new JSONObject(tokener);
+                return jsonResponse;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            err = "Error: "+e.toString();
+        }
+        return null;
     }
 }
