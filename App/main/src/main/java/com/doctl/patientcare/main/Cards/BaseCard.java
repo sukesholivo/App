@@ -87,7 +87,7 @@ public abstract class BaseCard extends Card {
     }
 
     public void UpdateTask(String cardId, JSONObject data){
-        new UpdateTasks().execute(Utils.getCardsUrl(getContext()) + cardId + "/", data);
+        new UpdateTasks().execute(Constants.CARDS_URL + cardId + "/", data);
     }
     public enum CardType{
         DUMMY_CARD_TYPE,

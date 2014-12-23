@@ -188,10 +188,13 @@ public class MainActivity extends BaseActivity {
         }
         setTreatmentProgress((int) completedDays, (int) treatmentDays);
 
-        setVitalValue(dashboardData.getVital().getTimeStamp(),
-                        dashboardData.getVital().getValue1(),
-                        dashboardData.getVital().getValue2(),
-                        dashboardData.getVital().getUnit1());
+        Dashboard.Vital vital = dashboardData.getVital();
+        if (vital != null) {
+            setVitalValue(dashboardData.getVital().getTimeStamp(),
+                    dashboardData.getVital().getValue1(),
+                    dashboardData.getVital().getValue2(),
+                    dashboardData.getVital().getUnit1());
+        }
     }
 
     private void updateAdherencePercentage(int per){

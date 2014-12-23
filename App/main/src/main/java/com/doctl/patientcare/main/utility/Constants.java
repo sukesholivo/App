@@ -9,7 +9,7 @@ public final class Constants {
     public final static String API_VERSION = "v1.0";
 //    TODO: Get this patient id from server and save to local storage.
     public final static String PATIENT_ID = "1496532e154f4b0db877278985762769";
-    public final static String CARDS_URL = SERVER_URL + "/api/card/" + API_VERSION + "/"+ PATIENT_ID +"/cards/";
+    public final static String CARDS_URL = SERVER_URL + "/api/card/" + API_VERSION + "/cards/";
     public final static String PRESCRIPTION_URL = SERVER_URL + "/api/treatment/" + API_VERSION + "/prescriptions/";
     public final static String PROGRESS_DATA_URL = SERVER_URL + "/api/treatment/" + API_VERSION + "/progress/";
     public final static String VITAL_DETAIL_URL = SERVER_URL + "/api/treatment/" + API_VERSION + "/vitals/";
