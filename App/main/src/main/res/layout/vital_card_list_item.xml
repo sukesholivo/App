@@ -7,10 +7,13 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:textSize="@dimen/text_size_s"
         android:textColor="@color/card_body_text_main"
         android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:layout_marginRight="9dp"
+        android:layout_marginEnd="9dp"
         android:layout_marginTop="20dip"
         android:gravity="center_vertical"/>
 
@@ -22,6 +25,7 @@
         android:textColor="@color/card_body_text_meta"
         android:layout_below="@id/vitalTitle"
         android:layout_alignLeft="@id/vitalTitle"
+        android:layout_alignStart="@id/vitalTitle"
         android:layout_marginTop="1dp"
         android:gravity="center_vertical"/>
     <EditText
@@ -32,7 +36,8 @@
         android:maxLength="5"
         android:layout_alignTop="@id/vitalTitle"
         android:textColor="@android:color/black"
-        android:layout_toRightOf="@id/vitalTitle"/>
+        android:layout_toRightOf="@id/vitalTitle"
+        android:layout_toEndOf="@id/vitalTitle"/>
     <TextView
         android:id="@+id/vitalUnit"
         android:layout_width="wrap_content"
@@ -41,5 +46,7 @@
         android:textColor="@color/card_body_text_main"
         android:layout_alignTop="@id/vitalTitle"
         android:layout_toRightOf="@id/vitalValue"
-        android:layout_marginLeft="5dp"/>
+        android:layout_toEndOf="@id/vitalValue"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"/>
 </RelativeLayout>

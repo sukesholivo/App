@@ -49,4 +49,6 @@
     <string name="signout_body">Are you sure?</string>
     <string name="signout_yes">Yes</string>
     <string name="signout_no">No</string>
+
+    <string name="no_vital_data">No vital recorded yet. You can add from plus icon in task bar.</string>
 </resources>

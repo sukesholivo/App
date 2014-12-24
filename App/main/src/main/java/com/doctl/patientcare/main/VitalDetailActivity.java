@@ -1,13 +1,24 @@
 package com.doctl.patientcare.main;
 
+import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.doctl.patientcare.main.om.GraphData;
 import com.doctl.patientcare.main.om.vitals.VitalDetailData;
@@ -22,13 +33,15 @@ import com.google.gson.JsonParser;
 import org.achartengine.GraphicalView;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class VitalDetailActivity extends BaseActivity {
     private static final String TAG = VitalDetailActivity.class.getSimpleName();
-
+    private VitalDetailData vitalData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +53,6 @@ public class VitalDetailActivity extends BaseActivity {
         }
         String vitalId = bundle.getString("vitalId");
         String vitalType = bundle.getString("vitalType");
-        String vitalName = bundle.getString("vitalName");
-        if (vitalName != null) {
-            getActionBar().setTitle(vitalName);
-        }
         new GetVitals().execute(vitalId, vitalType);
     }
 
@@ -54,6 +63,97 @@ public class VitalDetailActivity extends BaseActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add_vital:
+                if (vitalData != null) {
+                    new AlertDialog.Builder(this)
+                            .setTitle(this.vitalData.getTitle())
+                            .setIcon(0)
+                            .setView(getNewVitalDialogInnerView())
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    saveVitalValue(dialog);
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .show();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private View getNewVitalDialogInnerView(){
+        View view = getLayoutInflater().inflate(R.layout.dialog_inner_content_vital_entry, null);
+        LinearLayout list = (LinearLayout) view.findViewById(R.id.vitalList);
+        list.addView(getVitalEntryLayoutView(list, vitalData.getName1(), vitalData.getUnit1()));
+        if (vitalData.getName2() != null){
+            list.addView(getVitalEntryLayoutView(list, vitalData.getName2(), vitalData.getUnit2()));
+        }
+        return view;
+    }
+
+    private View getVitalEntryLayoutView(ViewGroup parent, String name, String unit){
+        LayoutInflater li = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = li.inflate(R.layout.vital_card_list_item, parent, false);
+        TextView vitalTitle = (TextView)view.findViewById(R.id.vitalTitle);
+        vitalTitle.setText(name);
+        TextView vitalUnit = (TextView)view.findViewById(R.id.vitalUnit);
+        vitalUnit.setText(unit);
+        return view;
+    }
+
+    private void saveVitalValue(DialogInterface dialog){
+        LinearLayout ll = (LinearLayout) ((AlertDialog) dialog).findViewById(R.id.vitalList);
+        int childCount = ll.getChildCount();
+        Double value1 = null, value2 = null;
+        for (int i=0; i < childCount; i++){
+            View v = ll.getChildAt(i);
+            EditText editText = (EditText) v.findViewById(R.id.vitalValue);
+            if (i == 0) {
+                String value1Str = editText.getText().toString();
+                if (!value1Str.isEmpty()) {
+                    value1 = Double.valueOf(value1Str);
+                }
+            }
+            if (i == 1) {
+                String value2Str = editText.getText().toString();
+                if (!value2Str.isEmpty()) {
+                    value2 = Double.valueOf(value2Str);
+                }
+            }
+        }
+
+        JSONObject data = new JSONObject();
+        try {
+            if (value1 != null) {
+                data.put("value1", value1);
+            }
+            if (value2 != null) {
+                data.put("value2", value2);
+            }
+        } catch (JSONException e){
+            e.printStackTrace();
+            Log.e(TAG, e.getMessage());
+        }
+        Log.e(TAG, data.toString());
+        String url = Constants.VITAL_DETAIL_URL + vitalData.getVitalId() + "/";
+        new SaveVital().execute(url, data);
+        Toast.makeText(VitalDetailActivity.this, "Value submitted: " + value1, Toast.LENGTH_LONG).show();
+    }
+
+    private void setTitle(String title){
+        ActionBar actionBar =  getActionBar();
+        if (actionBar != null) {
+             actionBar.setTitle(title);
+        }
+    }
     private String downloadVitalsData(String vitalId, String vitalType) {
         String url = Constants.VITAL_DETAIL_URL;
         List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -76,11 +176,11 @@ public class VitalDetailActivity extends BaseActivity {
 
     private void refreshActivity(String vitalId, String vitalType) {
         String jsonStr = downloadVitalsData(vitalId, vitalType);
-        final VitalDetailData vitalData =  parseVitalsData(jsonStr);
-
+        vitalData =  parseVitalsData(jsonStr);
 
         runOnUiThread(new Runnable() {
             public void run() {
+                setTitle(vitalData.getTitle());
                 populateVitalGraphData(vitalData);
                 populateVitalListData(vitalData);
             }
@@ -103,6 +203,12 @@ public class VitalDetailActivity extends BaseActivity {
 
     private void populateVitalGraphData(VitalDetailData vitalData) {
         ArrayList<VitalDetailData.VitalDetailValue> vitals = vitalData.getData();
+        LinearLayout chartContainer = (LinearLayout) findViewById(R.id.vitalDetailLineGraph);
+        if (vitals.isEmpty()){
+            chartContainer.setVisibility(View.GONE);
+            return;
+        }
+        chartContainer.setVisibility(View.VISIBLE);
         ArrayList<GraphData> graphList = new ArrayList<GraphData>();
         ArrayList<Double> X1 = new ArrayList<Double>();
         ArrayList<Double> Y1 = new ArrayList<Double>();
@@ -122,13 +228,43 @@ public class VitalDetailActivity extends BaseActivity {
         GraphData graph2 = new GraphData(vitalData.getName1(), X2, Y2, Color.WHITE, 5);
         graphList.add(graph2);
         GraphicalView graphicalView = Utils.getGraph(this, graphList);
-        LinearLayout chartContainer = (LinearLayout) findViewById(R.id.vitalDetailLineGraph);
+
         chartContainer.addView(graphicalView);
     }
 
     private void populateVitalListData(VitalDetailData vitalData) {
+        TextView textView = (TextView)findViewById(R.id.no_vital_data);
+        if (vitalData.getData().isEmpty()){
+            textView.setVisibility(View.VISIBLE);
+            return;
+        }
+        textView.setVisibility(View.GONE);
         VitalsDetailAdapter vitals = new VitalsDetailAdapter(this, vitalData.getData());
         ListView list = (ListView)findViewById(R.id.vitalEntryList);
         list.setAdapter(vitals);
     }
+
+    private class SaveVital extends AsyncTask<Object, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Object... arg0) {
+            String url = (String)arg0[0];
+            JSONObject data= (JSONObject)arg0[1];
+            HTTPServiceHandler serviceHandler = new HTTPServiceHandler(VitalDetailActivity.this);
+            String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.POST, null, data);
+            Log.e(TAG, response);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
+    }
+
 }
