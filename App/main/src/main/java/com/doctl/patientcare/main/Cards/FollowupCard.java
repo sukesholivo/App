@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.BaseTask;
@@ -59,6 +60,7 @@ public class FollowupCard extends BaseCard {
         ViewHolder viewHolder;
         if (view.getTag() == null) {
             viewHolder = new ViewHolder();
+            viewHolder.textView = (TextView) view.findViewById(R.id.followupNotes);
             viewHolder.linearLayout = (LinearLayout) view.findViewById(R.id.followupOptions);
             viewHolder.editText = (EditText) view.findViewById(R.id.followupComments);
             view.setTag(viewHolder);
@@ -68,6 +70,12 @@ public class FollowupCard extends BaseCard {
 
         final FollowupTask.FollowupData followupData = followupTask.getPayload();
 
+        if (followupData.getNotes() != null && !followupData.getNotes().isEmpty()){
+            viewHolder.textView.setVisibility(View.VISIBLE);
+            viewHolder.textView.setText(followupData.getNotes());
+        } else {
+            viewHolder.textView.setVisibility(View.GONE);
+        }
         LinearLayout list = viewHolder.linearLayout;
         list.removeAllViews();
 
@@ -190,6 +198,7 @@ public class FollowupCard extends BaseCard {
         }
     }
     private static class ViewHolder extends BaseViewHolder {
+        TextView textView;
         LinearLayout linearLayout;
         EditText editText;
     }

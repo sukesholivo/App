@@ -6,6 +6,15 @@
     android:paddingRight="10dp"
     style="@style/card_layout">
 
+    <TextView
+        android:id="@+id/followupNotes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/color_darker_gray"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:visibility="gone"/>
     <LinearLayout
         android:id="@+id/followupOptions"
         android:orientation="vertical"

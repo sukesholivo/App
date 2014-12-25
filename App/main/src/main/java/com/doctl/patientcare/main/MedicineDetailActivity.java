@@ -1,8 +1,8 @@
 package com.doctl.patientcare.main;
 
+import android.app.ActionBar;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.ImageView;
@@ -31,7 +31,10 @@ public class MedicineDetailActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medicine_detail);
-        getActionBar().setTitle("Prescription");
+        ActionBar actionBar = getActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle("Prescription");
+        }
     }
 
     @Override
@@ -65,8 +68,7 @@ public class MedicineDetailActivity extends BaseActivity {
         }
         String url = Constants.PRESCRIPTION_URL + prescriptionId;
         HTTPServiceHandler serviceHandler = new HTTPServiceHandler(this);
-        String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.GET, null, null);
-        return response;
+        return serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.GET, null, null);
     }
 
     private Prescription parsePrescriptionData(String jsonStr){

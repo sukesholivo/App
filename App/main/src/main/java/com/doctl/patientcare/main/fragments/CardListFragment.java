@@ -41,6 +41,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.melnykov.fab.FloatingActionButton;
 import com.nhaarman.listviewanimations.swinginadapters.AnimationAdapter;
 import com.nhaarman.listviewanimations.swinginadapters.prepared.ScaleInAnimationAdapter;
 
@@ -62,6 +63,8 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
     PullToRefreshLayout mPullToRefreshLayout;
     ArrayList<Card> cards;
     CustomCardArrayAdapter mCardArrayAdapter;
+    CardListView listView;
+    FloatingActionButton fab;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,12 +75,22 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        fab = (FloatingActionButton) getActivity().findViewById(R.id.buttonTop);
+//        fab.attachToListView(listView);
+        fab.hide(false);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listView.smoothScrollToPosition(0);
+            }
+        });
         initializeCardList();
     }
 
     @Override
     public void onStart() {
         super.onStart();
+
         new GetTasks().execute();
     }
 
@@ -91,7 +104,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
         mCardArrayAdapter = new CustomCardArrayAdapter(getActivity(), cards);
 
         mCardArrayAdapter.setEnableUndo(true);
-        CardListView listView = (CardListView) getActivity().findViewById(R.id.card_list_layout);
+        listView = (CardListView) getActivity().findViewById(R.id.card_list_layout);
         listView.setOnScrollListener(
                 new SwipeOnScrollListener() {
                     int mLastFirstVisibleItem = -1;
@@ -101,15 +114,23 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
                     @Override
                     public void onScrollStateChanged(AbsListView view, int scrollState) {
                         //It is very important to call the super method here to preserve built-in functions
+                        if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                            Log.i("a", "scrolling stopped...");
+                            if (isDashboardHidden) {
+                                fab.show();
+                            }
+                        }
                         super.onScrollStateChanged(view,scrollState);
                     }
 
                     @Override
                     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                        fab.hide();
                         if(mLastFirstVisibleItem >=0 && mLastVisibleItemCount >=0) {
                             if (mLastFirstVisibleItem > firstVisibleItem) {
                                 Log.i(TAG, "scrolling up");
                                 DashboardAppear(firstVisibleItem);
+
                             } else if (mLastFirstVisibleItem < firstVisibleItem) {
                                 Log.i(TAG, "scrolling down");
                                 DashboardDiasppear();
