@@ -5,9 +5,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.doctl.patientcare.main.controls.ProgressBarAnimation;
@@ -79,15 +81,22 @@ public class MedicineDetailActivity extends BaseActivity {
     }
 
     private void updateUI(final Prescription prescription){
-        TextView doctorName = (TextView) findViewById(R.id.doctorName);
-        doctorName.setText(prescription.getDoctor().getDisplayName());
+        RelativeLayout doctorLayout = (RelativeLayout) findViewById(R.id.doctorLayout);
+        if (prescription.getDoctor() != null) {
+            doctorLayout.setVisibility(View.VISIBLE);
+            TextView doctorName = (TextView) findViewById(R.id.doctorName);
+            doctorName.setText(prescription.getDoctor().getDisplayName());
 
-        TextView doctorAddress = (TextView) findViewById(R.id.doctorHospital);
-        doctorAddress.setText(prescription.getDoctor().getAddress());
+            TextView doctorAddress = (TextView) findViewById(R.id.doctorHospital);
+            doctorAddress.setText(prescription.getDoctor().getAddress());
 
-        Picasso.with(this)
-                .load(Constants.SERVER_URL + prescription.getDoctor().getProfilePicUrl())
-                .into((ImageView) findViewById(R.id.doctorPic));
+            Picasso.with(this)
+                    .load(Constants.SERVER_URL + prescription.getDoctor().getProfilePicUrl())
+                    .into((ImageView) findViewById(R.id.doctorPic));
+        } else {
+            doctorLayout.setVisibility(View.GONE);
+        }
+
 
         TextView prescriptionDate = (TextView) findViewById(R.id.dateText);
         prescriptionDate.setText(Utils.getDateString(prescription.getStartDate()));
