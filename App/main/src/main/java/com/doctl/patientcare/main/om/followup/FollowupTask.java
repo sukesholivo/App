@@ -3,6 +3,7 @@ package com.doctl.patientcare.main.om.followup;
 import com.doctl.patientcare.main.om.BaseTask;
 import com.google.gson.annotations.SerializedName;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -117,7 +118,7 @@ public class FollowupTask extends BaseTask {
             for (int i : this.getSelected()){
                 selected.add(this.getOptions().get(i));
             }
-            data.put("selected", selected);
+            data.put("selected", new JSONArray(selected));
             data.put("notes", this.getComment());
             return data;
         }

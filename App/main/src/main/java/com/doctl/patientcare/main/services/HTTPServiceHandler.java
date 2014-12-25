@@ -77,12 +77,11 @@ public class HTTPServiceHandler {
                 HttpPost httpPost = new HttpPost(url);
                 // adding post params
                 if (postParams != null) {
+                    Log.d(TAG, postParams.toString());
                     StringEntity se = new StringEntity(postParams.toString());
                     se.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
                     httpPost.setEntity(se);
-                    Log.d(TAG, se.toString());
                 }
-                httpPost.setHeader("Accept", "application/json");
                 httpPost.setHeader("Content-type","application/json");
                 httpPost.setHeader("Authorization", "Token "+ServerAccessToken);
                 httpResponse = httpClient.execute(httpPost);
@@ -91,12 +90,11 @@ public class HTTPServiceHandler {
                 HttpPatch httpPatch = new HttpPatch(url);
                 // adding post params
                 if (postParams != null) {
+                    Log.d(TAG, postParams.toString());
                     StringEntity se = new StringEntity(postParams.toString());
                     se.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
                     httpPatch.setEntity(se);
-                    Log.d(TAG, se.toString());
                 }
-                httpPatch.setHeader("Accept", "application/json");
                 httpPatch.setHeader("Content-type","application/json");
                 httpPatch.setHeader("Authorization", "Token " + ServerAccessToken);
                 httpResponse = httpClient.execute(httpPatch);
