@@ -97,7 +97,7 @@ public class FollowupCard extends BaseCard {
                         selected = new ArrayList<Integer>();
                     }
                     selected.clear();
-                    selected.add((int) rating);
+                    selected.add((int) (rating - 1));
                     followupTask.getPayload().setSelected(selected);
                 }
             });

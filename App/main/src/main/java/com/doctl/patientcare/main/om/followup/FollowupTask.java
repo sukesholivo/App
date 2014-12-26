@@ -116,7 +116,7 @@ public class FollowupTask extends BaseTask {
             data.put("timestamp", this.getTimestamp());
             ArrayList<String> selected = new ArrayList<String>();
             for (int i : this.getSelected()){
-                selected.add(this.getOptions().get(i));
+                selected.add("" + (i + 1));
             }
             data.put("selected", new JSONArray(selected));
             data.put("notes", this.getComment());
