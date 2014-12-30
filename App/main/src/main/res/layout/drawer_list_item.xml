@@ -99,8 +99,8 @@
             >
             <ImageView
                 android:id="@+id/drawer_icon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
                 />

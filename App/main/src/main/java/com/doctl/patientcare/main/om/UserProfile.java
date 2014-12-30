@@ -2,6 +2,9 @@ package com.doctl.patientcare.main.om;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by Administrator on 7/28/2014.
  */
@@ -71,5 +74,42 @@ public class UserProfile {
 
     public String getSex() {
         return sex;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public void setProfilePicUrl(String profilePicUrl) {
+        this.profilePicUrl = profilePicUrl;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public JSONObject getDataToPatch() throws JSONException {
+        JSONObject data = new JSONObject();
+        data.put("displayName", this.getDisplayName());
+        data.put("phone", this.getPhone());
+        data.put("dob", this.getDob());
+        data.put("sex", this.getSex());
+        return data;
     }
 }

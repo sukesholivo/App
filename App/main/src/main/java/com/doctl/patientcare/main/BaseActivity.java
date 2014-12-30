@@ -49,11 +49,6 @@ public class BaseActivity extends Activity implements ListView.OnItemClickListen
     @Override
     protected void onStart() {
         super.onStart();
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
         setupNavigationDrawer();
         mDrawerToggle.syncState();
     }
@@ -173,6 +168,8 @@ public class BaseActivity extends Activity implements ListView.OnItemClickListen
                 break;
             case 9:
                 Log.d("BaseActivity: ", "Change Password Clicked");
+                intent = new Intent(this, ChangeProfileActivity.class);
+                this.startActivity(intent);
                 break;
             case 10:
                 Log.d("BaseActivity: ", "Signout Clicked");
@@ -211,18 +208,18 @@ public class BaseActivity extends Activity implements ListView.OnItemClickListen
         dataList = new ArrayList<DrawerItem>();
 
         dataList.add(new DrawerItem(true));
-        dataList.add(new DrawerItem("Home", R.drawable.ic_home));
-        dataList.add(new DrawerItem("Prescription", R.drawable.ic_prescription));
+        dataList.add(new DrawerItem("Home", R.drawable.ic_home_black_24dp));
+        dataList.add(new DrawerItem("Prescription", R.drawable.ic_prescription_black_24dp));
 
         dataList.add(new DrawerItem("Vital"));
-        dataList.add(new DrawerItem("Blood Sugar", R.drawable.ic_action_refresh));
-        dataList.add(new DrawerItem("Blood Pressure", R.drawable.ic_blood_pressure));
-        dataList.add(new DrawerItem("Temperature",  R.drawable.ic_temperature));
-        dataList.add(new DrawerItem("Pulse", R.drawable.ic_action_refresh));
+        dataList.add(new DrawerItem("Blood Sugar", R.drawable.ic_sugar_black_24dp));
+        dataList.add(new DrawerItem("Blood Pressure", R.drawable.ic_bloodpressure_black_24dp));
+        dataList.add(new DrawerItem("Temperature",  R.drawable.ic_temp_black_24dp));
+        dataList.add(new DrawerItem("Pulse", R.drawable.ic_pulse_black_24dp));
 
         dataList.add(new DrawerItem("Accounts"));
-        dataList.add(new DrawerItem("Change Password", R.drawable.ic_password));
-        dataList.add(new DrawerItem("Signout", R.drawable.ic_action_refresh));
+        dataList.add(new DrawerItem("Change Password", R.drawable.ic_change_password_black_24dp));
+        dataList.add(new DrawerItem("Signout", R.drawable.ic_signout_black_24dp));
         return dataList;
     }
 }

@@ -96,18 +96,7 @@ public class GetServerAuthTokenAsync extends AsyncTask<Void, String, String> {
         JsonParser parser = new JsonParser();
         JsonObject personalDetail = parser.parse(response).getAsJsonObject();
         UserProfile userProfile = new Gson().fromJson(personalDetail, UserProfile.class);
-
-        SharedPreferences sp = c.getSharedPreferences(Constants.PERSONAL_DETAIL_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString("id", userProfile.getId());
-        editor.putString("displayName", userProfile.getDisplayName());
-        editor.putString("email", userProfile.getEmail());
-        editor.putString("dob", userProfile.getDob());
-        editor.putString("phone", userProfile.getPhone());
-        editor.putString("sex", userProfile.getSex());
-        editor.putString("profilePicUrl", userProfile.getProfilePicUrl());
-        editor.commit();
+        Utils.saveUserDataToSharedPreference(c, userProfile);
     }
 
     @Override

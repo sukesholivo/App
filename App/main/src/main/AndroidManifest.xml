@@ -45,6 +45,8 @@
         <activity android:name=".TransparentActivity" android:theme="@style/Theme.Transparent" android:screenOrientation="portrait" android:noHistory="true"
             android:windowSoftInputMode="adjustPan">
         </activity>
+        <activity android:name=".ChangeProfileActivity" android:label="" android:screenOrientation="portrait" android:windowSoftInputMode="adjustPan">
+        </activity>
 
         <receiver android:name=".MyC2dmReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">

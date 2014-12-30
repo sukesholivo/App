@@ -57,13 +57,6 @@ public class MedicineDetailActivity extends BaseActivity {
         active = false;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.medicine_detail, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
     private String downloadPrescriptionData(String prescriptionId) {
         if (prescriptionId == null){
             prescriptionId = "";

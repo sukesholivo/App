@@ -3,10 +3,23 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Holo.Light">
         <item name="android:actionBarStyle">@style/BlueActionBar</item>
+        <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_keyboard_arrow_left_white_36dp</item>
     </style>
 
     <style name="BlueActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">#33B5E5</item>
+        <item name="android:titleTextStyle">@style/MyActionBarTitleText</item>
+    </style>
+
+    <style name="MyActionBarTitleText"
+        parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/color_white</item>
+        <item name="android:textSize">@dimen/text_size_m</item>
+    </style>
+
+    <style name="MyActionButtonOverflow" parent="android:style/Widget.Holo.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_more_vert_white_36dp</item>
     </style>
 
     <!-- Card list undo styling -->

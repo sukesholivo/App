@@ -75,7 +75,7 @@ public final class Utils {
         endDate.add(Calendar.DAY_OF_MONTH, 1);
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("startDate", Utils.getIsoDateString(startDate)));
+//        params.add(new BasicNameValuePair("startDate", Utils.getIsoDateString(startDate)));
         params.add(new BasicNameValuePair("endDate", Utils.getIsoDateString(endDate)));
         params.add(new BasicNameValuePair("orderBy", "eta"));
         params.add(new BasicNameValuePair("state", "UNSEEN"));
@@ -178,6 +178,19 @@ public final class Utils {
                 sp.getString("sex", ""),
                 sp.getString("address", "")
         );
+    }
+
+    public static void saveUserDataToSharedPreference(Context context, UserProfile userProfile){
+        SharedPreferences sp = context.getSharedPreferences(Constants.PERSONAL_DETAIL_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("id", userProfile.getId());
+        editor.putString("displayName", userProfile.getDisplayName());
+        editor.putString("email", userProfile.getEmail());
+        editor.putString("dob", userProfile.getDob());
+        editor.putString("phone", userProfile.getPhone());
+        editor.putString("sex", userProfile.getSex());
+        editor.putString("profilePicUrl", userProfile.getProfilePicUrl());
+        editor.commit();
     }
 
     public static String getAuthTokenFromSharedPreference(Context context){

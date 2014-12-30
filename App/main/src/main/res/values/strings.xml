@@ -51,4 +51,12 @@
     <string name="signout_no">No</string>
 
     <string name="no_vital_data">No vital recorded yet. You can add from plus icon in task bar.</string>
+
+    <string name="change_password_button">Change Password</string>
+    <string name="change_password_title">Change Personal Info</string>
+
+    <string-array name="sex_array">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
 </resources>
