@@ -26,7 +26,9 @@ dependencies {
     compile 'com.github.chrisbanes.actionbarpulltorefresh:library:+'
     compile 'com.squareup.picasso:picasso:2.3.3'
     compile 'com.melnykov:floatingactionbutton:1.1.0'
+    compile 'com.soundcloud.android:android-crop:0.9.10@aar'
     compile files('libs/achartengine-1.1.0.jar')
     compile files('libs/YouTubeAndroidPlayerApi.jar')
     compile files('libs/gson-2.2.4.jar')
+    compile files('libs/httpmime-4.2.6.jar')
 }

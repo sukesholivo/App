@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Environment;
+import android.util.Log;
 
 import com.doctl.patientcare.main.Cards.CardHeaderInnerView;
 import com.doctl.patientcare.main.om.BaseTask;
@@ -21,6 +23,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
@@ -30,6 +33,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.Future;
 
 import it.gmariotti.cardslib.library.internal.CardHeader;
 
@@ -209,5 +214,23 @@ public final class Utils {
     public static void cleanupSharedPreference(Context context){
         context.getSharedPreferences(Constants.AUTH_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE).edit().clear().commit();
         context.getSharedPreferences(Constants.PERSONAL_DETAIL_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE).edit().clear().commit();
+    }
+
+    public static String getFolderUrl(){
+//        Environment.getD
+        File folder = new File(Environment.getExternalStorageDirectory(), "/DOCTL/ProfileImage");
+        if (!folder.exists()) {
+            Log.e("TravellerLog :: ", "Creating folder");
+            if (!folder.mkdirs()) {
+                Log.e("TravellerLog :: ", "Problem creating Image folder");
+            }
+        }
+        Log.e("Utils: getAbsolutePath: ", folder.getAbsolutePath());
+        return folder.getAbsolutePath();
+    }
+
+    public static File getImageUrlForImageSave(){
+        Random r = new Random();
+        return new File(getFolderUrl(), "profile_pic_" + String.valueOf(System.currentTimeMillis())+ r.nextInt() + ".jpg");
     }
 }

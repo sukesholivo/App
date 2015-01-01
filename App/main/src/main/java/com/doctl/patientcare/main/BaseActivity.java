@@ -105,6 +105,7 @@ public class BaseActivity extends Activity implements ListView.OnItemClickListen
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
         }
+        mDrawerLayout.closeDrawer(mDrawerList);
     }
 
     /** Swaps fragments in the main content view */
@@ -208,18 +209,18 @@ public class BaseActivity extends Activity implements ListView.OnItemClickListen
         dataList = new ArrayList<DrawerItem>();
 
         dataList.add(new DrawerItem(true));
-        dataList.add(new DrawerItem("Home", R.drawable.ic_home_black_24dp));
-        dataList.add(new DrawerItem("Prescription", R.drawable.ic_prescription_black_24dp));
+        dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_home), R.drawable.ic_home_black_24dp));
+        dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_prescription), R.drawable.ic_prescription_black_24dp));
 
-        dataList.add(new DrawerItem("Vital"));
-        dataList.add(new DrawerItem("Blood Sugar", R.drawable.ic_sugar_black_24dp));
-        dataList.add(new DrawerItem("Blood Pressure", R.drawable.ic_bloodpressure_black_24dp));
-        dataList.add(new DrawerItem("Temperature",  R.drawable.ic_temp_black_24dp));
-        dataList.add(new DrawerItem("Pulse", R.drawable.ic_pulse_black_24dp));
+        dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_vital)));
+        dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_sugar), R.drawable.ic_sugar_black_24dp));
+        dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_bp), R.drawable.ic_bloodpressure_black_24dp));
+        dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_temperature),  R.drawable.ic_temp_black_24dp));
+        dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_pulse), R.drawable.ic_pulse_black_24dp));
 
-        dataList.add(new DrawerItem("Accounts"));
-        dataList.add(new DrawerItem("Change Password", R.drawable.ic_change_password_black_24dp));
-        dataList.add(new DrawerItem("Signout", R.drawable.ic_signout_black_24dp));
+        dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_accounts)));
+        dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_profile), R.drawable.ic_person_black_24dp));
+        dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_logout), R.drawable.ic_signout_black_24dp));
         return dataList;
     }
 }

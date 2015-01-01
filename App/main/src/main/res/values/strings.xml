@@ -53,10 +53,32 @@
     <string name="no_vital_data">No vital recorded yet. You can add from plus icon in task bar.</string>
 
     <string name="change_password_button">Change Password</string>
-    <string name="change_password_title">Change Personal Info</string>
+    <string name="change_password_title">Change Password</string>
 
     <string-array name="sex_array">
         <item>Male</item>
         <item>Female</item>
     </string-array>
+    <string name="change_image_title">Change Profile Picture</string>
+    <string name="hint_full_name">Full Name</string>
+    <string name="hint_phone">Phone</string>
+    <string name="hint_dob">Date of Birth</string>
+    <string name="hint_sex">Sex</string>
+
+    <string-array name="image_picker_array">
+        <item>Take from camera</item>
+        <item>Select from gallery</item>
+    </string-array>
+
+    <string name="nav_item_home">Home</string>
+    <string name="nav_item_prescription">Prescription</string>
+    <string name="nav_item_vital">Vitals</string>
+    <string name="nav_item_sugar">Blood Sugar</string>
+    <string name="nav_item_bp">Blood Pressure</string>
+    <string name="nav_item_temperature">Temperature</string>
+    <string name="nav_item_pulse">Pulse</string>
+    <string name="nav_item_accounts">Account</string>
+    <string name="nav_item_profile">Profile</string>
+    <string name="nav_item_logout">Log Out</string>
+
 </resources>

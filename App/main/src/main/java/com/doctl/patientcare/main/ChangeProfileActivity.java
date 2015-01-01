@@ -4,10 +4,13 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -15,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,14 +26,18 @@ import android.widget.Toast;
 
 import com.doctl.patientcare.main.om.UserProfile;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
+import com.doctl.patientcare.main.utility.HttpFileUpload;
 import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
+import com.soundcloud.android.crop.Crop;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,6 +48,10 @@ import java.util.Date;
 public class ChangeProfileActivity extends Activity {
     private static final String TAG = ChangeProfileActivity.class.getSimpleName();
     UserProfile userProfile;
+    private Uri mImageCaptureUri;
+    private ImageView mImageView;
+
+    private static final int PICK_FROM_CAMERA = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +65,7 @@ public class ChangeProfileActivity extends Activity {
         }
         userProfile = Utils.getUserDataFromSharedPreference(this);
         setData(userProfile);
+        setImagePicker();
     }
 
     @Override
@@ -66,7 +79,6 @@ public class ChangeProfileActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // app icon in action bar clicked; go home
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -78,6 +90,68 @@ public class ChangeProfileActivity extends Activity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void setImagePicker(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Select Image");
+        builder.setItems(R.array.image_picker_array, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                if (item == 0) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    mImageCaptureUri = Uri.fromFile(Utils.getImageUrlForImageSave());
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
+                    try {
+                        intent.putExtra("return-data", true);
+                        startActivityForResult(intent, PICK_FROM_CAMERA);
+                    } catch (ActivityNotFoundException e) {
+                        Log.e(TAG, e.getMessage());
+                        e.printStackTrace();
+                    }
+                } else {
+                    Crop.pickImage(ChangeProfileActivity.this);
+                }
+            }
+        });
+
+        final AlertDialog dialog = builder.create();
+        Button button = (Button) findViewById(R.id.btn_crop);
+        mImageView = (ImageView) findViewById(R.id.photo);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.show();
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != RESULT_OK) return;
+        switch (requestCode) {
+            case Crop.REQUEST_PICK:
+                beginCrop(data.getData());
+                break;
+            case PICK_FROM_CAMERA:
+                beginCrop(mImageCaptureUri);
+                break;
+            case Crop.REQUEST_CROP:
+                handleCrop(data);
+                break;
+        }
+    }
+
+    private void handleCrop(Intent result) {
+        Uri croppedImage = Crop.getOutput(result);
+        mImageView.setImageURI(croppedImage);
+        new SaveImage().execute(Constants.IMAGE_UPLOAD_URL, croppedImage.getPath());
+    }
+
+    private void beginCrop(Uri source) {
+        Uri mImageCroppedUri = Uri.fromFile(Utils.getImageUrlForImageSave());
+        new Crop(source).output(mImageCroppedUri).asSquare().start(this);
     }
 
     private void setData(UserProfile userProfile){
@@ -294,7 +368,6 @@ public class ChangeProfileActivity extends Activity {
         } catch (JSONException e){
             Log.e(TAG, e.getMessage());
         }
-        Log.e(TAG, data.toString());
         new SaveProfile().execute(url, data);
     }
 
@@ -311,8 +384,7 @@ public class ChangeProfileActivity extends Activity {
             JSONObject data= (JSONObject)arg0[1];
             HTTPServiceHandler serviceHandler = new HTTPServiceHandler(ChangeProfileActivity.this);
             String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.PATCH, null, data);
-            Log.e(TAG, response);
-            UserProfile userProfile = new Gson().fromJson(response, UserProfile.class);
+            userProfile = new Gson().fromJson(response, UserProfile.class);
             Utils.saveUserDataToSharedPreference(ChangeProfileActivity.this, userProfile);
             return null;
         }
@@ -320,6 +392,39 @@ public class ChangeProfileActivity extends Activity {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
+        }
+    }
+
+    private class SaveImage extends AsyncTask<String, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(String... arg0) {
+            String serverUrl = arg0[0];
+            String imageUrl = arg0[1];
+            uploadFile(serverUrl, imageUrl);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
+
+        public void uploadFile(String serverUrl, String imageFile){
+            try {
+                FileInputStream fstrm = new FileInputStream(imageFile);
+                HttpFileUpload hfu = new HttpFileUpload(ChangeProfileActivity.this, serverUrl);
+                String profilePicUrl = hfu.Send_Now("profile_pic", fstrm);
+                userProfile.setProfilePicUrl(profilePicUrl);
+                Utils.saveUserDataToSharedPreference(ChangeProfileActivity.this, userProfile);
+
+            } catch (FileNotFoundException e) {
+                Log.e(TAG, e.getMessage());
+            }
         }
     }
 }
