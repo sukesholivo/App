@@ -34,6 +34,7 @@
     <string name="notes">Notes</string>
     <string name="comments">Comments</string>
     <string name="points">Points</string>
+    <string name="adherence">Adherence</string>
 
     <string name="doctl_tag_line">Connect to Your Doctors</string>
     <string name="login">Login</string>

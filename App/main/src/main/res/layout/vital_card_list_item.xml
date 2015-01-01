@@ -4,7 +4,7 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
     <TextView
         android:id="@+id/vitalTitle"
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -28,25 +28,32 @@
         android:layout_alignStart="@id/vitalTitle"
         android:layout_marginTop="1dp"
         android:gravity="center_vertical"/>
-    <EditText
-        android:id="@+id/vitalValue"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:maxLength="5"
-        android:layout_alignTop="@id/vitalTitle"
-        android:textColor="@android:color/black"
-        android:layout_toRightOf="@id/vitalTitle"
-        android:layout_toEndOf="@id/vitalTitle"/>
+
     <TextView
         android:id="@+id/vitalUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_size_xxs"
+        android:gravity="bottom"
         android:textColor="@color/card_body_text_main"
-        android:layout_alignTop="@id/vitalTitle"
-        android:layout_toRightOf="@id/vitalValue"
-        android:layout_toEndOf="@id/vitalValue"
+
+        android:layout_alignBottom="@id/vitalTitle"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"/>
+    <EditText
+        android:id="@+id/vitalValue"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:gravity="center"
+        android:maxLength="5"
+        android:layout_alignBottom="@id/vitalTitle"
+        android:textColor="@android:color/black"
+        android:layout_toLeftOf="@id/vitalUnit"
+        android:layout_toStartOf="@id/vitalUnit"
+        />
 </RelativeLayout>

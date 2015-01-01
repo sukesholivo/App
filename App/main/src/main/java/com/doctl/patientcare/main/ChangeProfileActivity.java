@@ -26,8 +26,8 @@ import android.widget.Toast;
 
 import com.doctl.patientcare.main.om.UserProfile;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
-import com.doctl.patientcare.main.utility.HttpFileUpload;
 import com.doctl.patientcare.main.utility.Constants;
+import com.doctl.patientcare.main.utility.HttpFileUpload;
 import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
 import com.soundcloud.android.crop.Crop;

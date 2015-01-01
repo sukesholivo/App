@@ -19,6 +19,7 @@ android:layout_width="match_parent" android:layout_height="match_parent">
         android:textSize="@dimen/text_size_s"
         android:textColor="#ABABAB"
         android:layout_alignLeft="@id/vitalEntryDay"
+        android:layout_alignStart="@id/vitalEntryDay"
         android:layout_below="@id/vitalEntryDay"/>
     <TextView
         android:id="@+id/vitalData1"
@@ -27,6 +28,7 @@ android:layout_width="match_parent" android:layout_height="match_parent">
         android:textSize="@dimen/text_size_xxxl"
         android:gravity="center"
         android:layout_toRightOf="@id/vitalEntryDay"
+        android:layout_toEndOf="@id/vitalEntryDay"
         />
     <TextView
         android:id="@+id/vitalDataCondition1"
@@ -35,6 +37,7 @@ android:layout_width="match_parent" android:layout_height="match_parent">
         android:gravity="center|top"
         android:textSize="@dimen/text_size_xs"
         android:layout_alignLeft="@id/vitalData1"
+        android:layout_alignStart="@id/vitalData1"
         android:layout_below="@id/vitalData1"
         android:textColor="#999999"
         android:layout_marginBottom="5dp"
@@ -47,6 +50,7 @@ android:layout_width="match_parent" android:layout_height="match_parent">
         android:textSize="@dimen/text_size_xxxl"
         android:gravity="center"
         android:layout_toRightOf="@id/vitalData1"
+        android:layout_toEndOf="@id/vitalData1"
         />
     <TextView
         android:id="@+id/vitalDataCondition2"
@@ -55,6 +59,7 @@ android:layout_width="match_parent" android:layout_height="match_parent">
         android:gravity="center|top"
         android:textSize="@dimen/text_size_xs"
         android:layout_alignLeft="@id/vitalData2"
+        android:layout_alignStart="@id/vitalData2"
         android:layout_below="@id/vitalData2"
         android:textColor="#999999"
         android:layout_marginBottom="5dp"

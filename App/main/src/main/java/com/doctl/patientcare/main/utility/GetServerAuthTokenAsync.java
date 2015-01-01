@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.view.View;
 
@@ -26,7 +25,6 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpConnectionParams;
@@ -168,8 +166,7 @@ public class GetServerAuthTokenAsync extends AsyncTask<Void, String, String> {
 
                 String temp = sb.toString();
                 JSONTokener tokener = new JSONTokener(temp);
-                JSONObject jsonResponse = new JSONObject(tokener);
-                return jsonResponse;
+                return new JSONObject(tokener);
             }
         } catch (Exception e) {
             e.printStackTrace();

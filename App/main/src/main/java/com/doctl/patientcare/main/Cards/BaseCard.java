@@ -11,7 +11,6 @@ import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.BaseTask;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
-import com.doctl.patientcare.main.utility.Utils;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;

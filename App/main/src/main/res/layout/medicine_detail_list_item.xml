@@ -10,7 +10,9 @@
         android:layout_width="40dp"
         android:layout_height="50dp"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:paddingTop="10dp"
         android:textColor="@color/card_body_text_main"
         />
@@ -19,7 +21,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         android:layout_toRightOf="@id/medicineIcon"
+        android:layout_toEndOf="@id/medicineIcon"
         android:layout_alignTop="@id/medicineIcon"
         android:gravity="top"
         android:textSize="@dimen/text_size_l"
@@ -30,7 +34,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/medicineName"
         android:layout_alignLeft="@id/medicineName"
+        android:layout_alignStart="@id/medicineName"
         android:layout_marginRight="2dp"
+        android:layout_marginEnd="2dp"
         android:textSize="@dimen/text_size_xs"/>
     <TextView
         android:id="@+id/medicineType"
@@ -38,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/medicineName"
         android:layout_toRightOf="@id/medicineUnit"
+        android:layout_toEndOf="@id/medicineUnit"
         android:textSize="@dimen/text_size_xs"/>
     <LinearLayout
         android:id="@+id/medicineFrequencyLayout"
@@ -47,7 +54,8 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:layout_below="@id/medicineUnit"
-        android:layout_alignLeft="@id/medicineUnit">
+        android:layout_alignLeft="@id/medicineUnit"
+        android:layout_alignStart="@id/medicineUnit">
         </LinearLayout>
     <TextView
         android:id="@+id/medicineInstruction"
@@ -55,6 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/medicineFrequencyLayout"
         android:layout_alignLeft="@id/medicineFrequencyLayout"
+        android:layout_alignStart="@id/medicineFrequencyLayout"
         android:textSize="@dimen/text_size_xs"/>
 
     <TextView
@@ -63,5 +72,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/medicineInstruction"
         android:layout_alignLeft="@id/medicineInstruction"
+        android:layout_alignStart="@id/medicineInstruction"
         android:textSize="@dimen/text_size_xs"/>
 </RelativeLayout>

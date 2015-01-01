@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 
 import com.doctl.patientcare.main.R;
 
-
 import it.gmariotti.cardslib.library.internal.CardHeader;
 
 /**

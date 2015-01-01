@@ -2,7 +2,6 @@ package com.doctl.patientcare.main.om.medicines;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 /**

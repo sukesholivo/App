@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.doctl.patientcare.main.utility.Utils;
 
@@ -28,7 +27,7 @@ public class BaseActivity extends Activity implements ListView.OnItemClickListen
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-    List<DrawerItem> dataList;
+    private List<DrawerItem> dataList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +38,7 @@ public class BaseActivity extends Activity implements ListView.OnItemClickListen
 //                Log.e("Error:" + Thread.currentThread().getStackTrace()[2], paramThrowable.getClass().getName());
 //                runOnUiThread(new Runnable() {
 //                    public void run() {
-//                        Toast.makeText(getApplicationContext(), "Some Error occured", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), "Some Error occurred", Toast.LENGTH_SHORT).show();
 //                    }
 //                });
 //            }

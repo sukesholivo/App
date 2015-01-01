@@ -3,8 +3,6 @@ package com.doctl.patientcare.main;
 import android.app.ActionBar;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;

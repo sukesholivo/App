@@ -13,6 +13,7 @@
         android:gravity="top"
         android:textSize="@dimen/text_size_xxl"
         android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:textColor="@color/card_header_main"/>
     <TextView
         android:layout_width="wrap_content"
@@ -21,16 +22,20 @@
         android:textSize="@dimen/text_size_xs"
         android:layout_marginTop="7dp"
         android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
         android:textColor="@color/card_header_secondary"
-        android:layout_toRightOf="@id/timeWhen"/>
+        android:layout_toRightOf="@id/timeWhen"
+        android:layout_toEndOf="@id/timeWhen"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/extraInfo"
         android:textSize="@dimen/text_size_xs"
         android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
         android:textColor="@color/card_header_meta"
         android:layout_toRightOf="@id/timeWhen"
+        android:layout_toEndOf="@id/timeWhen"
         android:layout_below="@id/timeUnit"/>
 
 </RelativeLayout>

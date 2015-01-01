@@ -133,10 +133,10 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
 
                             } else if (mLastFirstVisibleItem < firstVisibleItem) {
                                 Log.i(TAG, "scrolling down");
-                                DashboardDiasppear();
+                                DashboardDisappear();
                             } else if (mLastVisibleItemCount < visibleItemCount) {
                                 Log.i(TAG, "scrolling down");
-                                //DashboardDiasppear();
+                                //DashboardDisappear();
                             } else if (mLastVisibleItemCount > visibleItemCount) {
                                 Log.i(TAG, "scrolling up");
                                 DashboardAppear(firstVisibleItem);
@@ -159,7 +159,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
                         }
                     }
 
-                    private void DashboardDiasppear() {
+                    private void DashboardDisappear() {
                         if(isDashboardHidden)
                             return;
                         Activity activity = getActivity();
