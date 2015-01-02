@@ -41,6 +41,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.setupNavigationDrawer();
         new GetProgress().execute();
         setCards();
         setupGCMRegistration();
@@ -63,7 +64,7 @@ public class MainActivity extends BaseActivity {
         Intent registrationIntent = new Intent("com.google.android.c2dm.intent.REGISTER");
         registrationIntent.putExtra("app", PendingIntent.getBroadcast(appContext, 0, new Intent(), 0));
         registrationIntent.putExtra("sender","258383232963");
-        appContext.startService(registrationIntent);
+//        appContext.startService(registrationIntent);
     }
 
     @Override

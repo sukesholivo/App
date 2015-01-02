@@ -1,12 +1,12 @@
 package com.doctl.patientcare.main;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,7 +46,9 @@ public class VitalDetailActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vital_detail);
-
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
+//        setSupportActionBar(toolbar);
+        this.setupNavigationDrawer();
         Bundle bundle = getIntent().getExtras();
         if (bundle == null){
             return;
@@ -54,6 +56,11 @@ public class VitalDetailActivity extends BaseActivity {
         String vitalId = bundle.getString("vitalId");
         String vitalType = bundle.getString("vitalType");
         new GetVitals().execute(vitalId, vitalType);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override
@@ -149,7 +156,7 @@ public class VitalDetailActivity extends BaseActivity {
     }
 
     private void setTitle(String title){
-        ActionBar actionBar =  getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
              actionBar.setTitle(title);
         }

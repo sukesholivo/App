@@ -9,6 +9,7 @@
     <string name="action_share">Share</string>
     <string name="action_add_vital">Sugar</string>
     <string name="action_add_symptoms">Symptom</string>
+    <string name="action_save">Save</string>
 
     <string-array name="drawer_array">
         <item>Profile</item>

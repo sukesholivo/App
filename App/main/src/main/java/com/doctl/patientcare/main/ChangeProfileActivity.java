@@ -1,6 +1,5 @@
 package com.doctl.patientcare.main;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -11,6 +10,9 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -45,7 +47,7 @@ import java.util.Date;
 /**
  * Created by Administrator on 12/30/2014.
  */
-public class ChangeProfileActivity extends Activity {
+public class ChangeProfileActivity extends ActionBarActivity {
     private static final String TAG = ChangeProfileActivity.class.getSimpleName();
     UserProfile userProfile;
     private Uri mImageCaptureUri;
@@ -58,9 +60,12 @@ public class ChangeProfileActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_change_profile);
-        ActionBar actionBar = getActionBar();
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
+        setSupportActionBar(mToolbar);
+        ActionBar actionBar = getSupportActionBar();
         if (actionBar != null){
             actionBar.setTitle("Change Profile");
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         userProfile = Utils.getUserDataFromSharedPreference(this);

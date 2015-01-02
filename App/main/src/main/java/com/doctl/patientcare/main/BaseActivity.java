@@ -1,15 +1,18 @@
 package com.doctl.patientcare.main;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,12 +26,12 @@ import java.util.List;
 /**
  * Created by Administrator on 8/11/2014.
  */
-public class BaseActivity extends Activity implements ListView.OnItemClickListener{
+public class BaseActivity extends ActionBarActivity implements ListView.OnItemClickListener{
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private List<DrawerItem> dataList;
-
+    Toolbar mToolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +51,7 @@ public class BaseActivity extends Activity implements ListView.OnItemClickListen
     @Override
     protected void onStart() {
         super.onStart();
-        setupNavigationDrawer();
+        invalidateOptionsMenu();
         mDrawerToggle.syncState();
     }
 
@@ -60,7 +63,6 @@ public class BaseActivity extends Activity implements ListView.OnItemClickListen
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d("BaseActivity: ", "Some menu selected");
         if (mDrawerToggle != null && mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -84,27 +86,54 @@ public class BaseActivity extends Activity implements ListView.OnItemClickListen
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if(mDrawerLayout.isDrawerOpen(Gravity.START|Gravity.START)){
+            mDrawerLayout.closeDrawers();
+            return;
+        }
+        super.onBackPressed();
+    }
+
     protected void setupNavigationDrawer(){
+        mToolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
+        setSupportActionBar(mToolbar);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         CustomDrawerAdapter adapter = new CustomDrawerAdapter(this, getDrawerItemList());
         mDrawerList.setAdapter(adapter);
         mDrawerList.setOnItemClickListener(this);
-        mDrawerToggle = new ActionBarDrawerToggle(this,
-                mDrawerLayout,
-                R.drawable.ic_drawer,
-                R.string.drawer_open,
-                R.string.drawer_close) {
+        mDrawerToggle= new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close)
+        {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, slideOffset);
+            }
 
+            /** Called when a drawer has settled in a completely closed state. */
+            @Override
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                invalidateOptionsMenu();
+                syncState();
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                invalidateOptionsMenu();
+                syncState();
+            }
         };
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
         // Set the drawer toggle as the DrawerListener
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
         }
-        mDrawerLayout.closeDrawer(mDrawerList);
     }
 
     /** Swaps fragments in the main content view */
@@ -189,7 +218,7 @@ public class BaseActivity extends Activity implements ListView.OnItemClickListen
     private void signoutUser(){
         final Activity ctx = this;
         new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setIcon(0)
                 .setTitle(R.string.signout_title)
                 .setMessage(R.string.signout_body)
                 .setPositiveButton(R.string.signout_yes, new DialogInterface.OnClickListener() {

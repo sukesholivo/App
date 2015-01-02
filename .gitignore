@@ -1,4 +1,7 @@
 App/build/
+App/.idea/
+App/gradle/
+App/App.iml
 App/.idea/libraries/YouTubeAndroidPlayerApi.xml
 App/.idea/libraries/achartengine_1_1_0.xml
 App/.idea/libraries/appcompat_v7_19_0_1.xml

@@ -1,46 +1,52 @@
-<android.support.v4.widget.DrawerLayout
-    android:id="@+id/drawer_layout"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_parent_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@drawable/page_background"
-    tools:context="com.doctl.patientcare.main.MainActivity">
-
-
-    <FrameLayout android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ProgressBar
-            android:id="@+id/loadingIndicator"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            />
-    </FrameLayout>
-    <RelativeLayout android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <FrameLayout
-            android:id="@+id/fragment_main"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            />
-        <include
-            android:id="@+id/treatment_dashboard_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            layout="@layout/treatment_dashboard"
-            />
-    </RelativeLayout>
-    <FrameLayout
+    android:fitsSystemWindows="true">
+    <include layout="@layout/toolbar"/>
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <include layout="@layout/list_card_undo_message"/>
-    </FrameLayout>
+        android:layout_height="match_parent"
+        >
+        <FrameLayout android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ProgressBar
+                android:id="@+id/loadingIndicator"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                />
+        </FrameLayout>
+        <RelativeLayout android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <include layout="@layout/drawer_layout"/>
-</android.support.v4.widget.DrawerLayout>
+            <FrameLayout
+                android:id="@+id/fragment_main"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                />
+            <include
+                android:id="@+id/treatment_dashboard_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                layout="@layout/treatment_dashboard"
+                />
+        </RelativeLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <include layout="@layout/list_card_undo_message"/>
+        </FrameLayout>
+
+        <include layout="@layout/drawer_layout"/>
+    </android.support.v4.widget.DrawerLayout>
+</LinearLayout>

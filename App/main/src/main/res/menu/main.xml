@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.doctl.patientcare.main.MainActivity">
     <item android:id="@+id/action_new"
-        android:icon="@drawable/ic_action_new"
+        android:icon="@drawable/ic_add_white_36dp"
         android:title="@string/action_new"
         android:showAsAction="ifRoom">
         <menu>
@@ -16,7 +16,7 @@
 
     </item>
     <item android:id="@+id/action_share"
-        android:icon="@drawable/ic_action_share"
+        android:icon="@drawable/ic_share_white_36dp"
         android:title="@string/action_share"
         android:showAsAction="ifRoom"
         />
