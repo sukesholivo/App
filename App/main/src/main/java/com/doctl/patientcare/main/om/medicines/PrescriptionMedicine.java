@@ -8,7 +8,7 @@ import java.util.Date;
  * Created by Administrator on 8/5/2014.
  */
 public class PrescriptionMedicine {
-    @SerializedName("id")
+    @SerializedName("me_id")
     private String id;
 
     @SerializedName("startDate")
@@ -24,7 +24,7 @@ public class PrescriptionMedicine {
     private String manufacture;
 
     @SerializedName("type")
-    private Medicine.MedicineType type;
+    private int type;
 
     @SerializedName("days")
     private int days;
@@ -67,7 +67,7 @@ public class PrescriptionMedicine {
         return manufacture;
     }
 
-    public Medicine.MedicineType getType() {
+    public int getType() {
         return type;
     }
 

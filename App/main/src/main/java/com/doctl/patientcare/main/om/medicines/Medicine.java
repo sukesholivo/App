@@ -113,11 +113,30 @@ public class Medicine {
     //endregion
 
     public enum MedicineType{
-        CAPSULE,
-        TABLET,
-        INJECTION,
-        SYRUP,
-        DROPS
+        TABLET,     //1
+        CAPSULE,    //2
+        INJECTION,  //3
+        SYRUP,      //4
+        DROPS,      //5
+        OTHER;      //6
+
+        public static MedicineType fromInteger(int x) {
+            switch(x) {
+                case 1:
+                    return TABLET;
+                case 2:
+                    return CAPSULE;
+                case 3:
+                    return INJECTION;
+                case 4:
+                    return SYRUP;
+                case 5:
+                    return DROPS;
+                case 6:
+                    return OTHER;
+            }
+            return null;
+        }
     }
 
     static final SparseArray<String> MedicineMap = new SparseArray<String>() {{

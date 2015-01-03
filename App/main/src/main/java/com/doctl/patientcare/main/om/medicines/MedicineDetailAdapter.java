@@ -35,15 +35,24 @@ public class MedicineDetailAdapter extends ArrayAdapter<PrescriptionMedicine> {
         }
 
         ImageView medicineImage = (ImageView)view.findViewById(R.id.medicineIcon);
-        switch(item.getType()){
+        Medicine.MedicineType a = Medicine.MedicineType.fromInteger(item.getType());
+        switch(a){
             case CAPSULE:
                 medicineImage.setImageResource(R.drawable.capsule_green);
                 break;
             case TABLET:
-                medicineImage.setImageResource(R.drawable.tablet_green);
+                medicineImage.setImageResource(R.drawable.capsule_green);
                 break;
             case INJECTION:
                 medicineImage.setImageResource(R.drawable.injection_green);
+                break;
+            case SYRUP:
+//                TODO: get syrup green icon
+                medicineImage.setImageResource(R.drawable.tablet_green);
+                break;
+            case DROPS:
+//                TODO: get drops green icon
+                medicineImage.setImageResource(R.drawable.tablet_green);
                 break;
             default:
                 medicineImage.setImageResource(R.drawable.tablet_green);
@@ -54,7 +63,7 @@ public class MedicineDetailAdapter extends ArrayAdapter<PrescriptionMedicine> {
         medicineName.setText(item.getBrand());
 
         TextView medicineType = (TextView)view.findViewById(R.id.medicineType);
-        medicineType.setText(item.getType().toString());
+        medicineType.setText(a.toString());
 
         LinearLayout ll = (LinearLayout) view.findViewById(R.id.medicineFrequencyLayout);
         LinearLayout.LayoutParams layoutParams =
