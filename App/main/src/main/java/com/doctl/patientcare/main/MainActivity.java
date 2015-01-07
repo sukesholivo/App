@@ -1,5 +1,6 @@
 package com.doctl.patientcare.main;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -7,6 +8,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.AsyncTask;
@@ -60,11 +62,15 @@ public class MainActivity extends BaseActivity {
     }
 
     public void setupGCMRegistration() {
-        Context appContext = this.getApplicationContext();
-        Intent registrationIntent = new Intent("com.google.android.c2dm.intent.REGISTER");
-        registrationIntent.putExtra("app", PendingIntent.getBroadcast(appContext, 0, new Intent(), 0));
-        registrationIntent.putExtra("sender","258383232963");
-//        appContext.startService(registrationIntent);
+        SharedPreferences sp = this.getSharedPreferences(Constants.GCM_SHARED_PREFERERENCE_KEY, Activity.MODE_PRIVATE);
+        String gcm_registration_id = sp.getString("gcm_registration_id", "");
+        if(gcm_registration_id.isEmpty()) {
+            Context appContext = this.getApplicationContext();
+            Intent registrationIntent = new Intent("com.google.android.c2dm.intent.REGISTER");
+            registrationIntent.putExtra("app", PendingIntent.getBroadcast(appContext, 0, new Intent(), 0));
+            registrationIntent.putExtra("sender", "258383232963");
+            appContext.startService(registrationIntent);
+        }
     }
 
     @Override

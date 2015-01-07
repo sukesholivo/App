@@ -5,7 +5,7 @@ package com.doctl.patientcare.main.utility;
  */
 public final class Constants {
 //    TODO: Change this server URL to production server url
-    public final static String SERVER_URL = "http://test.doctl.com";
+    public final static String SERVER_URL = "http://demo.doctl.com";
     public final static String API_VERSION = "v1.0";
 //    TODO: Get this patient id from server and save to local storage.
     public final static String PATIENT_ID = "1496532e154f4b0db877278985762769";
@@ -22,4 +22,5 @@ public final class Constants {
     public final static String AUTH_SHARED_PREFERENCE_NAME= "auth_prefs";
     public final static String AUTH_SHARED_PREFERENCE_KEY= "serveraccesstoken";
 
+    public final static String GCM_SHARED_PREFERERENCE_KEY = "gcm_appdata";
 }
