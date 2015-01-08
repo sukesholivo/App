@@ -38,9 +38,13 @@ public class MyC2dmReceiver extends BroadcastReceiver {
         String a = intent.getAction();
         if (a.equals("com.google.android.c2dm.intent.RECEIVE"))
         {
-            String service = intent.getStringExtra("service");
             String type = intent.getStringExtra("type");
-            String message = intent.getStringExtra("message");
+            String username = intent.getStringExtra("username"); //For cross validation
+            String card_json = intent.getStringExtra("data");
+
+            String service = "DOCTL";
+            //compute message from Card type.
+            String message = "Take your medication Sir. Should not need to remind you ideally.";
 
 //            Toast.makeText(context2, service+type+message, Toast.LENGTH_SHORT).show();
 
