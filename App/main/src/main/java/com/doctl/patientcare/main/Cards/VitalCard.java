@@ -36,6 +36,8 @@ public class VitalCard extends BaseCard {
     private static final String TAG = VitalCard.class.getSimpleName();
 
     private VitalTask vitalTask;
+    private boolean addListener = true;
+
     public VitalCard(Context context) {
         this(context, R.layout.card_inner_content_vital);
     }
@@ -52,6 +54,14 @@ public class VitalCard extends BaseCard {
 
     public VitalCard(Context context, CardHeader cardHeader, VitalTask vitalTask) {
         this(context, R.layout.card_inner_content_vital, cardHeader, vitalTask);
+    }
+
+    public VitalCard(Context context, CardHeader cardHeader, VitalTask medicineTask,
+                        boolean showFooter, boolean addListener, boolean isSwipable) {
+        this(context, R.layout.card_inner_content_vital, cardHeader, medicineTask);
+        this.showFooter = showFooter;
+        this.addListener = addListener;
+        this.isSwipable = isSwipable;
     }
 
     @Override
@@ -144,7 +154,9 @@ public class VitalCard extends BaseCard {
         }
 
         setupCardFooter(view, vitalTask);
-        setListnerToCard();
+        if (addListener) {
+            setListnerToCard();
+        }
     }
 
     private View getView(ViewGroup parent, String name, String condition, String unit, Double value, TextWatcher textWatcher){

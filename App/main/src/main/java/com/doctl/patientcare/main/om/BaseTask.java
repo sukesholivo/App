@@ -84,11 +84,17 @@ public abstract class BaseTask {
     }
 
     public enum CardType{
+        @SerializedName("Medicine")
         MEDICINE,
+        @SerializedName("Vital")
         VITAL,
+        @SerializedName("Education")
         EDUCATION,
+        @SerializedName("Walk")
         WALK,
+        @SerializedName("Followup")
         FOLLOWUP,
+        @SerializedName("SimpleReminder")
         SIMPLEREMINDER,
     }
 

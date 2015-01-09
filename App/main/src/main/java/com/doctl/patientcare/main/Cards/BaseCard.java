@@ -23,7 +23,8 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
  */
 public abstract class BaseCard extends Card {
     private static final String TAG = BaseCard.class.getSimpleName();
-
+    protected boolean isSwipable = true;
+    protected boolean showFooter = true;
     public BaseCard(Context context, int layout){
         super(context, layout);
         setupCard(new CardHeaderInnerView(getContext()));
@@ -37,7 +38,9 @@ public abstract class BaseCard extends Card {
         if (header != null) {
             addCardHeader(header);
         }
-        setSwipeable(true);
+        if (isSwipable) {
+            setSwipeable(true);
+        }
         this.setBackgroundResourceId(R.drawable.card_background_gray);
     }
 
@@ -54,6 +57,7 @@ public abstract class BaseCard extends Card {
         if(view.getTag() == null) {
             viewHolder = new BaseViewHolder();
             viewHolder.textView = (TextView) view.findViewById(R.id.targetPoint);
+            viewHolder.textView1 = (TextView) view.findViewById(R.id.pointText);
             viewHolder.imageView = (ImageView) view.findViewById(R.id.influencerImage);
             viewHolder.footerSet = true;
             view.setTag(viewHolder);
@@ -61,20 +65,27 @@ public abstract class BaseCard extends Card {
             viewHolder = (BaseViewHolder) view.getTag();
             if (!viewHolder.footerSet){
                 viewHolder.textView = (TextView) view.findViewById(R.id.targetPoint);
+                viewHolder.textView1 = (TextView) view.findViewById(R.id.pointText);
                 viewHolder.imageView = (ImageView) view.findViewById(R.id.influencerImage);
                 viewHolder.footerSet = true;
             }
         }
 
         TextView targetPointTextView = viewHolder.textView;
+        TextView pointTextView = viewHolder.textView1;
         ImageView influencerImage = viewHolder.imageView;
-
-        targetPointTextView.setText("" + task.getPoints());
-        if (task.getSource() != null) {
-            Picasso.with(getContext())
-                    .load(Constants.SERVER_URL + task.getSource()
-                            .getProfilePicUrl())
-                    .into(influencerImage);
+        if (showFooter) {
+            targetPointTextView.setText("" + task.getPoints());
+            if (task.getSource() != null) {
+                Picasso.with(getContext())
+                        .load(Constants.SERVER_URL + task.getSource()
+                                .getProfilePicUrl())
+                        .into(influencerImage);
+            }
+        } else {
+            targetPointTextView.setVisibility(View.GONE);
+            pointTextView.setVisibility(View.GONE);
+            influencerImage.setVisibility(View.GONE);
         }
     }
 
@@ -98,7 +109,7 @@ public abstract class BaseCard extends Card {
     }
 
     protected static class BaseViewHolder {
-        TextView textView;
+        TextView textView, textView1;
         ImageView imageView;
         boolean footerSet = false;
     }

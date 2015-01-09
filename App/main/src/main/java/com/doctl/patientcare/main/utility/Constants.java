@@ -17,10 +17,16 @@ public final class Constants {
     public final static String IMAGE_UPLOAD_URL = SERVER_URL + "/api/account/" + API_VERSION + "/image/";
     public final static String LOGIN_URL = SERVER_URL + "/api/account/v1.0/login/";
     public final static String REGISTER_URL = SERVER_URL + "/api/account/v1.0/register/";
+    public final static String GCM_REGISTER_URL = Constants.SERVER_URL+"/gcm/register/";
 
     public final static String PERSONAL_DETAIL_SHARED_PREFERENCE_NAME= "personal_detail";
     public final static String AUTH_SHARED_PREFERENCE_NAME= "auth_prefs";
     public final static String AUTH_SHARED_PREFERENCE_KEY= "serveraccesstoken";
 
     public final static String GCM_SHARED_PREFERERENCE_KEY = "gcm_appdata";
+    public final static String PROPERTY_GCM_REGISTRATION_ID = "gcm_registration_id";
+    public final static String PROPERTY_APP_VERSION = "app_version";
+    public final static String SENDER_ID = "258383232963";
+
+    public final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 }

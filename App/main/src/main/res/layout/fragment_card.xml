@@ -3,14 +3,52 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    android:theme="@android:style/Theme.Dialog">
 
     <it.gmariotti.cardslib.library.view.CardView
-    android:id="@+id/card_layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="1dp"
-    android:layout_marginTop="5dp"
+        android:id="@+id/card_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
     />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+        <Button
+            android:id="@+id/card_yes_button"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:layout_gravity="start"
+            android:text="Yes"
+            android:background="@drawable/button_style_white"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+            />
+        <Button
+            android:id="@+id/card_no_button"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:layout_gravity="end"
+            android:text="No"
+            android:background="@drawable/button_style_white"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+            />
+        <Button
+            android:id="@+id/card_snooze_button"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:layout_gravity="end"
+            android:text="Later"
+            android:background="@drawable/button_style_white"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+            />
 
+    </LinearLayout>
 </LinearLayout>

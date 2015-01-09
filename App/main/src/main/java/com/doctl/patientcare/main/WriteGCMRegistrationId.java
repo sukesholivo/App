@@ -4,12 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.Utils;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
@@ -26,15 +26,11 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Created by mailtovishal.r on 6/23/2014.
@@ -43,8 +39,7 @@ import java.util.ListIterator;
 public class WriteGCMRegistrationId extends AsyncTask<String, String, String> {
     private Context c;
 
-    public WriteGCMRegistrationId(Context c)
-    {
+    public WriteGCMRegistrationId(Context c) {
         this.c = c;
     }
 
@@ -68,7 +63,7 @@ public class WriteGCMRegistrationId extends AsyncTask<String, String, String> {
                 nameValuePairs.add(new BasicNameValuePair("username", username));
 
                 HttpClient client = new DefaultHttpClient(httpParams);
-                String url = Constants.SERVER_URL+"/gcm/register/";
+                String url = Constants.GCM_REGISTER_URL;
                 HttpPost request = new HttpPost(url);
                 request.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                 HttpResponse response = null;
@@ -90,24 +85,17 @@ public class WriteGCMRegistrationId extends AsyncTask<String, String, String> {
                     result = "NetError: Please report this error to DocTL team";
                 }
                 finally {
-                    if(response != null)
-                    {
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "iso-8859-1"), 8);
-                        StringBuilder sb = new StringBuilder();
-                        sb.append(reader.readLine() + "\n");
-                        String line;
-                        while ((line = reader.readLine()) != null) {
-                            sb.append(line).append("\n");
-                        }
-
-                        result = sb.toString();
+                    if(response != null) {
+                        HttpEntity httpEntity = response.getEntity();
+                        result = EntityUtils.toString(httpEntity);
                         Log.d("DEBUG", result);
 
                         if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                             //Save the registration id
                             SharedPreferences sp = c.getSharedPreferences(Constants.GCM_SHARED_PREFERERENCE_KEY, Activity.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sp.edit();
-                            editor.putString("gcm_registration_id", registration);
+                            editor.putString(Constants.PROPERTY_GCM_REGISTRATION_ID, registration);
+                            editor.putInt(Constants.PROPERTY_APP_VERSION, Utils.getAppVersion(c));
                             editor.commit();
                         }
                     }

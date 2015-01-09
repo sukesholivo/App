@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.NameValuePair;
@@ -29,12 +30,11 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 
 /**
@@ -44,7 +44,6 @@ public class GetServerAuthTokenAsync extends AsyncTask<Void, String, String> {
 
     private Context c;
     private String err = "";
-    private int status = 0;
     private String url;
     private List<NameValuePair> nameValuePairs;
     public GetServerAuthTokenAsync(Context c) {
@@ -67,19 +66,16 @@ public class GetServerAuthTokenAsync extends AsyncTask<Void, String, String> {
             try {
                 JSONObject jsonResponse = networkCall(url, nameValuePairs);
                 if (jsonResponse != null) {
-                    if(jsonResponse.has("non_field_errors")) {
-                        err = "Error: Unable to login with provided credentials.";
-                        status = 1;
-                    }
-                    else if(jsonResponse.has("token")) {
+                    if(jsonResponse.has("message")) {
+                        err = jsonResponse.getString("message");
+                    } else if(jsonResponse.has("token")) {
                         String serverAccessToken = jsonResponse.getString("token");
                         Utils.setAuthTokenFromSharedPreference(c, serverAccessToken);
                         result = serverAccessToken;
-                    }
-                    else {
+                        getPersonalDetail(c);
+                    } else {
                         throw new Exception("Error:Invalid response");
                     }
-                    getPersonalDetail(c);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -111,11 +107,7 @@ public class GetServerAuthTokenAsync extends AsyncTask<Void, String, String> {
         } else {
             //show modal for error
             AlertDialog.Builder alert = new AlertDialog.Builder(c);
-            String title = "Error occurred: "+err+". Try again after sometime. For repeated error, please write to contact@DOCTL.com.";
-            if(status == 1)
-            {
-                title = "Invalid Credentials Provided. Please try again with correct credentials.";
-            }
+            String title = err;
             alert.setTitle(title);
             alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
@@ -154,18 +146,11 @@ public class GetServerAuthTokenAsync extends AsyncTask<Void, String, String> {
                 e.printStackTrace();
                 err = "NetError: Please report this error to DocTL team";
             }
-
+            String responseString;
             if (response != null) {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "iso-8859-1"), 8);
-                StringBuilder sb = new StringBuilder();
-                sb.append(reader.readLine()).append("\n");
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line).append("\n");
-                }
-
-                String temp = sb.toString();
-                JSONTokener tokener = new JSONTokener(temp);
+                HttpEntity httpEntity = response.getEntity();
+                responseString = EntityUtils.toString(httpEntity);
+                JSONTokener tokener = new JSONTokener(responseString);
                 return new JSONObject(tokener);
             }
         } catch (Exception e) {

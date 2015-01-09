@@ -3,6 +3,8 @@ package com.doctl.patientcare.main.utility;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Environment;
 import android.util.Log;
@@ -213,6 +215,7 @@ public final class Utils {
     public static void cleanupSharedPreference(Context context){
         context.getSharedPreferences(Constants.AUTH_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE).edit().clear().commit();
         context.getSharedPreferences(Constants.PERSONAL_DETAIL_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE).edit().clear().commit();
+        context.getSharedPreferences(Constants.GCM_SHARED_PREFERERENCE_KEY, Activity.MODE_PRIVATE).edit().clear().commit();
     }
 
     public static String getFolderUrl(){
@@ -231,5 +234,16 @@ public final class Utils {
     public static File getImageUrlForImageSave(){
         Random r = new Random();
         return new File(getFolderUrl(), "profile_pic_" + String.valueOf(System.currentTimeMillis())+ r.nextInt() + ".jpg");
+    }
+
+    public static int getAppVersion(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            // should never happen
+            throw new RuntimeException("Could not get package name: " + e);
+        }
     }
 }

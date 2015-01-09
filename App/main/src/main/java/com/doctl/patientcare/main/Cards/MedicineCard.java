@@ -31,7 +31,8 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
 public class MedicineCard extends BaseCard {
     private static final String TAG = MedicineCard.class.getSimpleName();
     private MedicineTask medicineTask;
-    
+    private boolean addListener = true;
+    private int state = Medicine.MedicineTakenState.getInteger(Medicine.MedicineTakenState.TAKEN);
     public MedicineCard(Context context) {
         this(context, R.layout.card_inner_content_medication);
     }
@@ -48,6 +49,14 @@ public class MedicineCard extends BaseCard {
 
     public MedicineCard(Context context, CardHeader cardHeader, MedicineTask medicineTask) {
         this(context, R.layout.card_inner_content_medication, cardHeader, medicineTask);
+    }
+
+    public MedicineCard(Context context, CardHeader cardHeader, MedicineTask medicineTask,
+                        boolean showFooter, boolean addListener, boolean isSwipable) {
+        this(context, R.layout.card_inner_content_medication, cardHeader, medicineTask);
+        this.showFooter = showFooter;
+        this.addListener = addListener;
+        this.isSwipable = isSwipable;
     }
 
     @Override
@@ -70,7 +79,10 @@ public class MedicineCard extends BaseCard {
             list.addView(listView);
         }
         setupCardFooter(view, medicineTask);
-        setListnerToCard();
+
+        if (addListener) {
+            setListnerToCard();
+        }
     }
 
     private void setListnerToCard() {
@@ -101,7 +113,7 @@ public class MedicineCard extends BaseCard {
         String cardId = medicineTask.getCardId();
         for (Medicine med : meds){
             med.setTimestamp(Utils.getIsoDateString(new GregorianCalendar()));
-            med.setState(1);
+            med.setState(state);
         }
         try {
             data = medicineTask.getDataToPatch();
@@ -110,6 +122,10 @@ public class MedicineCard extends BaseCard {
         }catch (JSONException e){
             Log.e(TAG, e.toString());
         }
+    }
+
+    public void setMedicineState (Medicine.MedicineTakenState state ) {
+        this.state = Medicine.MedicineTakenState.getInteger(state);
     }
 
     private static class ViewHolder extends BaseViewHolder {

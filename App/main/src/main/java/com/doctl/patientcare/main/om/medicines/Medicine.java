@@ -139,6 +139,24 @@ public class Medicine {
         }
     }
 
+    public enum MedicineTakenState{
+        TAKEN,     //1
+        SNOOZED,    //2
+        DISMISSED;  //3
+
+        public static int getInteger(MedicineTakenState state) {
+            switch(state) {
+                case TAKEN:
+                    return 1;
+                case SNOOZED:
+                    return 2;
+                case DISMISSED:
+                    return 3;
+            }
+            return 0;
+        }
+    }
+
     static final SparseArray<String> MedicineMap = new SparseArray<String>() {{
         put(1, MedicineType.TABLET.toString());
         put(2, MedicineType.CAPSULE.toString());

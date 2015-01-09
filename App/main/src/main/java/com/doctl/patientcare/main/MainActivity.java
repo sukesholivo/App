@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,7 +12,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -26,11 +27,16 @@ import com.doctl.patientcare.main.fragments.CardListFragment;
 import com.doctl.patientcare.main.om.dashboard.Dashboard;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
+import com.doctl.patientcare.main.utility.Utils;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Date;
 
@@ -39,6 +45,9 @@ import it.gmariotti.cardslib.library.utils.BitmapUtils;
 public class MainActivity extends BaseActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     static boolean active = false;
+    GoogleCloudMessaging gcm;
+    String regid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,18 +70,6 @@ public class MainActivity extends BaseActivity {
         active = false;
     }
 
-    public void setupGCMRegistration() {
-        SharedPreferences sp = this.getSharedPreferences(Constants.GCM_SHARED_PREFERERENCE_KEY, Activity.MODE_PRIVATE);
-        String gcm_registration_id = sp.getString("gcm_registration_id", "");
-        if(gcm_registration_id.isEmpty()) {
-            Context appContext = this.getApplicationContext();
-            Intent registrationIntent = new Intent("com.google.android.c2dm.intent.REGISTER");
-            registrationIntent.putExtra("app", PendingIntent.getBroadcast(appContext, 0, new Intent(), 0));
-            registrationIntent.putExtra("sender", "258383232963");
-            appContext.startService(registrationIntent);
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 //        TODO: Removing menu as of now
@@ -80,14 +77,6 @@ public class MainActivity extends BaseActivity {
 //        inflater.inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
-    private Intent getDefaultIntent() {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_TEXT, "I have been 80% adhered to my diabetes treatment");
-        intent.setType("text/plain");
-        return intent;
-    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -151,6 +140,50 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        Constants.PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                Log.i(TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
+    }
+
+    private String getRegistrationId(Context context) {
+        SharedPreferences sp = this.getSharedPreferences(Constants.GCM_SHARED_PREFERERENCE_KEY, Activity.MODE_PRIVATE);
+        String registrationId = sp.getString(Constants.PROPERTY_GCM_REGISTRATION_ID, "");
+
+        if (registrationId.isEmpty()) {
+            Log.i(TAG, "Registration not found.");
+            return "";
+        }
+        int registeredVersion = sp.getInt(Constants.PROPERTY_APP_VERSION, Integer.MIN_VALUE);
+        int currentVersion = Utils.getAppVersion(context);
+        if (registeredVersion != currentVersion) {
+            Log.i(TAG, "App version changed.");
+            return "";
+        }
+        return registrationId;
+    }
+
+    public void setupGCMRegistration() {
+        if (checkPlayServices()) {
+            gcm = GoogleCloudMessaging.getInstance(this);
+            regid = getRegistrationId(this);
+
+            if (regid.isEmpty()) {
+                registerInBackground(this);
+            }
+        } else {
+            Log.i(TAG, "No valid Google Play Services APK found.");
+        }
+    }
 
     private void toggleUpdateSpinner(int b) {
 //        ProgressBar progress = (ProgressBar)findViewById(R.id.loadingIndicator);
@@ -305,5 +338,34 @@ public class MainActivity extends BaseActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
         }
+    }
+
+    private void registerInBackground(final Context context) {
+
+        new AsyncTask<Void, String, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                String msg = "";
+                try {
+                    if (gcm == null) {
+                        gcm = GoogleCloudMessaging.getInstance(context);
+                    }
+                    regid = gcm.register(Constants.SENDER_ID);
+                    msg = "Device registered, registration ID=" + regid;
+                    SharedPreferences sp = context.getSharedPreferences(Constants.PERSONAL_DETAIL_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE);
+                    String username = sp.getString("email","");
+
+                    new WriteGCMRegistrationId(context).execute(regid, username);
+
+                } catch (IOException ex) {
+                    msg = "Error :" + ex.getMessage();
+                }
+                return msg;
+            }
+
+            @Override
+            protected void onPostExecute(String msg) {
+            }
+        }.execute(null, null, null);
     }
 }

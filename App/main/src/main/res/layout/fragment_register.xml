@@ -23,7 +23,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="10dp"
-        android:inputType="number"
+        android:inputType="text"
         android:hint="@string/hint_register_code"
         android:textSize="20sp"
         />
