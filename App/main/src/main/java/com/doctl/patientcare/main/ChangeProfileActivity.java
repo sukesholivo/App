@@ -389,8 +389,10 @@ public class ChangeProfileActivity extends ActionBarActivity {
             JSONObject data= (JSONObject)arg0[1];
             HTTPServiceHandler serviceHandler = new HTTPServiceHandler(ChangeProfileActivity.this);
             String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.PATCH, null, data);
-            userProfile = new Gson().fromJson(response, UserProfile.class);
-            Utils.saveUserDataToSharedPreference(ChangeProfileActivity.this, userProfile);
+            if (response != null && !response.isEmpty()) {
+                userProfile = new Gson().fromJson(response, UserProfile.class);
+                Utils.saveUserDataToSharedPreference(ChangeProfileActivity.this, userProfile);
+            }
             return null;
         }
 

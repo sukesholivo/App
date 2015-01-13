@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.doctl.patientcare.main.utility.Utils;
 
@@ -35,17 +36,17 @@ public class BaseActivity extends ActionBarActivity implements ListView.OnItemCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-//            public void uncaughtException(Thread paramThread, Throwable paramThrowable) {
-//                Log.e("Error:" + Thread.currentThread().getStackTrace()[2], paramThrowable.getLocalizedMessage());
-//                Log.e("Error:" + Thread.currentThread().getStackTrace()[2], paramThrowable.getClass().getName());
-//                runOnUiThread(new Runnable() {
-//                    public void run() {
-//                        Toast.makeText(getApplicationContext(), "Some Error occurred", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//            }
-//        });
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            public void uncaughtException(Thread paramThread, Throwable paramThrowable) {
+                Log.e("Error:" + Thread.currentThread().getStackTrace()[2], paramThrowable.getLocalizedMessage());
+                Log.e("Error:" + Thread.currentThread().getStackTrace()[2], paramThrowable.getClass().getName());
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "Some Error occurred", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
     }
 
     @Override

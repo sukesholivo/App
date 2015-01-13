@@ -17,7 +17,6 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -92,7 +91,7 @@ public class WriteGCMRegistrationId extends AsyncTask<String, String, String> {
 
                         if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                             //Save the registration id
-                            SharedPreferences sp = c.getSharedPreferences(Constants.GCM_SHARED_PREFERERENCE_KEY, Activity.MODE_PRIVATE);
+                            SharedPreferences sp = c.getSharedPreferences(Constants.GCM_SHARED_PREFERENCE_KEY, Activity.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sp.edit();
                             editor.putString(Constants.PROPERTY_GCM_REGISTRATION_ID, registration);
                             editor.putInt(Constants.PROPERTY_APP_VERSION, Utils.getAppVersion(c));

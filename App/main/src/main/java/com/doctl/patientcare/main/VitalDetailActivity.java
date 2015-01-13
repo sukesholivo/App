@@ -170,9 +170,7 @@ public class VitalDetailActivity extends BaseActivity {
             params.add(new BasicNameValuePair("vitalType", vitalType));
         }
         HTTPServiceHandler serviceHandler = new HTTPServiceHandler(this);
-        String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.GET, params, null);
-        Log.d(TAG, response);
-        return response;
+        return serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.GET, params, null);
     }
 
     private VitalDetailData parseVitalsData(String jsonStr){
@@ -183,15 +181,17 @@ public class VitalDetailActivity extends BaseActivity {
 
     private void refreshActivity(String vitalId, String vitalType) {
         String jsonStr = downloadVitalsData(vitalId, vitalType);
-        vitalData =  parseVitalsData(jsonStr);
+        if (jsonStr != null && !jsonStr.isEmpty()) {
+            vitalData = parseVitalsData(jsonStr);
 
-        runOnUiThread(new Runnable() {
-            public void run() {
-                setTitle(vitalData.getTitle());
-                populateVitalGraphData(vitalData);
-                populateVitalListData(vitalData);
-            }
-        });
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    setTitle(vitalData.getTitle());
+                    populateVitalGraphData(vitalData);
+                    populateVitalListData(vitalData);
+                }
+            });
+        }
     }
 
     private class GetVitals extends AsyncTask<String, Void, Void> {

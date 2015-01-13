@@ -2,6 +2,7 @@ package com.doctl.patientcare.main.utility;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -10,6 +11,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.doctl.patientcare.main.Cards.CardHeaderInnerView;
+import com.doctl.patientcare.main.StartPageActivity;
 import com.doctl.patientcare.main.om.BaseTask;
 import com.doctl.patientcare.main.om.GraphData;
 import com.doctl.patientcare.main.om.UserProfile;
@@ -81,7 +83,7 @@ public final class Utils {
         endDate.add(Calendar.DAY_OF_MONTH, 1);
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-//        params.add(new BasicNameValuePair("startDate", Utils.getIsoDateString(startDate)));
+        params.add(new BasicNameValuePair("startDate", Utils.getIsoDateString(startDate)));
         params.add(new BasicNameValuePair("endDate", Utils.getIsoDateString(endDate)));
         params.add(new BasicNameValuePair("orderBy", "eta"));
         params.add(new BasicNameValuePair("state", "UNSEEN"));
@@ -167,7 +169,7 @@ public final class Utils {
     public static String getCardsUrl(Context context){
         String patientId = getUserDataFromSharedPreference(context).getId();
         if (patientId.isEmpty()){
-            patientId = Constants.PATIENT_ID;
+            return null;
         }
         return Constants.SERVER_URL + "/api/card/v1.0/"+ patientId +"/cards/";
     }
@@ -215,7 +217,7 @@ public final class Utils {
     public static void cleanupSharedPreference(Context context){
         context.getSharedPreferences(Constants.AUTH_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE).edit().clear().commit();
         context.getSharedPreferences(Constants.PERSONAL_DETAIL_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE).edit().clear().commit();
-        context.getSharedPreferences(Constants.GCM_SHARED_PREFERERENCE_KEY, Activity.MODE_PRIVATE).edit().clear().commit();
+        context.getSharedPreferences(Constants.GCM_SHARED_PREFERENCE_KEY, Activity.MODE_PRIVATE).edit().clear().commit();
     }
 
     public static String getFolderUrl(){
@@ -245,5 +247,23 @@ public final class Utils {
             // should never happen
             throw new RuntimeException("Could not get package name: " + e);
         }
+    }
+
+    public static String getAppVersionName(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            // should never happen
+            throw new RuntimeException("Could not get package name: " + e);
+        }
+    }
+
+    public static void handleUnauthorizedAccess(Context context){
+        cleanupSharedPreference(context);
+        Intent intent = new Intent(context, StartPageActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        context.startActivity(intent);
     }
 }

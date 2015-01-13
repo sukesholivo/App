@@ -62,7 +62,7 @@ public class VitalsDetailAdapter extends ArrayAdapter<VitalDetailData.VitalDetai
         String[] months = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"};
 
         TextView vitalEntryDay = (TextView)view.findViewById(R.id.vitalEntryDay);
-        vitalEntryDay.setText(days[c.get(Calendar.DAY_OF_WEEK)]);
+        vitalEntryDay.setText(days[c.get(Calendar.DAY_OF_WEEK) - 1]);
 
         TextView vitalEntryDate = (TextView)view.findViewById(R.id.vitalEntryDate);
         vitalEntryDate.setText(c.get(Calendar.DAY_OF_MONTH) + " " + months[c.get(Calendar.MONTH)]);

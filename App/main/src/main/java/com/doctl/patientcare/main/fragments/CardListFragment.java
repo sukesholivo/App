@@ -185,8 +185,10 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
 
     protected void refreshCard() {
         String data = downloadCardData();
-        ArrayList<BaseCard> cards = parseCardData(data);
-        resetCardList(cards);
+        if (data != null && !data.isEmpty()) {
+            ArrayList<BaseCard> cards = parseCardData(data);
+            resetCardList(cards);
+        }
     }
 
     private String downloadCardData(){
@@ -300,12 +302,12 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
         ImageCard card11 = new ImageCard(getActivity(), null);
         card11.setImageResourceId(R.drawable.education_myths_weightloss_full);
 
-        cards.add(card4);
-        cards.add(card5);
-        cards.add(card7);
-        cards.add(card9);
-        cards.add(card10);
-        cards.add(card11);
+//        cards.add(card4);
+//        cards.add(card5);
+//        cards.add(card7);
+//        cards.add(card9);
+//        cards.add(card10);
+//        cards.add(card11);
         return cards;
     }
 

@@ -14,7 +14,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -156,7 +155,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private String getRegistrationId(Context context) {
-        SharedPreferences sp = this.getSharedPreferences(Constants.GCM_SHARED_PREFERERENCE_KEY, Activity.MODE_PRIVATE);
+        SharedPreferences sp = this.getSharedPreferences(Constants.GCM_SHARED_PREFERENCE_KEY, Activity.MODE_PRIVATE);
         String registrationId = sp.getString(Constants.PROPERTY_GCM_REGISTRATION_ID, "");
 
         if (registrationId.isEmpty()) {
@@ -192,12 +191,14 @@ public class MainActivity extends BaseActivity {
 
     private void getProgress(){
         String progressData = downloadProgressData();
-        final Dashboard dashboard = parseProgressData(progressData);
-        runOnUiThread(new Runnable() {
-            public void run() {
-                updateProgress(dashboard);
-            }
-        });
+        if (progressData != null && !progressData.isEmpty()) {
+            final Dashboard dashboard = parseProgressData(progressData);
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    updateProgress(dashboard);
+                }
+            });
+        }
     }
 
     private String downloadProgressData() {

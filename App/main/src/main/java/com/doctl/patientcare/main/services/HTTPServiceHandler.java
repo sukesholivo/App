@@ -1,7 +1,9 @@
 package com.doctl.patientcare.main.services;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.doctl.patientcare.main.utility.Utils;
 
@@ -21,7 +23,9 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -34,9 +38,9 @@ import java.util.List;
 public class HTTPServiceHandler {
     private static final String TAG = HTTPServiceHandler.class.getSimpleName();
     static String response = null;
-    private Context c;
+    private Context context;
     public HTTPServiceHandler(Context c) {
-        this.c = c;
+        this.context = c;
     }
 
     /**
@@ -67,7 +71,7 @@ public class HTTPServiceHandler {
             HttpResponse httpResponse = null;
 
             //Extract the auth token from user preferences
-            String ServerAccessToken = Utils.getAuthTokenFromSharedPreference(c);
+            String ServerAccessToken = Utils.getAuthTokenFromSharedPreference(context);
             Log.d(TAG, url);
 
             // Checking http request method type
@@ -113,16 +117,52 @@ public class HTTPServiceHandler {
 
             }
             assert httpResponse != null;
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            Log.e(TAG, "actual statusCode: " + statusCode);
+            if (statusCode == 403 || statusCode == 401){
+                Log.e(TAG, "statusCode: 403");
+                Utils.handleUnauthorizedAccess(context);
+                return null;
+            } else if (statusCode == 400){
+                Log.e(TAG, "statusCode: 400");
+                final HttpEntity entity = httpResponse.getEntity();
+                ((Activity) context).runOnUiThread(new Runnable() {
+                    public void run() {
+                        String message = "Some error occurred";
+                        try {
+                            String responseString = EntityUtils.toString(entity);
+                            JSONTokener tokener = new JSONTokener(responseString);
+                            JSONObject jsonObject =  new JSONObject(tokener);
+                            if (jsonObject.has("message")) {
+                                message = jsonObject.getString("message");
+                            } else if (jsonObject.has("error")) {
+                                message = jsonObject.getString("error");
+                            }
+                            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                        } catch (IOException | JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+                return null;
+            } else if (statusCode == 500){
+                Log.e(TAG, "statusCode: 500");
+                final HttpEntity entity = httpResponse.getEntity();
+                ((Activity) context).runOnUiThread(new Runnable() {
+                    public void run() {
+                        String message = "Server error occurred";
+                        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                    }
+                });
+                return null;
+            }
             httpEntity = httpResponse.getEntity();
             response = EntityUtils.toString(httpEntity);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (IOException  e) {
             e.printStackTrace();
         }
-        Log.d(TAG, response);
+        Log.e(TAG, response);
         return response;
     }
 

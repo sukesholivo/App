@@ -133,12 +133,14 @@ public class MedicineDetailActivity extends BaseActivity {
 
     private void refreshActivity(String prescriptionId) {
         String jsonStr = downloadPrescriptionData(prescriptionId);
-        final Prescription prescription =  parsePrescriptionData(jsonStr);
+        if (jsonStr != null && !jsonStr.isEmpty()) {
+            final Prescription prescription = parsePrescriptionData(jsonStr);
 
-        runOnUiThread(new Runnable() {
-            public void run() {
-                updateUI(prescription);
-            }
-        });
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    updateUI(prescription);
+                }
+            });
+        }
     }
 }

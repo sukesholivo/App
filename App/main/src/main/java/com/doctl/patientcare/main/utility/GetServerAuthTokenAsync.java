@@ -87,10 +87,12 @@ public class GetServerAuthTokenAsync extends AsyncTask<Void, String, String> {
 
     private void getPersonalDetail(Context c){
         String response = new HTTPServiceHandler(c).makeServiceCall(Constants.PERSONAL_DETAIL_URL, HTTPServiceHandler.HTTPMethod.GET, null, null);
-        JsonParser parser = new JsonParser();
-        JsonObject personalDetail = parser.parse(response).getAsJsonObject();
-        UserProfile userProfile = new Gson().fromJson(personalDetail, UserProfile.class);
-        Utils.saveUserDataToSharedPreference(c, userProfile);
+        if (response != null && !response.isEmpty()) {
+            JsonParser parser = new JsonParser();
+            JsonObject personalDetail = parser.parse(response).getAsJsonObject();
+            UserProfile userProfile = new Gson().fromJson(personalDetail, UserProfile.class);
+            Utils.saveUserDataToSharedPreference(c, userProfile);
+        }
     }
 
     @Override
