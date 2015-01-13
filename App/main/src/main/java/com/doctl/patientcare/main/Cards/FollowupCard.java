@@ -5,7 +5,6 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +20,7 @@ import android.widget.TextView;
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.BaseTask;
 import com.doctl.patientcare.main.om.followup.FollowupTask;
+import com.doctl.patientcare.main.utility.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -191,10 +191,10 @@ public class FollowupCard extends BaseCard {
         String cardId = followupTask.getCardId();
         try {
             data = followupTask.getDataToPatch();
-            Log.d(TAG, data.toString());
+            Logger.d(TAG, data.toString());
             UpdateTask(cardId, data);
         }catch (JSONException e){
-            Log.e(TAG, e.toString());
+            Logger.e(TAG, e.toString());
         }
     }
     private static class ViewHolder extends BaseViewHolder {

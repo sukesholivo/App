@@ -3,10 +3,10 @@ package com.doctl.patientcare.main.services;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.doctl.patientcare.main.R;
+import com.doctl.patientcare.main.utility.Logger;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,10 +29,10 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
             InputStream in = new URL(url).openStream();
             bmp = BitmapFactory.decodeStream(in);
         } catch (FileNotFoundException e){
-            Log.e("Error", e.getMessage());
+            Logger.e("Error", e.getMessage());
             exception = true;
         } catch (IOException e) {
-            Log.e("Error", e.getMessage());
+            Logger.e("Error", e.getMessage());
             exception = true;
         }
         return bmp;

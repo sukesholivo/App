@@ -1,7 +1,6 @@
 package com.doctl.patientcare.main.utility;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +28,7 @@ public class HttpFileUpload {
             this.c = c;
             connectURL = new URL(urlString);
         }catch(Exception ex){
-            Log.e("HttpFileUpload", "URL Malformatted");
+            Logger.e("HttpFileUpload", "URL Malformatted");
         }
     }
 
@@ -85,7 +84,7 @@ public class HttpFileUpload {
             StringBuffer b =new StringBuffer();
             while( ( ch = is.read() ) != -1 ){ b.append( (char)ch ); }
             String s = b.toString();
-            Log.i("Response",s);
+            Logger.i("Response",s);
             JSONTokener tokener = new JSONTokener(s);
             JSONObject jsonResponse = new JSONObject(tokener);
             if(jsonResponse.has("profilePicUrl")) {
@@ -93,11 +92,9 @@ public class HttpFileUpload {
             }
             dos.close();
         } catch (MalformedURLException ex) {
-            Log.e(Tag, "URL error: " + ex.getMessage(), ex);
-        } catch (IOException ioe) {
-            Log.e(Tag, "IO error: " + ioe.getMessage(), ioe);
-        } catch (JSONException je) {
-            Log.e(Tag, "IO error: " + je.getMessage(), je);
+            Logger.e(Tag, "URL error: " + ex.getMessage());
+        } catch (IOException | JSONException e) {
+            Logger.e(Tag, "IO error: " + e.getMessage());
         }
 
         return "";

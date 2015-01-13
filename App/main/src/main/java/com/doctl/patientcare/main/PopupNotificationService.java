@@ -4,7 +4,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -25,6 +24,7 @@ import com.doctl.patientcare.main.om.medicines.Medicine;
 import com.doctl.patientcare.main.om.medicines.MedicineTask;
 import com.doctl.patientcare.main.om.message.MessageTask;
 import com.doctl.patientcare.main.om.vitals.VitalTask;
+import com.doctl.patientcare.main.utility.Logger;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -73,7 +73,7 @@ public class PopupNotificationService extends Service {
 
 
     private BaseTask parseCardData(String jsonStr) {
-        Log.d(TAG, jsonStr);
+        Logger.d(TAG, jsonStr);
         JsonParser parser = new JsonParser();
         JsonObject cardJsonObj = parser.parse(jsonStr).getAsJsonObject();
         switch (BaseTask.CardType.valueOf(cardJsonObj.get("type").getAsString().toUpperCase())) {
@@ -92,7 +92,7 @@ public class PopupNotificationService extends Service {
     }
 
     private void setContentViewForActivity(BaseTask task){
-        Log.e(TAG, "Setting inner content");
+        Logger.e(TAG, "Setting inner content");
         switch (task.getType()){
             case MEDICINE:
                 mRootLayout = (LinearLayout) LayoutInflater.from(this).
@@ -121,7 +121,7 @@ public class PopupNotificationService extends Service {
         mRootLayout.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                Log.e(TAG, "Key Pressed");
+                Logger.e(TAG, "Key Pressed");
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
                     stopSelf();
                 }

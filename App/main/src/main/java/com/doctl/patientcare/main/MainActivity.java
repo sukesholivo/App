@@ -12,7 +12,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +25,7 @@ import com.doctl.patientcare.main.fragments.CardListFragment;
 import com.doctl.patientcare.main.om.dashboard.Dashboard;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
+import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -146,7 +146,7 @@ public class MainActivity extends BaseActivity {
                 GooglePlayServicesUtil.getErrorDialog(resultCode, this,
                         Constants.PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
-                Log.i(TAG, "This device is not supported.");
+                Logger.i(TAG, "This device is not supported.");
                 finish();
             }
             return false;
@@ -159,13 +159,13 @@ public class MainActivity extends BaseActivity {
         String registrationId = sp.getString(Constants.PROPERTY_GCM_REGISTRATION_ID, "");
 
         if (registrationId.isEmpty()) {
-            Log.i(TAG, "Registration not found.");
+            Logger.i(TAG, "Registration not found.");
             return "";
         }
         int registeredVersion = sp.getInt(Constants.PROPERTY_APP_VERSION, Integer.MIN_VALUE);
         int currentVersion = Utils.getAppVersion(context);
         if (registeredVersion != currentVersion) {
-            Log.i(TAG, "App version changed.");
+            Logger.i(TAG, "App version changed.");
             return "";
         }
         return registrationId;
@@ -180,7 +180,7 @@ public class MainActivity extends BaseActivity {
                 registerInBackground(this);
             }
         } else {
-            Log.i(TAG, "No valid Google Play Services APK found.");
+            Logger.i(TAG, "No valid Google Play Services APK found.");
         }
     }
 

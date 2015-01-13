@@ -8,7 +8,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Environment;
-import android.util.Log;
 
 import com.doctl.patientcare.main.Cards.CardHeaderInnerView;
 import com.doctl.patientcare.main.StartPageActivity;
@@ -224,12 +223,12 @@ public final class Utils {
 //        Environment.getD
         File folder = new File(Environment.getExternalStorageDirectory(), "/DOCTL/ProfileImage");
         if (!folder.exists()) {
-            Log.e("TravellerLog :: ", "Creating folder");
+            Logger.e("TravellerLog :: ", "Creating folder");
             if (!folder.mkdirs()) {
-                Log.e("TravellerLog :: ", "Problem creating Image folder");
+                Logger.e("TravellerLog :: ", "Problem creating Image folder");
             }
         }
-        Log.e("Utils: getAbsolutePath: ", folder.getAbsolutePath());
+        Logger.e("Utils: getAbsolutePath: ", folder.getAbsolutePath());
         return folder.getAbsolutePath();
     }
 

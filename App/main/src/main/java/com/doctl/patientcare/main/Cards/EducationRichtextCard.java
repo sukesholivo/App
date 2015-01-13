@@ -3,12 +3,12 @@ package com.doctl.patientcare.main.Cards;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.RichTextEducationDetailActivity;
+import com.doctl.patientcare.main.utility.Logger;
 
 import java.util.Random;
 
@@ -37,7 +37,7 @@ public class EducationRichtextCard extends BaseCard {
 
     @Override
     public void setupInnerViewElements(ViewGroup parent, View view) {
-//        Log.d(TAG, "Setting up inner view element of card.");
+//        Logger.d(TAG, "Setting up inner view element of card.");
         Random r = new Random();
         int n = r.nextInt() % 100;
         n = n>0?n:-n;
@@ -50,7 +50,7 @@ public class EducationRichtextCard extends BaseCard {
             @Override
             public void onClick(Card card, View view) {
 //                Toast.makeText(getContext(), "Card clicked: " + card.getId(), Toast.LENGTH_LONG).show();
-                Log.d("postInitCard", "Card clicked " + card.getId());
+                Logger.d("postInitCard", "Card clicked " + card.getId());
                 Context context = getContext();
                 Intent intent = new Intent(context, RichTextEducationDetailActivity.class);
                 context.startActivity(intent);

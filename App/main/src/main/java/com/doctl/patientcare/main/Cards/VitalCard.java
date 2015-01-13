@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,7 @@ import com.doctl.patientcare.main.om.BaseTask;
 import com.doctl.patientcare.main.om.GraphData;
 import com.doctl.patientcare.main.om.vitals.VitalTask;
 import com.doctl.patientcare.main.om.vitals.Vitals;
+import com.doctl.patientcare.main.utility.Logger;
 
 import org.achartengine.GraphicalView;
 import org.json.JSONException;
@@ -91,7 +91,7 @@ public class VitalCard extends BaseCard {
 
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                        Log.d(TAG, charSequence.toString());
+                        Logger.d(TAG, charSequence.toString());
                         try {
                             Double val = Double.parseDouble(charSequence.toString());
                             vitalData.setValue1(val);
@@ -120,7 +120,7 @@ public class VitalCard extends BaseCard {
 
                         @Override
                         public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                            Log.d(TAG, charSequence.toString());
+                            Logger.d(TAG, charSequence.toString());
                             try {
                                 Double val = Double.parseDouble(charSequence.toString());
                                 vitalData.setValue2(val);
@@ -181,7 +181,7 @@ public class VitalCard extends BaseCard {
         this.setOnClickListener(new Card.OnCardClickListener() {
             @Override
             public void onClick(Card card, View view) {
-                Log.d("postInitCard", "Card clicked " + card.getId());
+                Logger.d("postInitCard", "Card clicked " + card.getId());
                 Context context = getContext();
                 Intent intent = new Intent(context, VitalDetailActivity.class);
                 intent.putExtra("vitalId", vitalTask.getPayload().getVitalId());
@@ -202,10 +202,10 @@ public class VitalCard extends BaseCard {
         String cardId = vitalTask.getCardId();
         try {
             data = vitalTask.getDataToPatch();
-            Log.d(TAG, data.toString());
+            Logger.d(TAG, data.toString());
             UpdateTask(cardId, data);
         }catch (JSONException e){
-            Log.e(TAG, e.toString());
+            Logger.e(TAG, e.toString());
         }
     }
 

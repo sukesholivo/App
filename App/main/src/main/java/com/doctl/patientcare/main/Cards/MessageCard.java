@@ -2,7 +2,6 @@ package com.doctl.patientcare.main.Cards;
 
 import android.content.Context;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -10,6 +9,7 @@ import android.widget.TextView;
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.BaseTask;
 import com.doctl.patientcare.main.om.message.MessageTask;
+import com.doctl.patientcare.main.utility.Logger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,10 +69,10 @@ public class MessageCard extends BaseCard {
         String cardId = messageTask.getCardId();
         try {
             data = messageTask.getDataToPatch();
-            Log.d(TAG, data.toString());
+            Logger.d(TAG, data.toString());
             UpdateTask(cardId, data);
         }catch (JSONException e){
-            Log.e(TAG, e.toString());
+            Logger.e(TAG, e.toString());
         }
     }
 

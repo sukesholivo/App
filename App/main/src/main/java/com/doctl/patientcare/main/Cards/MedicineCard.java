@@ -3,7 +3,6 @@ package com.doctl.patientcare.main.Cards;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -14,6 +13,7 @@ import com.doctl.patientcare.main.om.BaseTask;
 import com.doctl.patientcare.main.om.medicines.Medicine;
 import com.doctl.patientcare.main.om.medicines.MedicineAdapter;
 import com.doctl.patientcare.main.om.medicines.MedicineTask;
+import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
 
 import org.json.JSONException;
@@ -89,7 +89,7 @@ public class MedicineCard extends BaseCard {
         this.setOnClickListener(new Card.OnCardClickListener() {
             @Override
             public void onClick(Card card, View view) {
-                Log.d("postInitCard", "Card clicked " + card.getId());
+                Logger.d("postInitCard", "Card clicked " + card.getId());
                 Context context = getContext();
                 Intent intent = new Intent(context, MedicineDetailActivity.class);
                 Bundle bundle = new Bundle();
@@ -117,10 +117,10 @@ public class MedicineCard extends BaseCard {
         }
         try {
             data = medicineTask.getDataToPatch();
-            Log.d(TAG, data.toString());
+            Logger.d(TAG, data.toString());
             UpdateTask(cardId, data);
         }catch (JSONException e){
-            Log.e(TAG, e.toString());
+            Logger.e(TAG, e.toString());
         }
     }
 

@@ -15,7 +15,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,6 +29,7 @@ import com.doctl.patientcare.main.om.UserProfile;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.HttpFileUpload;
+import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
 import com.soundcloud.android.crop.Crop;
@@ -111,7 +111,7 @@ public class ChangeProfileActivity extends ActionBarActivity {
                         intent.putExtra("return-data", true);
                         startActivityForResult(intent, PICK_FROM_CAMERA);
                     } catch (ActivityNotFoundException e) {
-                        Log.e(TAG, e.getMessage());
+                        Logger.e(TAG, e.getMessage());
                         e.printStackTrace();
                     }
                 } else {
@@ -181,7 +181,7 @@ public class ChangeProfileActivity extends ActionBarActivity {
         try {
             newDate = format.parse(dob);
         } catch (ParseException e){
-            Log.e(TAG, e.getMessage());
+            Logger.e(TAG, e.getMessage());
         }
 
         format = new SimpleDateFormat("dd-MM-yyyy");
@@ -212,7 +212,7 @@ public class ChangeProfileActivity extends ActionBarActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                Log.d(TAG, charSequence.toString());
+                Logger.d(TAG, charSequence.toString());
                 userProfile.setDisplayName(charSequence.toString());
             }
 
@@ -232,7 +232,7 @@ public class ChangeProfileActivity extends ActionBarActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                Log.d(TAG, charSequence.toString());
+                Logger.d(TAG, charSequence.toString());
                 userProfile.setPhone(charSequence.toString());
             }
 
@@ -286,13 +286,13 @@ public class ChangeProfileActivity extends ActionBarActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                Log.d(TAG, charSequence.toString());
+                Logger.d(TAG, charSequence.toString());
                 Date newDate = null;
                 SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
                 try {
                     newDate = format.parse(charSequence.toString());
                 } catch (ParseException e){
-                    Log.e(TAG, e.getMessage());
+                    Logger.e(TAG, e.getMessage());
                 }
 
                 format = new SimpleDateFormat("yyyy-MM-dd");
@@ -341,7 +341,7 @@ public class ChangeProfileActivity extends ActionBarActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-                Log.d(TAG, charSequence.toString());
+                Logger.d(TAG, charSequence.toString());
                 userProfile.setSex(charSequence.toString());
             }
 
@@ -371,7 +371,7 @@ public class ChangeProfileActivity extends ActionBarActivity {
                 data.put("password2", p2);
             }
         } catch (JSONException e){
-            Log.e(TAG, e.getMessage());
+            Logger.e(TAG, e.getMessage());
         }
         new SaveProfile().execute(url, data);
     }
@@ -430,7 +430,7 @@ public class ChangeProfileActivity extends ActionBarActivity {
                 Utils.saveUserDataToSharedPreference(ChangeProfileActivity.this, userProfile);
 
             } catch (FileNotFoundException e) {
-                Log.e(TAG, e.getMessage());
+                Logger.e(TAG, e.getMessage());
             }
         }
     }

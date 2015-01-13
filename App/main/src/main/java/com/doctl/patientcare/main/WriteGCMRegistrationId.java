@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.doctl.patientcare.main.utility.Constants;
+import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
 
 import org.apache.http.HttpEntity;
@@ -87,7 +87,7 @@ public class WriteGCMRegistrationId extends AsyncTask<String, String, String> {
                     if(response != null) {
                         HttpEntity httpEntity = response.getEntity();
                         result = EntityUtils.toString(httpEntity);
-                        Log.d("DEBUG", result);
+                        Logger.d("DEBUG", result);
 
                         if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                             //Save the registration id

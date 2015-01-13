@@ -2,9 +2,9 @@ package com.doctl.patientcare.main.services;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
+import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
 
 import org.apache.http.HttpEntity;
@@ -72,15 +72,15 @@ public class HTTPServiceHandler {
 
             //Extract the auth token from user preferences
             String ServerAccessToken = Utils.getAuthTokenFromSharedPreference(context);
-            Log.d(TAG, url);
+            Logger.d(TAG, url);
 
             // Checking http request method type
             if (method == HTTPMethod.POST) {
-                Log.d(TAG, "Sending POST");
+                Logger.d(TAG, "Sending POST");
                 HttpPost httpPost = new HttpPost(url);
                 // adding post params
                 if (postParams != null) {
-                    Log.d(TAG, postParams.toString());
+                    Logger.d(TAG, postParams.toString());
                     StringEntity se = new StringEntity(postParams.toString());
                     se.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
                     httpPost.setEntity(se);
@@ -89,11 +89,11 @@ public class HTTPServiceHandler {
                 httpPost.setHeader("Authorization", "Token "+ServerAccessToken);
                 httpResponse = httpClient.execute(httpPost);
             } else if (method == HTTPMethod.PATCH) {
-                Log.d(TAG, "Sending PATCH");
+                Logger.d(TAG, "Sending PATCH");
                 HttpPatch httpPatch = new HttpPatch(url);
                 // adding post params
                 if (postParams != null) {
-                    Log.d(TAG, postParams.toString());
+                    Logger.d(TAG, postParams.toString());
                     StringEntity se = new StringEntity(postParams.toString());
                     se.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
                     httpPatch.setEntity(se);
@@ -103,13 +103,13 @@ public class HTTPServiceHandler {
                 httpResponse = httpClient.execute(httpPatch);
             } else if (method == HTTPMethod.GET) {
                 // appending params to url
-                Log.d(TAG, "Sending GET");
+                Logger.d(TAG, "Sending GET");
                 if (getParams != null) {
                     String paramString = URLEncodedUtils
                             .format(getParams, "utf-8");
                     url += "?" + paramString;
                 }
-                Log.d(TAG, "URL: " + url);
+                Logger.d(TAG, "URL: " + url);
                 HttpGet httpGet = new HttpGet(url);
                 httpGet.setHeader("Authorization", "Token "+ServerAccessToken);
 
@@ -118,13 +118,11 @@ public class HTTPServiceHandler {
             }
             assert httpResponse != null;
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-            Log.e(TAG, "actual statusCode: " + statusCode);
+
             if (statusCode == 403 || statusCode == 401){
-                Log.e(TAG, "statusCode: 403");
                 Utils.handleUnauthorizedAccess(context);
                 return null;
             } else if (statusCode == 400){
-                Log.e(TAG, "statusCode: 400");
                 final HttpEntity entity = httpResponse.getEntity();
                 ((Activity) context).runOnUiThread(new Runnable() {
                     public void run() {
@@ -147,11 +145,16 @@ public class HTTPServiceHandler {
                 });
                 return null;
             } else if (statusCode == 500){
-                Log.e(TAG, "statusCode: 500");
                 final HttpEntity entity = httpResponse.getEntity();
                 ((Activity) context).runOnUiThread(new Runnable() {
                     public void run() {
                         String message = "Server error occurred";
+                        try {
+                            String responseString = EntityUtils.toString(entity);
+                            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
                     }
                 });
@@ -162,7 +165,6 @@ public class HTTPServiceHandler {
         } catch (IOException  e) {
             e.printStackTrace();
         }
-        Log.e(TAG, response);
         return response;
     }
 

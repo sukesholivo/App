@@ -3,12 +3,13 @@ package com.doctl.patientcare.main.om;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.util.Log;
+import android.widget.AbsListView;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.doctl.patientcare.main.Cards.BaseCard;
 import com.doctl.patientcare.main.R;
+import com.doctl.patientcare.main.utility.Logger;
 
 import java.util.List;
 
@@ -123,12 +124,12 @@ public class CustomCardArrayAdapter extends CardArrayAdapter {
                 .setPositiveButton(undoMessage, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         onUndo(undoCard);
-                        Log.d(TAG, "UNDO CLICKED");
+                        Logger.d(TAG, "UNDO CLICKED");
                     }
                 })
                 .setNegativeButton(sendMessage, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.d(TAG, "OK CLICKED");
+                        Logger.d(TAG, "OK CLICKED");
                         ((BaseCard)card).UpdateTask();
                     }
                 });

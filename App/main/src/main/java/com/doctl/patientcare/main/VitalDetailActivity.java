@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +24,7 @@ import com.doctl.patientcare.main.om.vitals.VitalDetailData;
 import com.doctl.patientcare.main.om.vitals.VitalsDetailAdapter;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
+import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -147,9 +147,9 @@ public class VitalDetailActivity extends BaseActivity {
             }
         } catch (JSONException e){
             e.printStackTrace();
-            Log.e(TAG, e.getMessage());
+            Logger.e(TAG, e.getMessage());
         }
-        Log.e(TAG, data.toString());
+        Logger.e(TAG, data.toString());
         String url = Constants.VITAL_DETAIL_URL + vitalData.getVitalId() + "/";
         new SaveVital().execute(url, data);
         Toast.makeText(VitalDetailActivity.this, "Value submitted: " + value1, Toast.LENGTH_LONG).show();
@@ -264,7 +264,7 @@ public class VitalDetailActivity extends BaseActivity {
             JSONObject data= (JSONObject)arg0[1];
             HTTPServiceHandler serviceHandler = new HTTPServiceHandler(VitalDetailActivity.this);
             String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.POST, null, data);
-            Log.e(TAG, response);
+            Logger.e(TAG, response);
             return null;
         }
 

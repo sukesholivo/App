@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -13,6 +12,7 @@ import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.BaseTask;
 import com.doctl.patientcare.main.om.education.EducationTask;
 import com.doctl.patientcare.main.utility.Constants;
+import com.doctl.patientcare.main.utility.Logger;
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
 import com.squareup.picasso.Picasso;
 
@@ -81,7 +81,7 @@ public class EducationCard extends BaseCard{
             }
         }
         catch (Exception e) {
-            Log.e(TAG, e.toString());
+            Logger.e(TAG, e.toString());
         }
     }
 
@@ -124,10 +124,10 @@ public class EducationCard extends BaseCard{
         String cardId = educationTask.getCardId();
         try {
             data = educationTask.getDataToPatch();
-            Log.d(TAG, data.toString());
+            Logger.d(TAG, data.toString());
             UpdateTask(cardId, data);
         }catch (JSONException e){
-            Log.e(TAG, e.toString());
+            Logger.e(TAG, e.toString());
         }
     }
 }

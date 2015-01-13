@@ -11,7 +11,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
 
 import java.util.ArrayList;
@@ -38,8 +38,8 @@ public class BaseActivity extends ActionBarActivity implements ListView.OnItemCl
         super.onCreate(savedInstanceState);
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             public void uncaughtException(Thread paramThread, Throwable paramThrowable) {
-                Log.e("Error:" + Thread.currentThread().getStackTrace()[2], paramThrowable.getLocalizedMessage());
-                Log.e("Error:" + Thread.currentThread().getStackTrace()[2], paramThrowable.getClass().getName());
+                Logger.e("Error:" + Thread.currentThread().getStackTrace()[2], paramThrowable.getLocalizedMessage());
+                Logger.e("Error:" + Thread.currentThread().getStackTrace()[2], paramThrowable.getClass().getName());
                 runOnUiThread(new Runnable() {
                     public void run() {
                         Toast.makeText(getApplicationContext(), "Some Error occurred", Toast.LENGTH_SHORT).show();
@@ -143,66 +143,66 @@ public class BaseActivity extends ActionBarActivity implements ListView.OnItemCl
         Intent intent;
         switch (position) {
             case 0:
-                Log.d("BaseActivity: ", "Profile Clicked");
+                Logger.d("BaseActivity: ", "Profile Clicked");
                 closeDrawer = false;
                 break;
             case 1:
-                Log.d("BaseActivity: ", "Home Clicked");
+                Logger.d("BaseActivity: ", "Home Clicked");
                 if (!MainActivity.active) {
                     intent = new Intent(this, MainActivity.class);
                     this.startActivity(intent);
                 }
                 break;
             case 2:
-                Log.d("BaseActivity: ", "Prescription Clicked");
+                Logger.d("BaseActivity: ", "Prescription Clicked");
                 if (!MedicineDetailActivity.active) {
                     intent = new Intent(this, MedicineDetailActivity.class);
                     this.startActivity(intent);
                 }
                 break;
             case 3:
-                Log.d("BaseActivity: ", "Vital Clicked");
+                Logger.d("BaseActivity: ", "Vital Clicked");
                 closeDrawer = false;
                 break;
             case 4:
-                Log.d("BaseActivity: ", "Blood Sugar Clicked");
+                Logger.d("BaseActivity: ", "Blood Sugar Clicked");
                 intent = new Intent(this, VitalDetailActivity.class);
                 intent.putExtra("vitalType", "sugar");
                 intent.putExtra("vitalName", "Blood Sugar");
                 this.startActivity(intent);
                 break;
             case 5:
-                Log.d("BaseActivity: ", "Blood Pressure Clicked");
+                Logger.d("BaseActivity: ", "Blood Pressure Clicked");
                 intent = new Intent(this, VitalDetailActivity.class);
                 intent.putExtra("vitalType", "bp");
                 intent.putExtra("vitalName", "Blood Pressure");
                 this.startActivity(intent);
                 break;
             case 6:
-                Log.d("BaseActivity: ", "Temperature Clicked");
+                Logger.d("BaseActivity: ", "Temperature Clicked");
                 intent = new Intent(this, VitalDetailActivity.class);
                 intent.putExtra("vitalType", "temperature");
                 intent.putExtra("vitalName", "Temperature");
                 this.startActivity(intent);
                 break;
             case 7:
-                Log.d("BaseActivity: ", "Pulse Clicked");
+                Logger.d("BaseActivity: ", "Pulse Clicked");
                 intent = new Intent(this, VitalDetailActivity.class);
                 intent.putExtra("vitalType", "pulse");
                 intent.putExtra("vitalName", "Pulse");
                 this.startActivity(intent);
                 break;
             case 8:
-                Log.d("BaseActivity: ", "Account Clicked");
+                Logger.d("BaseActivity: ", "Account Clicked");
                 closeDrawer = false;
                 break;
             case 9:
-                Log.d("BaseActivity: ", "Change Password Clicked");
+                Logger.d("BaseActivity: ", "Change Password Clicked");
                 intent = new Intent(this, ChangeProfileActivity.class);
                 this.startActivity(intent);
                 break;
             case 10:
-                Log.d("BaseActivity: ", "Signout Clicked");
+                Logger.d("BaseActivity: ", "Signout Clicked");
                 signoutUser();
                 break;
             default:

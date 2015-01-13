@@ -2,7 +2,6 @@ package com.doctl.patientcare.main.Cards;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,6 +10,7 @@ import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.BaseTask;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
+import com.doctl.patientcare.main.utility.Logger;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
@@ -128,7 +128,7 @@ public abstract class BaseCard extends Card {
 
             HTTPServiceHandler serviceHandler = new HTTPServiceHandler(getContext());
             String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.PATCH, null, data);
-            Log.d(TAG, response);
+            Logger.d(TAG, response);
             return null;
         }
 

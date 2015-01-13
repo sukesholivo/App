@@ -8,8 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
+import com.doctl.patientcare.main.utility.Logger;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 /**
@@ -32,13 +32,13 @@ public class MyC2dmIntentService extends IntentService {
         if (!extras.isEmpty()) {
             if (GoogleCloudMessaging.
                     MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
-                Log.e(TAG, "Send error: " + extras.toString());
+                Logger.e(TAG, "Send error: " + extras.toString());
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_DELETED.equals(messageType)) {
-                Log.e(TAG, "Deleted messages on server: " + extras.toString());
+                Logger.e(TAG, "Deleted messages on server: " + extras.toString());
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
-                Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
+                Logger.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
                 sendNotification(extras);
             }
         }

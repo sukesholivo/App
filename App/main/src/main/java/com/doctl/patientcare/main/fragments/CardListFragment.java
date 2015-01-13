@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +34,7 @@ import com.doctl.patientcare.main.om.message.MessageTask;
 import com.doctl.patientcare.main.om.vitals.VitalTask;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
+import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -68,7 +68,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.i(TAG, " OnCreateView: START");
+        Logger.i(TAG, " OnCreateView: START");
         return inflater.inflate(R.layout.fragment_card_list, container, false);
     }
 
@@ -115,7 +115,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
                     public void onScrollStateChanged(AbsListView view, int scrollState) {
                         //It is very important to call the super method here to preserve built-in functions
                         if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
-                            Log.i("a", "scrolling stopped...");
+                            Logger.i("a", "scrolling stopped...");
                             if (isDashboardHidden) {
                                 fab.show();
                             }
@@ -128,17 +128,17 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
                         fab.hide();
                         if(mLastFirstVisibleItem >=0 && mLastVisibleItemCount >=0) {
                             if (mLastFirstVisibleItem > firstVisibleItem) {
-                                Log.i(TAG, "scrolling up");
+                                Logger.i(TAG, "scrolling up");
                                 DashboardAppear(firstVisibleItem);
 
                             } else if (mLastFirstVisibleItem < firstVisibleItem) {
-                                Log.i(TAG, "scrolling down");
+                                Logger.i(TAG, "scrolling down");
                                 DashboardDisappear();
                             } else if (mLastVisibleItemCount < visibleItemCount) {
-                                Log.i(TAG, "scrolling down");
+                                Logger.i(TAG, "scrolling down");
                                 //DashboardDisappear();
                             } else if (mLastVisibleItemCount > visibleItemCount) {
-                                Log.i(TAG, "scrolling up");
+                                Logger.i(TAG, "scrolling up");
                                 DashboardAppear(firstVisibleItem);
                             }
                         }
@@ -203,7 +203,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
         card0.setShadow(false);
         card0.setSwipeable(false);
         cards.add(card0);
-        Log.d(TAG, jsonStr);
+        Logger.d(TAG, jsonStr);
         JsonParser parser = new JsonParser();
         JsonArray cardsJsonArray = parser.parse(jsonStr).getAsJsonArray();
 //        JsonArray cardsJsonArray = jsonObject.get("cards").getAsJsonArray();
@@ -317,7 +317,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
             activity.runOnUiThread(new Runnable() {
                 public void run() {
                     if (mCardArrayAdapter == null) {
-                        Log.d(TAG, "mCardArrayAdapter is null");
+                        Logger.d(TAG, "mCardArrayAdapter is null");
                     }
                     mCardArrayAdapter.clear();
                     mCardArrayAdapter.addAll(cardArrayList);
