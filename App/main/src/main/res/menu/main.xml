@@ -2,27 +2,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.doctl.patientcare.main.MainActivity">
-    <item android:id="@+id/action_new"
-        android:icon="@drawable/ic_add_white_36dp"
-        android:title="@string/action_new"
-        app:showAsAction="ifRoom">
-        <menu>
-            <item android:id="@+id/action_add_vital"
-                android:title="@string/action_add_vital"
-                 />
-            <item android:id="@+id/action_add_symptom"
-                android:title="@string/action_add_symptoms"
-                />
-        </menu>
+    <item android:id="@+id/action_refresh"
+        android:icon="@drawable/ic_refresh_white_36dp"
+        android:title="@string/action_refresh"
+        app:showAsAction="ifRoom"
+        />
+    <!--<item android:id="@+id/action_new"-->
+        <!--android:icon="@drawable/ic_add_white_36dp"-->
+        <!--android:title="@string/action_new"-->
+        <!--app:showAsAction="ifRoom">-->
+        <!--<menu>-->
+            <!--<item android:id="@+id/action_add_vital"-->
+                <!--android:title="@string/action_add_vital"-->
+                 <!--/>-->
+            <!--<item android:id="@+id/action_add_symptom"-->
+                <!--android:title="@string/action_add_symptoms"-->
+                <!--/>-->
+        <!--</menu>-->
 
-    </item>
+    <!--</item>-->
     <item android:id="@+id/action_share"
         android:icon="@drawable/ic_share_white_36dp"
         android:title="@string/action_share"
         app:showAsAction="ifRoom"
         />
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        app:showAsAction="never"/>
+    <!--<item android:id="@+id/action_settings"-->
+        <!--android:title="@string/action_settings"-->
+        <!--app:showAsAction="never"/>-->
 
 </menu>

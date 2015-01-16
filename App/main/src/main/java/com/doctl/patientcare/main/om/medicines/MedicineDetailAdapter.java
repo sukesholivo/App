@@ -41,7 +41,7 @@ public class MedicineDetailAdapter extends ArrayAdapter<PrescriptionMedicine> {
                 medicineImage.setImageResource(R.drawable.capsule_green);
                 break;
             case TABLET:
-                medicineImage.setImageResource(R.drawable.capsule_green);
+                medicineImage.setImageResource(R.drawable.tablet_green);
                 break;
             case INJECTION:
                 medicineImage.setImageResource(R.drawable.injection_green);

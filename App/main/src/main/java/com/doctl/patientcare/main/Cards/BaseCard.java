@@ -1,10 +1,12 @@
 package com.doctl.patientcare.main.Cards;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.BaseTask;
@@ -128,7 +130,14 @@ public abstract class BaseCard extends Card {
 
             HTTPServiceHandler serviceHandler = new HTTPServiceHandler(getContext());
             String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.PATCH, null, data);
-            Logger.d(TAG, response);
+            if (response == null || response.isEmpty()){
+                ((Activity)getContext()).runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(getContext(), "Server Error.", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+//            Logger.d(TAG, response);
             return null;
         }
 

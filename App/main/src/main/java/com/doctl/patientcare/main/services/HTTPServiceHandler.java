@@ -118,46 +118,47 @@ public class HTTPServiceHandler {
             }
             assert httpResponse != null;
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-
+            Logger.d(TAG, "statusCode: " + statusCode);
             if (statusCode == 403 || statusCode == 401){
                 Utils.handleUnauthorizedAccess(context);
                 return null;
             } else if (statusCode == 400){
                 final HttpEntity entity = httpResponse.getEntity();
-                ((Activity) context).runOnUiThread(new Runnable() {
-                    public void run() {
-                        String message = "Some error occurred";
-                        try {
-                            String responseString = EntityUtils.toString(entity);
-                            JSONTokener tokener = new JSONTokener(responseString);
-                            JSONObject jsonObject =  new JSONObject(tokener);
-                            if (jsonObject.has("message")) {
-                                message = jsonObject.getString("message");
-                            } else if (jsonObject.has("error")) {
-                                message = jsonObject.getString("error");
-                            }
-                            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-                        } catch (IOException | JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
+//                ((Activity) context).runOnUiThread(new Runnable() {
+//                    public void run() {
+//                        String message = "Some error occurred";
+//                        try {
+//                            String responseString = EntityUtils.toString(entity);
+//                            JSONTokener tokener = new JSONTokener(responseString);
+//                            JSONObject jsonObject =  new JSONObject(tokener);
+//                            if (jsonObject.has("message")) {
+//                                message = jsonObject.getString("message");
+//                            } else if (jsonObject.has("error")) {
+//                                message = jsonObject.getString("error");
+//                            }
+//                            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+//                        } catch (IOException | JSONException e) {
+//                            e.printStackTrace();
+//                            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+//                        }
+//                    }
+//                });
                 return null;
             } else if (statusCode == 500){
                 final HttpEntity entity = httpResponse.getEntity();
-                ((Activity) context).runOnUiThread(new Runnable() {
-                    public void run() {
-                        String message = "Server error occurred";
-                        try {
-                            String responseString = EntityUtils.toString(entity);
-                            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-                    }
-                });
+//                ((Activity) context).runOnUiThread(new Runnable() {
+//                    public void run() {
+//                        String message = "Server error occurred";
+//                        try {
+//                            String responseString = EntityUtils.toString(entity);
+////                            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+//                    }
+//                });
                 return null;
             }
             httpEntity = httpResponse.getEntity();

@@ -13,6 +13,7 @@ import android.graphics.Canvas;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -52,8 +53,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.setupNavigationDrawer();
-        new GetProgress().execute();
-        setCards();
+        refresh();
         setupGCMRegistration();
     }
 
@@ -72,14 +72,13 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 //        TODO: Removing menu as of now
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.main, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.action_share:
 //                Toast.makeText(this,"Shared pressed: " + item.getTitle(), Toast.LENGTH_LONG).show();
@@ -97,46 +96,54 @@ public class MainActivity extends BaseActivity {
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, "My treatment progress");
                 startActivity(Intent.createChooser(shareIntent, "Share your progress"));
                 return true;
-            case R.id.action_settings:
-                Toast.makeText(this,"Settings pressed: " + item.getTitle(), Toast.LENGTH_LONG).show();
+            case R.id.action_refresh:
+                refresh();
                 return true;
-            case R.id.action_add_vital:
-                new AlertDialog.Builder(this)
-                        .setTitle("Add Sugar")
-                        .setIcon(0)
-                        .setView(getLayoutInflater().inflate(R.layout.dialog_inner_content_vital_entry, null))
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(MainActivity.this, "Value submitted", Toast.LENGTH_LONG).show();
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        })
-                        .show();
-                return true;
-            case R.id.action_add_symptom:
-                Toast.makeText(this,"Add Symptom", Toast.LENGTH_LONG).show();
-                new AlertDialog.Builder(this)
-                        .setTitle("Record Symptom" +
-                                "")
-                        .setIcon(0)
-                        .setView(getLayoutInflater().inflate(R.layout.diaolg_inner_content_symptom_entry, null))
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(MainActivity.this, "Symptom submitted", Toast.LENGTH_LONG).show();
-                            }
-                        })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        })
-                        .show();
-                return true;
+//            case R.id.action_settings:
+//                Toast.makeText(this,"Settings pressed: " + item.getTitle(), Toast.LENGTH_LONG).show();
+//                return true;
+//            case R.id.action_add_vital:
+//                new AlertDialog.Builder(this)
+//                        .setTitle("Add Sugar")
+//                        .setIcon(0)
+//                        .setView(getLayoutInflater().inflate(R.layout.dialog_inner_content_vital_entry, null))
+//                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                Toast.makeText(MainActivity.this, "Value submitted", Toast.LENGTH_LONG).show();
+//                            }
+//                        })
+//                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                            }
+//                        })
+//                        .show();
+//                return true;
+//            case R.id.action_add_symptom:
+//                Toast.makeText(this,"Add Symptom", Toast.LENGTH_LONG).show();
+//                new AlertDialog.Builder(this)
+//                        .setTitle("Record Symptom" +
+//                                "")
+//                        .setIcon(0)
+//                        .setView(getLayoutInflater().inflate(R.layout.diaolg_inner_content_symptom_entry, null))
+//                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                Toast.makeText(MainActivity.this, "Symptom submitted", Toast.LENGTH_LONG).show();
+//                            }
+//                        })
+//                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                            }
+//                        })
+//                        .show();
+//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void refresh(){
+        new GetProgress().execute();
+        setCards();
     }
 
     private boolean checkPlayServices() {
