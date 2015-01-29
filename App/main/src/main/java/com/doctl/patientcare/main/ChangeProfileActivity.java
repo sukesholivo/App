@@ -97,6 +97,18 @@ public class ChangeProfileActivity extends ActionBarActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MainApplication.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MainApplication.activityPaused();
+    }
+
     private void setImagePicker(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 

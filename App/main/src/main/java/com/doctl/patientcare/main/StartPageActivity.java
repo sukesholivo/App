@@ -49,6 +49,18 @@ public class StartPageActivity extends FragmentActivity {
         setupServerAuthToken();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MainApplication.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MainApplication.activityPaused();
+    }
+
     private void setupServerAuthToken() {
         Context context = StartPageActivity.this;
         String ServerAccessToken = Utils.getAuthTokenFromSharedPreference(context);

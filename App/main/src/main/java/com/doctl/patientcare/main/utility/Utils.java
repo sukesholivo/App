@@ -1,6 +1,8 @@
 package com.doctl.patientcare.main.utility;
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,12 +10,23 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Environment;
+import android.support.v4.app.NotificationCompat;
 
 import com.doctl.patientcare.main.Cards.CardHeaderInnerView;
+import com.doctl.patientcare.main.MainActivity;
+import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.StartPageActivity;
 import com.doctl.patientcare.main.om.BaseTask;
 import com.doctl.patientcare.main.om.GraphData;
 import com.doctl.patientcare.main.om.UserProfile;
+import com.doctl.patientcare.main.om.education.EducationTask;
+import com.doctl.patientcare.main.om.followup.FollowupTask;
+import com.doctl.patientcare.main.om.medicines.MedicineTask;
+import com.doctl.patientcare.main.om.message.MessageTask;
+import com.doctl.patientcare.main.om.vitals.VitalTask;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
@@ -264,5 +277,41 @@ public final class Utils {
         Intent intent = new Intent(context, StartPageActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         context.startActivity(intent);
+    }
+
+    public static void showNotification(Context context, int notificationId, String title, String message){
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setContentTitle(title)
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText(message))
+                        .setContentText(message);
+
+        mBuilder.setContentIntent(contentIntent);
+        mNotificationManager.notify(notificationId, mBuilder.build());
+    }
+
+    public static BaseTask parseCardData(String jsonStr) {
+        Logger.d("Utils", jsonStr);
+        JsonParser parser = new JsonParser();
+        JsonObject cardJsonObj = parser.parse(jsonStr).getAsJsonObject();
+        switch (BaseTask.CardType.valueOf(cardJsonObj.get("type").getAsString().toUpperCase())) {
+            case MEDICINE:
+                return new Gson().fromJson(cardJsonObj, MedicineTask.class);
+            case VITAL:
+                return new Gson().fromJson(cardJsonObj, VitalTask.class);
+            case FOLLOWUP:
+                return new Gson().fromJson(cardJsonObj, FollowupTask.class);
+            case SIMPLEREMINDER:
+                return new Gson().fromJson(cardJsonObj, MessageTask.class);
+            case EDUCATION:
+                return new Gson().fromJson(cardJsonObj, EducationTask.class);
+        }
+        return null;
     }
 }

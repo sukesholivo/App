@@ -101,13 +101,17 @@ public abstract class BaseCard extends Card {
     public void UpdateTask(String cardId, JSONObject data){
         new UpdateTasks().execute(Constants.CARDS_URL + cardId + "/", data);
     }
+
+    /**
+     * Maintain Order. Used in sorting of cards.
+     */
     public enum CardType{
         DUMMY_CARD_TYPE,
         MEDICINE_CARD_TYPE,
         VITAL_CARD_TYPE,
-        EDUCATION_CARD_TYPE,
         FOLLOWUP_CARD_TYPE,
-        MESSAGE_CARD_TYPE
+        MESSAGE_CARD_TYPE,
+        EDUCATION_CARD_TYPE,
     }
 
     protected static class BaseViewHolder {

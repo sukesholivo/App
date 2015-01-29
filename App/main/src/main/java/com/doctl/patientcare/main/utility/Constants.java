@@ -28,4 +28,12 @@ public final class Constants {
     public final static String SENDER_ID = "258383232963";
 
     public final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+
+    public final static int MESSAGE_NOTIFICATION_ID = 1;
+    public final static int MEDICINE_NOTIFICATION_ID = 2;
+    public final static int VITAL_NOTIFICATION_ID = 3;
+    public final static int SIMPLEREMINDER_NOTIFICATION_ID = 4;
+    public final static int FEEDBACK_NOTIFICATION_ID = 5;
+    public final static int FOLLOWUP_NOTIFICATION_ID = 6;
+    public final static int EDUCATION_NOTIFICATION_ID = 7;
 }

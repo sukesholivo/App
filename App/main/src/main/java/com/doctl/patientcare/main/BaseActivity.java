@@ -50,6 +50,18 @@ public class BaseActivity extends ActionBarActivity implements ListView.OnItemCl
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        MainApplication.activityResumed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MainApplication.activityPaused();
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         invalidateOptionsMenu();

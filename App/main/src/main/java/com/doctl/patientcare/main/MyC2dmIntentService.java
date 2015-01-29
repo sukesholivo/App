@@ -1,24 +1,28 @@
 package com.doctl.patientcare.main;
 
 import android.app.IntentService;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.v4.app.NotificationCompat;
 
+import com.doctl.patientcare.main.om.BaseTask;
+import com.doctl.patientcare.main.om.UserProfile;
+import com.doctl.patientcare.main.om.education.EducationTask;
+import com.doctl.patientcare.main.om.followup.FollowupTask;
+import com.doctl.patientcare.main.om.message.MessageTask;
+import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.Logger;
+import com.doctl.patientcare.main.utility.Utils;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 /**
  * Created by mailtovishal.r on 6/21/2014.
  */
 public class MyC2dmIntentService extends IntentService {
     private static final String TAG = MyC2dmIntentService.class.getSimpleName();
-    public static final int NOTIFICATION_ID = 1;
-
     public MyC2dmIntentService() {
         super("MyC2dmIntentService");
     }
@@ -47,30 +51,71 @@ public class MyC2dmIntentService extends IntentService {
     }
 
     private void sendNotification(Bundle msg) {
+        String ServerAccessToken = Utils.getAuthTokenFromSharedPreference(this);
+        if(ServerAccessToken.isEmpty()) {
+            return;
+        }
+        UserProfile userProfile = Utils.getUserDataFromSharedPreference(this);
+        userProfile.getEmail();
         String type = msg.getString("type");
         String username = msg.getString("username");
+        if (!username.equals(userProfile.getEmail())){
+            return;
+        }
+
         String data = msg.getString("data");
         if (type.toLowerCase().equals("card")) {
-            Intent popupIntent = new Intent(this, PopupNotificationService.class);
-            popupIntent.putExtra("card", data);
-            startService(popupIntent);
+            BaseTask task = Utils.parseCardData(data);
+            switch (task.getType()){
+                case MEDICINE:
+                case VITAL:
+                    if (!MainApplication.isActivityVisible()) {
+                        Intent popupIntent = new Intent(this, PopupNotificationActivity.class);
+                        popupIntent.putExtra("card", data);
+                        popupIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        this.startActivity(popupIntent);
+                    }
+                    break;
+                case SIMPLEREMINDER:
+                    String reminderTitle = ((MessageTask) task).getPayload().getTitle();
+                    String reminderMessage = ((MessageTask) task).getPayload().getMessage();
+                    Utils.showNotification(this, Constants.SIMPLEREMINDER_NOTIFICATION_ID, reminderTitle, reminderMessage);
+                    break;
+                case EDUCATION:
+                    String educationTitle = getString(R.string.notification_education_title);
+                    String educationMessage = ((EducationTask) task).getPayload().getTitle();
+                    Utils.showNotification(this, Constants.EDUCATION_NOTIFICATION_ID, educationTitle, educationMessage);
+                    break;
+                case FOLLOWUP:
+                    if (((FollowupTask) task).getPayload().getType().toLowerCase().equals("feedback")) {
+                        String feedbackTitle = getString(R.string.notification_feedback_title);
+                        String feedbackMessage = ((FollowupTask) task).getPayload().getTitle();
+                        Utils.showNotification(this, Constants.FEEDBACK_NOTIFICATION_ID, feedbackTitle, feedbackMessage);
+                    } else {
+                        String followupTitle = getString(R.string.notification_followup_title);
+                        String followupMessage = ((FollowupTask) task).getPayload().getTitle();
+                        Utils.showNotification(this, Constants.FOLLOWUP_NOTIFICATION_ID, followupTitle, followupMessage);
+                    }
+                    break;
+                default:
+                    break;
+            }
         } else if (type.toLowerCase().equals("message")){
-            NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-
-            PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                    new Intent(this, MainActivity.class), 0);
-
-            NotificationCompat.Builder mBuilder =
-                    new NotificationCompat.Builder(this)
-                            .setSmallIcon(R.drawable.ic_launcher)
-                            .setContentTitle("Message from DOCTL")
-                            .setStyle(new NotificationCompat.BigTextStyle()
-                                    .bigText(data))
-                            .setContentText(data);
-
-            mBuilder.setContentIntent(contentIntent);
-            mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+            String title = getString(R.string.notification_default_title);
+            String message = "";
+            try {
+                JSONTokener tokener = new JSONTokener(data);
+                JSONObject jsonResponse = new JSONObject(tokener);
+                if(jsonResponse.has("title")) {
+                    title = jsonResponse.getString("title");
+                }
+                if(jsonResponse.has("message")) {
+                    message = jsonResponse.getString("message");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Utils.showNotification(this, Constants.MESSAGE_NOTIFICATION_ID, title, message);
         }
-//
     }
 }

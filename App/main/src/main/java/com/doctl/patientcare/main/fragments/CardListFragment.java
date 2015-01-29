@@ -46,6 +46,8 @@ import com.nhaarman.listviewanimations.swinginadapters.AnimationAdapter;
 import com.nhaarman.listviewanimations.swinginadapters.prepared.ScaleInAnimationAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
@@ -308,6 +310,12 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
 //        cards.add(card9);
 //        cards.add(card10);
 //        cards.add(card11);
+        Collections.sort(cards, new Comparator<BaseCard>() {
+            @Override
+            public int compare(BaseCard card1, BaseCard card2) {
+                return card1.getType() - card2.getType();
+            }
+        });
         return cards;
     }
 
