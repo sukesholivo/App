@@ -42,6 +42,8 @@ import java.util.List;
 public class VitalDetailActivity extends BaseActivity {
     private static final String TAG = VitalDetailActivity.class.getSimpleName();
     private VitalDetailData vitalData;
+    String vitalId;
+    String vitalType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,9 +55,9 @@ public class VitalDetailActivity extends BaseActivity {
         if (bundle == null){
             return;
         }
-        String vitalId = bundle.getString("vitalId");
-        String vitalType = bundle.getString("vitalType");
-        new GetVitals().execute(vitalId, vitalType);
+        vitalId = bundle.getString("vitalId");
+        vitalType = bundle.getString("vitalType");
+        refresh();
     }
 
     @Override
@@ -91,9 +93,16 @@ public class VitalDetailActivity extends BaseActivity {
                             .show();
                 }
                 return true;
+            case R.id.action_refresh:
+                refresh();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void refresh(){
+        new GetVitals().execute(vitalId, vitalType);
     }
 
     private View getNewVitalDialogInnerView(){
@@ -265,6 +274,7 @@ public class VitalDetailActivity extends BaseActivity {
             HTTPServiceHandler serviceHandler = new HTTPServiceHandler(VitalDetailActivity.this);
             String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.POST, null, data);
             Logger.e(TAG, response);
+            refresh();
             return null;
         }
 

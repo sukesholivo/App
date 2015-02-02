@@ -214,22 +214,30 @@ public final class Utils {
     }
 
     public static String getAuthTokenFromSharedPreference(Context context){
-        SharedPreferences sp = context.getSharedPreferences(Constants.AUTH_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE);
-        return sp.getString(Constants.AUTH_SHARED_PREFERENCE_KEY, "");
+        if (context != null) {
+            SharedPreferences sp = context.getSharedPreferences(Constants.AUTH_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE);
+            return sp.getString(Constants.AUTH_SHARED_PREFERENCE_KEY, "");
+        }
+        return null;
     }
 
     public static String setAuthTokenFromSharedPreference(Context context, String auth_token){
-        SharedPreferences sp = context.getSharedPreferences(Constants.AUTH_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString(Constants.AUTH_SHARED_PREFERENCE_KEY, auth_token);
-        editor.commit();
-        return sp.getString(Constants.AUTH_SHARED_PREFERENCE_KEY, "");
+        if (context != null) {
+            SharedPreferences sp = context.getSharedPreferences(Constants.AUTH_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString(Constants.AUTH_SHARED_PREFERENCE_KEY, auth_token);
+            editor.commit();
+            return sp.getString(Constants.AUTH_SHARED_PREFERENCE_KEY, "");
+        }
+        return null;
     }
 
     public static void cleanupSharedPreference(Context context){
-        context.getSharedPreferences(Constants.AUTH_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE).edit().clear().commit();
-        context.getSharedPreferences(Constants.PERSONAL_DETAIL_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE).edit().clear().commit();
-        context.getSharedPreferences(Constants.GCM_SHARED_PREFERENCE_KEY, Activity.MODE_PRIVATE).edit().clear().commit();
+        if (context != null) {
+            context.getSharedPreferences(Constants.AUTH_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE).edit().clear().commit();
+            context.getSharedPreferences(Constants.PERSONAL_DETAIL_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE).edit().clear().commit();
+            context.getSharedPreferences(Constants.GCM_SHARED_PREFERENCE_KEY, Activity.MODE_PRIVATE).edit().clear().commit();
+        }
     }
 
     public static String getFolderUrl(){

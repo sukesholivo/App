@@ -72,6 +72,9 @@ public class HTTPServiceHandler {
 
             //Extract the auth token from user preferences
             String ServerAccessToken = Utils.getAuthTokenFromSharedPreference(context);
+            if (ServerAccessToken == null || ServerAccessToken.isEmpty()){
+                return null;
+            }
             Logger.d(TAG, url);
 
             // Checking http request method type

@@ -26,6 +26,7 @@ public final class Constants {
     public final static String PROPERTY_GCM_REGISTRATION_ID = "gcm_registration_id";
     public final static String PROPERTY_APP_VERSION = "app_version";
     public final static String SENDER_ID = "258383232963";
+    public final static String ANDROID_DEVELOPER_KEY = "AIzaSyAWocbee6JmNy1KShjdNWy_v8_xEq0-gE0";
 
     public final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 

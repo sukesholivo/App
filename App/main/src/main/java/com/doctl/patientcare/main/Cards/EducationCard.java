@@ -27,8 +27,6 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
 
 public class EducationCard extends BaseCard{
     private static final String TAG = EducationCard.class.getSimpleName();
-    private static final String ANDROID_DEVELOPER_KEY = "AIzaSyAWocbee6JmNy1KShjdNWy_v8_xEq0-gE0";
-
     private EducationTask educationTask;
 
     public EducationCard(Context context) {
@@ -83,6 +81,7 @@ public class EducationCard extends BaseCard{
         catch (Exception e) {
             Logger.e(TAG, e.toString());
         }
+        setupCardFooter(view, educationTask);
     }
 
     private void setListnerToCard(){
@@ -100,7 +99,7 @@ public class EducationCard extends BaseCard{
                     {
                         video_id = video_id.split("&")[0];
                     }
-                    Intent intent = YouTubeStandalonePlayer.createVideoIntent((Activity)context, ANDROID_DEVELOPER_KEY, video_id);
+                    Intent intent = YouTubeStandalonePlayer.createVideoIntent((Activity)context, Constants.ANDROID_DEVELOPER_KEY, video_id);
                     context.startActivity(intent);
                 }
                 else{
