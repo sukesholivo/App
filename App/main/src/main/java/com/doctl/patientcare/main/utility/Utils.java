@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 
@@ -158,6 +159,11 @@ public final class Utils {
 
         multiRenderer.setZoomEnabled(false, false);
         multiRenderer.setPanEnabled(false, false);
+        multiRenderer.setLabelsTextSize(24);
+        multiRenderer.setAntialiasing(true);
+        multiRenderer.setTextTypeface("sans_serif", Typeface.NORMAL);
+        multiRenderer.setPointSize(4f);
+
         for (GraphData g : graph) {
             if (g.getX()!= null) {
                 TimeSeries series = new TimeSeries(g.getTitle());
@@ -169,8 +175,8 @@ public final class Utils {
                 graphRenderer.setColor(g.getLineColor());
                 graphRenderer.setLineWidth(g.getLineWidth());
                 graphRenderer.setPointStyle(PointStyle.CIRCLE);
-                graphRenderer.setPointStrokeWidth(50);
-                graphRenderer.setFillPoints(true);
+                graphRenderer.setFillPoints(false);
+                graphRenderer.setPointStrokeWidth(10);
                 multiRenderer.addSeriesRenderer(graphRenderer);
                 seriesAdded = true;
             }
