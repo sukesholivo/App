@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
+import android.util.DisplayMetrics;
 
 import com.doctl.patientcare.main.Cards.CardHeaderInnerView;
 import com.doctl.patientcare.main.MainActivity;
@@ -327,5 +328,11 @@ public final class Utils {
                 return new Gson().fromJson(cardJsonObj, EducationTask.class);
         }
         return null;
+    }
+
+    public static int dpToPx(Context context, int dp) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        return px;
     }
 }

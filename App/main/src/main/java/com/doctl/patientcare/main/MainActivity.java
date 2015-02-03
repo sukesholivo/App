@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -260,6 +261,24 @@ public class MainActivity extends BaseActivity {
     private void updateTotalPoints(int points){
         TextView totalPoints = (TextView)findViewById(R.id.points);
         totalPoints.setText("" + points);
+        int digits = (int) Math.log10(points) + 1;
+        TextView pointsText = (TextView)findViewById(R.id.pointsText);
+        RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, (int) getResources().getDimension(R.dimen.awards_text_height));
+        rlp.addRule(RelativeLayout.BELOW, R.id.points);
+        switch(digits){
+            case 1:
+            case 2:
+                rlp.setMargins(0, 0, 0, 0);
+                break;
+            case 3:
+                rlp.setMargins(Utils.dpToPx(this, 10), 0, 0, 0);
+                break;
+            case 4:
+            default:
+                rlp.setMargins(Utils.dpToPx(this, 20), 0, 0, 0);
+                break;
+        }
+        pointsText.setLayoutParams(rlp);
     }
 
     private void setTreatmentProgress(int progress, int max){
