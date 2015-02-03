@@ -1,10 +1,10 @@
 package com.doctl.patientcare.main.Cards;
 
 import android.content.Context;
-import android.text.Html;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.webkit.WebView;
 
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.BaseTask;
@@ -47,13 +47,15 @@ public class MessageCard extends BaseCard {
         ViewHolder viewHolder;
         if(view.getTag() == null) {
             viewHolder = new ViewHolder();
-            viewHolder.textView = (TextView) view.findViewById(R.id.messageTextView);
+            viewHolder.webView = (WebView) view.findViewById(R.id.messageTextView);
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        viewHolder.textView.setText(Html.fromHtml(messageTask.getPayload().getMessage()));
+        viewHolder.webView.setBackgroundColor(Color.TRANSPARENT);
+        viewHolder.webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
+        viewHolder.webView.loadDataWithBaseURL(null, messageTask.getPayload().getMessage(), "text/html", "utf-8", null);
     }
 
     @Override
@@ -77,6 +79,6 @@ public class MessageCard extends BaseCard {
     }
 
     private static class ViewHolder extends BaseViewHolder {
-        TextView textView;
+        WebView webView;
     }
 }
