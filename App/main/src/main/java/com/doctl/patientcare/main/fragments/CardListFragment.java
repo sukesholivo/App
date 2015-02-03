@@ -11,6 +11,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.doctl.patientcare.main.Cards.BaseCard;
 import com.doctl.patientcare.main.Cards.CardHeaderInnerView;
@@ -92,8 +93,15 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
     @Override
     public void onStart() {
         super.onStart();
+        refresh();
+    }
 
-        new GetTasks().execute();
+    private void refresh(){
+        if (Utils.isNetworkAvailable(getActivity())){
+            new GetTasks().execute();
+        } else {
+            Toast.makeText(getActivity(), "No Network Connection", Toast.LENGTH_LONG).show();
+        }
     }
 
     protected void initializeCardList() {
@@ -338,7 +346,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
 
     @Override
     public void onRefreshStarted(View view) {
-        new GetTasks().execute();
+        refresh();
     }
 
     /**

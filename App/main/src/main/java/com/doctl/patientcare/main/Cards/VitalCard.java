@@ -18,6 +18,7 @@ import com.doctl.patientcare.main.om.GraphData;
 import com.doctl.patientcare.main.om.vitals.VitalTask;
 import com.doctl.patientcare.main.om.vitals.Vitals;
 import com.doctl.patientcare.main.utility.Logger;
+import com.doctl.patientcare.main.utility.Utils;
 
 import org.achartengine.GraphicalView;
 import org.json.JSONException;
@@ -149,7 +150,7 @@ public class VitalCard extends BaseCard {
 
         if (graphicalView != null) {
             LinearLayout chartContainer = viewHolder.graphLinearLayout;
-            chartContainer.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 50));
+            chartContainer.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Utils.dpToPx(getContext(), 50)));
             chartContainer.addView(graphicalView);
         }
 

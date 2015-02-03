@@ -90,7 +90,7 @@ public class ChangeProfileActivity extends ActionBarActivity {
                 return true;
             case R.id.action_save_profile:
                 saveProfile();
-                Toast.makeText(this, "Profile saved", Toast.LENGTH_LONG).show();
+//                Toast.makeText(this, "Profile saved", Toast.LENGTH_LONG).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -365,27 +365,32 @@ public class ChangeProfileActivity extends ActionBarActivity {
     }
 
     private void saveProfile(){
-        String url = Constants.PERSONAL_DETAIL_URL;
-        JSONObject data = null;
-        try {
-            data = userProfile.getDataToPatch();
-            EditText password1 = (EditText) findViewById(R.id.password1);
-            String p1 = password1.getText().toString();
-            EditText password2 = (EditText) findViewById(R.id.password2);
-            String p2 = password2.getText().toString();
+        if (Utils.isNetworkAvailable(this)){
+            String url = Constants.PERSONAL_DETAIL_URL;
+            JSONObject data = null;
+            try {
+                data = userProfile.getDataToPatch();
+                EditText password1 = (EditText) findViewById(R.id.password1);
+                String p1 = password1.getText().toString();
+                EditText password2 = (EditText) findViewById(R.id.password2);
+                String p2 = password2.getText().toString();
 
-            if (p1 != null && !p1.isEmpty()){
-                if (p2 == null || p2.isEmpty() || !p1.equals(p2)){
-                    Toast.makeText(this, "Password doesn't match", Toast.LENGTH_LONG).show();
-                    return;
+                if (p1 != null && !p1.isEmpty()){
+                    if (p2 == null || p2.isEmpty() || !p1.equals(p2)){
+                        Toast.makeText(this, "Password doesn't match", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    data.put("password1", p1);
+                    data.put("password2", p2);
                 }
-                data.put("password1", p1);
-                data.put("password2", p2);
+            } catch (JSONException e){
+                Logger.e(TAG, e.getMessage());
             }
-        } catch (JSONException e){
-            Logger.e(TAG, e.getMessage());
+            new SaveProfile().execute(url, data);
+            Toast.makeText(this, "Profile saved", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "No Network Connection", Toast.LENGTH_LONG).show();
         }
-        new SaveProfile().execute(url, data);
     }
 
     private class SaveProfile extends AsyncTask<Object, Void, Void> {

@@ -30,6 +30,7 @@ import org.json.JSONTokener;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.UnknownHostException;
 import java.util.List;
 
 /**
@@ -166,6 +167,8 @@ public class HTTPServiceHandler {
             }
             httpEntity = httpResponse.getEntity();
             response = EntityUtils.toString(httpEntity);
+        } catch (UnknownHostException ex){
+
         } catch (IOException  e) {
             e.printStackTrace();
         }

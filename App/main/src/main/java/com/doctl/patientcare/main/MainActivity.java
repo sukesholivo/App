@@ -143,8 +143,12 @@ public class MainActivity extends BaseActivity {
     }
 
     private void refresh(){
-        new GetProgress().execute();
-        setCards();
+        if (Utils.isNetworkAvailable(this)){
+            new GetProgress().execute();
+            setCards();
+        } else {
+            Toast.makeText(this, "No Network Connection", Toast.LENGTH_LONG).show();
+        }
     }
 
     private boolean checkPlayServices() {

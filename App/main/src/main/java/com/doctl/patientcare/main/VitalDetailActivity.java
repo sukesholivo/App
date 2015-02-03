@@ -102,7 +102,11 @@ public class VitalDetailActivity extends BaseActivity {
     }
 
     private void refresh(){
-        new GetVitals().execute(vitalId, vitalType);
+        if (Utils.isNetworkAvailable(this)){
+            new GetVitals().execute(vitalId, vitalType);
+        } else {
+            Toast.makeText(this, "No Network Connection", Toast.LENGTH_LONG).show();
+        }
     }
 
     private View getNewVitalDialogInnerView(){

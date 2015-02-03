@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.doctl.patientcare.main.R;
+import com.doctl.patientcare.main.utility.Utils;
 
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class MedicineDetailAdapter extends ArrayAdapter<PrescriptionMedicine> {
         LinearLayout.LayoutParams layoutParams =
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                                                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(0, 0, 20, 0);
+        layoutParams.setMargins(0, 0, Utils.dpToPx(getContext(), 10), 0);
         ll.removeAllViews();
         PrescriptionMedicine.Dosage dosage = item.getDosage();
         int morning = dosage.getMorning() != null? Integer.parseInt(dosage.getMorning()): 0;

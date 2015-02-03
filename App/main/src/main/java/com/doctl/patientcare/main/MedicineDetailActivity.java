@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.doctl.patientcare.main.controls.ProgressBarAnimation;
 import com.doctl.patientcare.main.om.medicines.MedicineDetailAdapter;
@@ -26,6 +27,7 @@ import java.util.Date;
 public class MedicineDetailActivity extends BaseActivity {
     public final static String TAG = MedicineDetailActivity.class.getSimpleName();
     static boolean active = false;
+    private String prescriptionId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,19 +44,27 @@ public class MedicineDetailActivity extends BaseActivity {
         if (actionBar != null) {
             actionBar.setTitle("Prescription");
         }
-        String prescriptionId = "";
+        prescriptionId = "";
         active = true;
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
             prescriptionId = bundle.getString("prescriptionId");
         }
-        new GetPrescription().execute(prescriptionId);
+        refresh();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         active = false;
+    }
+
+    private void refresh(){
+        if (Utils.isNetworkAvailable(this)){
+            new GetPrescription().execute(prescriptionId);
+        } else {
+            Toast.makeText(this, "No Network Connection", Toast.LENGTH_LONG).show();
+        }
     }
 
     private String downloadPrescriptionData(String prescriptionId) {
