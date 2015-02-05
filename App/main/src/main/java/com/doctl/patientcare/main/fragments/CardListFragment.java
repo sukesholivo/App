@@ -259,6 +259,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
                     };
                     MessageCard messageCard = new MessageCard(getActivity(), messageHeader, messageTask);
                     cards.add(messageCard);
+                    break;
                 case EDUCATION:
                     EducationTask educationTask = new Gson().fromJson(cardJson, EducationTask.class);
                     final String eduTitle = educationTask.getPayload().getTitle();
@@ -276,41 +277,41 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
             }
         }
 
-        CardHeader walkHeader = new CardHeaderInnerView(getActivity(), "TODAY", "", "");
-        WalkCard card4 = new WalkCard(getActivity(), walkHeader);
-
-        CardHeader richEducationHeader = new CardHeaderInnerView(getActivity()){
-            @Override
-            public void setupInnerViewElements(ViewGroup parent, View view) {
-                TextView textView1 = (TextView)view.findViewById(R.id.timeWhen);
-                textView1.setText("HOW TO INJECT INSULIN");
-                textView1.setTextSize(28);
-            }
-        };
+//        CardHeader walkHeader = new CardHeaderInnerView(getActivity(), "TODAY", "", "");
+//        WalkCard card4 = new WalkCard(getActivity(), walkHeader);
+//
+//        CardHeader richEducationHeader = new CardHeaderInnerView(getActivity()){
+//            @Override
+//            public void setupInnerViewElements(ViewGroup parent, View view) {
+//                TextView textView1 = (TextView)view.findViewById(R.id.timeWhen);
+//                textView1.setText("HOW TO INJECT INSULIN");
+//                textView1.setTextSize(28);
+//            }
+//        };
         //, "HOW TO INJECT INSULIN", "", "");
-        EducationRichtextCard card5 = new EducationRichtextCard(getActivity(), richEducationHeader );
+//        EducationRichtextCard card5 = new EducationRichtextCard(getActivity(), richEducationHeader );
+//
+//        CardHeader howruFeelingHeader = new CardHeaderInnerView(getActivity(), "HOW ARE YOU FEELING?", "", "");
+//        HowruFeelingCard card7 = new HowruFeelingCard(getActivity(), howruFeelingHeader);
+//
+//        CardHeader mythHeader = new CardHeaderInnerView(getActivity()){
+//            @Override
+//            public void setupInnerViewElements(ViewGroup parent, View view) {
+//                TextView textView1 = (TextView)view.findViewById(R.id.timeWhen);
+//                textView1.setText("MYTH");
+//                textView1.setTextSize(25);
+//                textView1.setTextColor(Color.RED);
+//            }
+//        };
 
-        CardHeader howruFeelingHeader = new CardHeaderInnerView(getActivity(), "HOW ARE YOU FEELING?", "", "");
-        HowruFeelingCard card7 = new HowruFeelingCard(getActivity(), howruFeelingHeader);
-
-        CardHeader mythHeader = new CardHeaderInnerView(getActivity()){
-            @Override
-            public void setupInnerViewElements(ViewGroup parent, View view) {
-                TextView textView1 = (TextView)view.findViewById(R.id.timeWhen);
-                textView1.setText("MYTH");
-                textView1.setTextSize(25);
-                textView1.setTextColor(Color.RED);
-            }
-        };
-
-        ImageCard card9 = new ImageCard(getActivity(), null);
-        card9.setImageResourceId(R.drawable.motivationcard_backgroundpic4_lesssugar);
-
-        ImageCard card10 = new ImageCard(getActivity(), null);
-        card10.setImageResourceId(R.drawable.education_myths_sugar_full);
-
-        ImageCard card11 = new ImageCard(getActivity(), null);
-        card11.setImageResourceId(R.drawable.education_myths_weightloss_full);
+//        ImageCard card9 = new ImageCard(getActivity(), null);
+//        card9.setImageResourceId(R.drawable.motivationcard_backgroundpic4_lesssugar);
+//
+//        ImageCard card10 = new ImageCard(getActivity(), null);
+//        card10.setImageResourceId(R.drawable.education_myths_sugar_full);
+//
+//        ImageCard card11 = new ImageCard(getActivity(), null);
+//        card11.setImageResourceId(R.drawable.education_myths_weightloss_full);
 
 //        cards.add(card4);
 //        cards.add(card5);

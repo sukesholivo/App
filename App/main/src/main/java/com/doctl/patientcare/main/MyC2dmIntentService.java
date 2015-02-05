@@ -56,7 +56,6 @@ public class MyC2dmIntentService extends IntentService {
             return;
         }
         UserProfile userProfile = Utils.getUserDataFromSharedPreference(this);
-        userProfile.getEmail();
         String type = msg.getString("type");
         String username = msg.getString("username");
         if (!username.equals(userProfile.getEmail())){

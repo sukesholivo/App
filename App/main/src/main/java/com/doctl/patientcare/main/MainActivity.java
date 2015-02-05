@@ -265,7 +265,10 @@ public class MainActivity extends BaseActivity {
     private void updateTotalPoints(int points){
         TextView totalPoints = (TextView)findViewById(R.id.points);
         totalPoints.setText("" + points);
-        int digits = (int) Math.log10(points) + 1;
+        int digits = 1;
+        if (points > 0) {
+            digits = (int) Math.log10(points) + 1;
+        }
         TextView pointsText = (TextView)findViewById(R.id.pointsText);
         RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, (int) getResources().getDimension(R.dimen.awards_text_height));
         rlp.addRule(RelativeLayout.BELOW, R.id.points);
