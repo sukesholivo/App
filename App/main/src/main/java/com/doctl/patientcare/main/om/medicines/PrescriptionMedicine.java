@@ -39,7 +39,7 @@ public class PrescriptionMedicine {
     private String notes;
 
     @SerializedName("frequency")
-    private int daysInterval;
+    private String daysInterval;
 
     @SerializedName("dosage")
     private Dosage dosage;
@@ -79,7 +79,7 @@ public class PrescriptionMedicine {
         return notes;
     }
 
-    public int getDaysInterval() {
+    public String getDaysInterval() {
         return daysInterval;
     }
 
