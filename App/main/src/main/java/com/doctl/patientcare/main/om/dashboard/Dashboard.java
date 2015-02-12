@@ -1,5 +1,6 @@
 package com.doctl.patientcare.main.om.dashboard;
 
+import com.doctl.patientcare.main.om.UserProfile;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
@@ -20,6 +21,9 @@ public class Dashboard {
     @SerializedName("vital")
     private Vital vital;
 
+    @SerializedName("clinic")
+    private UserProfile clinic;
+
     public Double getAdherence() {
         return adherence;
     }
@@ -34,6 +38,10 @@ public class Dashboard {
 
     public Vital getVital() {
         return vital;
+    }
+
+    public UserProfile getClinic() {
+        return clinic;
     }
 
     public class Progress {

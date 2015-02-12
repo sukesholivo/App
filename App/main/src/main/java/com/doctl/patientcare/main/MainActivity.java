@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -142,6 +143,17 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    private void setupActionBar(String clinicName){
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            if (clinicName != null && !clinicName.isEmpty()) {
+                actionBar.setTitle(clinicName);
+            } else {
+                actionBar.setTitle("DOCTL");
+            }
+        }
+    }
+
     private void refresh(){
         if (Utils.isNetworkAvailable(this)){
             new GetProgress().execute();
@@ -225,6 +237,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void updateProgress(Dashboard dashboardData) {
+        setupActionBar(dashboardData.getClinic().getDisplayName());
         updateAdherencePercentage(dashboardData.getAdherence().intValue());
 
         updateTotalPoints(dashboardData.getPoints());
