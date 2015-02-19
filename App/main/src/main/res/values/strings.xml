@@ -88,4 +88,6 @@
     <string name="notification_education_title">New education material</string>
     <string name="notification_feedback_title">Need your feedback</string>
     <string name="notification_followup_title">Rate Your Health</string>
+
+    <string name="doctl_branding_text">Powered by DOCTL</string>
 </resources>
