@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.doctl.patientcare.main.utility.Logger;
@@ -30,6 +31,7 @@ import java.util.List;
 public class BaseActivity extends ActionBarActivity implements ListView.OnItemClickListener{
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
+    private RelativeLayout mDrawerListLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private List<DrawerItem> dataList;
     Toolbar mToolbar;
@@ -112,7 +114,8 @@ public class BaseActivity extends ActionBarActivity implements ListView.OnItemCl
         mToolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
         setSupportActionBar(mToolbar);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mDrawerListLayout = (RelativeLayout) findViewById(R.id.left_drawer_layout);
+        mDrawerList = (ListView) mDrawerListLayout.findViewById(R.id.left_drawer);
         CustomDrawerAdapter adapter = new CustomDrawerAdapter(this, getDrawerItemList());
         mDrawerList.setAdapter(adapter);
         mDrawerList.setOnItemClickListener(this);
@@ -224,7 +227,7 @@ public class BaseActivity extends ActionBarActivity implements ListView.OnItemCl
         if (closeDrawer) {
             mDrawerList.setItemChecked(position, true);
 //            Toast.makeText(this, "Item Selected: " + position, Toast.LENGTH_LONG).show();
-            mDrawerLayout.closeDrawer(mDrawerList);
+            mDrawerLayout.closeDrawer(mDrawerListLayout);
         }
     }
 
