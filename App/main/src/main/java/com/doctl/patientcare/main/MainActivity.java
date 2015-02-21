@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -62,6 +63,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onStart() {
         super.onStart();
+        dismissAllNotification();
         active = true;
     }
 
@@ -143,6 +145,10 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    private void dismissAllNotification(){
+        NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.cancelAll();
+    }
     private void setupActionBar(String clinicName){
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

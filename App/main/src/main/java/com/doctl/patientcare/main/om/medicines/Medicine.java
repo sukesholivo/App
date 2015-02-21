@@ -132,7 +132,7 @@ public class Medicine {
                     return SYRUP;
                 case 5:
                     return DROPS;
-                case 6:
+                case 100:
                     return OTHER;
             }
             return null;
