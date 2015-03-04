@@ -81,7 +81,7 @@
     <string name="nav_item_temperature">Temperature</string>
     <string name="nav_item_pulse">Pulse</string>
     <string name="nav_item_accounts">Account</string>
-    <string name="nav_item_rewards">Rewards</string>
+    <string name="nav_item_rewards">Points</string>
     <string name="nav_item_profile">Profile</string>
     <string name="nav_item_logout">Log Out</string>
 
@@ -91,4 +91,7 @@
     <string name="notification_followup_title">Rate Your Health</string>
 
     <string name="doctl_branding_text">Powered by DOCTL</string>
+
+    <string name="reward_text_title">Awards</string>
+    <string name="reward_unlock_string">awards unlocked</string>
 </resources>

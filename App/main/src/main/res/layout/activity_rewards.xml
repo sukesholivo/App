@@ -5,7 +5,7 @@
     android:background="@color/color_white">
     <include layout="@layout/toolbar"/>
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/action_bar_main"
@@ -15,26 +15,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="30sp"
-            android:text="600"
             android:layout_marginLeft="50dp"
             android:layout_marginStart="50dp"
             android:textColor="@color/color_white"
             />
         <TextView
+            android:id="@+id/unlocked_reward_count"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:textSize="15sp"
-            android:text="For your points you have earned following awards"
+            android:textSize="20sp"
             android:layout_gravity="top"
-            android:layout_marginLeft="50dp"
-            android:layout_marginStart="50dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
+            android:gravity="center"
+            android:textColor="@color/color_white"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="20sp"
+            android:text="@string/reward_unlock_string"
+            android:layout_gravity="top"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:gravity="center"
             android:textColor="@color/color_white"
             />
         </LinearLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Awards"
+        android:text="@string/reward_text_title"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginTop="10dp"
@@ -46,9 +57,8 @@
         android:id="@+id/clinic_rewards_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:dividerHeight="1dp"
         android:background="@color/color_white"
-        ></ListView>
+        />
 
 </LinearLayout>

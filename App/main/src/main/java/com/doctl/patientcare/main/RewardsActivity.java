@@ -35,7 +35,7 @@ public class RewardsActivity extends ActionBarActivity {
         setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null){
-            actionBar.setTitle(getResources().getString(R.string.nav_item_rewards));
+            actionBar.setTitle(getResources().getString(R.string.nav_item_rewards).toUpperCase());
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -96,6 +96,14 @@ public class RewardsActivity extends ActionBarActivity {
             public void run() {
                 TextView pointsTextView = (TextView) findViewById(R.id.totalPointsText);
                 pointsTextView.setText("" + rewards.getTotalPoints());
+                TextView unlockedRewardText = (TextView) findViewById(R.id.unlocked_reward_count);
+                int count = 0;
+                for (Rewards.Reward reward: rewards.getByClinic()) {
+                    if (reward.getPoints() <= rewards.getTotalPoints()) {
+                        count++;
+                    }
+                }
+                unlockedRewardText.setText("" + count);
                 ListView mRewardsList = (ListView) RewardsActivity.this.findViewById(R.id.clinic_rewards_list);
                 RewardArrayAdapter mRewardArrayAdapter = new RewardArrayAdapter(RewardsActivity.this, rewards.getByClinic(), rewards.getTotalPoints());
                 mRewardsList.setAdapter(mRewardArrayAdapter);
