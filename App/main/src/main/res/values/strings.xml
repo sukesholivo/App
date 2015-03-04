@@ -81,6 +81,7 @@
     <string name="nav_item_temperature">Temperature</string>
     <string name="nav_item_pulse">Pulse</string>
     <string name="nav_item_accounts">Account</string>
+    <string name="nav_item_rewards">Rewards</string>
     <string name="nav_item_profile">Profile</string>
     <string name="nav_item_logout">Log Out</string>
 

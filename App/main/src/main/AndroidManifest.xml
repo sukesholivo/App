@@ -50,6 +50,8 @@
         </activity>
         <activity android:name=".ChangeProfileActivity" android:label="" android:screenOrientation="portrait" android:windowSoftInputMode="adjustPan">
         </activity>
+        <activity android:name=".RewardsActivity" android:label="" android:screenOrientation="portrait" android:windowSoftInputMode="adjustPan">
+        </activity>
 
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <receiver android:name=".MyC2dmReceiver"
@@ -61,7 +63,7 @@
             </intent-filter>
         </receiver>
         <service android:name=".MyC2dmIntentService" />
-        <activity android:name=".PopupNotificationActivity" android:theme="@android:style/Theme.Holo.Light.Dialog">
+        <activity android:name=".PopupNotificationActivity" android:theme="@android:style/Theme.Holo.Light.Dialog" android:noHistory="true">
         </activity>
 
     </application>

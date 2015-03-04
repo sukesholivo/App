@@ -35,6 +35,7 @@ public class BaseActivity extends ActionBarActivity implements ListView.OnItemCl
     private ActionBarDrawerToggle mDrawerToggle;
     private List<DrawerItem> dataList;
     Toolbar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,7 +160,8 @@ public class BaseActivity extends ActionBarActivity implements ListView.OnItemCl
         switch (position) {
             case 0:
                 Logger.d("BaseActivity: ", "Profile Clicked");
-                closeDrawer = false;
+                intent = new Intent(this, ChangeProfileActivity.class);
+                this.startActivity(intent);
                 break;
             case 1:
                 Logger.d("BaseActivity: ", "Home Clicked");
@@ -212,8 +214,8 @@ public class BaseActivity extends ActionBarActivity implements ListView.OnItemCl
                 closeDrawer = false;
                 break;
             case 9:
-                Logger.d("BaseActivity: ", "Change Password Clicked");
-                intent = new Intent(this, ChangeProfileActivity.class);
+                Logger.d("BaseActivity: ", "Rewards Clicked");
+                intent = new Intent(this, RewardsActivity.class);
                 this.startActivity(intent);
                 break;
             case 10:
@@ -263,7 +265,7 @@ public class BaseActivity extends ActionBarActivity implements ListView.OnItemCl
         dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_pulse), R.drawable.ic_pulse_black_24dp));
 
         dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_accounts)));
-        dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_profile), R.drawable.ic_person_black_24dp));
+        dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_rewards), R.drawable.ic_award_black_24dp));
         dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_logout), R.drawable.ic_signout_black_24dp));
         return dataList;
     }

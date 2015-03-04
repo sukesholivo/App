@@ -78,7 +78,7 @@ public class FollowupCard extends BaseCard {
         }
         LinearLayout list = viewHolder.linearLayout;
         list.removeAllViews();
-
+        boolean isSubjective = followupData.getType().toLowerCase().equals("subjective");
         if (followupData.getType().toLowerCase().equals("feedback")) {
             LayoutInflater li = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View ratingContainer = li.inflate(R.layout.rating_bar, parent, false);
@@ -102,8 +102,9 @@ public class FollowupCard extends BaseCard {
                 }
             });
             list.addView(ratingContainer);
-        }
-        else {
+        } else if (followupData.getType().toLowerCase().equals("subjective")){
+            viewHolder.editText.setHint("Reply");
+        } else {
             if (followupData.isMultipleChoice()) {
                 for (int i = 0; i < followupData.getOptions().size(); i++) {
                     String str = followupData.getOptions().get(i);
@@ -154,8 +155,9 @@ public class FollowupCard extends BaseCard {
                     rb.setChecked(followupTask.getPayload().getSelected() != null && followupTask.getPayload().getSelected().contains(i));
                     rg.addView(rb);
                 }
-
-                list.addView(rg);
+                if (!isSubjective) {
+                    list.addView(rg);
+                }
             }
         }
         viewHolder.editText.setVisibility(View.VISIBLE);
