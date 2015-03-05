@@ -99,7 +99,8 @@ public class MedicineDetailActivity extends BaseActivity {
         } else {
             doctorLayout.setVisibility(View.GONE);
         }
-
+        RelativeLayout progressLayout = (RelativeLayout) findViewById(R.id.progressLayout);
+        progressLayout.setVisibility(View.VISIBLE);
 
         TextView prescriptionDate = (TextView) findViewById(R.id.dateText);
         prescriptionDate.setText(Utils.getDateString(prescription.getStartDate()));

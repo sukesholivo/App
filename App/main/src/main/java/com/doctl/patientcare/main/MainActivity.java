@@ -255,12 +255,14 @@ public class MainActivity extends BaseActivity {
         if (progress != null) {
             Date start = dashboardData.getProgress().getStartTime();
             Date end = dashboardData.getProgress().getEndTime();
-            treatmentDays = (end.getTime() - start.getTime())/ milliSecondsInDay;
-            completedDays = (new Date().getTime() - start.getTime())/ milliSecondsInDay;
-            if (completedDays < 0 ) {
-                completedDays = 0;
-            } else if (completedDays > treatmentDays ){
-                completedDays = treatmentDays;
+            if (start != null && end != null) {
+                treatmentDays = (end.getTime() - start.getTime()) / milliSecondsInDay;
+                completedDays = (new Date().getTime() - start.getTime()) / milliSecondsInDay;
+                if (completedDays < 0) {
+                    completedDays = 0;
+                } else if (completedDays > treatmentDays) {
+                    completedDays = treatmentDays;
+                }
             }
         }
         setTreatmentProgress((int) completedDays, (int) treatmentDays);

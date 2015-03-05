@@ -78,13 +78,16 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/progressLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="10dp"
                 android:paddingLeft="10dp"
                 android:paddingBottom="10dp"
                 android:paddingRight="10dp"
-                android:background="#F3F2F2">
+                android:background="#F3F2F2"
+                android:visibility="gone"
+                >
                 <TextView
                     android:id="@+id/dateText"
                     android:layout_width="wrap_content"
