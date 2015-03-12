@@ -67,7 +67,7 @@ public class ChangeProfileActivity extends ActionBarActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        userProfile = Utils.getUserDataFromSharedPreference(this);
+        userProfile = Utils.getPatientDataFromSharedPreference(this);
         setData(userProfile);
         setImagePicker();
     }
@@ -407,7 +407,7 @@ public class ChangeProfileActivity extends ActionBarActivity {
             String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.PATCH, null, data);
             if (response != null && !response.isEmpty()) {
                 userProfile = new Gson().fromJson(response, UserProfile.class);
-                Utils.saveUserDataToSharedPreference(ChangeProfileActivity.this, userProfile);
+                Utils.savePatientDataToSharedPreference(ChangeProfileActivity.this, userProfile);
             }
             return null;
         }
@@ -443,7 +443,7 @@ public class ChangeProfileActivity extends ActionBarActivity {
                 HttpFileUpload hfu = new HttpFileUpload(ChangeProfileActivity.this, serverUrl);
                 String profilePicUrl = hfu.Send_Now("profile_pic", fstrm);
                 userProfile.setProfilePicUrl(profilePicUrl);
-                Utils.saveUserDataToSharedPreference(ChangeProfileActivity.this, userProfile);
+                Utils.savePatientDataToSharedPreference(ChangeProfileActivity.this, userProfile);
 
             } catch (FileNotFoundException e) {
                 Logger.e(TAG, e.getMessage());

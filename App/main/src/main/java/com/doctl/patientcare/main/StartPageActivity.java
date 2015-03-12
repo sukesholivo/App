@@ -3,6 +3,7 @@ package com.doctl.patientcare.main;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -15,10 +16,17 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.doctl.patientcare.main.om.TreatmentInfo;
+import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.GetServerAuthTokenAsync;
+import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -65,10 +73,16 @@ public class StartPageActivity extends FragmentActivity {
         Context context = StartPageActivity.this;
         String ServerAccessToken = Utils.getAuthTokenFromSharedPreference(context);
         if(!ServerAccessToken.isEmpty()) {
-            Intent intent = new Intent(context, MainActivity.class);
-            context.startActivity(intent);
-            this.finish();
+            this.findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+            this.findViewById(R.id.loginPanel).setVisibility(View.GONE);
+            new GetTreatmentSummaryAsync().execute();
         }
+    }
+
+    private void launchMainActivity(){
+        Intent intent = new Intent(this, MainActivity.class);
+        this.startActivity(intent);
+        this.finish();
     }
 
     public static class AppSectionsPagerAdapter extends FragmentPagerAdapter {
@@ -172,6 +186,32 @@ public class StartPageActivity extends FragmentActivity {
             };
             Button registerButton = (Button)rootView.findViewById(R.id.registerButton);
             registerButton.setOnClickListener(clickListener);
+        }
+    }
+
+    public class GetTreatmentSummaryAsync extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            getTreatmentDetail(StartPageActivity.this);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            launchMainActivity();
+        }
+
+        private void getTreatmentDetail(Context c){
+            String response = new HTTPServiceHandler(c).makeServiceCall(Constants.TREATMENT_DETAIL_URL, HTTPServiceHandler.HTTPMethod.GET, null, null);
+            if (response != null && !response.isEmpty()) {
+                JsonParser parser = new JsonParser();
+                JsonObject treatmentDetail = parser.parse(response).getAsJsonObject();
+                TreatmentInfo treatmentInfo = new Gson().fromJson(treatmentDetail, TreatmentInfo.class);
+                Utils.saveTreatmentDetailToSharedPreference(c, treatmentInfo);
+            } else {
+                StartPageActivity.this.findViewById(R.id.loginPanel).setVisibility(View.VISIBLE);
+            }
         }
     }
 }

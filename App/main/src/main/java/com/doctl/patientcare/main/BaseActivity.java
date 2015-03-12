@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.doctl.patientcare.main.om.vitals.VitalTask;
 import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
 
@@ -98,7 +99,7 @@ public class BaseActivity extends ActionBarActivity implements ListView.OnItemCl
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (dataList.get(position).getTitle() == null) {
-            selectItem(position);
+            selectItem(dataList.get(position).getId());
         }
     }
 
@@ -254,19 +255,30 @@ public class BaseActivity extends ActionBarActivity implements ListView.OnItemCl
     private List<DrawerItem> getDrawerItemList(){
         dataList = new ArrayList<DrawerItem>();
 
-        dataList.add(new DrawerItem(true));
-        dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_home), R.drawable.ic_home_black_24dp));
-        dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_prescription), R.drawable.ic_prescription_black_24dp));
+        dataList.add(new DrawerItem(0, true));
+        dataList.add(new DrawerItem(1, getResources().getString(R.string.nav_item_home), R.drawable.ic_home_black_24dp));
+        dataList.add(new DrawerItem(2, getResources().getString(R.string.nav_item_prescription), R.drawable.ic_prescription_black_24dp));
 
-        dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_vital)));
-        dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_sugar), R.drawable.ic_sugar_black_24dp));
-        dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_bp), R.drawable.ic_bloodpressure_black_24dp));
-        dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_temperature),  R.drawable.ic_temp_black_24dp));
-        dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_pulse), R.drawable.ic_pulse_black_24dp));
+        ArrayList<VitalTask.VitalData> vitals = Utils.getVitalDataFromSharedPreference(this);
+        if (!vitals.isEmpty()) {
+            dataList.add(new DrawerItem(3, getResources().getString(R.string.nav_item_vital)));
+            for (VitalTask.VitalData vital: vitals) {
+                String vitalType = vital.getType();
+                if (vitalType.toLowerCase().equals("sugar_after_meal") || vitalType.toLowerCase().equals("sugar_before_meal")){
+                    dataList.add(new DrawerItem(4, getResources().getString(R.string.nav_item_sugar), R.drawable.ic_sugar_black_24dp));
+                } else if (vitalType.toLowerCase().equals("blood_pressure")) {
+                    dataList.add(new DrawerItem(5, getResources().getString(R.string.nav_item_bp), R.drawable.ic_bloodpressure_black_24dp));
+                } else if (vitalType.toLowerCase().equals("temperature")) {
+                    dataList.add(new DrawerItem(6, getResources().getString(R.string.nav_item_temperature), R.drawable.ic_temp_black_24dp));
+                } else if (vitalType.toLowerCase().equals("pulse")) {
+                    dataList.add(new DrawerItem(7, getResources().getString(R.string.nav_item_pulse), R.drawable.ic_pulse_black_24dp));
+                }
+            }
+        }
 
-        dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_accounts)));
-        dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_rewards), R.drawable.ic_award_black_24dp));
-        dataList.add(new DrawerItem(getResources().getString(R.string.nav_item_logout), R.drawable.ic_signout_black_24dp));
+        dataList.add(new DrawerItem(8, getResources().getString(R.string.nav_item_accounts)));
+        dataList.add(new DrawerItem(9, getResources().getString(R.string.nav_item_rewards), R.drawable.ic_award_black_24dp));
+        dataList.add(new DrawerItem(10, getResources().getString(R.string.nav_item_logout), R.drawable.ic_signout_black_24dp));
         return dataList;
     }
 }

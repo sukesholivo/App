@@ -24,10 +24,12 @@ import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.StartPageActivity;
 import com.doctl.patientcare.main.om.BaseTask;
 import com.doctl.patientcare.main.om.GraphData;
+import com.doctl.patientcare.main.om.TreatmentInfo;
 import com.doctl.patientcare.main.om.UserProfile;
 import com.doctl.patientcare.main.om.education.EducationTask;
 import com.doctl.patientcare.main.om.followup.FollowupTask;
 import com.doctl.patientcare.main.om.medicines.MedicineTask;
+import com.doctl.patientcare.main.om.medicines.Prescription;
 import com.doctl.patientcare.main.om.message.MessageTask;
 import com.doctl.patientcare.main.om.vitals.VitalTask;
 import com.google.gson.Gson;
@@ -51,6 +53,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -190,15 +193,15 @@ public final class Utils {
     }
 
     public static String getCardsUrl(Context context){
-        String patientId = getUserDataFromSharedPreference(context).getId();
+        String patientId = getUserDataFromSharedPreference(context, Constants.PERSONAL_DETAIL_SHARED_PREFERENCE_NAME).getId();
         if (patientId.isEmpty()){
             return null;
         }
         return Constants.SERVER_URL + "/api/card/v1.0/"+ patientId +"/cards/";
     }
 
-    public static UserProfile getUserDataFromSharedPreference(Context context){
-        SharedPreferences sp = context.getSharedPreferences(Constants.PERSONAL_DETAIL_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE);
+    public static UserProfile getUserDataFromSharedPreference(Context context, String preference_name){
+        SharedPreferences sp = context.getSharedPreferences(preference_name, Activity.MODE_PRIVATE);
         return new UserProfile(
                 sp.getString("id", ""),
                 sp.getString("displayName", ""),
@@ -211,8 +214,8 @@ public final class Utils {
         );
     }
 
-    public static void saveUserDataToSharedPreference(Context context, UserProfile userProfile){
-        SharedPreferences sp = context.getSharedPreferences(Constants.PERSONAL_DETAIL_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE);
+    public static void saveUserDataToSharedPreference(Context context, String preference_name,  UserProfile userProfile){
+        SharedPreferences sp = context.getSharedPreferences(preference_name, Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("id", userProfile.getId());
         editor.putString("displayName", userProfile.getDisplayName());
@@ -222,6 +225,74 @@ public final class Utils {
         editor.putString("sex", userProfile.getSex());
         editor.putString("profilePicUrl", userProfile.getProfilePicUrl());
         editor.commit();
+    }
+
+    public static UserProfile getPatientDataFromSharedPreference(Context context){
+        return getUserDataFromSharedPreference(context, Constants.PERSONAL_DETAIL_SHARED_PREFERENCE_NAME);
+    }
+
+    public static void savePatientDataToSharedPreference(Context context, UserProfile userProfile){
+        saveUserDataToSharedPreference(context, Constants.PERSONAL_DETAIL_SHARED_PREFERENCE_NAME, userProfile);
+    }
+
+    public static UserProfile getClinicDataFromSharedPreference(Context context){
+        return getUserDataFromSharedPreference(context, Constants.CLINIC_DETAIL_SHARED_PREFERENCE_NAME);
+    }
+
+    public static void saveClinicDataToSharedPreference(Context context, UserProfile userProfile){
+        saveUserDataToSharedPreference(context, Constants.CLINIC_DETAIL_SHARED_PREFERENCE_NAME, userProfile);
+    }
+
+    public static Prescription getPrescriptionDataFromSharedPreference(Context context){
+        SharedPreferences sp = context.getSharedPreferences(Constants.PRESCRIPTION_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE);
+        return new Prescription(
+                sp.getString("id", ""),
+                null,
+                null
+        );
+    }
+
+    public static void savePrescriptionDataToSharedPreference(Context context, Prescription prescription){
+        if (prescription != null) {
+            SharedPreferences sp = context.getSharedPreferences(Constants.PRESCRIPTION_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("id", prescription.getId());
+//        editor.putString("startDate", prescription.getStartDate());
+//        editor.putString("endDate", prescription.getEndDate());
+            editor.commit();
+        } else {
+            context.getSharedPreferences(Constants.PRESCRIPTION_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE).edit().clear().commit();
+        }
+    }
+
+    public static ArrayList<VitalTask.VitalData> getVitalDataFromSharedPreference(Context context){
+        SharedPreferences sp = context.getSharedPreferences(Constants.VITALS_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE);
+        String jsonFavorites = sp.getString("vitals", "[]");
+        Logger.e("UTILS**** jsonFavorite", jsonFavorites);
+        Gson gson = new Gson();
+        VitalTask.VitalData[] vitalItems = gson.fromJson(jsonFavorites, VitalTask.VitalData[].class);
+        List<VitalTask.VitalData> vitals = Arrays.asList(vitalItems);
+        return new ArrayList<VitalTask.VitalData>(vitals);
+    }
+
+    public static void saveVitalDataToSharedPreference(Context context, List<VitalTask.VitalData> vitals){
+        if (vitals != null) {
+            SharedPreferences sp = context.getSharedPreferences(Constants.VITALS_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            Gson gson = new Gson();
+            String jsonVitals = gson.toJson(vitals);
+            editor.putString("vitals", jsonVitals);
+            editor.commit();
+        } else {
+            context.getSharedPreferences(Constants.VITALS_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE).edit().clear().commit();
+        }
+    }
+
+    public static void saveTreatmentDetailToSharedPreference(Context context, TreatmentInfo treatmentInfo){
+        savePatientDataToSharedPreference(context, treatmentInfo.getPersonal());
+        saveClinicDataToSharedPreference(context, treatmentInfo.getClinic());
+        savePrescriptionDataToSharedPreference(context, treatmentInfo.getPrescription());
+        saveVitalDataToSharedPreference(context, treatmentInfo.getVitals());
     }
 
     public static String getAuthTokenFromSharedPreference(Context context){
@@ -247,6 +318,9 @@ public final class Utils {
         if (context != null) {
             context.getSharedPreferences(Constants.AUTH_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE).edit().clear().commit();
             context.getSharedPreferences(Constants.PERSONAL_DETAIL_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE).edit().clear().commit();
+            context.getSharedPreferences(Constants.CLINIC_DETAIL_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE).edit().clear().commit();
+            context.getSharedPreferences(Constants.PRESCRIPTION_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE).edit().clear().commit();
+            context.getSharedPreferences(Constants.VITALS_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE).edit().clear().commit();
             context.getSharedPreferences(Constants.GCM_SHARED_PREFERENCE_KEY, Activity.MODE_PRIVATE).edit().clear().commit();
         }
     }

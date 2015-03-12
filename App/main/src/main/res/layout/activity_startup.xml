@@ -33,6 +33,7 @@
             android:indeterminate="true" />
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/loginPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -55,6 +56,4 @@
         </android.support.v4.view.ViewPager>
 
     </RelativeLayout>
-
-
 </LinearLayout>

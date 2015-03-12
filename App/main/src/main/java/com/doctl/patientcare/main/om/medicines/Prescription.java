@@ -34,6 +34,12 @@ public class Prescription {
     @SerializedName("doctor")
     private UserProfile doctor;
 
+    public Prescription(String id, Date startDate, Date endDate){
+        this.id = id;
+        this.startDate = startDate;
+        this. endDate = endDate;
+    }
+
     public String getId() {
         return id;
     }

@@ -67,7 +67,7 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem> {
             drawerHolder.profileLayout.setVisibility(LinearLayout.VISIBLE);
             drawerHolder.headerLayout.setVisibility(LinearLayout.GONE);
             drawerHolder.itemLayout.setVisibility(LinearLayout.GONE);
-            UserProfile userProfile = Utils.getUserDataFromSharedPreference(getContext());
+            UserProfile userProfile = Utils.getPatientDataFromSharedPreference(getContext());
             drawerHolder.profileName.setText(userProfile.getDisplayName());
             drawerHolder.profileEmail.setText(userProfile.getEmail());
 

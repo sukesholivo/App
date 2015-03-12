@@ -55,7 +55,7 @@ public class MyC2dmIntentService extends IntentService {
         if(ServerAccessToken.isEmpty()) {
             return;
         }
-        UserProfile userProfile = Utils.getUserDataFromSharedPreference(this);
+        UserProfile userProfile = Utils.getPatientDataFromSharedPreference(this);
         String type = msg.getString("type");
         String username = msg.getString("username");
         if (!username.equals(userProfile.getEmail())){

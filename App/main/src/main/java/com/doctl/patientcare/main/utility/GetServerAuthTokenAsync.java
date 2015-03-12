@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.doctl.patientcare.main.MainActivity;
 import com.doctl.patientcare.main.R;
+import com.doctl.patientcare.main.om.TreatmentInfo;
 import com.doctl.patientcare.main.om.UserProfile;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.google.gson.Gson;
@@ -72,7 +73,7 @@ public class GetServerAuthTokenAsync extends AsyncTask<Void, String, String> {
                         String serverAccessToken = jsonResponse.getString("token");
                         Utils.setAuthTokenFromSharedPreference(c, serverAccessToken);
                         result = serverAccessToken;
-                        getPersonalDetail(c);
+                        getTreatmentDetail(c);
                     } else {
                         throw new Exception("Error:Invalid response");
                     }
@@ -91,7 +92,17 @@ public class GetServerAuthTokenAsync extends AsyncTask<Void, String, String> {
             JsonParser parser = new JsonParser();
             JsonObject personalDetail = parser.parse(response).getAsJsonObject();
             UserProfile userProfile = new Gson().fromJson(personalDetail, UserProfile.class);
-            Utils.saveUserDataToSharedPreference(c, userProfile);
+            Utils.savePatientDataToSharedPreference(c, userProfile);
+        }
+    }
+
+    private void getTreatmentDetail(Context c){
+        String response = new HTTPServiceHandler(c).makeServiceCall(Constants.TREATMENT_DETAIL_URL, HTTPServiceHandler.HTTPMethod.GET, null, null);
+        if (response != null && !response.isEmpty()) {
+            JsonParser parser = new JsonParser();
+            JsonObject treatmentDetail = parser.parse(response).getAsJsonObject();
+            TreatmentInfo treatmentInfo = new Gson().fromJson(treatmentDetail, TreatmentInfo.class);
+            Utils.saveTreatmentDetailToSharedPreference(c, treatmentInfo);
         }
     }
 

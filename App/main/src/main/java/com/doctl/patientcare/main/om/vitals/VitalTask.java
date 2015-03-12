@@ -27,6 +27,9 @@ public class VitalTask extends BaseTask {
         @SerializedName("title")
         private String title;
 
+        @SerializedName("type")
+        private String type;
+
         @SerializedName("vitals")
         private Vitals vitals;
 
@@ -40,6 +43,10 @@ public class VitalTask extends BaseTask {
 
         public String getTitle() {
             return title;
+        }
+
+        public String getType() {
+            return type;
         }
 
         public Vitals getVitals() {
