@@ -71,7 +71,9 @@ public class MyC2dmIntentService extends IntentService {
                     if (!MainApplication.isActivityVisible()) {
                         Intent popupIntent = new Intent(this, PopupNotificationActivity.class);
                         popupIntent.putExtra("card", data);
-                        popupIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        popupIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        popupIntent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                        popupIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                         this.startActivity(popupIntent);
                     }
                     break;

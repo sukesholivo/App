@@ -264,7 +264,7 @@ public class BaseActivity extends ActionBarActivity implements ListView.OnItemCl
             dataList.add(new DrawerItem(3, getResources().getString(R.string.nav_item_vital)));
             for (VitalTask.VitalData vital: vitals) {
                 String vitalType = vital.getType();
-                if (vitalType.toLowerCase().equals("sugar_after_meal") || vitalType.toLowerCase().equals("sugar_before_meal")){
+                if (vitalType.toLowerCase().equals("sugar_after_meal") || vitalType.toLowerCase().equals("sugar_before_meal") || vitalType.toLowerCase().equals("sugar_random")){
                     dataList.add(new DrawerItem(4, getResources().getString(R.string.nav_item_sugar), R.drawable.ic_sugar_black_24dp));
                 } else if (vitalType.toLowerCase().equals("blood_pressure")) {
                     dataList.add(new DrawerItem(5, getResources().getString(R.string.nav_item_bp), R.drawable.ic_bloodpressure_black_24dp));

@@ -193,7 +193,7 @@ public final class Utils {
     }
 
     public static String getCardsUrl(Context context){
-        String patientId = getUserDataFromSharedPreference(context, Constants.PERSONAL_DETAIL_SHARED_PREFERENCE_NAME).getId();
+        String patientId = getPatientDataFromSharedPreference(context).getId();
         if (patientId.isEmpty()){
             return null;
         }
