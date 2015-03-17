@@ -211,15 +211,22 @@ public class BaseActivity extends ActionBarActivity implements ListView.OnItemCl
                 this.startActivity(intent);
                 break;
             case 8:
+                Logger.d("BaseActivity: ", "Weight Clicked");
+                intent = new Intent(this, VitalDetailActivity.class);
+                intent.putExtra("vitalType", "weight");
+                intent.putExtra("vitalName", "Weight");
+                this.startActivity(intent);
+                break;
+            case 9:
                 Logger.d("BaseActivity: ", "Account Clicked");
                 closeDrawer = false;
                 break;
-            case 9:
+            case 10:
                 Logger.d("BaseActivity: ", "Rewards Clicked");
                 intent = new Intent(this, RewardsActivity.class);
                 this.startActivity(intent);
                 break;
-            case 10:
+            case 11:
                 Logger.d("BaseActivity: ", "Signout Clicked");
                 signoutUser();
                 break;
@@ -273,12 +280,15 @@ public class BaseActivity extends ActionBarActivity implements ListView.OnItemCl
                 } else if (vitalType.toLowerCase().equals("pulse")) {
                     dataList.add(new DrawerItem(7, getResources().getString(R.string.nav_item_pulse), R.drawable.ic_pulse_black_24dp));
                 }
+                else if (vitalType.toLowerCase().equals("weight")) {
+                    dataList.add(new DrawerItem(8, getResources().getString(R.string.nav_item_weight), R.drawable.ic_weight_black_24dp));
+                }
             }
         }
 
-        dataList.add(new DrawerItem(8, getResources().getString(R.string.nav_item_accounts)));
-        dataList.add(new DrawerItem(9, getResources().getString(R.string.nav_item_rewards), R.drawable.ic_award_black_24dp));
-        dataList.add(new DrawerItem(10, getResources().getString(R.string.nav_item_logout), R.drawable.ic_signout_black_24dp));
+        dataList.add(new DrawerItem(9, getResources().getString(R.string.nav_item_accounts)));
+        dataList.add(new DrawerItem(10, getResources().getString(R.string.nav_item_rewards), R.drawable.ic_award_black_24dp));
+        dataList.add(new DrawerItem(11, getResources().getString(R.string.nav_item_logout), R.drawable.ic_signout_black_24dp));
         return dataList;
     }
 }

@@ -80,15 +80,16 @@
     <string name="nav_item_bp">Blood Pressure</string>
     <string name="nav_item_temperature">Temperature</string>
     <string name="nav_item_pulse">Pulse</string>
+    <string name="nav_item_weight">Weight</string>
     <string name="nav_item_accounts">Account</string>
     <string name="nav_item_rewards">Points</string>
     <string name="nav_item_profile">Profile</string>
     <string name="nav_item_logout">Log Out</string>
 
-    <string name="notification_default_title">Message from DOCTL</string>
-    <string name="notification_education_title">New education material</string>
-    <string name="notification_feedback_title">Need your feedback</string>
-    <string name="notification_followup_title">Rate Your Health</string>
+    <string name="notification_default_title">Message from DOCTL.</string>
+    <string name="notification_education_title">New education material.</string>
+    <string name="notification_feedback_title">Need your feedback.</string>
+    <string name="notification_followup_title">Your doctor wants answer from you.</string>
 
     <string name="doctl_branding_text">Powered by DOCTL</string>
 
