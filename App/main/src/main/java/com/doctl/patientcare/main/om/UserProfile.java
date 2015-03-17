@@ -10,7 +10,7 @@ import org.json.JSONObject;
  */
 public class UserProfile {
 
-    public UserProfile(String id, String displayName, String profilePicUrl, String email, String phone, String dob, String sex, String address){
+    public UserProfile(String id, String displayName, String profilePicUrl, String email, String phone, String dob, String sex, Address address){
         this.id = id;
         this.displayName = displayName;
         this.profilePicUrl = profilePicUrl;
@@ -42,7 +42,7 @@ public class UserProfile {
     private String sex;
 
     @SerializedName("address")
-    private String address;
+    private Address address;
 
     public String getId() {
         return id;
@@ -56,7 +56,7 @@ public class UserProfile {
         return profilePicUrl;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
@@ -100,7 +100,7 @@ public class UserProfile {
         this.sex = sex;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 
@@ -111,5 +111,67 @@ public class UserProfile {
         data.put("dob", this.getDob());
         data.put("sex", this.getSex());
         return data;
+    }
+
+    public class Address {
+        @SerializedName("street")
+        public String street;
+
+        @SerializedName("landmark")
+        public String landmark;
+
+        @SerializedName("city")
+        public String city;
+
+        @SerializedName("state")
+        public String state;
+
+        @SerializedName("country")
+        public String country;
+
+        @SerializedName("pin")
+        public String pin;
+
+        @SerializedName("longitude")
+        public String longitude;
+
+        @SerializedName("latitude")
+        public String latitude;
+
+        public String getStreet() {
+            return street;
+        }
+
+        public String getLandmark() {
+            return landmark;
+        }
+
+        public String getCity() {
+            return city;
+        }
+
+        public String getState() {
+            return state;
+        }
+
+        public String getCountry() {
+            return country;
+        }
+
+        public String getPin() {
+            return pin;
+        }
+
+        public String getLongitude() {
+            return longitude;
+        }
+
+        public String getLatitude() {
+            return latitude;
+        }
+
+        public String getPrintableAddress(){
+            return this.getStreet() + this.getCity();
+        }
     }
 }

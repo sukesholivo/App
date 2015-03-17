@@ -210,7 +210,7 @@ public final class Utils {
                 sp.getString("phone", ""),
                 sp.getString("dob", ""),
                 sp.getString("sex", ""),
-                sp.getString("address", "")
+                null
         );
     }
 
@@ -268,7 +268,6 @@ public final class Utils {
     public static ArrayList<VitalTask.VitalData> getVitalDataFromSharedPreference(Context context){
         SharedPreferences sp = context.getSharedPreferences(Constants.VITALS_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE);
         String jsonFavorites = sp.getString("vitals", "[]");
-        Logger.e("UTILS**** jsonFavorite", jsonFavorites);
         Gson gson = new Gson();
         VitalTask.VitalData[] vitalItems = gson.fromJson(jsonFavorites, VitalTask.VitalData[].class);
         List<VitalTask.VitalData> vitals = Arrays.asList(vitalItems);

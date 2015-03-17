@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.doctl.patientcare.main.controls.ProgressBarAnimation;
+import com.doctl.patientcare.main.om.UserProfile;
 import com.doctl.patientcare.main.om.medicines.MedicineDetailAdapter;
 import com.doctl.patientcare.main.om.medicines.Prescription;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
@@ -91,7 +92,10 @@ public class MedicineDetailActivity extends BaseActivity {
             doctorName.setText(prescription.getDoctor().getDisplayName());
 
             TextView doctorAddress = (TextView) findViewById(R.id.doctorHospital);
-            doctorAddress.setText(prescription.getDoctor().getAddress());
+            UserProfile.Address address = prescription.getDoctor().getAddress();
+            if (address != null) {
+                doctorAddress.setText(address.getPrintableAddress());
+            }
 
             Picasso.with(this)
                     .load(Constants.SERVER_URL + prescription.getDoctor().getProfilePicUrl())
