@@ -404,6 +404,7 @@ public final class Utils {
             case FOLLOWUP:
                 return new Gson().fromJson(cardJsonObj, FollowupTask.class);
             case SIMPLEREMINDER:
+            case GENERICREMINDER:
                 return new Gson().fromJson(cardJsonObj, MessageTask.class);
             case EDUCATION:
                 return new Gson().fromJson(cardJsonObj, EducationTask.class);

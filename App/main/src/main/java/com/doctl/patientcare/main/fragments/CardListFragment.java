@@ -247,6 +247,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
                     cards.add(followupCard);
                     break;
                 case SIMPLEREMINDER:
+                case GENERICREMINDER:
                     MessageTask messageTask = new Gson().fromJson(cardJson, MessageTask.class);
                     final String messageTitle = messageTask.getPayload().getTitle();
                     CardHeader messageHeader = new CardHeaderInnerView(getActivity()){

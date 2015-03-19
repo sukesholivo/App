@@ -96,6 +96,8 @@ public abstract class BaseTask {
         FOLLOWUP,
         @SerializedName("SimpleReminder")
         SIMPLEREMINDER,
+        @SerializedName("GenericReminder")
+        GENERICREMINDER,
     }
 
     public enum CardState {

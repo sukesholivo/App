@@ -78,6 +78,7 @@ public class MyC2dmIntentService extends IntentService {
                     }
                     break;
                 case SIMPLEREMINDER:
+                case GENERICREMINDER:
                     String reminderTitle = ((MessageTask) task).getPayload().getTitle();
                     String reminderMessage = ((MessageTask) task).getPayload().getMessage();
                     Utils.showNotification(this, Constants.SIMPLEREMINDER_NOTIFICATION_ID, reminderTitle, reminderMessage);
