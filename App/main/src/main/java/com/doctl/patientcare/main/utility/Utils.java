@@ -396,7 +396,7 @@ public final class Utils {
         Logger.d("Utils", jsonStr);
         JsonParser parser = new JsonParser();
         JsonObject cardJsonObj = parser.parse(jsonStr).getAsJsonObject();
-        switch (BaseTask.CardType.valueOf(cardJsonObj.get("type").getAsString().toUpperCase())) {
+        switch (BaseTask.CardType.lookup(cardJsonObj.get("type").getAsString())) {
             case MEDICINE:
                 return new Gson().fromJson(cardJsonObj, MedicineTask.class);
             case VITAL:

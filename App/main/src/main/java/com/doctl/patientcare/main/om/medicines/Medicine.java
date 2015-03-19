@@ -157,11 +157,11 @@ public class Medicine {
         }
     }
 
-    static final SparseArray<String> MedicineMap = new SparseArray<String>() {{
-        put(1, MedicineType.TABLET.toString());
-        put(2, MedicineType.CAPSULE.toString());
-        put(3, MedicineType.INJECTION.toString());
-        put(4, MedicineType.SYRUP.toString());
-        put(5, MedicineType.DROPS.toString());
+    static final SparseArray<MedicineType> MedicineMap = new SparseArray<MedicineType>() {{
+        put(1, MedicineType.TABLET);
+        put(2, MedicineType.CAPSULE);
+        put(3, MedicineType.INJECTION);
+        put(4, MedicineType.SYRUP);
+        put(5, MedicineType.DROPS);
     }};
 }

@@ -98,6 +98,15 @@ public abstract class BaseTask {
         SIMPLEREMINDER,
         @SerializedName("GenericReminder")
         GENERICREMINDER,
+        DEFAULT;
+
+        public static CardType lookup(String type) {
+            try {
+                return CardType.valueOf(type.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return DEFAULT;
+            }
+        }
     }
 
     public enum CardState {

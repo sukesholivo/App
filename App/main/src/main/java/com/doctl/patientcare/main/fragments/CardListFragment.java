@@ -219,7 +219,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
 //        JsonArray cardsJsonArray = jsonObject.get("cards").getAsJsonArray();
         for (JsonElement cardJson : cardsJsonArray) {
             JsonObject cardJsonObj = cardJson.getAsJsonObject();
-            switch (BaseTask.CardType.valueOf(cardJsonObj.get("type").getAsString().toUpperCase())) {
+            switch (BaseTask.CardType.lookup(cardJsonObj.get("type").getAsString())) {
                 case MEDICINE:
                     MedicineTask medicineTask = new Gson().fromJson(cardJson, MedicineTask.class);
                     CardHeader medicineHeader = Utils.getCardHeader(getActivity(), medicineTask);

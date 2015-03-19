@@ -34,8 +34,7 @@ public class MedicineAdapter extends ArrayAdapter<Medicine>{
         medicineQuantity.setText("" + item.getQuantity());
 
         ImageView medicineImage = (ImageView)view.findViewById(R.id.medicineIcon);
-        Medicine.MedicineType medicineEnumType = Medicine.MedicineType.
-                valueOf(Medicine.MedicineMap.get(item.getType(),Medicine.MedicineType.CAPSULE.toString()).toUpperCase());
+        Medicine.MedicineType medicineEnumType = Medicine.MedicineMap.get(item.getType(),Medicine.MedicineType.CAPSULE);
         switch(medicineEnumType){
             case CAPSULE:
                 medicineImage.setImageResource(R.drawable.capsule_green);
