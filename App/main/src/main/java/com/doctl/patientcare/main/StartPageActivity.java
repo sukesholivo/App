@@ -10,12 +10,15 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.doctl.patientcare.main.om.TreatmentInfo;
@@ -157,6 +160,11 @@ public class StartPageActivity extends FragmentActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_register, container, false);
+            TextView textView =(TextView)rootView.findViewById(R.id.tosLink);
+            textView.setClickable(true);
+            textView.setMovementMethod(LinkMovementMethod.getInstance());
+            String text = "By signing up, I agree to the <a href='http://www.doctl.com/tos'> Terms of Use </a>";
+            textView.setText(Html.fromHtml(text));
             setRegisterListener(rootView);
             return  rootView;
         }
