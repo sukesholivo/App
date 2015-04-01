@@ -60,6 +60,10 @@ public class HTTPServiceHandler {
      * @params - http request params
      * */
     public String makeServiceCall(String url, HTTPMethod method, List<NameValuePair> getParams, JSONObject postParams) {
+        if (!Utils.isNetworkAvailable(context)){
+//            Toast.makeText(context, "No Network Connection", Toast.LENGTH_LONG).show();
+            return null;
+        }
         try {
             // http client
             int TIMEOUT_MILLISEC = 100000; // = 10 seconds
