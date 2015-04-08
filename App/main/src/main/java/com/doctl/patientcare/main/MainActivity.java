@@ -263,16 +263,11 @@ public class MainActivity extends BaseActivity {
                 } else if (completedDays > treatmentDays) {
                     completedDays = treatmentDays;
                 }
+                setTreatmentProgress((int) completedDays, (int) treatmentDays);
+            } else {
+                RelativeLayout progressLayout = (RelativeLayout)findViewById(R.id.progressLayout);
+                progressLayout.setVisibility(View.GONE);
             }
-        }
-        setTreatmentProgress((int) completedDays, (int) treatmentDays);
-
-        Dashboard.Vital vital = dashboardData.getVital();
-        if (vital != null) {
-            setVitalValue(dashboardData.getVital().getTimeStamp(),
-                    dashboardData.getVital().getValue1(),
-                    dashboardData.getVital().getValue2(),
-                    dashboardData.getVital().getUnit1());
         }
     }
 
@@ -310,49 +305,14 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setTreatmentProgress(int progress, int max){
+        RelativeLayout progressLayout = (RelativeLayout)findViewById(R.id.progressLayout);
+        progressLayout.setVisibility(View.VISIBLE);
         ProgressBar progressBar = (ProgressBar)findViewById(R.id.treatmentProgress);
         progressBar.setMax(max);
         progressBar.setProgress(progress);
 
         TextView progressText = (TextView)findViewById(R.id.progressText);
         progressText.setText(progress + "/" + max + " DAYS");
-    }
-
-    private void setVitalValue(Date timestamp, Double value1, Double value2, String unit){
-        DecimalFormat df = new DecimalFormat("###.#");
-        TextView vitalValue1 = (TextView) findViewById(R.id.vitalValue1);
-        vitalValue1.setText(df.format(value1));
-
-        TextView vitalValue2 = (TextView) findViewById(R.id.vitalValue2);
-        TextView vitalValueSeparator = (TextView) findViewById(R.id.vitalValueSeparator);
-        if (value2 != null) {
-            vitalValue2.setVisibility(View.VISIBLE);
-            vitalValueSeparator.setVisibility(View.VISIBLE);
-            vitalValue2.setText(df.format(value2));
-        } else {
-            vitalValue2.setVisibility(View.GONE);
-            vitalValueSeparator.setVisibility(View.GONE);
-        }
-
-        TextView vitalValueUnit = (TextView) findViewById(R.id.vitalValueUnit);
-        vitalValueUnit.setText(unit);
-
-        TextView vitalLastEntryDate = (TextView) findViewById(R.id.vitalLastEntryDate);
-        String lastVitalEntryTimeString = "";
-        long totalSecond = (new Date().getTime() - timestamp.getTime())/ 1000;
-        if (totalSecond < 60){ // Less than one min
-            lastVitalEntryTimeString = totalSecond + (totalSecond == 1 ? " SEC AGO" : " SECS AGO");
-        } else if (totalSecond < 60 * 60){ // less than one hour
-            long mins = totalSecond / 60;
-            lastVitalEntryTimeString = mins + (mins == 1 ? " MIN AGO" : " MINS AGO");
-        } else if (totalSecond < 60 * 60 * 24){ // less than one day
-            long hour = totalSecond / (60 * 60);
-            lastVitalEntryTimeString = hour + (hour == 1 ? " HOUR AGO" :  " HOURS AGO");
-        } else { // More than one day
-            long day = totalSecond / (60 * 60 * 24);
-            lastVitalEntryTimeString = day + (day == 1 ? " DAY AGO" :  " DAYS AGO");
-        }
-        vitalLastEntryDate.setText(lastVitalEntryTimeString);
     }
 
     private void setCards(){

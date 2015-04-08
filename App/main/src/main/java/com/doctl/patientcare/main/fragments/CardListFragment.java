@@ -334,6 +334,8 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
         if (activity !=null) {
             activity.runOnUiThread(new Runnable() {
                 public void run() {
+                    View dashboard = getActivity().findViewById(R.id.treatment_dashboard_layout);
+                    dashboard.setVisibility(View.VISIBLE);
                     if (mCardArrayAdapter == null) {
                         Logger.d(TAG, "mCardArrayAdapter is null");
                     }

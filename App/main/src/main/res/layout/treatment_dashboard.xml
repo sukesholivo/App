@@ -3,7 +3,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ProgressWheel="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_width="match_parent" android:layout_height="90dp"
     android:paddingBottom="10dp"
     android:background="@color/dashboard_background">
     <RelativeLayout
@@ -20,11 +20,11 @@
             <TextView
                 android:id="@+id/points"
                 android:layout_width="wrap_content"
-                android:layout_height="60dp"
+                android:layout_height="50dp"
                 android:layout_marginTop="10dp"
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"
-                android:gravity="top"
+                android:gravity="center"
                 android:textColor="@color/dashboard_text_main"
                 android:textSize="@dimen/awards_text_font_size_big"
                 />
@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/awards_text_height"
                 android:layout_below="@id/points"
-                android:gravity="bottom"
+                android:gravity="top"
                 android:textAllCaps="true"
                 android:text="@string/points"
                 android:textColor="@color/dashboard_text_secondary"
@@ -52,13 +52,12 @@
             >
             <com.doctl.patientcare.main.controls.ProgressWheel
                 android:id="@+id/adherenceProgress"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="10dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_centerInParent="true"
                 ProgressWheel:textColor="@color/dashboard_text_secondary"
-                ProgressWheel:textSize="14sp"
-                ProgressWheel:rimColor="@color/transparent"
+                ProgressWheel:textSize="12sp"
+                ProgressWheel:rimColor="@color/color_gray_translucent"
                 ProgressWheel:barLength="30dp"
                 ProgressWheel:barColor="@color/dashboard_text_main"
                 ProgressWheel:barWidth="5dp"
@@ -115,60 +114,6 @@
                 android:textColor="@color/dashboard_text_secondary"
                 android:textSize="@dimen/awards_text_font_size_small"
                 />
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/progressText"
-                android:layout_centerHorizontal="true">
-                <TextView
-                    android:id="@+id/vitalValue1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="25sp"
-                    android:textColor="@color/dashboard_text_secondary"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"/>
-                <TextView
-                    android:id="@+id/vitalValueSeparator"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="25sp"
-                    android:textColor="@color/dashboard_text_secondary"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_toRightOf="@id/vitalValue1"
-                    android:layout_toEndOf="@id/vitalValue1"
-                    android:text="|"
-                    android:visibility="invisible"/>
-                <TextView
-                    android:id="@+id/vitalValue2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="25sp"
-                    android:textColor="@color/dashboard_text_secondary"
-                    android:layout_toRightOf="@id/vitalValueSeparator"
-                    android:layout_toEndOf="@id/vitalValueSeparator"
-                    android:visibility="invisible"/>
-                <TextView
-                    android:id="@+id/vitalValueUnit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:textColor="@color/dashboard_text_secondary"
-                    android:layout_toRightOf="@id/vitalValue2"
-                    android:layout_toEndOf="@id/vitalValue2"
-                    android:layout_alignBottom="@id/vitalValue1"
-                    android:paddingBottom="2dp"
-                    />
-                <TextView
-                    android:id="@+id/vitalLastEntryDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:textColor="@color/dashboard_text_tertiary"
-                    android:layout_below="@id/vitalValue1"
-                    android:layout_centerHorizontal="true"/>
-            </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>
