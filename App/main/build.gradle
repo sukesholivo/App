@@ -31,7 +31,7 @@ dependencies {
     compile 'com.android.support:support-v4:21.0.3'
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.ikimuhendis:ldrawer:0.1'
-    compile 'com.github.gabrielemariotti.cards:library:1.8.0'
+    compile 'com.github.gabrielemariotti.cards:cardslib-core:2.0.1'
     compile 'com.nhaarman.listviewanimations:library:2.6.0'
     compile 'com.github.chrisbanes.actionbarpulltorefresh:library:+'
     compile 'com.squareup.picasso:picasso:2.3.3'

@@ -39,7 +39,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VitalDetailActivity extends BaseActivity {
+public class VitalDetailActivity extends BaseActivityWithNavigation {
     private static final String TAG = VitalDetailActivity.class.getSimpleName();
     private VitalDetailData vitalData;
     String vitalId;

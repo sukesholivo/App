@@ -36,7 +36,6 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
 public class VitalCard extends BaseCard {
     private static final String TAG = VitalCard.class.getSimpleName();
 
-    private VitalTask vitalTask;
     private boolean addListener = true;
 
     public VitalCard(Context context) {
@@ -49,7 +48,7 @@ public class VitalCard extends BaseCard {
 
     public VitalCard(Context context, int innerLayout, CardHeader cardHeader, VitalTask vitalTask){
         super(context, innerLayout, cardHeader);
-        this.vitalTask = vitalTask;
+        this.task = vitalTask;
         this.setId(vitalTask.getCardId());
     }
 
@@ -76,13 +75,11 @@ public class VitalCard extends BaseCard {
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
-
-        final Vitals vitalData = vitalTask.getPayload().getVitals();
+        final Vitals vitalData = ((VitalTask)task).getPayload().getVitals();
         LinearLayout list =  viewHolder.vitalLinearLayout;
         list.removeAllViews();
 
         View view1 = getView(list, vitalData.getName1(),
-                vitalData.getCondition1(),
                 vitalData.getUnit1(),
                 vitalData.getValue1(),
                 new TextWatcher() {
@@ -111,7 +108,6 @@ public class VitalCard extends BaseCard {
         if (vitalData.getName2() != null && !vitalData.getName2().isEmpty()){
             view2 = getView(list,
                     vitalData.getName2(),
-                    vitalData.getCondition2(),
                     vitalData.getUnit2(),
                     vitalData.getValue2(),
                     new TextWatcher() {
@@ -154,19 +150,17 @@ public class VitalCard extends BaseCard {
             chartContainer.addView(graphicalView);
         }
 
-        setupCardFooter(view, vitalTask);
+        setupCardFooter(view, task);
         if (addListener) {
             setListnerToCard();
         }
     }
 
-    private View getView(ViewGroup parent, String name, String condition, String unit, Double value, TextWatcher textWatcher){
+    private View getView(ViewGroup parent, String name, String unit, Double value, TextWatcher textWatcher){
         LayoutInflater li = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = li.inflate(R.layout.vital_card_list_item, parent, false);
         TextView vitalTitle = (TextView)view.findViewById(R.id.vitalTitle);
         vitalTitle.setText(name);
-        TextView vitalCondition = (TextView)view.findViewById(R.id.vitalCondition);
-        vitalCondition.setText(condition);
         TextView vitalUnit = (TextView)view.findViewById(R.id.vitalUnit);
         vitalUnit.setText(unit);
         EditText vitalValue = (EditText)view.findViewById(R.id.vitalValue);
@@ -185,7 +179,7 @@ public class VitalCard extends BaseCard {
                 Logger.d("postInitCard", "Card clicked " + card.getId());
                 Context context = getContext();
                 Intent intent = new Intent(context, VitalDetailActivity.class);
-                intent.putExtra("vitalId", vitalTask.getPayload().getVitalId());
+                intent.putExtra("vitalId", ((VitalTask)task).getPayload().getVitalId());
                 context.startActivity(intent);
             }
         });
@@ -199,6 +193,7 @@ public class VitalCard extends BaseCard {
     @Override
     public void UpdateTask(){
         JSONObject data;
+        VitalTask vitalTask = (VitalTask)task;
         vitalTask.setState(BaseTask.CardState.DONE);
         String cardId = vitalTask.getCardId();
         try {

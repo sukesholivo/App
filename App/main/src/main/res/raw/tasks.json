@@ -1,178 +1,347 @@
-{
-    cards: [
-        {
-            "modifiedOn": "2014-08-21T12:38:27Z",
-            "influencers": [],
-            "data": {
-                "title": "Blood Pressure",
-                "id": 3,
-                "vitals": [
-                    {
-                        "past": {
-                            "timestamp": [],
-                            "values": []
-                        },
-                        "condition": null,
-                        "unit": "mg/dl",
-                        "value": "",
-                        "name": "BP Diastolic"
-                    },
-                    {
-                        "past": {
-                            "timestamp": [],
-                             "values": []
-                        },
-                        "condition": null,
-                        "unit": "mg/dl",
-                        "value": "",
-                        "name": "BP Systolic"
-                    }
-                ]
-            },
-            "points": 0,
-            "createdOn": "2014-08-21T12:38:27Z",
-            "etaType": "NOW",
-            "source": null,
-            "state": "UNSEEN",
-            "eta": "2014-08-21T16:00:00Z",
-            "cardId": "H_5KaYDdSLS3mkJFKp6oYg",
-            "type": "Vital"
+[
+    {
+        "modifiedOn": "2015-04-06T07:40:38Z",
+        "influencers": [],
+        "data": {
+            "title": "Please rate your last visit experience",
+            "notes": "",
+            "multipleChoice": false,
+            "planId": 40,
+            "options": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+            ],
+            "type": "feedback",
+            "followupId": 1
         },
-        {
-            cardId:"GUID1",
-            etaType: "PRECISE",
-            eta:"2014-07-29T09:10:34Z",
-            createdOn:"2014-07-28T06:07:34Z",
-            modifiedOn:"2014-07-28T06:07:34Z",
-            state:"ACTIVE",
-            type:"MEDICINE",
-            points:10,
-            source:{
-                id:"userid1",
-                displayName:"Vishal Chitravanshi",
-                profilePicUrl:"http://doctl.com/static/unify/assets/img/profile_pic/vishal.jpg"
-            },
-            data:{
-                prescriptionId: "prescription1",
-                medicines:[
-                    {
-                        id: "med1",
-                        name: "Metformin",
-                        quantity: 1,
-                        type:"CAPSULE",
-                        dosage: "",
-                        unit: "",
-                        instruction:"After Meal",
-                        showInfoIcon: false
-                    },
-                    {
-                        id: "med2",
-                        name: "Sulfonylureas",
-                        quantity: 2,
-                        type:"TABLET",
-                        dosage: "",
-                        unit: "",
-                        instruction:"After Meal",
-                        showInfoIcon: false
-                    },
-                    {
-                        id: "med3",
-                        name: "Humalog",
-                        quantity: 1,
-                        type:"INJECTION",
-                        dosage: "",
-                        unit: "",
-                        instruction:"After Meal",
-                        showInfoIcon: false
-                    }
-                ]
+        "points": 10,
+        "createdOn": "2015-04-06T07:40:38Z",
+        "etaType": "TODAY",
+        "source": {
+            "dob": "1942-02-12",
+            "profilePicUrl": "/static/files/uploaded_files/logo1.png",
+            "displayName": "Chanchal Sengupta",
+            "id": "8e3214fa2d734ca69023d0441f5f6aed",
+            "sex": "M"
+        },
+        "state": "UNSEEN",
+        "eta": "2015-04-06T12:00:00Z",
+        "cardId": "5c416a9b6eb14657a8079292f60a8ae5",
+        "type": "Followup"
+    },
+    {
+        "modifiedOn": "2015-04-06T07:40:38Z",
+        "influencers": [],
+        "data": {
+            "simplereminder_id": null,
+            "template": "<p>\n\nGreetings from EVA clinic! You have been enrolled into our <b>Continuous Pregnancy Care</b>&nbsp;for Trimester 1.<br><br>Expecting your baby, feeling her grow within and preparing for a whole life ahead-these nine months will be one of the most special phase of your life. You just have to take care of your health, nutrition and happiness, and very soon you’ll be blessed with a healthy new born.<br><br>At Eva Clinic, we are prepared to make your journey beautiful and safe with our state of art care plans. <br>Dr Nasreen. <br><a target=\"_blank\" rel=\"nofollow\" href=\"http://www.evahealthcare.in/\">www.evahealthcare.in</a>&nbsp;\n\n﻿<br></p>",
+            "title": "Welcome message from CareWell Clinic"
+        },
+        "points": 10,
+        "createdOn": "2015-04-06T07:40:38Z",
+        "etaType": "TODAY",
+        "source": {
+            "dob": "1942-02-12",
+            "profilePicUrl": "/static/files/uploaded_files/logo1.png",
+            "displayName": "Chanchal Sengupta",
+            "id": "8e3214fa2d734ca69023d0441f5f6aed",
+            "sex": "M"
+        },
+        "state": "UNSEEN",
+        "eta": "2015-04-06T11:30:00Z",
+        "cardId": "a77ab2d0334b4008964c1faa5c8fbad4",
+        "type": "SimpleReminder"
+    },
+    {
+        "modifiedOn": "2015-04-05T09:41:30Z",
+        "influencers": [],
+        "data": {
+            "title": "How do you rate your health today.",
+            "notes": "",
+            "multipleChoice": false,
+            "planId": 41,
+            "options": [
+                "Excellent",
+                "Good",
+                "Fair",
+                "Poor"
+            ],
+            "type": "health",
+            "followupId": 2
+        },
+        "points": 10,
+        "createdOn": "2015-04-05T09:41:30Z",
+        "etaType": "TODAY",
+        "source": {
+            "dob": "1942-02-12",
+            "profilePicUrl": "/static/files/uploaded_files/logo1.png",
+            "displayName": "Chanchal Sengupta",
+            "id": "8e3214fa2d734ca69023d0441f5f6aed",
+            "sex": "M"
+        },
+        "state": "UNSEEN",
+        "eta": "2015-04-05T12:00:00Z",
+        "cardId": "48c8c56a025f46039bb239b91ad4e306",
+        "type": "Followup"
+    },
+    {
+        "modifiedOn": "2015-04-04T19:00:00Z",
+        "influencers": [],
+        "data": {
+            "prescriptionId": 31,
+            "medicines": [
+                {
+                    "name": "Novolid (100 mg)",
+                    "showInfoIcon": false,
+                    "type": 1,
+                    "id": 61550,
+                    "unit": null,
+                    "quantity": "1"
+                },
+                {
+                    "name": "Libadro (60 ml)",
+                    "showInfoIcon": false,
+                    "type": 2,
+                    "id": 61550,
+                    "unit": null,
+                    "quantity": "2"
+                }
+            ]
+        },
+        "points": 10,
+        "createdOn": "2015-04-04T19:00:00Z",
+        "etaType": "NOW",
+        "source": {
+            "dob": "1942-02-12",
+            "profilePicUrl": "/static/files/uploaded_files/logo1.png",
+            "displayName": "Chanchal Sengupta",
+            "id": "8e3214fa2d734ca69023d0441f5f6aed",
+            "sex": "M"
+        },
+        "state": "UNSEEN",
+        "eta": "2015-04-05T16:00:00Z",
+        "cardId": "d14e910d607c4529996630bf1e10f300",
+        "type": "Medicine"
+    },
+
+    {
+        "modifiedOn": "2015-04-02T19:00:08Z",
+        "influencers": [],
+        "data": {
+            "title": "Feeling dizzy?",
+            "notes": null,
+            "multipleChoice": false,
+            "planId": 27,
+            "options": [
+                "Yes",
+                "No"
+            ],
+            "type": "objective",
+            "followupId": 4
+        },
+        "points": 10,
+        "createdOn": "2015-04-02T19:00:08Z",
+        "etaType": "TODAY",
+        "source": {
+            "dob": "1942-02-12",
+            "profilePicUrl": "/static/files/uploaded_files/logo1.png",
+            "displayName": "Chanchal Sengupta",
+            "id": "8e3214fa2d734ca69023d0441f5f6aed",
+            "sex": "M"
+        },
+        "state": "DONE",
+        "eta": "2015-04-03T12:00:00Z",
+        "cardId": "46a113bf20e54481ad139c649e4968e7",
+        "type": "Followup"
+    },
+    {
+        "modifiedOn": "2015-04-02T19:00:08Z",
+        "influencers": [],
+        "data": {
+            "title": "How are you",
+            "notes": null,
+            "multipleChoice": false,
+            "planId": 26,
+            "options": [
+                ""
+            ],
+            "type": "subjective",
+            "followupId": 3
+        },
+        "points": 10,
+        "createdOn": "2015-04-02T19:00:08Z",
+        "etaType": "TODAY",
+        "source": {
+            "dob": "1942-02-12",
+            "profilePicUrl": "/static/files/uploaded_files/logo1.png",
+            "displayName": "Chanchal Sengupta",
+            "id": "8e3214fa2d734ca69023d0441f5f6aed",
+            "sex": "M"
+        },
+        "state": "DONE",
+        "eta": "2015-04-03T12:00:00Z",
+        "cardId": "d086e92d2cac4b628c2af5d65d3aa7cb",
+        "type": "Followup"
+    },
+    {
+        "modifiedOn": "2015-04-02T19:00:07Z",
+        "influencers": [],
+        "data": {
+            "title": "Weight",
+            "vitalId": 7,
+            "vitalPlanId": 58,
+            "vitals": {
+                "unit1": "kgs",
+                "valueMin1": 0,
+                "valueMax1": 200,
+                "name1": "Weight"
             }
         },
-        {
-            cardId:"GUID2",
-            etaType: "DAYLONG",
-            eta:"2014-07-29T09:10:34Z",
-            createdOn:"2014-07-28T06:07:34Z",
-            modifiedOn:"2014-07-28T06:07:34Z",
-            state:"ACTIVE",
-            type:"VITAL",
-            points:10,
-            source:{
-                id:"userid1",
-                displayName:"Vishal Chitravanshi",
-                profilePicUrl:"http://doctl.com/static/unify/assets/img/profile_pic/komal.jpg"
-            },
-            data:{
-                id: "vital1",
-                title: "Enter sugar values",
-                vitals:[
-                    {
-                        name: "Fasting Sugar",
-                        unit: "MG/DL",
-                        past:{
-                            timeStamps:[1,2,3,4,5,6,7,8,9,10],
-                            values:[90,94,107,114,110,91,97,90,88,99]
-                        }
-                    },
-                    {
-                        name: "Post Meal Sugar",
-                        condition: "2 hrs after meal",
-                        unit: "MG/DL",
-                        past: {
-                            timeStamps:[1,2,3,4,5,6,7,8,9,10],
-                            values:[130,150,110,170,170,140,140,155,155,145]
-                        }
-                    }
-                ]
+        "points": 10,
+        "createdOn": "2015-04-02T19:00:07Z",
+        "etaType": "TODAY",
+        "source": {
+            "dob": "1942-02-12",
+            "profilePicUrl": "/static/files/uploaded_files/logo1.png",
+            "displayName": "Chanchal Sengupta",
+            "id": "8e3214fa2d734ca69023d0441f5f6aed",
+            "sex": "M"
+        },
+        "state": "DONE",
+        "eta": "2015-04-03T13:30:00Z",
+        "cardId": "35f96a63f47741a7b7ac803303619407",
+        "type": "Vital"
+    },
+    {
+        "modifiedOn": "2015-04-02T06:28:40Z",
+        "influencers": [],
+        "data": {
+            "index": 1,
+            "title": "Type 1 Diabetes",
+            "url": "https://www.youtube.com/watch?v=jxbbBmbvu7I",
+            "planId": 54,
+            "summary": "Type 1 Diabetes patients: learn to care for yourselves at home by watching these animations: http://gmcmanagingdiabetes.com/ If you like this animation, LIKE...",
+            "educationId": 54,
+            "thumbnail": "/static/files/uploaded_files/1427955395_75_education_thumbnail.jpg"
+        },
+        "points": 10,
+        "createdOn": "2015-04-02T06:28:40Z",
+        "etaType": "TODAY",
+        "source": {
+            "dob": "1942-02-12",
+            "profilePicUrl": "/static/files/uploaded_files/logo1.png",
+            "displayName": "Chanchal Sengupta",
+            "id": "8e3214fa2d734ca69023d0441f5f6aed",
+            "sex": "M"
+        },
+        "state": "UNSEEN",
+        "eta": "2015-04-02T14:00:00Z",
+        "cardId": "708809cfaaef4048bd82b54e37916e52",
+        "type": "Education"
+    },
+    {
+        "modifiedOn": "2015-04-02T06:28:39Z",
+        "influencers": [],
+        "data": {
+            "title": "Blood Pressure",
+            "vitalId": 3,
+            "vitalPlanId": 54,
+            "vitals": {
+                "valueMin2": 100,
+                "valueMin1": 70,
+                "name2": "BP Systolic",
+                "name1": "BP Diastolic",
+                "unit2": "mg/dl",
+                "unit1": "mg/dl",
+                "valueMax1": 85,
+                "valueMax2": 135
             }
         },
-        {
-            cardId:"GUID3",
-            etaType: "DAYLONG",
-            eta:"2014-07-29T09:10:34Z",
-            createdOn:"2014-07-28T06:07:34Z",
-            modifiedOn:"2014-07-28T06:07:34Z",
-            state:"ACTIVE",
-            type:"FOLLOWUP",
-            points:10,
-            source:{
-                id:"userid1",
-                displayName:"Vishal Chitravanshi",
-                profilePicUrl:"http://doctl.com/static/unify/assets/img/profile_pic/vikas.jpg"
-            },
-            data:{
-                id: "followup1",
-                title: "How do you rate your health today",
-                multipleChoice: false,
-                options: [
-                    "Excelent","Good","Fair","Poor"
-                ],
-                getComments:true
-            }
+        "points": 10,
+        "createdOn": "2015-04-02T06:28:39Z",
+        "etaType": "TODAY",
+        "source": {
+            "dob": "1942-02-12",
+            "profilePicUrl": "/static/files/uploaded_files/logo1.png",
+            "displayName": "Chanchal Sengupta",
+            "id": "8e3214fa2d734ca69023d0441f5f6aed",
+            "sex": "M"
         },
-        {
-            cardId:"GUID4",
-            etaType: "DAYLONG",
-            eta:"2014-07-29T09:10:34Z",
-            createdOn:"2014-07-28T06:07:34Z",
-            modifiedOn:"2014-07-28T06:07:34Z",
-            state:"ACTIVE",
-            type:"FOLLOWUP",
-            points:10,
-            source:{
-                id:"userid1",
-                displayName:"Vishal Chitravanshi",
-                profilePicUrl:"http://doctl.com/static/unify/assets/img/profile_pic/vikas.jpg"
-            },
-            data:{
-                id: "followup1",
-                title: "Do you have any of these?",
-                multipleChoice: true,
-                options: [
-                    "Low in energy","Dizziness","Not Hungry"
-                ],
-                getComments:true
-            }
-        }
-    ]
-}
+        "state": "UNSEEN",
+        "eta": "2015-04-02T13:30:00Z",
+        "cardId": "8aded11f2d43418cb3ae6f105399ebce",
+        "type": "Vital"
+    },
+    {
+        "modifiedOn": "2015-03-31T14:53:46Z",
+        "influencers": [],
+        "data": {
+            "simplereminder_id": null,
+            "template": "మీరు ఎలా చేస్తున్నారు?",
+            "title": "Message From CareWell"
+        },
+        "points": 10,
+        "createdOn": "2015-03-31T14:53:46Z",
+        "etaType": "TODAY",
+        "source": {
+            "dob": "1942-02-12",
+            "profilePicUrl": "/static/files/uploaded_files/logo1.png",
+            "displayName": "Chanchal Sengupta",
+            "id": "8e3214fa2d734ca69023d0441f5f6aed",
+            "sex": "M"
+        },
+        "state": "UNSEEN",
+        "eta": "2015-03-31T14:53:46Z",
+        "cardId": "7a02583e0e9b467980c25b8149a2a8be",
+        "type": "GenericReminder"
+    },
+    {
+        "modifiedOn": "2015-03-30T11:58:30Z",
+        "influencers": [],
+        "data": {
+            "simplereminder_id": null,
+            "template": "Hello, message from Sunshine Hospitals.\nرنے والا، بِن مانگے دینے والا (اور) بار بار رحم کرنے والا ہے",
+            "title": "Message From CareWell"
+        },
+        "points": 10,
+        "createdOn": "2015-03-30T11:58:30Z",
+        "etaType": "TODAY",
+        "source": {
+            "dob": "1942-02-12",
+            "profilePicUrl": "/static/files/uploaded_files/logo1.png",
+            "displayName": "Chanchal Sengupta",
+            "id": "8e3214fa2d734ca69023d0441f5f6aed",
+            "sex": "M"
+        },
+        "state": "DONE",
+        "eta": "2015-03-30T11:58:30Z",
+        "cardId": "449f99219bb44959a2af8c9fd7fe9efc",
+        "type": "GenericReminder"
+    },
+    {
+        "modifiedOn": "2015-03-24T19:00:00Z",
+        "influencers": [],
+        "data": {
+            "simplereminder_id": null,
+            "template": "REMINDER !! You have a followup visit scheduled for tomorrow 2015-03-26. For ensuring quality and continuity in your treatment, please come and see the doctor tomorrow. Please call receptionist at 8106966612 if you have not already booked the appointment.",
+            "title": "Message from CareWell"
+        },
+        "points": 10,
+        "createdOn": "2015-03-24T19:00:00Z",
+        "etaType": "TODAY",
+        "source": {
+            "dob": "1942-02-12",
+            "profilePicUrl": "/static/files/uploaded_files/logo1.png",
+            "displayName": "Chanchal Sengupta",
+            "id": "8e3214fa2d734ca69023d0441f5f6aed",
+            "sex": "M"
+        },
+        "state": "UNSEEN",
+        "eta": "2015-03-24T06:30:00Z",
+        "cardId": "9d92c888d8c7400cb09d95d2678fa8e4",
+        "type": "GenericReminder"
+    }
+]

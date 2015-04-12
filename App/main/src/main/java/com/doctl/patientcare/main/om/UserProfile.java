@@ -108,8 +108,12 @@ public class UserProfile {
         JSONObject data = new JSONObject();
         data.put("displayName", this.getDisplayName());
         data.put("phone", this.getPhone());
-        data.put("dob", this.getDob());
-        data.put("sex", this.getSex());
+        if (this.getDob() != null && !this.getDob().isEmpty()) {
+            data.put("dob", this.getDob());
+        }
+        if (this.getSex() != null && !this.getSex().isEmpty()) {
+            data.put("sex", this.getSex());
+        }
         return data;
     }
 

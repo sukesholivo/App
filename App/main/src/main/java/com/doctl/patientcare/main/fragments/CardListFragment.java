@@ -27,9 +27,9 @@ import com.doctl.patientcare.main.Cards.VitalCard;
 import com.doctl.patientcare.main.Cards.WalkCard;
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.BaseTask;
-import com.doctl.patientcare.main.om.CustomCardArrayAdapter;
 import com.doctl.patientcare.main.om.education.EducationTask;
 import com.doctl.patientcare.main.om.followup.FollowupTask;
+import com.doctl.patientcare.main.om.medicines.Medicine;
 import com.doctl.patientcare.main.om.medicines.MedicineTask;
 import com.doctl.patientcare.main.om.message.MessageTask;
 import com.doctl.patientcare.main.om.vitals.VitalTask;
@@ -51,6 +51,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import it.gmariotti.cardslib.library.internal.Card;
+import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.view.CardListView;
 import it.gmariotti.cardslib.library.view.listener.SwipeOnScrollListener;
@@ -65,9 +66,11 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
     private static final String TAG = CardListFragment.class.getSimpleName();
     PullToRefreshLayout mPullToRefreshLayout;
     ArrayList<Card> cards;
-    CustomCardArrayAdapter mCardArrayAdapter;
+    CardArrayAdapter mCardArrayAdapter;
     CardListView listView;
     FloatingActionButton fab;
+    View.OnClickListener primaryActionListener = null;
+    View.OnClickListener secondaryActionListener = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -111,7 +114,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
         card0.setSwipeable(false);
         cards.add(card0);
 
-        mCardArrayAdapter = new CustomCardArrayAdapter(getActivity(), cards);
+        mCardArrayAdapter = new CardArrayAdapter(getActivity(), cards);
 
         mCardArrayAdapter.setEnableUndo(true);
         listView = (CardListView) getActivity().findViewById(R.id.card_list_layout);
@@ -195,6 +198,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
 
     protected void refreshCard() {
         String data = downloadCardData();
+//        String data = Utils.parsonJsonFromFile(getActivity(), R.raw.tasks);
         if (data != null && !data.isEmpty()) {
             ArrayList<BaseCard> cards = parseCardData(data);
             resetCardList(cards);
@@ -207,6 +211,11 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
                 Constants.CARDS_URL, HTTPServiceHandler.HTTPMethod.GET, Utils.getCardsHTTPGetQueryParam(), null);
     }
 
+    private void removeCard(BaseCard card){
+        mCardArrayAdapter.remove(card);
+        mCardArrayAdapter.notifyDataSetChanged();
+        card.UpdateTask();
+    }
     private ArrayList<BaseCard> parseCardData(String jsonStr){
         ArrayList<BaseCard> cards = new ArrayList<BaseCard>();
         DashboardCard card0 = new DashboardCard(getActivity(), null);
@@ -216,20 +225,43 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
         Logger.d(TAG, jsonStr);
         JsonParser parser = new JsonParser();
         JsonArray cardsJsonArray = parser.parse(jsonStr).getAsJsonArray();
-//        JsonArray cardsJsonArray = jsonObject.get("cards").getAsJsonArray();
         for (JsonElement cardJson : cardsJsonArray) {
             JsonObject cardJsonObj = cardJson.getAsJsonObject();
             switch (BaseTask.CardType.lookup(cardJsonObj.get("type").getAsString())) {
                 case MEDICINE:
-                    MedicineTask medicineTask = new Gson().fromJson(cardJson, MedicineTask.class);
+                    final MedicineTask medicineTask = new Gson().fromJson(cardJson, MedicineTask.class);
                     CardHeader medicineHeader = Utils.getCardHeader(getActivity(), medicineTask);
-                    MedicineCard medicineCard = new MedicineCard(getActivity(), medicineHeader, medicineTask);
+                    final MedicineCard medicineCard = new MedicineCard(getActivity(), medicineHeader, medicineTask);
+
+                    primaryActionListener = new View.OnClickListener() {
+                        @Override
+                        public void onClick(View arg0) {
+                            medicineCard.setMedicineState(Medicine.MedicineTakenState.TAKEN);
+                            removeCard(medicineCard);
+                        }
+                    };
+                    secondaryActionListener = new View.OnClickListener() {
+                        @Override
+                        public void onClick(View arg0) {
+                            medicineCard.setMedicineState(Medicine.MedicineTakenState.DISMISSED);
+                            removeCard(medicineCard);
+                        }
+                    };
+                    medicineCard.setListenerToActionButtons("Taken", primaryActionListener, "Missed", secondaryActionListener);
                     cards.add(medicineCard);
                     break;
                 case VITAL:
                     VitalTask vitalTask = new Gson().fromJson(cardJson, VitalTask.class);
                     CardHeader vitalHeader = Utils.getCardHeader(getActivity(), vitalTask);
-                    VitalCard vitalCard = new VitalCard(getActivity(), vitalHeader, vitalTask);
+                    final VitalCard vitalCard = new VitalCard(getActivity(), vitalHeader, vitalTask);
+
+                    primaryActionListener = new View.OnClickListener() {
+                        @Override
+                        public void onClick(View arg0) {
+                            removeCard(vitalCard);
+                        }
+                    };
+                    vitalCard.setListenerToActionButtons("Submit", primaryActionListener);
                     cards.add(vitalCard);
                     break;
                 case FOLLOWUP:
@@ -243,7 +275,17 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
                             textView1.setTextSize(20);
                         }
                     };
-                    FollowupCard followupCard = new FollowupCard(getActivity(), followupHeader, followupTask);
+                    final FollowupCard followupCard = new FollowupCard(getActivity(), followupHeader, followupTask);
+
+                    primaryActionListener = new View.OnClickListener() {
+                        @Override
+                        public void onClick(View arg0) {
+                            Logger.d(TAG, "Yes CLICKED");
+                            removeCard(followupCard);
+                        }
+                    };
+                    followupCard.setListenerToActionButtons("Send", primaryActionListener);
+
                     cards.add(followupCard);
                     break;
                 case SIMPLEREMINDER:
@@ -255,7 +297,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
                         public void setupInnerViewElements(ViewGroup parent, View view) {
                             TextView textView1 = (TextView)view.findViewById(R.id.timeWhen);
                             textView1.setText(messageTitle);
-                            textView1.setTextSize(25);
+                            textView1.setTextSize(20);
                         }
                     };
                     MessageCard messageCard = new MessageCard(getActivity(), messageHeader, messageTask);
@@ -269,7 +311,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
                         public void setupInnerViewElements(ViewGroup parent, View view) {
                             TextView textView1 = (TextView)view.findViewById(R.id.timeWhen);
                             textView1.setText(eduTitle);
-                            textView1.setTextSize(15);
+                            textView1.setTextSize(20);
                         }
                     };
                     EducationCard educationCard = new EducationCard(getActivity(), educationHeader, educationTask);

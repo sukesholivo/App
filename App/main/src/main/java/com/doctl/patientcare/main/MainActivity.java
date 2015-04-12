@@ -1,12 +1,10 @@
 package com.doctl.patientcare.main;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -40,12 +38,11 @@ import com.google.gson.JsonParser;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.Date;
 
 import it.gmariotti.cardslib.library.utils.BitmapUtils;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivityWithNavigation {
     private static final String TAG = MainActivity.class.getSimpleName();
     static boolean active = false;
     GoogleCloudMessaging gcm;

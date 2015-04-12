@@ -25,7 +25,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 
-public class MedicineDetailActivity extends BaseActivity {
+public class MedicineDetailActivity extends BaseActivityWithNavigation {
     public final static String TAG = MedicineDetailActivity.class.getSimpleName();
     static boolean active = false;
     private String prescriptionId = "";

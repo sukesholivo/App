@@ -1,8 +1,6 @@
 package com.doctl.patientcare.main.services;
 
-import android.app.Activity;
 import android.content.Context;
-import android.widget.Toast;
 
 import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
@@ -10,7 +8,6 @@ import com.doctl.patientcare.main.utility.Utils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -23,12 +20,9 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.UnknownHostException;
 import java.util.List;
@@ -53,15 +47,20 @@ public class HTTPServiceHandler {
         return this.makeServiceCall(url, method, null, null);
     }
 
+    public String makeServiceCall(String url, HTTPMethod method, List<NameValuePair> getParams, JSONObject postParams) {
+        return this.makeServiceCall(url, method, getParams, postParams, false);
+    }
+
     /**
      * Making service call
      * @url - url to make request
      * @method - http request method
      * @params - http request params
      * */
-    public String makeServiceCall(String url, HTTPMethod method, List<NameValuePair> getParams, JSONObject postParams) {
+    public String makeServiceCall(String url, HTTPMethod method, List<NameValuePair> getParams, JSONObject postParams, boolean anonymous) {
         if (!Utils.isNetworkAvailable(context)){
 //            Toast.makeText(context, "No Network Connection", Toast.LENGTH_LONG).show();
+            Logger.e(TAG, "No Network");
             return null;
         }
         try {
@@ -74,11 +73,13 @@ public class HTTPServiceHandler {
             HttpClient httpClient = new DefaultHttpClient(httpParams);
             HttpEntity httpEntity;
             HttpResponse httpResponse = null;
-
+            String ServerAccessToken = "";
             //Extract the auth token from user preferences
-            String ServerAccessToken = Utils.getAuthTokenFromSharedPreference(context);
-            if (ServerAccessToken == null || ServerAccessToken.isEmpty()){
-                return null;
+            if (!anonymous) {
+                ServerAccessToken = Utils.getAuthTokenFromSharedPreference(context);
+                if (ServerAccessToken == null || ServerAccessToken.isEmpty()) {
+                    return null;
+                }
             }
             Logger.d(TAG, url);
 
@@ -94,7 +95,9 @@ public class HTTPServiceHandler {
                     httpPost.setEntity(se);
                 }
                 httpPost.setHeader("Content-type","application/json");
-                httpPost.setHeader("Authorization", "Token "+ServerAccessToken);
+                if (!anonymous) {
+                    httpPost.setHeader("Authorization", "Token " + ServerAccessToken);
+                }
                 httpResponse = httpClient.execute(httpPost);
             } else if (method == HTTPMethod.PATCH) {
                 Logger.d(TAG, "Sending PATCH");
@@ -107,7 +110,9 @@ public class HTTPServiceHandler {
                     httpPatch.setEntity(se);
                 }
                 httpPatch.setHeader("Content-type","application/json");
-                httpPatch.setHeader("Authorization", "Token " + ServerAccessToken);
+                if (!anonymous) {
+                    httpPatch.setHeader("Authorization", "Token " + ServerAccessToken);
+                }
                 httpResponse = httpClient.execute(httpPatch);
             } else if (method == HTTPMethod.GET) {
                 // appending params to url
@@ -119,14 +124,19 @@ public class HTTPServiceHandler {
                 }
                 Logger.d(TAG, "URL: " + url);
                 HttpGet httpGet = new HttpGet(url);
-                httpGet.setHeader("Authorization", "Token "+ServerAccessToken);
+                if (!anonymous) {
+                    httpGet.setHeader("Authorization", "Token " + ServerAccessToken);
+                }
 
                 httpResponse = httpClient.execute(httpGet);
 
             }
             assert httpResponse != null;
+            httpEntity = httpResponse.getEntity();
+            response = EntityUtils.toString(httpEntity);
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             Logger.d(TAG, "statusCode: " + statusCode);
+            Logger.e(TAG, response);
             if (statusCode == 403 || statusCode == 401){
                 Utils.handleUnauthorizedAccess(context);
                 return null;
@@ -169,12 +179,14 @@ public class HTTPServiceHandler {
 //                });
                 return null;
             }
-            httpEntity = httpResponse.getEntity();
-            response = EntityUtils.toString(httpEntity);
-        } catch (UnknownHostException ex){
 
+        } catch (UnknownHostException ex){
+            Logger.e(TAG, "Unknown host");
+            return null;
         } catch (IOException  e) {
+            Logger.e(TAG, "IO Exception");
             e.printStackTrace();
+            return null;
         }
         return response;
     }

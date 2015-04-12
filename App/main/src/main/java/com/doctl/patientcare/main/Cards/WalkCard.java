@@ -53,17 +53,17 @@ public class WalkCard extends BaseCard {
     }
 
     private void setListnerToCard() {
-        this.setOnLongClickListener(new OnLongCardClickListener() {
-            @Override
-            public boolean onLongClick(Card card, View view) {
-                Bitmap bitmap = card.getCardView().createBitmap();
-                File photofile= BitmapUtils.createFileFromBitmap(bitmap);
-                Intent shareIntent = BitmapUtils.createIntentFromImage(photofile);
-
-                getContext().startActivity(Intent.createChooser(shareIntent, "Share your Walk progress"));
-                return true;
-            }
-        });
+//        this.setOnLongClickListener(new OnLongCardClickListener() {
+//            @Override
+//            public boolean onLongClick(Card card, View view) {
+//                Bitmap bitmap = card.getCardView().createBitmap();
+//                File photofile= BitmapUtils.createFileFromBitmap(bitmap);
+//                Intent shareIntent = BitmapUtils.createIntentFromImage(photofile);
+//
+//                getContext().startActivity(Intent.createChooser(shareIntent, "Share your Walk progress"));
+//                return true;
+//            }
+//        });
     }
 
     @Override

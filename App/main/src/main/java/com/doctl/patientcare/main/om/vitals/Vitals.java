@@ -14,9 +14,6 @@ public class Vitals {
     @SerializedName("name1")
     private String name1;
 
-    @SerializedName("condition1")
-    private String condition1;
-
     @SerializedName("value1")
     private Double value1;
 
@@ -31,9 +28,6 @@ public class Vitals {
 
     @SerializedName("name2")
     private String name2;
-
-    @SerializedName("condition2")
-    private String condition2;
 
     @SerializedName("value2")
     private Double value2;
@@ -56,10 +50,6 @@ public class Vitals {
         return name1;
     }
 
-    public String getCondition1() {
-        return condition1;
-    }
-
     public Double getValue1() {
         return value1;
     }
@@ -78,10 +68,6 @@ public class Vitals {
 
     public String getName2() {
         return name2;
-    }
-
-    public String getCondition2() {
-        return condition2;
     }
 
     public Double getValue2() {

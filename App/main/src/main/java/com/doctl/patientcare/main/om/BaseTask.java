@@ -2,6 +2,9 @@ package com.doctl.patientcare.main.om;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Date;
 import java.util.List;
 
@@ -110,8 +113,11 @@ public abstract class BaseTask {
     }
 
     public enum CardState {
-        ACTIVE,
-        DONE
+        UNSEEN,
+        SEEN,
+        DMSD,
+        DONE,
+        SNOOZED
     }
 
     public enum TypeOfEta {

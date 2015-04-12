@@ -3,28 +3,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingBottom="10dp"
     android:background="@android:color/transparent">
-
-    <TextView
-        android:id="@+id/medicineQuantity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/medicineIcon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="30dp"
         android:layout_marginStart="30dp"
-        android:textColor="@color/card_body_text_main"
-        android:textSize="@dimen/text_size_xl"
-        />
-    <ImageView
-        android:id="@+id/medicineIcon"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_toRightOf="@id/medicineQuantity"
-        android:layout_toEndOf="@id/medicineQuantity"
-        android:layout_alignTop="@id/medicineQuantity"
+        android:layout_marginTop="5dp"
         />
     <TextView
         android:id="@+id/medicineName"
@@ -35,10 +24,11 @@
         android:layout_toRightOf="@id/medicineIcon"
         android:layout_toEndOf="@id/medicineIcon"
         android:textSize="@dimen/text_size_m"
+        android:gravity="top"
         android:textColor="@color/card_body_text_main"
         />
     <TextView
-        android:id="@+id/medicineUnit"
+        android:id="@+id/medicineQuantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/medicineName"
@@ -46,17 +36,32 @@
         android:layout_toEndOf="@id/medicineIcon"
         android:layout_alignLeft="@id/medicineName"
         android:layout_alignStart="@id/medicineName"
+        android:textColor="@color/card_body_text_main"
         android:textSize="@dimen/text_size_xxs"
-        android:textColor="@color/card_body_text_main"/>
+        />
     <TextView
         android:id="@+id/medicineType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/medicineName"
-        android:layout_toRightOf="@id/medicineUnit"
-        android:layout_toEndOf="@id/medicineUnit"
+        android:layout_toRightOf="@id/medicineQuantity"
+        android:layout_toEndOf="@id/medicineQuantity"
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
         android:textSize="@dimen/text_size_xxs"
         android:textColor="@color/card_body_text_main"/>
+    <TextView
+        android:id="@+id/medicineNotes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/medicineQuantity"
+        android:layout_toRightOf="@id/medicineIcon"
+        android:layout_toEndOf="@id/medicineIcon"
+        android:layout_alignLeft="@id/medicineQuantity"
+        android:layout_alignStart="@id/medicineQuantity"
+        android:layout_marginRight="20dp"
+        android:textColor="@color/card_body_text_main"
+        android:textSize="@dimen/text_size_xxs"
+        android:visibility="gone"
+        />
 </RelativeLayout>

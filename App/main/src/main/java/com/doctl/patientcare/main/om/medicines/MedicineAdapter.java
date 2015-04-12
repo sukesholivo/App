@@ -53,9 +53,6 @@ public class MedicineAdapter extends ArrayAdapter<Medicine>{
         TextView medicineName = (TextView)view.findViewById(R.id.medicineName);
         medicineName.setText(item.getName());
 
-        TextView medicineUnit = (TextView)view.findViewById(R.id.medicineUnit);
-        medicineUnit.setText(item.getUnit());
-
         TextView medicineType = (TextView)view.findViewById(R.id.medicineType);
         medicineType.setText(medicineEnumType.toString());
 

@@ -22,7 +22,6 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
 public class MessageCard extends BaseCard {
 
     private static final String TAG = MedicineCard.class.getSimpleName();
-    private MessageTask messageTask;
 
     public MessageCard(Context context) {
         this(context, R.layout.card_inner_content_message);
@@ -34,7 +33,7 @@ public class MessageCard extends BaseCard {
 
     public MessageCard(Context context, int innerLayout, CardHeader cardHeader, MessageTask messageTask){
         super(context, innerLayout, cardHeader);
-        this.messageTask = messageTask;
+        this.task = messageTask;
         this.setId(messageTask.getCardId());
     }
 
@@ -55,7 +54,9 @@ public class MessageCard extends BaseCard {
 
         viewHolder.webView.setBackgroundColor(Color.TRANSPARENT);
         viewHolder.webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
+        MessageTask messageTask = (MessageTask)task;
         viewHolder.webView.loadDataWithBaseURL(null, messageTask.getPayload().getMessage(), "text/html", "utf-8", null);
+        setupCardFooter(view, messageTask);
     }
 
     @Override
@@ -66,7 +67,7 @@ public class MessageCard extends BaseCard {
     @Override
     public void UpdateTask(){
         JSONObject data;
-
+        MessageTask messageTask = (MessageTask)task;
         messageTask.setState(BaseTask.CardState.DONE);
         String cardId = messageTask.getCardId();
         try {

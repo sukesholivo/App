@@ -2,8 +2,6 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
     style="@style/card_layout">
 
     <TextView
@@ -19,6 +17,10 @@
         android:id="@+id/followupOptions"
         android:orientation="vertical"
         android:layout_width="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_height="wrap_content"/>
     <EditText
         android:id="@+id/followupComments"
@@ -26,8 +28,12 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:hint="@string/comments"
-        android:layout_margin="10dp"
-        android:layout_marginBottom="5dp"/>
+        android:textColorHint="#B5B5B5"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"/>
     <include layout="@layout/card_footer_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

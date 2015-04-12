@@ -15,6 +15,7 @@ import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.Logger;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import it.gmariotti.cardslib.library.internal.Card;
@@ -27,6 +28,13 @@ public abstract class BaseCard extends Card {
     private static final String TAG = BaseCard.class.getSimpleName();
     protected boolean isSwipable = true;
     protected boolean showFooter = true;
+    String primaryActionButtonText;
+    String secondaryActionButtonText;
+    View.OnClickListener primaryActionButtonClickListener;
+    View.OnClickListener secondaryActionButtonClickListener;
+
+    protected BaseTask task;
+
     public BaseCard(Context context, int layout){
         super(context, layout);
         setupCard(new CardHeaderInnerView(getContext()));
@@ -44,6 +52,7 @@ public abstract class BaseCard extends Card {
             setSwipeable(true);
         }
         this.setBackgroundResourceId(R.drawable.card_background_gray);
+        this.setupUndoListener();
     }
 
     public void setupCardFooter(View view, String targetPoint){
@@ -59,7 +68,8 @@ public abstract class BaseCard extends Card {
         if(view.getTag() == null) {
             viewHolder = new BaseViewHolder();
             viewHolder.textView = (TextView) view.findViewById(R.id.targetPoint);
-            viewHolder.textView1 = (TextView) view.findViewById(R.id.pointText);
+            viewHolder.actionButtonPrimary = (TextView) view.findViewById(R.id.actionButtonPrimary);
+            viewHolder.actionButtonSecondary = (TextView) view.findViewById(R.id.actionButtonSecondary);
             viewHolder.imageView = (ImageView) view.findViewById(R.id.influencerImage);
             viewHolder.footerSet = true;
             view.setTag(viewHolder);
@@ -67,14 +77,16 @@ public abstract class BaseCard extends Card {
             viewHolder = (BaseViewHolder) view.getTag();
             if (!viewHolder.footerSet){
                 viewHolder.textView = (TextView) view.findViewById(R.id.targetPoint);
-                viewHolder.textView1 = (TextView) view.findViewById(R.id.pointText);
+                viewHolder.actionButtonPrimary = (TextView) view.findViewById(R.id.actionButtonPrimary);
+                viewHolder.actionButtonSecondary = (TextView) view.findViewById(R.id.actionButtonSecondary);
                 viewHolder.imageView = (ImageView) view.findViewById(R.id.influencerImage);
                 viewHolder.footerSet = true;
             }
         }
 
         TextView targetPointTextView = viewHolder.textView;
-        TextView pointTextView = viewHolder.textView1;
+        TextView actionButtonPrimary = viewHolder.actionButtonPrimary;
+        TextView actionButtonSecondary = viewHolder.actionButtonSecondary;
         ImageView influencerImage = viewHolder.imageView;
         if (showFooter) {
             targetPointTextView.setText("" + task.getPoints());
@@ -84,11 +96,44 @@ public abstract class BaseCard extends Card {
                                 .getProfilePicUrl())
                         .into(influencerImage);
             }
+            if (primaryActionButtonClickListener != null) {
+                actionButtonPrimary.setVisibility(View.VISIBLE);
+                actionButtonPrimary.setText(this.primaryActionButtonText);
+                actionButtonPrimary.setOnClickListener(primaryActionButtonClickListener);
+            }
+            if (secondaryActionButtonClickListener != null) {
+                actionButtonSecondary.setVisibility(View.VISIBLE);
+                actionButtonSecondary.setText(this.secondaryActionButtonText);
+                actionButtonSecondary.setOnClickListener(secondaryActionButtonClickListener);
+            }
         } else {
             targetPointTextView.setVisibility(View.GONE);
-            pointTextView.setVisibility(View.GONE);
+            actionButtonPrimary.setVisibility(View.GONE);
+            actionButtonSecondary.setVisibility(View.GONE);
             influencerImage.setVisibility(View.GONE);
         }
+    }
+
+    public void setupUndoListener() {
+        this.setOnUndoHideSwipeListListener(new OnUndoHideSwipeListListener() {
+            @Override
+            public void onUndoHideSwipe(Card card) {
+                dismissCard();
+            }
+        });
+    }
+
+    public void setListenerToActionButtons(String primaryActionText, View.OnClickListener primaryClickListener){
+        this.primaryActionButtonText = primaryActionText;
+        this.primaryActionButtonClickListener = primaryClickListener;
+        setListenerToActionButtons(primaryActionText, primaryActionButtonClickListener, null, null);
+    }
+
+    public void setListenerToActionButtons(String primaryActionText, View.OnClickListener primaryClickListener, String secondaryActionText, View.OnClickListener secondaryClickListener){
+        this.primaryActionButtonText = primaryActionText;
+        this.primaryActionButtonClickListener = primaryClickListener;
+        this.secondaryActionButtonText = secondaryActionText;
+        this.secondaryActionButtonClickListener = secondaryClickListener;
     }
 
     @Override
@@ -100,6 +145,19 @@ public abstract class BaseCard extends Card {
 
     public void UpdateTask(String cardId, JSONObject data){
         new UpdateTasks().execute(Constants.CARDS_URL + cardId + "/", data);
+    }
+
+    public void dismissCard(){
+        task.setState(BaseTask.CardState.DMSD);
+        String cardId = task.getCardId();
+        try {
+            JSONObject data = new JSONObject();
+            data.put("state", task.getState().toString());
+            UpdateTask(cardId, data);
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -115,7 +173,9 @@ public abstract class BaseCard extends Card {
     }
 
     protected static class BaseViewHolder {
-        TextView textView, textView1;
+        TextView textView;
+        TextView actionButtonPrimary;
+        TextView actionButtonSecondary;
         ImageView imageView;
         boolean footerSet = false;
     }
@@ -141,7 +201,6 @@ public abstract class BaseCard extends Card {
                     }
                 });
             }
-//            Logger.d(TAG, response);
             return null;
         }
 

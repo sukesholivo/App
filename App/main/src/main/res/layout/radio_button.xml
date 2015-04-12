@@ -4,11 +4,10 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:button="@drawable/radio_selector"
-    android:paddingLeft="20dp"
+    android:paddingLeft="@dimen/radio_buttonPadding_left"
     android:paddingRight="20dp"
     android:paddingTop="10dp"
     android:paddingBottom="10dp"
     android:textSize="26sp"
     android:textColor="@color/color_blue"
-    android:text="Hello World"
     xmlns:android="http://schemas.android.com/apk/res/android" />

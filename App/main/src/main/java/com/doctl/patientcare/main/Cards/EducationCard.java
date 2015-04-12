@@ -27,7 +27,6 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
 
 public class EducationCard extends BaseCard{
     private static final String TAG = EducationCard.class.getSimpleName();
-    private EducationTask educationTask;
 
     public EducationCard(Context context) {
         this(context, R.layout.card_inner_content_education_video);
@@ -39,7 +38,7 @@ public class EducationCard extends BaseCard{
 
     public EducationCard(Context context, int innerLayout, CardHeader cardHeader, EducationTask educationTask){
         super(context, innerLayout, cardHeader);
-        this.educationTask = educationTask;
+        this.task = educationTask;
         this.setId(educationTask.getCardId());
     }
 
@@ -50,7 +49,7 @@ public class EducationCard extends BaseCard{
     @Override
     public void setupInnerViewElements(ViewGroup parent, View view) {
         setListnerToCard();
-        final EducationTask.EducationData educationData = educationTask.getPayload();
+        final EducationTask.EducationData educationData = ((EducationTask)task).getPayload();
         String thumbnail_url = educationData.getThumbnail();
         Activity activity = (Activity)getContext();
         ImageView imageView = (ImageView)view.findViewById(R.id.videoPreview);
@@ -81,7 +80,7 @@ public class EducationCard extends BaseCard{
         catch (Exception e) {
             Logger.e(TAG, e.toString());
         }
-        setupCardFooter(view, educationTask);
+        setupCardFooter(view, task);
     }
 
     private void setListnerToCard(){
@@ -89,7 +88,7 @@ public class EducationCard extends BaseCard{
             @Override
             public void onClick(Card card, View view) {
                 Context context = getContext();
-                final EducationTask.EducationData educationData = educationTask.getPayload();
+                final EducationTask.EducationData educationData = ((EducationTask)task).getPayload();
                 String content_url = educationData.getUrl();
                 if(content_url.toUpperCase().contains("YOUTUBE.COM"))
                 {
@@ -119,6 +118,7 @@ public class EducationCard extends BaseCard{
     @Override
     public void UpdateTask(){
         JSONObject data;
+        EducationTask educationTask = (EducationTask)task;
         educationTask.setState(BaseTask.CardState.DONE);
         String cardId = educationTask.getCardId();
         try {

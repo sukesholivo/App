@@ -6,13 +6,15 @@
         android:id="@+id/vitalList"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"/>
     <LinearLayout
         android:id="@+id/vitalLineGraph"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/vitalList"
+        android:visibility="gone"
         android:background="@drawable/graph_background">
         </LinearLayout>
     <include layout="@layout/card_footer_fragment"

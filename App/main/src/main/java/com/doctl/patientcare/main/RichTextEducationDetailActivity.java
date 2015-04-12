@@ -18,7 +18,7 @@ import it.gmariotti.cardslib.library.utils.BitmapUtils;
 /**
  * Created by mailtovishal.r on 6/25/2014.
  */
-public class RichTextEducationDetailActivity extends BaseActivity {
+public class RichTextEducationDetailActivity extends BaseActivityWithNavigation {
     private ShareActionProvider mShareActionProvider;
 
     protected void onCreate(Bundle savedInstanceState) {

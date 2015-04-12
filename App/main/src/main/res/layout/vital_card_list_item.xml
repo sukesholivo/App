@@ -14,19 +14,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginRight="9dp"
         android:layout_marginEnd="9dp"
-        android:layout_marginTop="20dip"
-        android:gravity="center_vertical"/>
-
-    <TextView
-        android:id="@+id/vitalCondition"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_xs"
-        android:textColor="@color/card_body_text_meta"
-        android:layout_below="@id/vitalTitle"
-        android:layout_alignLeft="@id/vitalTitle"
-        android:layout_alignStart="@id/vitalTitle"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="20dp"
         android:gravity="center_vertical"/>
 
     <TextView

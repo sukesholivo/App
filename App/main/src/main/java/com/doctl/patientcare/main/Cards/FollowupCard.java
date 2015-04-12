@@ -35,7 +35,6 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
  */
 public class FollowupCard extends BaseCard {
     private static final String TAG = FollowupCard.class.getSimpleName();
-    private FollowupTask followupTask;
 
     public FollowupCard(Context context) {
         this(context, R.layout.card_inner_content_followup);
@@ -47,7 +46,8 @@ public class FollowupCard extends BaseCard {
 
     public FollowupCard(Context context, int innerLayout, CardHeader cardHeader, FollowupTask followupTask){
         super(context, innerLayout, cardHeader);
-        this.followupTask = followupTask;
+        this.task = followupTask;
+//        this.followupTask = followupTask;
         this.setId(followupTask.getCardId());
     }
 
@@ -57,6 +57,7 @@ public class FollowupCard extends BaseCard {
 
     @Override
     public void setupInnerViewElements(ViewGroup parent, View view) {
+        final FollowupTask followupTask = (FollowupTask)task;
         ViewHolder viewHolder;
         if (view.getTag() == null) {
             viewHolder = new ViewHolder();
@@ -68,7 +69,7 @@ public class FollowupCard extends BaseCard {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        final FollowupTask.FollowupData followupData = followupTask.getPayload();
+        final FollowupTask.FollowupData followupData = ((FollowupTask)task).getPayload();
 
         if (followupData.getNotes() != null && !followupData.getNotes().isEmpty()){
             viewHolder.textView.setVisibility(View.VISIBLE);
@@ -189,6 +190,7 @@ public class FollowupCard extends BaseCard {
     @Override
     public void UpdateTask(){
         JSONObject data;
+        FollowupTask followupTask = (FollowupTask)task;
         followupTask.setState(BaseTask.CardState.DONE);
         String cardId = followupTask.getCardId();
         try {

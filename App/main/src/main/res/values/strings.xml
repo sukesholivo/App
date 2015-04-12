@@ -41,6 +41,7 @@
     <string name="doctl_tag_line">Connect to Your Doctors</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
+    <string name="forgot_password">Forgot Password?</string>
     <string name="hint_login_email">email id</string>
     <string name="hint_login_password">password</string>
     <string name="hint_register_email">email id given to hospital</string>

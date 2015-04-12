@@ -30,7 +30,6 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
  */
 public class MedicineCard extends BaseCard {
     private static final String TAG = MedicineCard.class.getSimpleName();
-    private MedicineTask medicineTask;
     private boolean addListener = true;
     private int state = Medicine.MedicineTakenState.getInteger(Medicine.MedicineTakenState.TAKEN);
     public MedicineCard(Context context) {
@@ -43,7 +42,7 @@ public class MedicineCard extends BaseCard {
 
     public MedicineCard(Context context, int innerLayout, CardHeader cardHeader, MedicineTask medicineTask){
         super(context, innerLayout, cardHeader);
-        this.medicineTask = medicineTask;
+        this.task = medicineTask;
         this.setId(medicineTask.getCardId());
     }
 
@@ -70,7 +69,7 @@ public class MedicineCard extends BaseCard {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        MedicineAdapter medicines = new MedicineAdapter(getContext(),medicineTask.getPayload().getMedicines());
+        MedicineAdapter medicines = new MedicineAdapter(getContext(),((MedicineTask)task).getPayload().getMedicines());
 
         LinearLayout list =  viewHolder.linearLayout;
         list.removeAllViews();
@@ -78,7 +77,7 @@ public class MedicineCard extends BaseCard {
             View listView = medicines.getView(i, null, null);
             list.addView(listView);
         }
-        setupCardFooter(view, medicineTask);
+        setupCardFooter(view, task);
 
         if (addListener) {
             setListnerToCard();
@@ -93,7 +92,7 @@ public class MedicineCard extends BaseCard {
                 Context context = getContext();
                 Intent intent = new Intent(context, MedicineDetailActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("prescriptionId", medicineTask.getPayload().getPrescriptionId());
+                bundle.putString("prescriptionId", ((MedicineTask)task).getPayload().getPrescriptionId());
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }
@@ -108,6 +107,7 @@ public class MedicineCard extends BaseCard {
     @Override
     public void UpdateTask(){
         JSONObject data;
+        MedicineTask medicineTask = (MedicineTask)task;
         ArrayList<Medicine> meds = medicineTask.getPayload().getMedicines();
         medicineTask.setState(BaseTask.CardState.DONE);
         String cardId = medicineTask.getCardId();
