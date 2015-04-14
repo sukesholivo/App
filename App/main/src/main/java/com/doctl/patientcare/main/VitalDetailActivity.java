@@ -277,8 +277,9 @@ public class VitalDetailActivity extends BaseActivityWithNavigation {
             JSONObject data= (JSONObject)arg0[1];
             HTTPServiceHandler serviceHandler = new HTTPServiceHandler(VitalDetailActivity.this);
             String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.POST, null, data);
-            Logger.e(TAG, response);
-            refresh();
+            if (response != null && !response.isEmpty()) {
+                refresh();
+            }
             return null;
         }
 

@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
+import android.widget.Toast;
 
 import com.doctl.patientcare.main.Cards.CardHeaderInnerView;
 import com.doctl.patientcare.main.MainActivity;
@@ -423,5 +424,13 @@ public final class Utils {
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    public static void showToastOnUiThread(final Context c, final String message){
+        ((Activity) c).runOnUiThread(new Runnable() {
+            public void run() {
+                Toast.makeText(c, message, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

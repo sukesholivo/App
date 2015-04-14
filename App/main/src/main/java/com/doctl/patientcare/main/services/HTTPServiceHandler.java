@@ -12,6 +12,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
@@ -59,16 +60,16 @@ public class HTTPServiceHandler {
      * */
     public String makeServiceCall(String url, HTTPMethod method, List<NameValuePair> getParams, JSONObject postParams, boolean anonymous) {
         if (!Utils.isNetworkAvailable(context)){
-//            Toast.makeText(context, "No Network Connection", Toast.LENGTH_LONG).show();
-            Logger.e(TAG, "No Network");
+            Utils.showToastOnUiThread(context, "No Network Connection");
             return null;
         }
         try {
             // http client
-            int TIMEOUT_MILLISEC = 100000; // = 10 seconds
+            int CONNECTION_TIMEOUT_MILLISEC = 7000; // = 7 seconds
+            int SOCKET_TIMEOUT_MILLISEC = 10000; // = 10 seconds
             HttpParams httpParams = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
-            HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
+            HttpConnectionParams.setConnectionTimeout(httpParams, CONNECTION_TIMEOUT_MILLISEC);
+            HttpConnectionParams.setSoTimeout(httpParams, SOCKET_TIMEOUT_MILLISEC);
 
             HttpClient httpClient = new DefaultHttpClient(httpParams);
             HttpEntity httpEntity;
@@ -163,7 +164,7 @@ public class HTTPServiceHandler {
 //                });
                 return null;
             } else if (statusCode == 500){
-                final HttpEntity entity = httpResponse.getEntity();
+                Utils.showToastOnUiThread(context, "Some error occurred");
 //                ((Activity) context).runOnUiThread(new Runnable() {
 //                    public void run() {
 //                        String message = "Server error occurred";
@@ -181,11 +182,13 @@ public class HTTPServiceHandler {
             }
 
         } catch (UnknownHostException ex){
-            Logger.e(TAG, "Unknown host");
+            Utils.showToastOnUiThread(context, "No Network Connection");
+            return null;
+        } catch (ConnectTimeoutException e){
+            Utils.showToastOnUiThread(context, "No Network Connection");
             return null;
         } catch (IOException  e) {
-            Logger.e(TAG, "IO Exception");
-            e.printStackTrace();
+            Utils.showToastOnUiThread(context, "Some error occurred");
             return null;
         }
         return response;

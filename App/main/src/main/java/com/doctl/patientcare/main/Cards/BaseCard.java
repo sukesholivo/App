@@ -157,7 +157,6 @@ public abstract class BaseCard extends Card {
         } catch (JSONException e){
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -193,14 +192,7 @@ public abstract class BaseCard extends Card {
             JSONObject data= (JSONObject)arg0[1];
 
             HTTPServiceHandler serviceHandler = new HTTPServiceHandler(getContext());
-            String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.PATCH, null, data);
-            if (response == null || response.isEmpty()){
-                ((Activity)getContext()).runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(getContext(), "Server Error.", Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
+            serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.PATCH, null, data);
             return null;
         }
 

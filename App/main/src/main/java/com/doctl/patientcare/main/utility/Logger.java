@@ -16,7 +16,13 @@ public class Logger {
 
     public static void d(String tag, String message){
         if (BuildConfig.DEBUG) {
-            Log.d(tag, message);
+            StackTraceElement ste = Thread.currentThread().getStackTrace()[3];
+            String filename = ste.getFileName();
+            String fullClassName = ste.getClassName();
+            String className = fullClassName.substring(fullClassName.lastIndexOf(".") + 1);
+            String methodName = ste.getMethodName();
+            int lineNumber = ste.getLineNumber();
+            Log.d(filename + "--" + className + "." + methodName + "():" + lineNumber, message);
         }
     }
 
@@ -34,7 +40,13 @@ public class Logger {
 
     public static void e(String tag, String message){
         if (BuildConfig.DEBUG) {
-            Log.e(tag, message);
+            StackTraceElement ste = Thread.currentThread().getStackTrace()[3];
+            String filename = ste.getFileName();
+            String fullClassName = ste.getClassName();
+            String className = fullClassName.substring(fullClassName.lastIndexOf(".") + 1);
+            String methodName = ste.getMethodName();
+            int lineNumber = ste.getLineNumber();
+            Log.e(filename + "--" + className + "." + methodName + "():" + lineNumber, message);
         }
     }
 }

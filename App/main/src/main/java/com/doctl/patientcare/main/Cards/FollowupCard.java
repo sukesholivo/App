@@ -145,6 +145,13 @@ public class FollowupCard extends BaseCard {
                             if (selected == null) {
                                 selected = new ArrayList<Integer>();
                             }
+                            if (selected.size() > 0) {
+                                RadioButton rb_old = (RadioButton) ((LinearLayout) view.getParent()).getChildAt(selected.get(0));
+                                if (rb_old != view) {
+                                    rb_old.setChecked(false);
+                                }
+                            }
+                            ((RadioButton)view).setChecked(true);
                             int index = ((LinearLayout) view.getParent()).indexOfChild(view);
                             selected.clear();
                             selected.add(index);

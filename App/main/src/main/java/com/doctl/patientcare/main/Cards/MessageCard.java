@@ -2,9 +2,11 @@ package com.doctl.patientcare.main.Cards;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
+import android.widget.TextView;
 
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.BaseTask;
@@ -46,16 +48,15 @@ public class MessageCard extends BaseCard {
         ViewHolder viewHolder;
         if(view.getTag() == null) {
             viewHolder = new ViewHolder();
-            viewHolder.webView = (WebView) view.findViewById(R.id.messageTextView);
+            viewHolder.textView = (TextView) view.findViewById(R.id.messageTextView);
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        viewHolder.webView.setBackgroundColor(Color.TRANSPARENT);
-        viewHolder.webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
         MessageTask messageTask = (MessageTask)task;
-        viewHolder.webView.loadDataWithBaseURL(null, messageTask.getPayload().getMessage(), "text/html", "utf-8", null);
+        viewHolder.textView.setText(Html.fromHtml(messageTask.getPayload().getMessage()));
+        viewHolder.textView.setMovementMethod(LinkMovementMethod.getInstance());
         setupCardFooter(view, messageTask);
     }
 
@@ -80,6 +81,6 @@ public class MessageCard extends BaseCard {
     }
 
     private static class ViewHolder extends BaseViewHolder {
-        WebView webView;
+        TextView textView;
     }
 }

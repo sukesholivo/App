@@ -386,7 +386,7 @@ public class ChangeProfileActivity extends ActionBarActivity {
                 Logger.e(TAG, e.getMessage());
             }
             new SaveProfile().execute(url, data);
-            Toast.makeText(this, "Profile saved", Toast.LENGTH_LONG).show();
+
         } else {
             Toast.makeText(this, "No Network Connection", Toast.LENGTH_LONG).show();
         }
@@ -408,6 +408,7 @@ public class ChangeProfileActivity extends ActionBarActivity {
             if (response != null && !response.isEmpty()) {
                 userProfile = new Gson().fromJson(response, UserProfile.class);
                 Utils.savePatientDataToSharedPreference(ChangeProfileActivity.this, userProfile);
+                Utils.showToastOnUiThread(ChangeProfileActivity.this, "Profile saved");
             }
             return null;
         }
