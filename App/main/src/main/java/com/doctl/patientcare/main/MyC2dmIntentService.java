@@ -113,7 +113,7 @@ public class MyC2dmIntentService extends IntentService {
                     title = jsonResponse.getString("title");
                 }
                 if(jsonResponse.has("message")) {
-                    message = jsonResponse.getString("message");
+                    message = Html.fromHtml(jsonResponse.getString("message")).toString();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
