@@ -73,7 +73,7 @@ public class EducationCard extends BaseCard{
             else
             {
                 ImageView iconView = (ImageView)view.findViewById(R.id.redirectIcon);
-                iconView.setImageResource(R.drawable.redirect_icon);
+                iconView.setImageResource(R.drawable.play_icon);
                 iconView.setVisibility(View.VISIBLE);
             }
         }
