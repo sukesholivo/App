@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.text.Html;
 
 import com.doctl.patientcare.main.om.BaseTask;
 import com.doctl.patientcare.main.om.UserProfile;
@@ -80,7 +81,7 @@ public class MyC2dmIntentService extends IntentService {
                 case SIMPLEREMINDER:
                 case GENERICREMINDER:
                     String reminderTitle = ((MessageTask) task).getPayload().getTitle();
-                    String reminderMessage = ((MessageTask) task).getPayload().getMessage();
+                    String reminderMessage = Html.fromHtml(((MessageTask) task).getPayload().getMessage()).toString();
                     Utils.showNotification(this, Constants.SIMPLEREMINDER_NOTIFICATION_ID, reminderTitle, reminderMessage);
                     break;
                 case EDUCATION:

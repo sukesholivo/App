@@ -1,7 +1,10 @@
 package com.doctl.patientcare.main;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -16,6 +19,7 @@ import com.doctl.patientcare.main.om.TreatmentInfo;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.GetServerAuthTokenAsync;
+import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -33,6 +37,8 @@ import java.util.List;
  * Created by Leak on 12/11/2014.
  */
 public class StartPageActivity extends BaseActivity {
+    String mUsernameFromSMS;
+    String mPasswordFromSMS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +50,8 @@ public class StartPageActivity extends BaseActivity {
         setContentView(R.layout.activity_startup);
         setLoginListener();
         setupServerAuthToken();
+//        getUsernameAndPasswordFromSms();
+//        tryLogin();
     }
 
     @Override
@@ -87,13 +95,7 @@ public class StartPageActivity extends BaseActivity {
                 //Login into the app and populate the shared preferences
                 String username = ((EditText)StartPageActivity.this.findViewById(R.id.loginUsername)).getText().toString().trim();
                 String password = ((EditText)StartPageActivity.this.findViewById(R.id.loginPassword)).getText().toString();
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-                nameValuePairs.add(new BasicNameValuePair("username", username));
-                nameValuePairs.add(new BasicNameValuePair("password", password));
-                //Validate username and password here before proceeding
-
-                StartPageActivity.this.findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
-                new GetServerAuthTokenAsync(StartPageActivity.this, Constants.LOGIN_URL, nameValuePairs).execute();
+                Login(username, password);
             }
         };
         Button loginButton = (Button)StartPageActivity.this.findViewById(R.id.loginButton);
@@ -113,6 +115,37 @@ public class StartPageActivity extends BaseActivity {
 //        forgotPasswordButton.setOnClickListener(forgotPassworfClickListener);
     }
 
+    private void Login(String username, String password) {
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+        nameValuePairs.add(new BasicNameValuePair("username", username));
+        nameValuePairs.add(new BasicNameValuePair("password", password));
+        //Validate username and password here before proceeding
+        StartPageActivity.this.findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+        new GetServerAuthTokenAsync(StartPageActivity.this, Constants.LOGIN_URL, nameValuePairs).execute();
+    }
+
+    private void getUsernameAndPasswordFromSms(){
+        Uri inboxURI = Uri.parse("content://sms/inbox");
+        String[] reqCols = new String[] {"address", "body" };
+        ContentResolver cr = getContentResolver();
+        Cursor cursor = cr.query(inboxURI, reqCols, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                if (cursor.getString(0).contains("MDOCTL")){
+                    String msg = cursor.getString(1);
+                    msg = msg.substring(msg.indexOf("Email:"));
+                    String[] msgData = msg.split(" ");
+                    mUsernameFromSMS = msgData[1];
+                    mPasswordFromSMS = msgData[3];
+                    break;
+                }
+            } while (cursor.moveToNext());
+        }
+    }
+
+    private void tryLogin(){
+        Login(mUsernameFromSMS, mPasswordFromSMS);
+    }
 
     public class GetTreatmentSummaryAsync extends AsyncTask<Void, Void, Void> {
 
