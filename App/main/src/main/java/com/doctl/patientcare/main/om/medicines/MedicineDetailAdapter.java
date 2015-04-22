@@ -75,7 +75,6 @@ public class MedicineDetailAdapter extends ArrayAdapter<PrescriptionMedicine> {
         PrescriptionMedicine.Dosage dosage = item.getDosage();
         int morning = dosage.getMorning() != null? Integer.parseInt(dosage.getMorning()): 0;
         int noon = dosage.getNoon() != null? Integer.parseInt(dosage.getNoon()): 0;
-        int evening = dosage.getEvening() != null? Integer.parseInt(dosage.getEvening()): 0;
         int night = dosage.getNight() != null? Integer.parseInt(dosage.getNight()): 0;
         String builder = "";
         boolean first = true;
@@ -103,19 +102,6 @@ public class MedicineDetailAdapter extends ArrayAdapter<PrescriptionMedicine> {
             rl2.setBackgroundResource(R.drawable.circular_green_empty);
         }
         ll.addView(rl2, layoutParams);
-
-        RelativeLayout rl3 = new RelativeLayout(getContext());
-        if (evening > 0){
-            builder += first ? "" : ", ";
-            builder += evening;
-            builder += " in evening ";
-            builder += item.isBeforeMeal() ? "before meal": "";
-            first = false;
-            rl3.setBackgroundResource(R.drawable.circular_green);
-        } else {
-            rl3.setBackgroundResource(R.drawable.circular_green_empty);
-        }
-        ll.addView(rl3, layoutParams);
 
         RelativeLayout rl4 = new RelativeLayout(getContext());
         if (night > 0){
