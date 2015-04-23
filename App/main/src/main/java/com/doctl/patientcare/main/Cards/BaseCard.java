@@ -136,6 +136,20 @@ public abstract class BaseCard extends Card {
         this.secondaryActionButtonClickListener = secondaryClickListener;
     }
 
+    protected void updateCardAsSeen(){
+        if (this.task.getState() != BaseTask.CardState.SEEN) {
+            this.task.setState(BaseTask.CardState.SEEN);
+            String cardId = task.getCardId();
+            try {
+                JSONObject data = new JSONObject();
+                data.put("state", task.getState().toString());
+                UpdateTask(cardId, data);
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Override
     public abstract int getType();
 

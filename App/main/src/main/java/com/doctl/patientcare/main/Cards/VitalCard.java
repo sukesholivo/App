@@ -154,6 +154,8 @@ public class VitalCard extends BaseCard {
         if (addListener) {
             setListnerToCard();
         }
+
+        updateCardAsSeen();
     }
 
     private View getView(ViewGroup parent, String name, String unit, Double value, TextWatcher textWatcher){

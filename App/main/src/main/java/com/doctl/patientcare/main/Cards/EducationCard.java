@@ -81,6 +81,7 @@ public class EducationCard extends BaseCard{
             Logger.e(TAG, e.toString());
         }
         setupCardFooter(view, task);
+        updateCardAsSeen();
     }
 
     private void setListnerToCard(){

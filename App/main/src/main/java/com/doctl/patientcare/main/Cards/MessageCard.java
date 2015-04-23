@@ -58,6 +58,7 @@ public class MessageCard extends BaseCard {
         viewHolder.textView.setText(Html.fromHtml(messageTask.getPayload().getMessage()));
         viewHolder.textView.setMovementMethod(LinkMovementMethod.getInstance());
         setupCardFooter(view, messageTask);
+        updateCardAsSeen();
     }
 
     @Override

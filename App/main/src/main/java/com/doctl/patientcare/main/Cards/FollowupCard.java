@@ -187,6 +187,7 @@ public class FollowupCard extends BaseCard {
         viewHolder.editText.setText(followupTask.getPayload().getComment());
 
         setupCardFooter(view, followupTask);
+        updateCardAsSeen();
     }
 
     @Override

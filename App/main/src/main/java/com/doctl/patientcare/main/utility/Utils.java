@@ -108,7 +108,7 @@ public final class Utils {
         params.add(new BasicNameValuePair("startDate", Utils.getIsoDateString(startDate)));
         params.add(new BasicNameValuePair("endDate", Utils.getIsoDateString(endDate)));
         params.add(new BasicNameValuePair("orderBy", "eta"));
-        params.add(new BasicNameValuePair("state", "UNSEEN"));
+        params.add(new BasicNameValuePair("state", "UNSEEN,SEEN"));
         return params;
     }
 

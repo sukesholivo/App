@@ -82,6 +82,8 @@ public class MedicineCard extends BaseCard {
         if (addListener) {
             setListnerToCard();
         }
+
+        updateCardAsSeen();
     }
 
     private void setListnerToCard() {
