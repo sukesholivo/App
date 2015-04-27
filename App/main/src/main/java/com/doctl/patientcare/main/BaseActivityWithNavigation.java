@@ -8,7 +8,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -17,7 +16,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.doctl.patientcare.main.om.vitals.VitalTask;
 import com.doctl.patientcare.main.utility.Logger;
@@ -260,7 +258,7 @@ public class BaseActivityWithNavigation extends BaseActivity implements ListView
                 .show();
     }
     private List<DrawerItem> getDrawerItemList(){
-        dataList = new ArrayList<DrawerItem>();
+        dataList = new ArrayList<>();
 
         dataList.add(new DrawerItem(0, true));
         dataList.add(new DrawerItem(1, getResources().getString(R.string.nav_item_home), R.drawable.ic_home_black_24dp));

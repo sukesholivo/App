@@ -18,7 +18,6 @@ import com.doctl.patientcare.main.om.BaseTask;
 import com.doctl.patientcare.main.om.medicines.Medicine;
 import com.doctl.patientcare.main.om.medicines.MedicineTask;
 import com.doctl.patientcare.main.om.vitals.VitalTask;
-import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
 
 import it.gmariotti.cardslib.library.internal.CardHeader;

@@ -114,7 +114,7 @@ public class FollowupTask extends BaseTask {
             data.put("followupPlanId", this.getPlanId());
             data.put("followupId", this.getFollowupId());
             data.put("timestamp", this.getTimestamp());
-            ArrayList<String> selected = new ArrayList<String>();
+            ArrayList<String> selected = new ArrayList<>();
             if (this.getType().toLowerCase().equals("objective")){
                 for (int i : this.getSelected()){
                     selected.add("" + (this.getOptions().get(i)));

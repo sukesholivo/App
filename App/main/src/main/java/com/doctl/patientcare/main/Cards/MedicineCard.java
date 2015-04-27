@@ -80,13 +80,13 @@ public class MedicineCard extends BaseCard {
         setupCardFooter(view, task);
 
         if (addListener) {
-            setListnerToCard();
+            setListenerToCard();
         }
 
         updateCardAsSeen();
     }
 
-    private void setListnerToCard() {
+    private void setListenerToCard() {
         this.setOnClickListener(new Card.OnCardClickListener() {
             @Override
             public void onClick(Card card, View view) {

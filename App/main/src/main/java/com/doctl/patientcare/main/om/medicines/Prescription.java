@@ -23,7 +23,7 @@ public class Prescription {
     private Date createdOn;
 
     @SerializedName("modifiedOn")
-    private Date modiefiedOn;
+    private Date modifiedOn;
 
     @SerializedName("notes")
     private String notes;
@@ -56,8 +56,8 @@ public class Prescription {
         return createdOn;
     }
 
-    public Date getModiefiedOn() {
-        return modiefiedOn;
+    public Date getModifiedOn() {
+        return modifiedOn;
     }
 
     public String getNotes() {

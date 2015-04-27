@@ -1,7 +1,6 @@
 package com.doctl.patientcare.main.Cards;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;

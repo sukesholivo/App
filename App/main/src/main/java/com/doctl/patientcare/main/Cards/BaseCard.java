@@ -1,12 +1,10 @@
 package com.doctl.patientcare.main.Cards;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.BaseTask;

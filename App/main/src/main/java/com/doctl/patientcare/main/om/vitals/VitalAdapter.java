@@ -20,7 +20,6 @@ public class VitalAdapter extends ArrayAdapter<Vitals> {
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        Vitals item = getItem(position);
         View view = convertView;
         if (view == null) {
             LayoutInflater li =

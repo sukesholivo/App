@@ -95,7 +95,7 @@ public class FollowupCard extends BaseCard {
                 public void onRatingChanged(RatingBar ratingBar, float rating, boolean b) {
                     ArrayList<Integer> selected = followupTask.getPayload().getSelected();
                     if (selected == null) {
-                        selected = new ArrayList<Integer>();
+                        selected = new ArrayList<>();
                     }
                     selected.clear();
                     selected.add((int) (rating - 1));
@@ -115,7 +115,7 @@ public class FollowupCard extends BaseCard {
                         public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                             ArrayList<Integer> selected = followupTask.getPayload().getSelected();
                             if (selected == null) {
-                                selected = new ArrayList<Integer>();
+                                selected = new ArrayList<>();
                             }
                             int index = ((LinearLayout) compoundButton.getParent()).indexOfChild(compoundButton);
                             if (checked) {
@@ -143,7 +143,7 @@ public class FollowupCard extends BaseCard {
                         public void onClick(View view) {
                             ArrayList<Integer> selected = followupTask.getPayload().getSelected();
                             if (selected == null) {
-                                selected = new ArrayList<Integer>();
+                                selected = new ArrayList<>();
                             }
                             if (selected.size() > 0) {
                                 RadioButton rb_old = (RadioButton) ((LinearLayout) view.getParent()).getChildAt(selected.get(0));

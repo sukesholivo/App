@@ -142,7 +142,7 @@ public class HTTPServiceHandler {
                 Utils.handleUnauthorizedAccess(context);
                 return null;
             } else if (statusCode == 400){
-                final HttpEntity entity = httpResponse.getEntity();
+//                final HttpEntity entity = httpResponse.getEntity();
 //                ((Activity) context).runOnUiThread(new Runnable() {
 //                    public void run() {
 //                        String message = "Some error occurred";

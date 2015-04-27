@@ -104,7 +104,7 @@ public final class Utils {
         endDate.set(Calendar.MILLISECOND, 0);
         endDate.add(Calendar.DAY_OF_MONTH, 1);
 
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("startDate", Utils.getIsoDateString(startDate)));
         params.add(new BasicNameValuePair("endDate", Utils.getIsoDateString(endDate)));
         params.add(new BasicNameValuePair("orderBy", "eta"));
@@ -272,7 +272,7 @@ public final class Utils {
         Gson gson = new Gson();
         VitalTask.VitalData[] vitalItems = gson.fromJson(jsonFavorites, VitalTask.VitalData[].class);
         List<VitalTask.VitalData> vitals = Arrays.asList(vitalItems);
-        return new ArrayList<VitalTask.VitalData>(vitals);
+        return new ArrayList<>(vitals);
     }
 
     public static void saveVitalDataToSharedPreference(Context context, List<VitalTask.VitalData> vitals){
@@ -415,8 +415,7 @@ public final class Utils {
 
     public static int dpToPx(Context context, int dp) {
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-        return px;
+        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     public static boolean isNetworkAvailable(Context context) {

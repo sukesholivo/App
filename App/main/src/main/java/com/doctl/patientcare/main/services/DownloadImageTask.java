@@ -28,9 +28,6 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         try {
             InputStream in = new URL(url).openStream();
             bmp = BitmapFactory.decodeStream(in);
-        } catch (FileNotFoundException e){
-            Logger.e("Error", e.getMessage());
-            exception = true;
         } catch (IOException e) {
             Logger.e("Error", e.getMessage());
             exception = true;

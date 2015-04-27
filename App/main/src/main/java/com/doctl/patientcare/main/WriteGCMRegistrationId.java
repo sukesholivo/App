@@ -57,7 +57,7 @@ public class WriteGCMRegistrationId extends AsyncTask<String, String, String> {
                 int timeoutSocket = 6000;
                 HttpConnectionParams.setSoTimeout(httpParams, timeoutSocket);
 
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+                List<NameValuePair> nameValuePairs = new ArrayList<>();
                 nameValuePairs.add(new BasicNameValuePair("gcm_reg_id", registration));
                 nameValuePairs.add(new BasicNameValuePair("username", username));
 
@@ -109,10 +109,6 @@ public class WriteGCMRegistrationId extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        if (result != null) {
-            // do something
-        } else {
-            // error occured
-        }
+
     }
 }

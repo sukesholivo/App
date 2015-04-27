@@ -176,7 +176,7 @@ public class VitalDetailActivity extends BaseActivityWithNavigation {
     }
     private String downloadVitalsData(String vitalId, String vitalType) {
         String url = Constants.VITAL_DETAIL_URL;
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        List<NameValuePair> params = new ArrayList<>();
         if (vitalId != null) {
             params.add(new BasicNameValuePair("vitalId", vitalId));
         } else if (vitalType != null) {
@@ -229,11 +229,11 @@ public class VitalDetailActivity extends BaseActivityWithNavigation {
             return;
         }
         chartContainer.setVisibility(View.VISIBLE);
-        ArrayList<GraphData> graphList = new ArrayList<GraphData>();
-        ArrayList<Double> X1 = new ArrayList<Double>();
-        ArrayList<Double> Y1 = new ArrayList<Double>();
-        ArrayList<Double> X2 = new ArrayList<Double>();
-        ArrayList<Double> Y2 = new ArrayList<Double>();
+        ArrayList<GraphData> graphList = new ArrayList<>();
+        ArrayList<Double> X1 = new ArrayList<>();
+        ArrayList<Double> Y1 = new ArrayList<>();
+        ArrayList<Double> X2 = new ArrayList<>();
+        ArrayList<Double> Y2 = new ArrayList<>();
         for (VitalDetailData.VitalDetailValue vital : vitals) {
             X1.add(Double.valueOf(vital.getTime().getTime()));
             Y1.add(vital.getValue1());

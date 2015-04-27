@@ -133,7 +133,7 @@ public class VitalCard extends BaseCard {
         }
 
 //        TODO: Fix graph.
-        ArrayList<GraphData> graphList = new ArrayList<GraphData>();
+//        ArrayList<GraphData> graphList = new ArrayList<GraphData>();
 //        for (Vitals vital : vitalData) {
 //            GraphData graph = new GraphData(vital.getName(),
 //                    vital.getPast().getTimeStamps(),
@@ -152,7 +152,7 @@ public class VitalCard extends BaseCard {
 
         setupCardFooter(view, task);
         if (addListener) {
-            setListnerToCard();
+            setListenerToCard();
         }
 
         updateCardAsSeen();
@@ -174,7 +174,7 @@ public class VitalCard extends BaseCard {
         return view;
     }
 
-    private void setListnerToCard(){
+    private void setListenerToCard(){
         this.setOnClickListener(new Card.OnCardClickListener() {
             @Override
             public void onClick(Card card, View view) {

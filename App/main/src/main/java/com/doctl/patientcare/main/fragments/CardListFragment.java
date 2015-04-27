@@ -1,7 +1,6 @@
 package com.doctl.patientcare.main.fragments;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,14 +16,10 @@ import com.doctl.patientcare.main.Cards.BaseCard;
 import com.doctl.patientcare.main.Cards.CardHeaderInnerView;
 import com.doctl.patientcare.main.Cards.DashboardCard;
 import com.doctl.patientcare.main.Cards.EducationCard;
-import com.doctl.patientcare.main.Cards.EducationRichtextCard;
 import com.doctl.patientcare.main.Cards.FollowupCard;
-import com.doctl.patientcare.main.Cards.HowruFeelingCard;
-import com.doctl.patientcare.main.Cards.ImageCard;
 import com.doctl.patientcare.main.Cards.MedicineCard;
 import com.doctl.patientcare.main.Cards.MessageCard;
 import com.doctl.patientcare.main.Cards.VitalCard;
-import com.doctl.patientcare.main.Cards.WalkCard;
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.BaseTask;
 import com.doctl.patientcare.main.om.education.EducationTask;
@@ -108,7 +103,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
     }
 
     protected void initializeCardList() {
-        cards = new ArrayList<Card>();
+        cards = new ArrayList<>();
         DashboardCard card0 = new DashboardCard(getActivity(), null);
         card0.setShadow(false);
         card0.setSwipeable(false);
@@ -217,7 +212,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
         card.UpdateTask();
     }
     private ArrayList<BaseCard> parseCardData(String jsonStr){
-        ArrayList<BaseCard> cards = new ArrayList<BaseCard>();
+        ArrayList<BaseCard> cards = new ArrayList<>();
         DashboardCard card0 = new DashboardCard(getActivity(), null);
         card0.setShadow(false);
         card0.setSwipeable(false);

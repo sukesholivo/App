@@ -19,7 +19,6 @@ import com.doctl.patientcare.main.om.TreatmentInfo;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.GetServerAuthTokenAsync;
-import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -101,7 +100,7 @@ public class StartPageActivity extends BaseActivity {
         Button loginButton = (Button)StartPageActivity.this.findViewById(R.id.loginButton);
         loginButton.setOnClickListener(clickListener);
 
-        View.OnClickListener forgotPassworfClickListener = new View.OnClickListener() {
+        View.OnClickListener forgotPasswordClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Login into the app and populate the shared preferences
@@ -112,11 +111,11 @@ public class StartPageActivity extends BaseActivity {
             }
         };
 //        Button forgotPasswordButton = (Button)StartPageActivity.this.findViewById(R.id.forgotPasswordButton);
-//        forgotPasswordButton.setOnClickListener(forgotPassworfClickListener);
+//        forgotPasswordButton.setOnClickListener(forgotPasswordClickListener);
     }
 
     private void Login(String username, String password) {
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+        List<NameValuePair> nameValuePairs = new ArrayList<>();
         nameValuePairs.add(new BasicNameValuePair("username", username));
         nameValuePairs.add(new BasicNameValuePair("password", password));
         //Validate username and password here before proceeding
@@ -178,7 +177,7 @@ public class StartPageActivity extends BaseActivity {
             String email = arg0[0];
             try {
                 JSONObject data = new JSONObject();
-                data.put("email", "email");
+                data.put("email", email);
                 new HTTPServiceHandler(StartPageActivity.this).makeServiceCall(Constants.FORGOT_PASSWORD_URL, HTTPServiceHandler.HTTPMethod.POST, null, data, true);
             } catch (JSONException e){
                 e.printStackTrace();

@@ -1,8 +1,6 @@
 package com.doctl.patientcare.main.Cards;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -10,11 +8,7 @@ import android.widget.TextView;
 
 import com.doctl.patientcare.main.R;
 
-import java.io.File;
-
-import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
-import it.gmariotti.cardslib.library.utils.BitmapUtils;
 
 /**
  * Created by Administrator on 6/18/2014.

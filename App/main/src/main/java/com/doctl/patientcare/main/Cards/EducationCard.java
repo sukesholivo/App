@@ -48,13 +48,12 @@ public class EducationCard extends BaseCard{
 
     @Override
     public void setupInnerViewElements(ViewGroup parent, View view) {
-        setListnerToCard();
+        setListenerToCard();
         final EducationTask.EducationData educationData = ((EducationTask)task).getPayload();
         String thumbnail_url = educationData.getThumbnail();
-        Activity activity = (Activity)getContext();
         ImageView imageView = (ImageView)view.findViewById(R.id.videoPreview);
         try {
-            URL url = new URL(Constants.SERVER_URL + thumbnail_url);
+//            URL url = new URL(Constants.SERVER_URL + thumbnail_url);
 //            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 //            imageView.setImageBitmap(bmp);
             Picasso.with(getContext())
@@ -84,7 +83,7 @@ public class EducationCard extends BaseCard{
         updateCardAsSeen();
     }
 
-    private void setListnerToCard(){
+    private void setListenerToCard(){
         this.setOnClickListener(new Card.OnCardClickListener() {
             @Override
             public void onClick(Card card, View view) {

@@ -125,7 +125,7 @@ public class MainActivity extends BaseActivityWithNavigation {
 //                        .setTitle("Record Symptom" +
 //                                "")
 //                        .setIcon(0)
-//                        .setView(getLayoutInflater().inflate(R.layout.diaolg_inner_content_symptom_entry, null))
+//                        .setView(getLayoutInflater().inflate(R.layout.dialog_inner_content_symptom_entry, null))
 //                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 //                            public void onClick(DialogInterface dialog, int which) {
 //                                Toast.makeText(MainActivity.this, "Symptom submitted", Toast.LENGTH_LONG).show();
