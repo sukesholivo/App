@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.RingtoneManager;
@@ -15,6 +16,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.NotificationCompat;
 import android.util.DisplayMetrics;
 import android.widget.Toast;
@@ -343,6 +345,21 @@ public final class Utils {
         return new File(getFolderUrl(), "profile_pic_" + String.valueOf(System.currentTimeMillis())+ r.nextInt() + ".jpg");
     }
 
+    public static String getRealPathFromURI(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
     public static int getAppVersion(Context context) {
         try {
             PackageInfo packageInfo = context.getPackageManager()
@@ -431,5 +448,9 @@ public final class Utils {
                 Toast.makeText(c, message, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public static boolean isImageFile(String url){
+        return (url.toLowerCase().endsWith(".jpg") || url.toLowerCase().endsWith(".jpeg") || url.toLowerCase().endsWith(".png"));
     }
 }

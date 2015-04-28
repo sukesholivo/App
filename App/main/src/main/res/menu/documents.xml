@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.doctl.patientcare.main.DocumentsActivity" >
+    <item android:id="@+id/action_add_document"
+        android:icon="@drawable/ic_add_white_36dp"
+        android:title="@string/action_new"
+        app:showAsAction="ifRoom">
+    </item>
+</menu>
