@@ -64,4 +64,6 @@
     <color name="points_disabled">#CDCDCD</color>
     <color name="points_primary_disabled">#CDCDCD</color>
     <color name="points_secondary_disabled">#D4D4D4</color>
+
+    <color name="cardview_background">#FFFFFF</color>
 </resources>

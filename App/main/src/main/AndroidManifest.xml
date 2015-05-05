@@ -52,6 +52,10 @@
         </activity>
         <activity android:name=".RewardsActivity" android:label="" android:screenOrientation="portrait" android:windowSoftInputMode="adjustPan">
         </activity>
+        <activity android:name=".activities.QuestionListActivity" android:label="" android:screenOrientation="portrait" android:windowSoftInputMode="adjustPan">
+        </activity>
+        <activity android:name=".activities.QuestionDetailActivity" android:label="" android:screenOrientation="portrait" android:windowSoftInputMode="adjustPan">
+        </activity>
 
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <receiver android:name=".MyC2dmReceiver"

@@ -11,6 +11,7 @@
     <string name="action_add_vital">Sugar</string>
     <string name="action_add_symptoms">Symptom</string>
     <string name="action_save">Save</string>
+    <string name="action_send">Send</string>
 
     <string-array name="drawer_array">
         <item>Profile</item>
@@ -86,6 +87,7 @@
     <string name="nav_item_rewards">Points</string>
     <string name="nav_item_profile">Profile</string>
     <string name="nav_item_logout">Log Out</string>
+    <string name="nav_item_questions">Questions</string>
 
     <string name="notification_default_title">Message from DOCTL.</string>
     <string name="notification_education_title">New education material.</string>

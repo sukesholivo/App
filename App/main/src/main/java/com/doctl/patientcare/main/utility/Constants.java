@@ -7,7 +7,8 @@ public final class Constants {
 //    TODO: Change this server URL to production server url
 //    public final static String SERVER_URL = "https://www.test.doctl.com";
 //    public final static String SERVER_URL = "https://www.demo.doctl.com";
-    public final static String SERVER_URL = "https://www.doctl.com";
+    public final static String SERVER_URL = "http://192.168.43.143:8000";
+//    public final static String SERVER_URL = "https://www.doctl.com";
     public final static String API_VERSION = "v1.0";
 //    TODO: Get this patient id from server and save to local storage.
     public final static String CARDS_URL = SERVER_URL + "/api/card/" + API_VERSION + "/cards/";
@@ -22,6 +23,7 @@ public final class Constants {
     public final static String FORGOT_PASSWORD_URL = SERVER_URL + "/api/account/" + API_VERSION + "/forgot_password/";
     public final static String GCM_REGISTER_URL = Constants.SERVER_URL+"/gcm/register/";
     public final static String REWARDS_URL = SERVER_URL + "/api/reward/" + API_VERSION + "/rewards/";
+    public final static String QUESTION_URL = SERVER_URL + "/api/treatment/" + API_VERSION + "/questions/";
 
     public final static String PERSONAL_DETAIL_SHARED_PREFERENCE_NAME = "personal_detail";
     public final static String CLINIC_DETAIL_SHARED_PREFERENCE_NAME = "clinic_detail";

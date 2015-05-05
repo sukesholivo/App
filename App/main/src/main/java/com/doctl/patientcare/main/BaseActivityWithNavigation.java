@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import com.doctl.patientcare.main.activities.QuestionListActivity;
 import com.doctl.patientcare.main.om.vitals.VitalTask;
 import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
@@ -228,6 +229,11 @@ public class BaseActivityWithNavigation extends BaseActivity implements ListView
                 Logger.d("BaseActivityWithNavigation: ", "Signout Clicked");
                 signoutUser();
                 break;
+            case 12:
+                Logger.d("BaseActivityWithNavigation: ", "Questions Clicked");
+                intent = new Intent(this, QuestionListActivity.class);
+                this.startActivity(intent);
+                break;
             default:
                 break;
         }
@@ -263,6 +269,7 @@ public class BaseActivityWithNavigation extends BaseActivity implements ListView
         dataList.add(new DrawerItem(0, true));
         dataList.add(new DrawerItem(1, getResources().getString(R.string.nav_item_home), R.drawable.ic_home_black_24dp));
         dataList.add(new DrawerItem(2, getResources().getString(R.string.nav_item_prescription), R.drawable.ic_prescription_black_24dp));
+        dataList.add(new DrawerItem(12, getResources().getString(R.string.nav_item_questions), R.drawable.ic_prescription_black_24dp));
 
         ArrayList<VitalTask.VitalData> vitals = Utils.getVitalDataFromSharedPreference(this);
         if (!vitals.isEmpty()) {
