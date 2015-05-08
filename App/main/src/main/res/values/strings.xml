@@ -97,7 +97,7 @@
 
     <string name="reward_text_title">Awards</string>
     <string name="reward_unlock_string">awards unlocked</string>
-    <string name="no_document_string">You don't have any reports yet.</string>
+    <string name="no_document_string">You don\'t have any reports yet.</string>
     <string name="upload_string">Upload</string>
     <string name="title_string">Title</string>
     <string name="description_string">Description</string>

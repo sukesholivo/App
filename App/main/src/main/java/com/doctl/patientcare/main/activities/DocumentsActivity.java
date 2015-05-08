@@ -1,13 +1,15 @@
-package com.doctl.patientcare.main;
+package com.doctl.patientcare.main.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,7 +19,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.doctl.patientcare.main.BaseActivityWithNavigation;
 import com.doctl.patientcare.main.Cards.DocumentCard;
+import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.documents.Document;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
@@ -53,6 +57,13 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_documents);
         this.setupNavigationDrawer();
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle("Documents");
+        }
+        mDocumentsArrayAdapter = new CardArrayAdapter(DocumentsActivity.this, new ArrayList<Card>());
+        CardListView documentListView = (CardListView) DocumentsActivity.this.findViewById(R.id.documents_list_layout);
+        documentListView.setAdapter(mDocumentsArrayAdapter);
         refresh();
     }
 
@@ -77,8 +88,23 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == CAMERA_REQUEST) {
+                fileUri = data.getData();;
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
                 showFilePreviewDialog(photo);
+//                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+//                Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+//                cursor.moveToFirst();
+//
+//                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+//                picturePath = cursor.getString(columnIndex);
+//                cursor.close();
+
+//                try {
+//                    Bitmap cameraBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), fileUri);
+//                    showFilePreviewDialog(cameraBitmap);
+//                }catch (IOException e){
+//                    e.printStackTrace();
+//                }
             } else if (requestCode == SELECT_FILE) {
                 try {
                     fileUri = data.getData();
@@ -99,9 +125,10 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
                 .setItems(R.array.image_picker_array, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
                         if (item == 0) {
+
                             Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                            fileUri = Uri.fromFile(Utils.getImageUrlForImageSave());
-                            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+//                            fileUri = Uri.fromFile(Utils.getImageUrlForImageSave());
+//                            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
                             startActivityForResult(cameraIntent, CAMERA_REQUEST);
                         } else if (item == 1) {
                             Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -136,6 +163,8 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
                         if (title.isEmpty()) {
                             Toast.makeText(DocumentsActivity.this, "Title is required", Toast.LENGTH_SHORT).show();
                         } else {
+                            Logger.e("", fileUri.toString());
+//                            new SaveDocuments().execute(Constants.DOCUMENTS_URL, fileUri.toString(), title, description);
                             new SaveDocuments().execute(Constants.DOCUMENTS_URL, Utils.getRealPathFromURI(DocumentsActivity.this, fileUri), title, description);
                         }
                     }
@@ -159,8 +188,10 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
 
     protected void refreshDocuments() {
         String data = downloadDocumentsData();
+        Logger.e("", data);
         if (data != null && !data.isEmpty()) {
             ArrayList<Card> documents = parseDocumentsData(data);
+            Logger.e("", "Total documents: " + documents.size());
             if (documents.size() == 0) {
                 this.runOnUiThread(new Runnable() {
                     @Override
@@ -237,10 +268,10 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
     private void resetDocuments(final ArrayList<Card> documentsArrayList){
         this.runOnUiThread(new Runnable() {
             public void run() {
-                mDocumentsArrayAdapter = new CardArrayAdapter(DocumentsActivity.this, documentsArrayList);
+                mDocumentsArrayAdapter.clear();
+                mDocumentsArrayAdapter.addAll(documentsArrayList);
                 mDocumentsArrayAdapter.setEnableUndo(false);
-                CardListView documentListView = (CardListView) DocumentsActivity.this.findViewById(R.id.documents_list_layout);
-                documentListView.setAdapter(mDocumentsArrayAdapter);
+
             }
         });
     }

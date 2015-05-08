@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import com.doctl.patientcare.main.activities.DocumentsActivity;
 import com.doctl.patientcare.main.om.vitals.VitalTask;
 import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
