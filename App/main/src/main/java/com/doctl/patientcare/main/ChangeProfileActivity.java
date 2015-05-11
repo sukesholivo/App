@@ -442,7 +442,7 @@ public class ChangeProfileActivity extends ActionBarActivity {
             try {
                 FileInputStream fstrm = new FileInputStream(imageFile);
                 HttpFileUpload hfu = new HttpFileUpload(ChangeProfileActivity.this, serverUrl);
-                String profilePicUrl = hfu.Send_Now("profile_pic", fstrm);
+                String profilePicUrl = hfu.Send_Now("profile_pic.jpg", fstrm);
                 userProfile.setProfilePicUrl(profilePicUrl);
                 Utils.savePatientDataToSharedPreference(ChangeProfileActivity.this, userProfile);
 

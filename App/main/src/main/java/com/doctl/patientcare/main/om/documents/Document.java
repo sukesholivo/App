@@ -15,8 +15,11 @@ public class Document {
     @SerializedName("title")
     private String title;
 
-    @SerializedName("fileUrl")
-    private String fileUrl;
+    @SerializedName("imageUrl")
+    private String imageUrl;
+
+    @SerializedName("thumbnailUrl")
+    private String thumbnailUrl;
 
     @SerializedName("description")
     private String description;
@@ -38,8 +41,12 @@ public class Document {
         return title;
     }
 
-    public String getFileUrl() {
-        return fileUrl;
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
     }
 
     public String getDescription() {

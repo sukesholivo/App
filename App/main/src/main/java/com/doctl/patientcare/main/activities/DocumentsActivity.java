@@ -3,32 +3,31 @@ package com.doctl.patientcare.main.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.doctl.patientcare.main.BaseActivityWithNavigation;
-import com.doctl.patientcare.main.Cards.DocumentCard;
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.documents.Document;
+import com.doctl.patientcare.main.om.documents.DocumentAdapter;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.HttpFileUpload;
 import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
+import com.melnykov.fab.FloatingActionButton;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -38,8 +37,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import it.gmariotti.cardslib.library.internal.Card;
-import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
-import it.gmariotti.cardslib.library.view.CardListView;
 import it.gmariotti.cardslib.library.view.CardView;
 
 /**
@@ -49,8 +46,12 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
     private static final String TAG = DocumentsActivity.class.getSimpleName();
     private static final int CAMERA_REQUEST = 101;
     private static final int SELECT_FILE = 102;
-    private Uri fileUri;
-    CardArrayAdapter mDocumentsArrayAdapter;
+    private Uri imageUri;
+    String filePath = null;
+    DocumentAdapter mDocumentAdapter;
+    ListView mDocumentListView;
+    ArrayList<Document> mDocumentArrayList;
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,58 +60,40 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
         this.setupNavigationDrawer();
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle("Documents");
+            actionBar.setTitle("Reports");
         }
-        mDocumentsArrayAdapter = new CardArrayAdapter(DocumentsActivity.this, new ArrayList<Card>());
-        CardListView documentListView = (CardListView) DocumentsActivity.this.findViewById(R.id.documents_list_layout);
-        documentListView.setAdapter(mDocumentsArrayAdapter);
-        refresh();
-    }
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.documents, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_add_document:
+        mDocumentArrayList = new ArrayList<>();
+        mDocumentAdapter = new DocumentAdapter(DocumentsActivity.this, mDocumentArrayList);
+        mDocumentListView = (ListView)findViewById(R.id.documents_list);
+        mDocumentListView.setAdapter(mDocumentAdapter);
+        fab = (FloatingActionButton) this.findViewById(R.id.button_add);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 showFilePickerDialog();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+            }
+        });
+        refresh();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Uri selectedImageUri = null;
+        Bitmap bitmap = null;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 8;
         if (resultCode == RESULT_OK) {
             if (requestCode == CAMERA_REQUEST) {
-                fileUri = data.getData();;
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
-                showFilePreviewDialog(photo);
-//                String[] filePathColumn = {MediaStore.Images.Media.DATA};
-//                Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-//                cursor.moveToFirst();
-//
-//                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-//                picturePath = cursor.getString(columnIndex);
-//                cursor.close();
-
-//                try {
-//                    Bitmap cameraBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), fileUri);
-//                    showFilePreviewDialog(cameraBitmap);
-//                }catch (IOException e){
-//                    e.printStackTrace();
-//                }
+                filePath = imageUri.getPath();
+                bitmap = BitmapFactory.decodeFile(imageUri.getPath(), options);
+                showFilePreviewDialog(bitmap);
             } else if (requestCode == SELECT_FILE) {
+                selectedImageUri = data.getData();
+                filePath = Utils.getRealPathFromURI(this, selectedImageUri);
                 try {
-                    fileUri = data.getData();
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), fileUri);
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
                     showFilePreviewDialog(bitmap);
-                }catch (IOException e){
+                } catch (IOException e){
                     e.printStackTrace();
                 }
             }
@@ -119,21 +102,19 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
 
     private void showFilePickerDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setTitle("Select File")
+                .setTitle("Upload Report")
                 .setIcon(0)
                 .setCancelable(true)
                 .setItems(R.array.image_picker_array, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
                         if (item == 0) {
-
                             Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-//                            fileUri = Uri.fromFile(Utils.getImageUrlForImageSave());
-//                            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+                            imageUri = Uri.fromFile(Utils.getImageUrlForImageSave("document"));
+                            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                             startActivityForResult(cameraIntent, CAMERA_REQUEST);
                         } else if (item == 1) {
-                            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                            intent.setType("image/*");
-                            startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
+                            Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            startActivityForResult(galleryIntent, SELECT_FILE);
                         }
                     }
                 });
@@ -163,9 +144,9 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
                         if (title.isEmpty()) {
                             Toast.makeText(DocumentsActivity.this, "Title is required", Toast.LENGTH_SHORT).show();
                         } else {
-                            Logger.e("", fileUri.toString());
-//                            new SaveDocuments().execute(Constants.DOCUMENTS_URL, fileUri.toString(), title, description);
-                            new SaveDocuments().execute(Constants.DOCUMENTS_URL, Utils.getRealPathFromURI(DocumentsActivity.this, fileUri), title, description);
+
+                            Logger.e("", filePath);
+                            new SaveDocuments().execute(Constants.DOCUMENTS_URL, filePath, title, description);
                         }
                     }
                 })
@@ -188,9 +169,8 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
 
     protected void refreshDocuments() {
         String data = downloadDocumentsData();
-        Logger.e("", data);
         if (data != null && !data.isEmpty()) {
-            ArrayList<Card> documents = parseDocumentsData(data);
+            ArrayList<Document> documents = parseDocumentsData(data);
             Logger.e("", "Total documents: " + documents.size());
             if (documents.size() == 0) {
                 this.runOnUiThread(new Runnable() {
@@ -209,21 +189,13 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
         return serviceHandler.makeServiceCall(Constants.DOCUMENTS_URL, HTTPServiceHandler.HTTPMethod.GET, null, null);
     }
 
-    private ArrayList<Card> parseDocumentsData(String jsonStr){
-        ArrayList<Card> documentCards = new ArrayList<>();
+    private ArrayList<Document> parseDocumentsData(String jsonStr){
         final Document[] documents = new Gson().fromJson(jsonStr, Document[].class);
+        ArrayList<Document> documentArrayList = new ArrayList<>();
         for (final Document doc: documents){
-            final DocumentCard documentCard = new DocumentCard(this, doc);
-            View.OnClickListener deleteActionButtonClickListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    removeDeletedDocument(documentCard);
-                }
-            };
-            documentCard.setListenerToDeleteButtons(deleteActionButtonClickListener);
-            documentCards.add(documentCard);
+            documentArrayList.add(doc);
         }
-        return documentCards;
+        return documentArrayList;
     }
 
     private void showUploadLayout(){
@@ -251,27 +223,25 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
             @Override
             public void run() {
                 hideUploadLayout();
-                final Document document = new Gson().fromJson(jsonStr, Document.class);
-                DocumentCard documentCard = new DocumentCard(DocumentsActivity.this, document);
-                mDocumentsArrayAdapter.insert(documentCard, 0);
-                mDocumentsArrayAdapter.notifyDataSetChanged();
+                Document document = new Gson().fromJson(jsonStr, Document.class);
+                mDocumentAdapter.add(document);
+                mDocumentAdapter.notifyDataSetChanged();
             }
         });
     }
 
-    private void removeDeletedDocument(DocumentCard documentCard){
-        mDocumentsArrayAdapter.remove(documentCard);
-        mDocumentsArrayAdapter.notifyDataSetChanged();
-        new DeleteDocument().execute(Constants.DOCUMENTS_URL + documentCard.getCardId());
+    private void removeDeletedDocument(Document document){
+        mDocumentAdapter.remove(document);
+        mDocumentAdapter.notifyDataSetChanged();
+        new DeleteDocument().execute(Constants.DOCUMENTS_URL + document.getId());
     }
 
-    private void resetDocuments(final ArrayList<Card> documentsArrayList){
+    private void resetDocuments(final ArrayList<Document> documentsArrayList){
         this.runOnUiThread(new Runnable() {
             public void run() {
-                mDocumentsArrayAdapter.clear();
-                mDocumentsArrayAdapter.addAll(documentsArrayList);
-                mDocumentsArrayAdapter.setEnableUndo(false);
-
+                mDocumentAdapter.clear();
+                mDocumentAdapter.addAll(documentsArrayList);
+                mDocumentAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -287,7 +257,6 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
             refreshDocuments();
             return null;
         }
-
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
@@ -322,7 +291,7 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
                 nameValuePairs.add(new BasicNameValuePair("title", title));
                 nameValuePairs.add(new BasicNameValuePair("description", description));
                 HttpFileUpload hfu = new HttpFileUpload(DocumentsActivity.this, serverUrl);
-                String response = hfu.Send_Now("document", fstrm, nameValuePairs);
+                String response = hfu.Send_Now("document.jpg", fstrm, nameValuePairs);
                 showAddedDocument(response);
             } catch (Exception e) {
                 Logger.e(TAG, e.getMessage());

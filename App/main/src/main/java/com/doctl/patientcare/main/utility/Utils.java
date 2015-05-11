@@ -340,19 +340,23 @@ public final class Utils {
         return folder.getAbsolutePath();
     }
 
-    public static File getImageUrlForImageSave(){
+    public static File getImageUrlForImageSave(String prefix){
         Random r = new Random();
-        return new File(getFolderUrl(), "profile_pic_" + String.valueOf(System.currentTimeMillis())+ r.nextInt() + ".jpg");
+        return new File(getFolderUrl(), prefix + "_" + String.valueOf(System.currentTimeMillis())+ r.nextInt() + ".jpg");
+    }
+
+    public static File getImageUrlForImageSave(){
+        return getImageUrlForImageSave("profile_pic");
     }
 
     public static String getRealPathFromURI(Context context, Uri contentUri) {
         Cursor cursor = null;
         try {
-            String[] proj = { MediaStore.Images.Media.DATA };
-            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri,  filePathColumn, null, null, null);
             cursor.moveToFirst();
-            return cursor.getString(column_index);
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            return cursor.getString(columnIndex);
         } finally {
             if (cursor != null) {
                 cursor.close();
