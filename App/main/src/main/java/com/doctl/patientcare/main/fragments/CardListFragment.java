@@ -37,7 +37,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.melnykov.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionButton;
 import com.nhaarman.listviewanimations.swinginadapters.AnimationAdapter;
 import com.nhaarman.listviewanimations.swinginadapters.prepared.ScaleInAnimationAdapter;
 
@@ -125,7 +125,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
                         if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                             Logger.i("a", "scrolling stopped...");
                             if (isDashboardHidden) {
-                                fab.show();
+                                fab.show(true);
                             }
                         }
                         super.onScrollStateChanged(view,scrollState);
@@ -133,7 +133,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
 
                     @Override
                     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                        fab.hide();
+                        fab.hide(true);
                         if(mLastFirstVisibleItem >=0 && mLastVisibleItemCount >=0) {
                             if (mLastFirstVisibleItem > firstVisibleItem) {
                                 Logger.i(TAG, "scrolling up");

@@ -26,6 +26,7 @@ import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
+import com.github.clans.fab.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -44,6 +45,8 @@ public class VitalDetailActivity extends BaseActivityWithNavigation {
     private VitalDetailData vitalData;
     String vitalId;
     String vitalType;
+    FloatingActionButton fab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +60,14 @@ public class VitalDetailActivity extends BaseActivityWithNavigation {
         }
         vitalId = bundle.getString("vitalId");
         vitalType = bundle.getString("vitalType");
+        refresh();
+        fab = (FloatingActionButton) this.findViewById(R.id.button_add);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAddVitalDialog();
+            }
+        });
         refresh();
     }
 
@@ -75,29 +86,30 @@ public class VitalDetailActivity extends BaseActivityWithNavigation {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_add_vital:
-                if (vitalData != null) {
-                    new AlertDialog.Builder(this)
-                            .setTitle(this.vitalData.getTitle())
-                            .setIcon(0)
-                            .setView(getNewVitalDialogInnerView())
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    saveVitalValue(dialog);
-                                }
-                            })
-                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                }
-                            })
-                            .show();
-                }
-                return true;
             case R.id.action_refresh:
                 refresh();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void showAddVitalDialog() {
+        if (vitalData != null) {
+            new AlertDialog.Builder(this)
+                    .setTitle(this.vitalData.getTitle())
+                    .setIcon(0)
+                    .setView(getNewVitalDialogInnerView())
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            saveVitalValue(dialog);
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    })
+                    .show();
         }
     }
 

@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import com.doctl.patientcare.main.activities.DocumentsActivity;
 import com.doctl.patientcare.main.activities.QuestionListActivity;
 import com.doctl.patientcare.main.om.vitals.VitalTask;
 import com.doctl.patientcare.main.utility.Logger;
@@ -230,7 +231,12 @@ public class BaseActivityWithNavigation extends BaseActivity implements ListView
                 signoutUser();
                 break;
             case 12:
-                Logger.d("BaseActivityWithNavigation: ", "Questions Clicked");
+                Logger.d("BaseActivityWithNavigation: ", "Document Clicked");
+                intent = new Intent(this, DocumentsActivity.class);
+                this.startActivity(intent);
+                break;
+            case 13:
+                Logger.d("BaseActivityWithNavigation: ", "Question Clicked");
                 intent = new Intent(this, QuestionListActivity.class);
                 this.startActivity(intent);
                 break;
@@ -269,7 +275,8 @@ public class BaseActivityWithNavigation extends BaseActivity implements ListView
         dataList.add(new DrawerItem(0, true));
         dataList.add(new DrawerItem(1, getResources().getString(R.string.nav_item_home), R.drawable.ic_home_black_24dp));
         dataList.add(new DrawerItem(2, getResources().getString(R.string.nav_item_prescription), R.drawable.ic_prescription_black_24dp));
-        dataList.add(new DrawerItem(12, getResources().getString(R.string.nav_item_questions), R.drawable.ic_prescription_black_24dp));
+        dataList.add(new DrawerItem(12, getResources().getString(R.string.nav_item_documents), R.drawable.ic_action_storage));
+        dataList.add(new DrawerItem(13, getResources().getString(R.string.nav_item_questions), R.drawable.ic_action_storage));
 
         ArrayList<VitalTask.VitalData> vitals = Utils.getVitalDataFromSharedPreference(this);
         if (!vitals.isEmpty()) {

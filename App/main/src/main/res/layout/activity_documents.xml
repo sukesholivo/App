@@ -1,4 +1,3 @@
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
@@ -11,43 +10,26 @@
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
-            <LinearLayout
-                android:id="@+id/vitalDetailLineGraph"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_alignParentTop="true"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:visibility="gone"
-                android:background="@drawable/graph_background"
-                />
-            <TextView
-                android:id="@+id/no_vital_data"
+            <it.gmariotti.cardslib.library.view.CardView
+                android:id="@+id/upload_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
-                android:textSize="@dimen/text_size_m"
-                android:text="@string/no_vital_data"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="12dp"
                 android:visibility="gone"/>
             <ListView
-                android:id="@+id/vitalEntryList"
+                android:id="@+id/documents_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/vitalDetailLineGraph"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:divider="@drawable/vital_list_divide"
-                android:dividerHeight="2dp"/>
-
+                android:divider="#b5b5b5"
+                android:dividerHeight="1dp"/>
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/button_add"
                 android:layout_width="wrap_content"
@@ -55,7 +37,6 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_margin="16dp"
                 android:src="@drawable/ic_add_white_36dp"
                 style="@style/FabButtonsStyle"
                 />
@@ -63,3 +44,4 @@
         <include layout="@layout/drawer_layout"/>
     </android.support.v4.widget.DrawerLayout>
 </LinearLayout>
+

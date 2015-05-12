@@ -131,6 +131,15 @@ public class HTTPServiceHandler {
 
                 httpResponse = httpClient.execute(httpGet);
 
+            } else if (method == HTTPMethod.DELETE) {
+                HttpDelete httpDelete = new HttpDelete(url);
+                // adding post params
+                httpDelete.setHeader("Content-type","application/json");
+                if (!anonymous) {
+                    httpDelete.setHeader("Authorization", "Token " + ServerAccessToken);
+                }
+                httpResponse = httpClient.execute(httpDelete);
+                return null;
             }
             assert httpResponse != null;
             httpEntity = httpResponse.getEntity();
@@ -197,7 +206,8 @@ public class HTTPServiceHandler {
     public enum HTTPMethod{
         GET,
         POST,
-        PATCH
+        PATCH,
+        DELETE
     }
 
     public class HttpPatch extends HttpPost {
@@ -215,6 +225,24 @@ public class HTTPServiceHandler {
         @Override
         public String getMethod() {
             return METHOD_PATCH;
+        }
+    }
+
+    public class HttpDelete extends HttpPost {
+        public static final String METHOD_DELETE = "DELETE";
+
+        public HttpDelete() {
+            super();
+        }
+
+        public HttpDelete(final String url) {
+            super(url);
+            setURI(URI.create(url));
+        }
+
+        @Override
+        public String getMethod() {
+            return METHOD_DELETE;
         }
     }
 }
