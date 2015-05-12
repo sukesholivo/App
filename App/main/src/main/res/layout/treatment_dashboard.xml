@@ -1,119 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ProgressWheel="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="90dp"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
     android:paddingBottom="10dp"
     android:background="@color/dashboard_background">
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <RelativeLayout
-            android:id="@+id/pointsLayout"
+        android:id="@+id/pointsLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <TextView
+            android:id="@+id/points"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
-            <TextView
-                android:id="@+id/points"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
-                android:gravity="center"
-                android:textColor="@color/dashboard_text_main"
-                android:textSize="@dimen/awards_text_font_size_big"
-                />
-            <TextView
-                android:id="@+id/pointsText"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/awards_text_height"
-                android:layout_below="@id/points"
-                android:gravity="top"
-                android:textAllCaps="true"
-                android:text="@string/points"
-                android:textColor="@color/dashboard_text_secondary"
-                android:textSize="@dimen/awards_text_font_size_small"
-                />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/adheranceLayout"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:gravity="center"
+            android:textColor="@color/dashboard_text_main"
+            android:textSize="@dimen/awards_text_font_size_big"
+            />
+        <TextView
+            android:id="@+id/pointsText"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            >
-            <com.doctl.patientcare.main.controls.ProgressWheel
-                android:id="@+id/adherenceProgress"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_centerInParent="true"
-                ProgressWheel:textColor="@color/dashboard_text_secondary"
-                ProgressWheel:textSize="12sp"
-                ProgressWheel:rimColor="@color/color_gray_translucent"
-                ProgressWheel:barLength="30dp"
-                ProgressWheel:barColor="@color/dashboard_text_main"
-                ProgressWheel:barWidth="5dp"
-                ProgressWheel:rimWidth="5dp"
-                ProgressWheel:contourColor="@color/transparent"
-                ProgressWheel:contourSize="0dp"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/adherenceProgress"
-                android:gravity="bottom"
-                android:layout_marginTop="10dp"
-                android:textAllCaps="true"
-                android:text="@string/adherence"
-                android:textColor="@color/dashboard_text_secondary"
-                android:textSize="@dimen/awards_text_font_size_small"
-                />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/progressLayout"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_centerHorizontal="true"
-            android:layout_toRightOf="@id/pointsLayout"
-            android:layout_toEndOf="@+id/pointsLayout"
-            android:layout_toLeftOf="@id/adheranceLayout"
-            android:layout_toStartOf="@id/adheranceLayout">
-
-            <ProgressBar
-                android:id="@+id/treatmentProgress"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:progressDrawable="@drawable/custom_progressbar"
-                android:layout_width="fill_parent"
-                android:layout_height="5dp"
-                android:layout_marginTop="30dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_centerHorizontal="true"
-                />
-
-            <TextView
-                android:id="@+id/progressText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/treatmentProgress"
-                android:layout_marginTop="10dp"
-                android:gravity="center|end"
-                android:layout_centerHorizontal="true"
-                android:textColor="@color/dashboard_text_secondary"
-                android:textSize="@dimen/awards_text_font_size_small"
-                />
-        </RelativeLayout>
+            android:layout_height="@dimen/awards_text_height"
+            android:layout_below="@id/points"
+            android:gravity="top"
+            android:textAllCaps="true"
+            android:text="@string/points"
+            android:textColor="@color/dashboard_text_secondary"
+            android:textSize="@dimen/awards_text_font_size_small"
+            />
     </RelativeLayout>
-</LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/adheranceLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        >
+        <com.doctl.patientcare.main.controls.ProgressWheel
+            android:id="@+id/adherenceProgress"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            ProgressWheel:textColor="@color/dashboard_text_secondary"
+            ProgressWheel:textSize="12sp"
+            ProgressWheel:rimColor="@color/color_gray_translucent"
+            ProgressWheel:barLength="30dp"
+            ProgressWheel:barColor="@color/dashboard_text_main"
+            ProgressWheel:barWidth="5dp"
+            ProgressWheel:rimWidth="5dp"
+            ProgressWheel:contourColor="@color/transparent"
+            ProgressWheel:contourSize="0dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/adherenceProgress"
+            android:gravity="bottom"
+            android:layout_marginTop="10dp"
+            android:textAllCaps="true"
+            android:text="@string/adherence"
+            android:textColor="@color/dashboard_text_secondary"
+            android:textSize="@dimen/awards_text_font_size_small"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/progressLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_toRightOf="@id/pointsLayout"
+        android:layout_toEndOf="@+id/pointsLayout"
+        android:layout_toLeftOf="@id/adheranceLayout"
+        android:layout_toStartOf="@id/adheranceLayout">
+
+        <ProgressBar
+            android:id="@+id/treatmentProgress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progressDrawable="@drawable/custom_progressbar"
+            android:layout_width="fill_parent"
+            android:layout_height="5dp"
+            android:layout_marginTop="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerHorizontal="true"
+            />
+
+        <TextView
+            android:id="@+id/progressText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/treatmentProgress"
+            android:layout_marginTop="10dp"
+            android:gravity="center|end"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/dashboard_text_secondary"
+            android:textSize="@dimen/awards_text_font_size_small"
+            />
+    </RelativeLayout>
+</RelativeLayout>

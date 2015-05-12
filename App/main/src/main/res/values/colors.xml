@@ -59,7 +59,8 @@
     <color name="action_button_pressed">#4DD0E1</color>
 
     <color name="action_fab_button_primary">#F44336</color>
-    <color name="action_fab_button_pressed">#B71C1C</color>
+    <color name="action_fab_button_pressed">#D32F2F</color>
+    <color name="action_fab_button_ripple">#B71C1C</color>
 
     <!-- Vitals Value-->
     <color name="points_green">#23B63D</color>

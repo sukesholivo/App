@@ -1,53 +1,47 @@
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@drawable/page_background"
     android:fitsSystemWindows="true">
-    <LinearLayout
+    <include layout="@layout/toolbar"/>
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <include layout="@layout/toolbar"/>
-        <android.support.v4.widget.DrawerLayout
-            android:id="@+id/drawer_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
-            <LinearLayout
+        >
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <it.gmariotti.cardslib.library.view.CardView
+                android:id="@+id/upload_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="12dp"
+                android:visibility="gone"/>
+            <ListView
+                android:id="@+id/documents_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="#b5b5b5"
+                android:dividerHeight="1dp"/>
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/button_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <it.gmariotti.cardslib.library.view.CardView
-                    android:id="@+id/upload_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_marginTop="12dp"
-                    android:visibility="gone"/>
-                <ListView
-                    android:id="@+id/documents_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:divider="#b5b5b5"
-                    android:dividerHeight="1dp"/>
-            </LinearLayout>
-            <include layout="@layout/drawer_layout"/>
-        </android.support.v4.widget.DrawerLayout>
-    </LinearLayout>
-    <com.melnykov.fab.FloatingActionButton
-        android:id="@+id/button_add"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_add_white_36dp"
-        fab:fab_colorNormal="@color/action_fab_button_primary"
-        fab:fab_colorPressed="@color/action_fab_button_pressed"
-        />
-</RelativeLayout>
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:src="@drawable/ic_add_white_36dp"
+                style="@style/FabButtonsStyle"
+                />
+        </RelativeLayout>
+        <include layout="@layout/drawer_layout"/>
+    </android.support.v4.widget.DrawerLayout>
+</LinearLayout>
+
