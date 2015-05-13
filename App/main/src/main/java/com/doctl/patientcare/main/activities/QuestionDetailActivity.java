@@ -4,17 +4,14 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.view.ActionMode;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.doctl.patientcare.main.BaseActivity;
@@ -23,19 +20,13 @@ import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.chat.Message;
 import com.doctl.patientcare.main.om.chat.MessageListAdapter;
 import com.doctl.patientcare.main.om.chat.Question;
-import com.doctl.patientcare.main.om.chat.QuestionListAdapter;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
-import com.doctl.patientcare.main.utility.Logger;
-import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -113,19 +104,19 @@ public class QuestionDetailActivity extends BaseActivity {
 
     private void showNewQuestionLayout(){
         EditText askQuestionEditText = (EditText) this.findViewById(R.id.ask_question_edit_text);
-        TextView questionTextView = (TextView) this.findViewById(R.id.question_text);
-        RelativeLayout chatListLayout = (RelativeLayout) this.findViewById(R.id.message_list_layout);
+        CardView questionCardview = (CardView) this.findViewById(R.id.question_text_layout);
+        CardView chatListLayout = (CardView) this.findViewById(R.id.message_list_layout);
         askQuestionEditText.setVisibility(View.VISIBLE);
-        questionTextView.setVisibility(View.GONE);
+        questionCardview.setVisibility(View.GONE);
         chatListLayout.setVisibility(View.GONE);
     }
 
     private void hideNewQuestionLayout(){
         EditText askQuestionEditText = (EditText) this.findViewById(R.id.ask_question_edit_text);
-        TextView questionTextView = (TextView) this.findViewById(R.id.question_text);
-        RelativeLayout chatListLayout = (RelativeLayout) this.findViewById(R.id.message_list_layout);
+        CardView questionCardview = (CardView) this.findViewById(R.id.question_text_layout);
+        CardView chatListLayout = (CardView) this.findViewById(R.id.message_list_layout);
         askQuestionEditText.setVisibility(View.GONE);
-        questionTextView.setVisibility(View.VISIBLE);
+        questionCardview.setVisibility(View.VISIBLE);
         chatListLayout.setVisibility(View.VISIBLE);
 
     }

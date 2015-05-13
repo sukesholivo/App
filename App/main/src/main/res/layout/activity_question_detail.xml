@@ -18,54 +18,81 @@
         android:imeOptions="actionSend"
         android:visibility="gone"
         />
-    <TextView
-        android:id="@+id/question_text"
+    <android.support.v7.widget.CardView
+        android:id="@+id/question_text_layout"
+        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:textColor="@color/color_black"
-        android:textSize="@dimen/text_size_s"
-        android:visibility="gone"/>
-    <RelativeLayout
-        android:id="@+id/message_list_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardElevation="5dp"
         android:visibility="gone">
-        <ListView
-            android:id="@+id/message_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-        <RelativeLayout
-            android:layout_alignParentBottom="true"
+
+        <TextView
+            android:id="@+id/question_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
-            android:paddingTop="5dp"
-            android:paddingBottom="10dp"
-            android:paddingLeft="0dp"
-            android:paddingRight="0dp"
-             >
-            <EditText
-                android:id="@+id/etMessage"
-                android:layout_toLeftOf="@+id/btSend"
-                android:layout_alignBottom="@+id/btSend"
+            android:layout_margin="10dp"
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/text_size_s"
+            />
+    </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        android:id="@+id/message_list_layout"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardElevation="5dp"
+        android:visibility="gone">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:id="@+id/send_message_layout"
+                android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="top"
-                android:hint="Type here"
-                android:inputType="textShortMessage"
-                android:imeOptions="actionSend"
-                />
-            <ImageButton
-                android:id="@+id/btSend"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentRight="true"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_action_send_now_dark"
-                android:background="@color/transparent"
+                android:background="#ffffff"
+                android:paddingTop="5dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
                 >
-            </ImageButton>
+                <EditText
+                    android:id="@+id/etMessage"
+                    android:layout_toLeftOf="@+id/btSend"
+                    android:layout_toStartOf="@+id/btSend"
+                    android:layout_alignBottom="@+id/btSend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:hint="Type here"
+                    android:inputType="textCapSentences"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    />
+                <ImageButton
+                    android:id="@+id/btSend"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentRight="true"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_action_send_now_dark"
+                    android:background="@color/transparent"
+                    >
+                </ImageButton>
+            </RelativeLayout>
+            <ListView
+                android:id="@+id/message_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/send_message_layout"
+                android:layout_alignParentTop="true"
+                android:stackFromBottom="true"
+                android:transcriptMode="alwaysScroll"/>
         </RelativeLayout>
-    </RelativeLayout>
+    </android.support.v7.widget.CardView>
 </LinearLayout>

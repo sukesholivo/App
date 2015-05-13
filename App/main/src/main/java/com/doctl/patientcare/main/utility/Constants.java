@@ -5,8 +5,8 @@ package com.doctl.patientcare.main.utility;
  */
 public final class Constants {
 //    TODO: Change this server URL to production server url
-    public final static String SERVER_URL = "https://www.test.doctl.com";
-//    public final static String SERVER_URL = "http://192.168.43.143:8000";
+//    public final static String SERVER_URL = "https://www.test.doctl.com";
+    public final static String SERVER_URL = "http://192.168.43.143:8000";
 //    public final static String SERVER_URL = "https://www.doctl.com";
     public final static String API_VERSION = "v1.0";
 //    TODO: Get this patient id from server and save to local storage.
