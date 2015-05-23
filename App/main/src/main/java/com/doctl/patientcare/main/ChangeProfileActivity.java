@@ -22,7 +22,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
 import com.doctl.patientcare.main.om.UserProfile;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
@@ -31,6 +31,8 @@ import com.doctl.patientcare.main.utility.HttpFileUpload;
 import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
+import com.iangclifton.android.floatlabel.FloatLabel;
+
 import com.soundcloud.android.crop.Crop;
 import com.squareup.picasso.Picasso;
 
@@ -63,13 +65,14 @@ public class ChangeProfileActivity extends ActionBarActivity {
         setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null){
-            actionBar.setTitle("Change Profile");
+            actionBar.setTitle("Edit Profile");
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         userProfile = Utils.getPatientDataFromSharedPreference(this);
         setData(userProfile);
         setImagePicker();
+        setChangePassword();
     }
 
     @Override
@@ -89,7 +92,6 @@ public class ChangeProfileActivity extends ActionBarActivity {
                 return true;
             case R.id.action_save_profile:
                 saveProfile();
-//                Toast.makeText(this, "Profile saved", Toast.LENGTH_LONG).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -132,10 +134,46 @@ public class ChangeProfileActivity extends ActionBarActivity {
         });
 
         final AlertDialog dialog = builder.create();
-        Button button = (Button) findViewById(R.id.btn_crop);
         mImageView = (ImageView) findViewById(R.id.photo);
+        RelativeLayout photoLayout = (RelativeLayout) findViewById(R.id.photoLayout);
+        photoLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.show();
+            }
+        });
+    }
 
-        button.setOnClickListener(new View.OnClickListener() {
+    private void setChangePassword(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Change Password");
+        builder.setView(getLayoutInflater().inflate(R.layout.dialog_inner_content_change_password, null));
+        builder.setPositiveButton("CHANGE", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                FloatLabel password1 = (FloatLabel) ((AlertDialog) dialog).findViewById(R.id.password1);
+                String p1 = password1.getEditText().getText().toString();
+                FloatLabel password2 = (FloatLabel) ((AlertDialog) dialog).findViewById(R.id.password2);
+                String p2 = password2.getEditText().getText().toString();
+                if (p1.isEmpty()) {
+                    Utils.showSnackBar(ChangeProfileActivity.this, "Password is required");
+                    return;
+                }
+                if (p2.isEmpty() || !p1.equals(p2)) {
+                    Utils.showSnackBar(ChangeProfileActivity.this, "Password doesn't match");
+                    return;
+                }
+                new ChangePassword().execute(Constants.CHANGE_PASSWORD_URL, p1, p2);
+            }
+        });
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        final AlertDialog dialog = builder.create();
+        Button photoLayout = (Button) findViewById(R.id.password_button);
+        photoLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.show();
@@ -177,15 +215,15 @@ public class ChangeProfileActivity extends ActionBarActivity {
                     .load(Constants.SERVER_URL + userProfile.getProfilePicUrl())
                     .into(photoView);
         }
-        final EditText nameText = (EditText) findViewById(R.id.name);
+        final FloatLabel nameText = (FloatLabel) findViewById(R.id.name);
         nameText.setText(userProfile.getDisplayName());
-        setNameListener(nameText);
+        setNameListener(nameText.getEditText());
 
-        final EditText phoneText = (EditText) findViewById(R.id.phone);
+        final FloatLabel phoneText = (FloatLabel) findViewById(R.id.phone);
         phoneText.setText(userProfile.getPhone());
-        setPhoneListener(phoneText);
+        setPhoneListener(phoneText.getEditText());
 
-        final EditText dobText = (EditText) findViewById(R.id.dob);
+        final FloatLabel dobText = (FloatLabel) findViewById(R.id.dob);
         String dob = userProfile.getDob();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date newDate = null;
@@ -201,9 +239,9 @@ public class ChangeProfileActivity extends ActionBarActivity {
             date = format.format(newDate);
         }
         dobText.setText(date);
-        setDOBListener(dobText);
+        setDOBListener(dobText.getEditText());
 
-        final EditText sexText = (EditText) findViewById(R.id.sex);
+        final FloatLabel sexText = (FloatLabel) findViewById(R.id.sex);
         String sex = userProfile.getSex();
         if (sex.equals("m")){
             sexText.setText("Male");
@@ -211,7 +249,7 @@ public class ChangeProfileActivity extends ActionBarActivity {
         if (sex.equals("f")){
             sexText.setText("Female");
         }
-        setSexListener(sexText);
+        setSexListener(sexText.getEditText());
     }
 
     private void setNameListener(final EditText editText) {
@@ -369,26 +407,12 @@ public class ChangeProfileActivity extends ActionBarActivity {
             JSONObject data = null;
             try {
                 data = userProfile.getDataToPatch();
-                EditText password1 = (EditText) findViewById(R.id.password1);
-                String p1 = password1.getText().toString();
-                EditText password2 = (EditText) findViewById(R.id.password2);
-                String p2 = password2.getText().toString();
-
-                if (p1 != null && !p1.isEmpty()){
-                    if (p2 == null || p2.isEmpty() || !p1.equals(p2)){
-                        Toast.makeText(this, "Password doesn't match", Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                    data.put("password1", p1);
-                    data.put("password2", p2);
-                }
             } catch (JSONException e){
                 Logger.e(TAG, e.getMessage());
             }
             new SaveProfile().execute(url, data);
-
         } else {
-            Toast.makeText(this, "No Network Connection", Toast.LENGTH_LONG).show();
+            Utils.showSnackBar(ChangeProfileActivity.this, "No Network Connection");
         }
     }
 
@@ -408,7 +432,7 @@ public class ChangeProfileActivity extends ActionBarActivity {
             if (response != null && !response.isEmpty()) {
                 userProfile = new Gson().fromJson(response, UserProfile.class);
                 Utils.savePatientDataToSharedPreference(ChangeProfileActivity.this, userProfile);
-                Utils.showToastOnUiThread(ChangeProfileActivity.this, "Profile saved");
+                Utils.showSnackBarOnUiThread(ChangeProfileActivity.this, "Password has been changed");
             }
             return null;
         }
@@ -445,10 +469,44 @@ public class ChangeProfileActivity extends ActionBarActivity {
                 String profilePicUrl = hfu.Send_Now("profile_pic.jpg", fstrm);
                 userProfile.setProfilePicUrl(profilePicUrl);
                 Utils.savePatientDataToSharedPreference(ChangeProfileActivity.this, userProfile);
-
+                Utils.showSnackBarOnUiThread(ChangeProfileActivity.this, "Profile piture updated");
             } catch (FileNotFoundException e) {
                 Logger.e(TAG, e.getMessage());
             }
+        }
+    }
+
+    private class ChangePassword extends AsyncTask<String, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(String... arg0) {
+            String url = arg0[0];
+            String p1= arg0[1];
+            String p2= arg0[2];
+            JSONObject data = null;
+            try {
+                data = new JSONObject();
+                data.put("password1", p1);
+                data.put("password2", p2);
+            } catch (JSONException e){
+                Logger.e(TAG, e.getMessage());
+            }
+            HTTPServiceHandler serviceHandler = new HTTPServiceHandler(ChangeProfileActivity.this);
+            String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.PATCH, null, data);
+            if (response != null && !response.isEmpty()) {
+                Utils.showSnackBarOnUiThread(ChangeProfileActivity.this, "Password has been changed");
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
         }
     }
 }

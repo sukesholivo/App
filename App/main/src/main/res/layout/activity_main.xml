@@ -1,51 +1,81 @@
-<LinearLayout
+<android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main_parent_view"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/page_background"
-    android:fitsSystemWindows="true">
-    <include layout="@layout/toolbar"/>
-    <android.support.v4.widget.DrawerLayout
-        android:id="@+id/drawer_layout"
+    android:fitsSystemWindows="true"
+    >
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/page_background"
         >
-        <FrameLayout android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <ProgressBar
-                android:id="@+id/loadingIndicator"
-                style="?android:attr/progressBarStyleLarge"
+        <include layout="@layout/toolbar"
+            />
+        <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="gone"
-                />
-        </FrameLayout>
-        <RelativeLayout android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <FrameLayout android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ProgressBar
+                        android:id="@+id/loadingIndicator"
+                        style="?android:attr/progressBarStyleLarge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        />
+                </FrameLayout>
+                <RelativeLayout android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:id="@+id/fragment_main"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentTop="true"
+                        />
+                    <include
+                        android:id="@+id/treatment_dashboard_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        layout="@layout/treatment_dashboard"
+                        />
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+    </LinearLayout>
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/fab_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        style="@style/FabMenuStyle"
+        >
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/record_vital_btn"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:src="@drawable/ic_add_vital_white_36dp"
+            fab:fab_size="mini"
+            fab:fab_label="Record Vital" />
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/upload_report_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_document_add_white_24dp"
+            fab:fab_size="mini"
+            fab:fab_label="Upload reports" />
 
-            <FrameLayout
-                android:id="@+id/fragment_main"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
-                />
-            <include
-                android:id="@+id/treatment_dashboard_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                layout="@layout/treatment_dashboard"
-                />
-        </RelativeLayout>
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <include layout="@layout/list_card_undo_message"/>
-        </FrameLayout>
-
-        <include layout="@layout/drawer_layout"/>
-    </android.support.v4.widget.DrawerLayout>
-</LinearLayout>
+    </com.github.clans.fab.FloatingActionMenu>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include layout="@layout/list_card_undo_message"/>
+    </FrameLayout>
+    <include layout="@layout/drawer_layout"/>
+</android.support.v4.widget.DrawerLayout>

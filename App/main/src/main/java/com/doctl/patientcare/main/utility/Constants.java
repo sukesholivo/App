@@ -19,6 +19,7 @@ public final class Constants {
     public final static String IMAGE_UPLOAD_URL = SERVER_URL + "/api/account/" + API_VERSION + "/image/";
     public final static String LOGIN_URL = SERVER_URL + "/api/account/" + API_VERSION + "/login/";
     public final static String REGISTER_URL = SERVER_URL + "/api/account/" + API_VERSION + "/register/";
+    public final static String CHANGE_PASSWORD_URL = SERVER_URL + "/api/account/" + API_VERSION + "/change_password/";
     public final static String FORGOT_PASSWORD_URL = SERVER_URL + "/api/account/" + API_VERSION + "/forgot_password/";
     public final static String GCM_REGISTER_URL = Constants.SERVER_URL+"/gcm/register/";
     public final static String REWARDS_URL = SERVER_URL + "/api/reward/" + API_VERSION + "/rewards/";

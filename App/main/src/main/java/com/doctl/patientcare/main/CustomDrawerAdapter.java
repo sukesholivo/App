@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.doctl.patientcare.main.om.UserProfile;
@@ -54,7 +55,7 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem> {
                     .findViewById(R.id.headerLayout);
             drawerHolder.itemLayout = (LinearLayout) view
                     .findViewById(R.id.itemLayout);
-            drawerHolder.profileLayout = (LinearLayout) view
+            drawerHolder.profileLayout = (RelativeLayout) view
                     .findViewById(R.id.profileLayout);
 
             view.setTag(drawerHolder);
@@ -97,6 +98,7 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem> {
     private static class DrawerItemHolder {
         TextView ItemName, title, profileName, profileEmail;
         ImageView icon, profilePic;
-        LinearLayout headerLayout, itemLayout, profileLayout;
+        LinearLayout headerLayout, itemLayout;
+        RelativeLayout profileLayout;
     }
 }

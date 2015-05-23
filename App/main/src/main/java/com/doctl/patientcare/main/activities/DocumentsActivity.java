@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.doctl.patientcare.main.BaseActivityWithNavigation;
 import com.doctl.patientcare.main.R;
@@ -35,6 +34,7 @@ import org.apache.http.message.BasicNameValuePair;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.view.CardView;
@@ -52,6 +52,7 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
     ListView mDocumentListView;
     ArrayList<Document> mDocumentArrayList;
     FloatingActionButton fab;
+    boolean mShowAddDialog = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,10 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle("Reports");
+        }
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null){
+            mShowAddDialog = bundle.getBoolean("show_add_dialog");
         }
         mDocumentArrayList = new ArrayList<>();
         mDocumentAdapter = new DocumentAdapter(DocumentsActivity.this, mDocumentArrayList);
@@ -142,7 +147,7 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
                         String title = titleEditText.getText().toString();
                         String description = descriptionEditText.getText().toString();
                         if (title.isEmpty()) {
-                            Toast.makeText(DocumentsActivity.this, "Title is required", Toast.LENGTH_SHORT).show();
+                            Utils.showSnackBar(DocumentsActivity.this, "Title is required");
                         } else {
 
                             Logger.e("", filePath);
@@ -163,7 +168,7 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
         if (Utils.isNetworkAvailable(this)){
             new GetDocuments().execute();
         } else {
-            Toast.makeText(this, "No Network Connection", Toast.LENGTH_LONG).show();
+            Utils.showSnackBar(this, "No Network Connection");
         }
     }
 
@@ -171,7 +176,6 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
         String data = downloadDocumentsData();
         if (data != null && !data.isEmpty()) {
             ArrayList<Document> documents = parseDocumentsData(data);
-            Logger.e("", "Total documents: " + documents.size());
             if (documents.size() == 0) {
                 this.runOnUiThread(new Runnable() {
                     @Override
@@ -191,11 +195,7 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
 
     private ArrayList<Document> parseDocumentsData(String jsonStr){
         final Document[] documents = new Gson().fromJson(jsonStr, Document[].class);
-        ArrayList<Document> documentArrayList = new ArrayList<>();
-        for (final Document doc: documents){
-            documentArrayList.add(doc);
-        }
-        return documentArrayList;
+        return  new ArrayList<>(Arrays.asList(documents));
     }
 
     private void showUploadLayout(){
@@ -242,6 +242,10 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
                 mDocumentAdapter.clear();
                 mDocumentAdapter.addAll(documentsArrayList);
                 mDocumentAdapter.notifyDataSetChanged();
+                if (mShowAddDialog) {
+                    mShowAddDialog = false;
+                    showFilePickerDialog();
+                }
             }
         });
     }

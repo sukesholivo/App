@@ -17,16 +17,4 @@
             android:paddingRight="@dimen/card_list_horizontal_padding"
         />
     </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
-    <com.github.clans.fab.FloatingActionButton
-        android:id="@+id/buttonTop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_arrow_up_white_36dp"
-        fab:fab_colorNormal="@color/action_button_primary"
-        fab:fab_colorPressed="@color/action_button_pressed"
-        />
 </RelativeLayout>

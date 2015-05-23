@@ -17,7 +17,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.doctl.patientcare.main.om.GraphData;
 import com.doctl.patientcare.main.om.vitals.VitalDetailData;
@@ -46,6 +45,7 @@ public class VitalDetailActivity extends BaseActivityWithNavigation {
     String vitalId;
     String vitalType;
     FloatingActionButton fab;
+    boolean mShowAddDialog = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +60,8 @@ public class VitalDetailActivity extends BaseActivityWithNavigation {
         }
         vitalId = bundle.getString("vitalId");
         vitalType = bundle.getString("vitalType");
+        mShowAddDialog = bundle.getBoolean("show_add_dialog");
+        Logger.e("", "" + mShowAddDialog);
         refresh();
         fab = (FloatingActionButton) this.findViewById(R.id.button_add);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -117,7 +119,7 @@ public class VitalDetailActivity extends BaseActivityWithNavigation {
         if (Utils.isNetworkAvailable(this)){
             new GetVitals().execute(vitalId, vitalType);
         } else {
-            Toast.makeText(this, "No Network Connection", Toast.LENGTH_LONG).show();
+            Utils.showSnackBar(this, "No Network Connection");
         }
     }
 
@@ -177,7 +179,7 @@ public class VitalDetailActivity extends BaseActivityWithNavigation {
         Logger.e(TAG, data.toString());
         String url = Constants.VITAL_DETAIL_URL + vitalData.getVitalId() + "/";
         new SaveVital().execute(url, data);
-        Toast.makeText(VitalDetailActivity.this, "Value submitted: " + value1, Toast.LENGTH_LONG).show();
+        Utils.showSnackBar(this, "Value submitted: " + value1);
     }
 
     private void setTitle(String title){
@@ -214,6 +216,10 @@ public class VitalDetailActivity extends BaseActivityWithNavigation {
                     setTitle(vitalData.getTitle());
                     populateVitalGraphData(vitalData);
                     populateVitalListData(vitalData);
+                    if (mShowAddDialog) {
+                        mShowAddDialog = false;
+                        showAddVitalDialog();
+                    }
                 }
             });
         }

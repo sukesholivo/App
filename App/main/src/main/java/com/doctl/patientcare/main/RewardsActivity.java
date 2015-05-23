@@ -11,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.doctl.patientcare.main.om.rewards.RewardArrayAdapter;
 import com.doctl.patientcare.main.om.rewards.Rewards;
@@ -69,7 +68,7 @@ public class RewardsActivity extends ActionBarActivity {
         if (Utils.isNetworkAvailable(this)){
             new GetRewards().execute();
         } else {
-            Toast.makeText(this, "No Network Connection", Toast.LENGTH_LONG).show();
+            Utils.showSnackBar(this, "No Network Connection");
         }
     }
 

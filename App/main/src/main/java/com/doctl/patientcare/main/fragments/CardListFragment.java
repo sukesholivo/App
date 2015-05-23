@@ -10,7 +10,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.doctl.patientcare.main.Cards.BaseCard;
 import com.doctl.patientcare.main.Cards.CardHeaderInnerView;
@@ -37,7 +36,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.github.clans.fab.FloatingActionButton;
 import com.nhaarman.listviewanimations.swinginadapters.AnimationAdapter;
 import com.nhaarman.listviewanimations.swinginadapters.prepared.ScaleInAnimationAdapter;
 
@@ -63,7 +61,6 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
     ArrayList<Card> cards;
     CardArrayAdapter mCardArrayAdapter;
     CardListView listView;
-    FloatingActionButton fab;
     View.OnClickListener primaryActionListener = null;
     View.OnClickListener secondaryActionListener = null;
 
@@ -76,15 +73,6 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        fab = (FloatingActionButton) getActivity().findViewById(R.id.buttonTop);
-//        fab.attachToListView(listView);
-        fab.hide(false);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listView.smoothScrollToPosition(0);
-            }
-        });
         initializeCardList();
     }
 
@@ -98,7 +86,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
         if (Utils.isNetworkAvailable(getActivity())){
             new GetTasks().execute();
         } else {
-            Toast.makeText(getActivity(), "No Network Connection", Toast.LENGTH_LONG).show();
+            Utils.showSnackBar(getActivity(), "No Network Connection");
         }
     }
 
@@ -124,17 +112,13 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
                         //It is very important to call the super method here to preserve built-in functions
                         if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                             Logger.i("a", "scrolling stopped...");
-                            if (isDashboardHidden) {
-                                fab.show(true);
-                            }
                         }
-                        super.onScrollStateChanged(view,scrollState);
+                        super.onScrollStateChanged(view, scrollState);
                     }
 
                     @Override
                     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                        fab.hide(true);
-                        if(mLastFirstVisibleItem >=0 && mLastVisibleItemCount >=0) {
+                        if (mLastFirstVisibleItem >= 0 && mLastVisibleItemCount >= 0) {
                             if (mLastFirstVisibleItem > firstVisibleItem) {
                                 Logger.i(TAG, "scrolling up");
                                 DashboardAppear(firstVisibleItem);
@@ -155,9 +139,9 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
                     }
 
                     private void DashboardAppear(int firstVisibleItem) {
-                        if(!isDashboardHidden)
+                        if (!isDashboardHidden)
                             return;
-                        if(firstVisibleItem == 0) {
+                        if (firstVisibleItem == 0) {
                             Activity activity = getActivity();
                             View dashboard = activity.findViewById(R.id.treatment_dashboard_layout);
                             Animation slide_down = AnimationUtils.loadAnimation(activity.getApplicationContext(), R.anim.dashboard_slide_in);
@@ -168,7 +152,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
                     }
 
                     private void DashboardDisappear() {
-                        if(isDashboardHidden)
+                        if (isDashboardHidden)
                             return;
                         Activity activity = getActivity();
                         View dashboard = activity.findViewById(R.id.treatment_dashboard_layout);
@@ -182,7 +166,9 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
         AnimationAdapter animCardArrayAdapter = new ScaleInAnimationAdapter(mCardArrayAdapter);
         animCardArrayAdapter.setAbsListView(listView);
         listView.setExternalAdapter(animCardArrayAdapter, mCardArrayAdapter);
-
+        View footer = new View(getActivity());
+        footer.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Utils.dpToPx(getActivity(), 80)));
+        listView.addFooterView(footer);
         mPullToRefreshLayout = (PullToRefreshLayout) getActivity().findViewById(R.id.carddemo_extra_ptr_layout);
 
         ActionBarPullToRefresh.from(this.getActivity())
@@ -315,48 +301,6 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
             }
         }
 
-//        CardHeader walkHeader = new CardHeaderInnerView(getActivity(), "TODAY", "", "");
-//        WalkCard card4 = new WalkCard(getActivity(), walkHeader);
-//
-//        CardHeader richEducationHeader = new CardHeaderInnerView(getActivity()){
-//            @Override
-//            public void setupInnerViewElements(ViewGroup parent, View view) {
-//                TextView textView1 = (TextView)view.findViewById(R.id.timeWhen);
-//                textView1.setText("HOW TO INJECT INSULIN");
-//                textView1.setTextSize(28);
-//            }
-//        };
-        //, "HOW TO INJECT INSULIN", "", "");
-//        EducationRichtextCard card5 = new EducationRichtextCard(getActivity(), richEducationHeader );
-//
-//        CardHeader howruFeelingHeader = new CardHeaderInnerView(getActivity(), "HOW ARE YOU FEELING?", "", "");
-//        HowruFeelingCard card7 = new HowruFeelingCard(getActivity(), howruFeelingHeader);
-//
-//        CardHeader mythHeader = new CardHeaderInnerView(getActivity()){
-//            @Override
-//            public void setupInnerViewElements(ViewGroup parent, View view) {
-//                TextView textView1 = (TextView)view.findViewById(R.id.timeWhen);
-//                textView1.setText("MYTH");
-//                textView1.setTextSize(25);
-//                textView1.setTextColor(Color.RED);
-//            }
-//        };
-
-//        ImageCard card9 = new ImageCard(getActivity(), null);
-//        card9.setImageResourceId(R.drawable.motivationcard_backgroundpic4_lesssugar);
-//
-//        ImageCard card10 = new ImageCard(getActivity(), null);
-//        card10.setImageResourceId(R.drawable.education_myths_sugar_full);
-//
-//        ImageCard card11 = new ImageCard(getActivity(), null);
-//        card11.setImageResourceId(R.drawable.education_myths_weightloss_full);
-
-//        cards.add(card4);
-//        cards.add(card5);
-//        cards.add(card7);
-//        cards.add(card9);
-//        cards.add(card10);
-//        cards.add(card11);
         Collections.sort(cards, new Comparator<BaseCard>() {
             @Override
             public int compare(BaseCard card1, BaseCard card2) {

@@ -38,6 +38,8 @@ import com.doctl.patientcare.main.om.vitals.VitalTask;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.nispok.snackbar.Snackbar;
+import com.nispok.snackbar.SnackbarManager;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
@@ -452,6 +454,18 @@ public final class Utils {
                 Toast.makeText(c, message, Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public static void showSnackBarOnUiThread(final Context c, final String message){
+        ((Activity) c).runOnUiThread(new Runnable() {
+            public void run() {
+                SnackbarManager.show(Snackbar.with(c).text(message).duration(Snackbar.SnackbarDuration.LENGTH_LONG));
+            }
+        });
+    }
+
+    public static void showSnackBar(final Activity c, final String message){
+        SnackbarManager.show(Snackbar.with(c).text(message).duration(Snackbar.SnackbarDuration.LENGTH_LONG));
     }
 
     public static boolean isImageFile(String url){

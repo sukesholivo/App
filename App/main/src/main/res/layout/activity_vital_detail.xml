@@ -1,21 +1,19 @@
-
-<LinearLayout
+<android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/page_background"
     android:fitsSystemWindows="true">
-    <include layout="@layout/toolbar"/>
-    <android.support.v4.widget.DrawerLayout
-        android:id="@+id/drawer_layout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/page_background">
+        <include layout="@layout/toolbar"/>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
             <LinearLayout
                 android:id="@+id/vitalDetailLineGraph"
                 android:orientation="vertical"
@@ -47,7 +45,6 @@
                 android:layout_marginRight="20dp"
                 android:divider="@drawable/vital_list_divide"
                 android:dividerHeight="2dp"/>
-
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/button_add"
                 android:layout_width="wrap_content"
@@ -55,11 +52,10 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_margin="16dp"
                 android:src="@drawable/ic_add_white_36dp"
                 style="@style/FabButtonsStyle"
                 />
         </RelativeLayout>
-        <include layout="@layout/drawer_layout"/>
-    </android.support.v4.widget.DrawerLayout>
-</LinearLayout>
+    </LinearLayout>
+    <include layout="@layout/drawer_layout"/>
+</android.support.v4.widget.DrawerLayout>

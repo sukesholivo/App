@@ -60,7 +60,7 @@ public class HTTPServiceHandler {
      * */
     public String makeServiceCall(String url, HTTPMethod method, List<NameValuePair> getParams, JSONObject postParams, boolean anonymous) {
         if (!Utils.isNetworkAvailable(context)){
-            Utils.showToastOnUiThread(context, "No Network Connection");
+            Utils.showSnackBarOnUiThread(context, "No Network Connection");
             return null;
         }
         try {
@@ -173,7 +173,7 @@ public class HTTPServiceHandler {
 //                });
                 return null;
             } else if (statusCode == 500){
-                Utils.showToastOnUiThread(context, "Some error occurred");
+                Utils.showSnackBarOnUiThread(context, "Some error occurred");
 //                ((Activity) context).runOnUiThread(new Runnable() {
 //                    public void run() {
 //                        String message = "Server error occurred";
@@ -191,13 +191,13 @@ public class HTTPServiceHandler {
             }
 
         } catch (UnknownHostException ex){
-            Utils.showToastOnUiThread(context, "No Network Connection");
+            Utils.showSnackBarOnUiThread(context, "No Network Connection");
             return null;
         } catch (ConnectTimeoutException e){
-            Utils.showToastOnUiThread(context, "No Network Connection");
+            Utils.showSnackBarOnUiThread(context, "No Network Connection");
             return null;
         } catch (IOException  e) {
-            Utils.showToastOnUiThread(context, "Some error occurred");
+            Utils.showSnackBarOnUiThread(context, "Some error occurred");
             return null;
         }
         return response;

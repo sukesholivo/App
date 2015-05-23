@@ -9,7 +9,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.doctl.patientcare.main.controls.ProgressBarAnimation;
 import com.doctl.patientcare.main.om.UserProfile;
@@ -64,7 +63,7 @@ public class MedicineDetailActivity extends BaseActivityWithNavigation {
         if (Utils.isNetworkAvailable(this)){
             new GetPrescription().execute(prescriptionId);
         } else {
-            Toast.makeText(this, "No Network Connection", Toast.LENGTH_LONG).show();
+            Utils.showSnackBar(this, "No Network Connection");
         }
     }
 

@@ -20,7 +20,7 @@
     <dimen name="card_list_horizontal_padding">0dp</dimen>
     <dimen name="card_list_vertical_spacing">15dp</dimen>
 
-    <dimen name="drawer_list_width">260dp</dimen>
+    <dimen name="drawer_list_width">300dp</dimen>
     <dimen name="drawer_list_divider_height">0dp</dimen>
 
     <dimen name="text_size_xxxs">8sp</dimen>

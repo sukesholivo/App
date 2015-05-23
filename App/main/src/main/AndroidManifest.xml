@@ -42,9 +42,6 @@
         <activity android:name=".VitalDetailActivity" android:label="" android:screenOrientation="portrait" android:noHistory="true"
             android:windowSoftInputMode="adjustPan">
         </activity>
-        <activity android:name=".RichTextEducationDetailActivity" android:label="" android:screenOrientation="portrait" android:noHistory="true"
-            android:windowSoftInputMode="adjustPan">
-        </activity>
         <activity android:name=".MedicineDetailActivity" android:label=""  android:screenOrientation="portrait" android:noHistory="true"
             android:windowSoftInputMode="adjustPan">
         </activity>
