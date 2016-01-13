@@ -3,7 +3,8 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_white">
+    android:background="@color/color_white"
+    android:weightSum="1">
     <include layout="@layout/toolbar"/>
     <EditText
         android:id="@+id/ask_question_edit_text"
@@ -18,6 +19,16 @@
         android:imeOptions="actionSend"
         android:visibility="gone"
         />
+    <ImageButton
+        android:id="@+id/attach_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="false"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_menu_attachment"
+        android:background="@color/transparent"
+        >
+    </ImageButton>
     <android.support.v7.widget.CardView
         android:id="@+id/question_text_layout"
         android:layout_gravity="center"
@@ -36,6 +47,7 @@
             android:textColor="@color/color_black"
             android:textSize="@dimen/text_size_s"
             />
+
     </android.support.v7.widget.CardView>
     <android.support.v7.widget.CardView
         android:id="@+id/message_list_layout"
@@ -85,13 +97,19 @@
                     >
                 </ImageButton>
             </RelativeLayout>
+
+           <!-- <fragment
+                android:name="com.doctl.patientcare.main.fragments.ImageAttachFragment"
+                android:id="@+id/image_attach_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />-->
             <ListView
                 android:id="@+id/message_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/send_message_layout"
                 android:layout_alignParentTop="true"
-                android:stackFromBottom="true"
+                android:stackFromBottom="false"
                 android:transcriptMode="alwaysScroll"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>

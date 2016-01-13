@@ -1,8 +1,16 @@
 package com.doctl.patientcare.main.activities;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -11,8 +19,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.doctl.patientcare.main.BaseActivity;
 import com.doctl.patientcare.main.MainActivity;
@@ -22,20 +32,27 @@ import com.doctl.patientcare.main.om.chat.MessageListAdapter;
 import com.doctl.patientcare.main.om.chat.Question;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
+import com.doctl.patientcare.main.utility.HttpFileUpload;
+import com.doctl.patientcare.main.utility.Logger;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileInputStream;
 import java.util.List;
 
 /**
  * Created by Administrator on 5/4/2015.
  */
 public class QuestionDetailActivity extends BaseActivity {
+    private static final String TAG = QuestionDetailActivity.class.getSimpleName();
     MessageListAdapter mMessageListAdapter;
     Menu mMenu;
     boolean askMode = false;
+    String questionId;
+
+    private static final int IMAGE_ATTACH_BUTTON = 10243;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,10 +70,12 @@ public class QuestionDetailActivity extends BaseActivity {
         if (bundle != null){
             askMode = false;
             String questionId = bundle.getString("question_id");
+            this.questionId = questionId;
             String questionData = bundle.getString("question_data");
             hideNewQuestionLayout();
             if (questionId != null && !questionId.isEmpty()) {
                 new GetQuestionDetail().execute(questionId);
+                addActionToAttachButton(questionId);
             } else if (questionData != null && !questionData.isEmpty()){
                 final Question question = parseQuestionData(questionData);
                 updateQuestionData(question);
@@ -64,6 +83,62 @@ public class QuestionDetailActivity extends BaseActivity {
         } else {
             askMode = true;
             showNewQuestionLayout();
+        }
+        final EditText messageEditText = (EditText) findViewById(R.id.etMessage);
+        ImageButton sendButton = (ImageButton) findViewById(R.id.btSend);
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (messageEditText.getText() != null) {
+                    String message = messageEditText.getText().toString();
+                    new SendText().execute(questionId, message);
+                    System.out.println("Message " + message);
+                    messageEditText.setText("");
+                }
+            }
+        });
+
+    }
+
+    private void addActionToAttachButton(final String questionId){
+
+        ImageButton attachItemButton = (ImageButton) findViewById(R.id.attach_button);
+        attachItemButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.putExtra("questionId", questionId);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_ATTACH_BUTTON);
+            }
+        });
+    }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == IMAGE_ATTACH_BUTTON) {
+            if (resultCode == RESULT_OK) {
+                if (data != null) {
+                    try {
+                        //String questionId=data.getExtras().getString("questionId");
+                        String questionURL = Constants.QUESTION_URL+questionId+"/";
+                        String filePath = getRealPathFromURI_API19(this,data.getData());
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+
+
+                        System.out.println("File name"+ filePath + bitmap);
+
+                        new SendFile().execute(questionURL, filePath);
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                } else if (resultCode == RESULT_CANCELED) {
+                    Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     }
 
@@ -95,7 +170,6 @@ public class QuestionDetailActivity extends BaseActivity {
                 EditText editText = (EditText) this.findViewById(R.id.ask_question_edit_text);
                 String questionText = editText.getText().toString();
                 new AskQuestion().execute(questionText);
-
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -184,6 +258,75 @@ public class QuestionDetailActivity extends BaseActivity {
         }
     }
 
+
+    private class SendFile extends AsyncTask<String, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(String... arg0) {
+            String serverUrl = arg0[0];
+            String imageUrl = arg0[1];
+            uploadFile(serverUrl, imageUrl);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
+
+        public void uploadFile(String serverUrl, String imageFile){
+            try {
+                FileInputStream fstrm = new FileInputStream(imageFile);
+                HttpFileUpload hfu = new HttpFileUpload(QuestionDetailActivity.this, serverUrl);
+                JSONObject jsonResponse= hfu.Send_Now("msg_attach.jpg", fstrm);
+                if(jsonResponse == null) throw new Exception("upload failed");
+                String fileURL = jsonResponse.getString("fileURL");
+                System.out.println(fileURL);
+            } catch (Exception e) {
+                Logger.e(TAG, e.getMessage());
+            }
+        }
+    }
+
+    private class SendText extends AsyncTask<String, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(String... arg0) {
+            String questionId= arg0[0];
+            String text = arg0[1];
+            sendToServer(questionId, text);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
+
+        public void sendToServer(String questionId, String text){
+
+            try {
+                String url = Constants.QUESTION_URL + questionId + "/";
+                JSONObject data = new JSONObject();
+                data.put("text", text);
+                HTTPServiceHandler serviceHandler = new HTTPServiceHandler(QuestionDetailActivity.this);
+                String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.POST, null, data);
+                System.out.println(" Response " + response);
+            }catch (JSONException e){
+                Logger.e(TAG, e.getMessage());
+            }
+
+        }
+    }
+
     private class GetQuestionDetail extends AsyncTask<String, Void, Void> {
 
         @Override
@@ -202,5 +345,30 @@ public class QuestionDetailActivity extends BaseActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
         }
+    }
+
+    @SuppressLint("NewApi")
+    public static String getRealPathFromURI_API19(Context context, Uri uri){
+        String filePath = "";
+        String wholeID = DocumentsContract.getDocumentId(uri);
+
+        // Split at colon, use second item in the array
+        String id = wholeID.split(":")[1];
+
+        String[] column = { MediaStore.Images.Media.DATA };
+
+        // where id is equal to
+        String sel = MediaStore.Images.Media._ID + "=?";
+
+        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                column, sel, new String[]{ id }, null);
+
+        int columnIndex = cursor.getColumnIndex(column[0]);
+
+        if (cursor.moveToFirst()) {
+            filePath = cursor.getString(columnIndex);
+        }
+        cursor.close();
+        return filePath;
     }
 }

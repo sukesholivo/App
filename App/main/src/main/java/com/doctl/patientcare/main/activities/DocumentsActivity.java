@@ -31,6 +31,7 @@ import com.github.clans.fab.FloatingActionButton;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -291,8 +292,10 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
                 nameValuePairs.add(new BasicNameValuePair("title", title));
                 nameValuePairs.add(new BasicNameValuePair("description", description));
                 HttpFileUpload hfu = new HttpFileUpload(DocumentsActivity.this, serverUrl);
-                String response = hfu.Send_Now("document.jpg", fstrm, nameValuePairs);
-                showAddedDocument(response);
+                JSONObject response = hfu.Send_Now("document.jpg", fstrm, nameValuePairs);
+                if( response == null) throw new Exception("Error in uploading image");
+                String docURL = response.getString("profilePicUrl");
+                showAddedDocument(docURL);
             } catch (Exception e) {
                 Logger.e(TAG, e.getMessage());
             }

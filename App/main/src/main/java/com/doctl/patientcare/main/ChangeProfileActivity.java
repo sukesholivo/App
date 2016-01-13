@@ -442,13 +442,16 @@ public class ChangeProfileActivity extends ActionBarActivity {
             try {
                 FileInputStream fstrm = new FileInputStream(imageFile);
                 HttpFileUpload hfu = new HttpFileUpload(ChangeProfileActivity.this, serverUrl);
-                String profilePicUrl = hfu.Send_Now("profile_pic.jpg", fstrm);
+                JSONObject response = hfu.Send_Now("profile_pic.jpg", fstrm);
+                if( response == null) throw new Exception("Error in uploading image");
+                String profilePicUrl = response.getString("profilePicUrl");
                 userProfile.setProfilePicUrl(profilePicUrl);
                 Utils.savePatientDataToSharedPreference(ChangeProfileActivity.this, userProfile);
 
-            } catch (FileNotFoundException e) {
+            } catch (Exception e){
                 Logger.e(TAG, e.getMessage());
             }
+
         }
     }
 }

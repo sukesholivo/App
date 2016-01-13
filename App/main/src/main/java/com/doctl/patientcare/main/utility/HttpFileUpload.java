@@ -36,21 +36,21 @@ public class HttpFileUpload {
         }
     }
 
-    public String Send_Now(String fileName, FileInputStream fStream){
+    public JSONObject Send_Now(String fileName, FileInputStream fStream){
         this.fileName = fileName;
         fileInputStream = fStream;
         this.nameValuePairs = new ArrayList<>();
         return Sending();
     }
 
-    public String Send_Now(String fileName, FileInputStream fStream, List<NameValuePair> nameValuePairs){
+    public JSONObject Send_Now(String fileName, FileInputStream fStream, List<NameValuePair> nameValuePairs){
         this.fileName = fileName;
         this.nameValuePairs = nameValuePairs;
         fileInputStream = fStream;
         return Sending();
     }
 
-    String Sending(){
+    JSONObject Sending(){
         String lineEnd = "\r\n";
         String twoHyphens = "--";
         String boundary = "*****";
@@ -110,17 +110,21 @@ public class HttpFileUpload {
             Logger.i("Response",s);
             JSONTokener tokener = new JSONTokener(s);
             JSONObject jsonResponse = new JSONObject(tokener);
+            dos.close();
+            return jsonResponse;
+            /*System.out.println(jsonResponse.toString());
             if(jsonResponse.has("profilePicUrl")) {
                 return jsonResponse.getString("profilePicUrl");
-            }
-            dos.close();
-            return s;
+            }else if(jsonResponse.has("fileURL")){
+                return jsonResponse.getString("fileURL");
+            }*/
+
         } catch (MalformedURLException ex) {
             Logger.e(Tag, "URL error: " + ex.getMessage());
         } catch (IOException | JSONException e) {
             Logger.e(Tag, "IO error: " + e.getMessage());
         }
 
-        return "";
+        return null;
     }
 }
