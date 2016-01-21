@@ -40,6 +40,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileInputStream;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,7 +53,7 @@ public class QuestionDetailActivity extends BaseActivity {
     boolean askMode = false;
     String questionId;
 
-    private static final int IMAGE_ATTACH_BUTTON = 10243;
+    private static final int IMAGE_ATTACH_BUTTON = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +92,10 @@ public class QuestionDetailActivity extends BaseActivity {
             public void onClick(View v) {
                 if (messageEditText.getText() != null) {
                     String message = messageEditText.getText().toString();
+                    Message msg = new Message();
+                    msg.setText(message);
+                    msg.setTimestamp(new Date());
+                    mMessageListAdapter.add(msg);
                     new SendText().execute(questionId, message);
                     System.out.println("Message " + message);
                     messageEditText.setText("");

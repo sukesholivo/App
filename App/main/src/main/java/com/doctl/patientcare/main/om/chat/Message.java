@@ -43,4 +43,35 @@ public class Message {
     public String getText() {
         return text;
     }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "id='" + id + '\'' +
+                ", source=" + source +
+                ", timestamp=" + timestamp +
+                ", text='" + text + '\'' +
+                ", fileUrl='" + fileUrl + '\'' +
+                '}';
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setSource(UserProfile source) {
+        this.source = source;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+    }
 }

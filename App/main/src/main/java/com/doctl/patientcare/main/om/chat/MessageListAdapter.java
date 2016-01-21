@@ -50,7 +50,7 @@ public class MessageListAdapter  extends ArrayAdapter<Message> {
         }
 
         // change it later to get from OM directly
-        String userId = item.getSource().getId();
+        String userId = item.getSource() == null? "1":item.getSource().getId();
         boolean isMe = userId.equals(sourceId);
 
         if (!isMe) {
@@ -90,10 +90,13 @@ public class MessageListAdapter  extends ArrayAdapter<Message> {
             layoutParams.gravity = Gravity.START;
             holder.txtInfo.setLayoutParams(layoutParams);
         }
-        if(item.getText() != null && !item.getText().isEmpty())
+
+        if(item.getFileUrl() != null && !item.getFileUrl().isEmpty()) {
+            holder.txtMessage.setText("");
+            new DownloadImageTask(holder.imgMessage).execute(Constants.SERVER_URL + item.getFileUrl());
+        }else if (item.getText() != null && !item.getText().isEmpty()) {
             holder.txtMessage.setText(item.getText());
-        if(item.getFileUrl() != null && !item.getFileUrl().isEmpty())
-            new DownloadImageTask(holder.imgMessage).execute(Constants.SERVER_URL+item.getFileUrl());
+        }
 
         String timeStr = new SimpleDateFormat("MMM dd, HH:mm").format(item.getTimestamp());
         holder.txtInfo.setText(timeStr);
