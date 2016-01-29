@@ -10,7 +10,7 @@ import org.json.JSONObject;
  */
 public class UserProfile {
 
-    public UserProfile(String id, String displayName, String profilePicUrl, String email, String phone, String dob, String sex, Address address){
+    public UserProfile(String id, String displayName, String profilePicUrl, String email, String phone, String dob, String sex, Address address, String role){
         this.id = id;
         this.displayName = displayName;
         this.profilePicUrl = profilePicUrl;
@@ -19,6 +19,7 @@ public class UserProfile {
         this.dob = dob;
         this.sex = sex;
         this.address = address;
+        this.role = role;
     }
     @SerializedName("id")
     private String id;
@@ -43,6 +44,9 @@ public class UserProfile {
 
     @SerializedName("address")
     private Address address;
+
+    @SerializedName("role")
+    private String role;
 
     public String getId() {
         return id;
@@ -102,6 +106,37 @@ public class UserProfile {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getAbout(){
+        //TODO get depends on type
+        if(getAddress() == null){
+            return null;
+        }
+        return getAddress().getStreet();
+    }
+
+    @Override
+    public String toString() {
+        return "UserProfile{" +
+                "id='" + id + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", profilePicUrl='" + profilePicUrl + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", dob='" + dob + '\'' +
+                ", sex='" + sex + '\'' +
+                ", address=" + address +
+                ", role='" + role + '\'' +
+                '}';
     }
 
     public JSONObject getDataToPatch() throws JSONException {
@@ -176,6 +211,20 @@ public class UserProfile {
 
         public String getPrintableAddress(){
             return this.getStreet() + this.getCity();
+        }
+
+        @Override
+        public String toString() {
+            return "Address{" +
+                    "street='" + street + '\'' +
+                    ", landmark='" + landmark + '\'' +
+                    ", city='" + city + '\'' +
+                    ", state='" + state + '\'' +
+                    ", country='" + country + '\'' +
+                    ", pin='" + pin + '\'' +
+                    ", longitude='" + longitude + '\'' +
+                    ", latitude='" + latitude + '\'' +
+                    '}';
         }
     }
 }

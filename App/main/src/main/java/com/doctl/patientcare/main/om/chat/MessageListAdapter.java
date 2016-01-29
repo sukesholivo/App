@@ -17,7 +17,6 @@ import com.doctl.patientcare.main.utility.Constants;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Administrator on 5/4/2015.
@@ -95,6 +94,7 @@ public class MessageListAdapter  extends ArrayAdapter<Message> {
             holder.txtMessage.setText("");
             new DownloadImageTask(holder.imgMessage).execute(Constants.SERVER_URL + item.getFileUrl());
         }else if (item.getText() != null && !item.getText().isEmpty()) {
+            holder.imgMessage.setImageDrawable(null);
             holder.txtMessage.setText(item.getText());
         }
 

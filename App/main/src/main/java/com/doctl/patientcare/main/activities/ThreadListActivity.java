@@ -1,7 +1,5 @@
 package com.doctl.patientcare.main.activities;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,18 +15,10 @@ import android.widget.ListView;
 import com.doctl.patientcare.main.BaseActivity;
 import com.doctl.patientcare.main.MainActivity;
 import com.doctl.patientcare.main.R;
-import com.doctl.patientcare.main.om.chat.Question;
-import com.doctl.patientcare.main.om.chat.QuestionListAdapter;
-import com.doctl.patientcare.main.om.vitals.VitalDetailData;
-import com.doctl.patientcare.main.services.HTTPServiceHandler;
+import com.doctl.patientcare.main.om.chat.ThreadSummary;
+import com.doctl.patientcare.main.om.chat.ThreadListAdapter;
 import com.doctl.patientcare.main.utility.Constants;
-import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,18 +26,18 @@ import java.util.List;
 /**
  * Created by Administrator on 5/4/2015.
  */
-public class QuestionListActivity extends BaseActivity {
+public class ThreadListActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_question_list);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_thread_list);
         Toolbar mToolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
         setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null){
-            actionBar.setTitle("Questions");
+            actionBar.setTitle("Chat");
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -57,7 +47,7 @@ public class QuestionListActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.question_list, menu);
+        inflater.inflate(R.menu.thread_list, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -69,8 +59,8 @@ public class QuestionListActivity extends BaseActivity {
                 mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(mainActivityIntent);
                 return true;
-            case R.id.action_add_question:
-                Intent intent = new Intent(this, QuestionDetailActivity.class);
+            case R.id.action_add_thread:
+                Intent intent = new Intent(this, ContactsActivity.class);
                 startActivity(intent);
                 return true;
             default:
@@ -79,62 +69,64 @@ public class QuestionListActivity extends BaseActivity {
     }
 
     private void refresh() {
-        new GetQuestions().execute();
+        new GetThreads().execute();
     }
 
     private void refreshActivity() {
-        String jsonStr = downloadQuestions();
+        String jsonStr = downloadThreads();
         if (jsonStr != null && !jsonStr.isEmpty()) {
-            final Question[] questionList = parseQuestionList(jsonStr);
+            final ThreadSummary[] threadSummaryList = parseThreadList(jsonStr);
             runOnUiThread(new Runnable() {
                 public void run() {
-                    updateList(questionList);
+                    updateList(threadSummaryList);
                 }
             });
         }
     }
 
-    private String downloadQuestions() {
-        String url = Constants.QUESTION_URL;
+    private String downloadThreads() {
+        return "[{\"userProfile\":{\"id\":\"3d1e85\",\"displayName\":\"name1\",\"profilePicUrl\":\"/static/files/uploaded_files/1432672583_34_Akansha.jpg\",\"role\":\"role1\"},\"latestMessage\":{\"timestamp\":\"2016-01-14T13:45:42Z\",\"fileUrl\":null,\"id\":23,\"text\":\"aa\"},\"numOfUnreadMessage\":2}, {\"userProfile\":{\"id\":\"3d1e89\",\"displayName\":\"other Name\",\"profilePicUrl\":\"/static/files/uploaded_files/1432672583_34_Akansha.jpg\",\"role\":\"role2\"},\"latestMessage\":{\"timestamp\":\"2016-01-14T15:45:42Z\",\"fileUrl\":null,\"id\":22,\"text\":\"bfdgdf\"},\"numOfUnreadMessage\":1}]";
+//        return dummyJSON;
+        /*String url = Constants.QUESTION_URL;
         HTTPServiceHandler serviceHandler = new HTTPServiceHandler(this);
-        return serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.GET, null, null);
+        return serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.GET, null, null);*/
     }
 
-    private Question[] parseQuestionList(String jsonStr){
-        return new Gson().fromJson(jsonStr, Question[].class);
+    private ThreadSummary[] parseThreadList(String jsonStr){
+        return new Gson().fromJson(jsonStr, ThreadSummary[].class);
     }
 
-    private void updateList(Question[] questions){
-        List<Question> questionList = new ArrayList<>();
-        for (Question q : questions){
-            questionList.add(q);
+    private void updateList(ThreadSummary[] threadSummaries){
+        List<ThreadSummary> threadSummaryList = new ArrayList<>();
+        for (ThreadSummary q : threadSummaries){
+            threadSummaryList.add(q);
         }
-        QuestionListAdapter questionListAdapter = new QuestionListAdapter(this, questionList);
-        ListView questionsListView = (ListView) this.findViewById(R.id.questions_list);
-        questionsListView.setAdapter(questionListAdapter);
+        ThreadListAdapter threadListAdapter = new ThreadListAdapter(this, threadSummaryList);
+        ListView threadListView = (ListView) this.findViewById(R.id.thread_list);
+        threadListView.setAdapter(threadListAdapter);
 
-        questionsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
+        threadListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
-                final Question item = (Question) parent.getItemAtPosition(position);
-                Intent intent = new Intent(QuestionListActivity.this, QuestionDetailActivity.class);
+                final ThreadSummary item = (ThreadSummary) parent.getItemAtPosition(position);
+                Intent intent = new Intent(ThreadListActivity.this, ThreadDetailActivity.class);
                 // sending data to new activity
-                intent.putExtra("question_id", item.getId());
+                intent.putExtra(Constants.USER_ID, item.getUserProfile().getId());
+                intent.putExtra(Constants.PROFILE_PIC_URL, item.getUserProfile().getProfilePicUrl());
+                intent.putExtra(Constants.DISPLAY_NAME, item.getUserProfile().getDisplayName());
                 startActivity(intent);
             }
         });
     }
 
-    private class GetQuestions extends AsyncTask<Void, Void, Void> {
+    private class GetThreads extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... arg0) {
             refreshActivity();
             return null;
         }
-
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);

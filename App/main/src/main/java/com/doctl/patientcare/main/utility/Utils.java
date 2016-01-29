@@ -12,8 +12,6 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.RingtoneManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -213,6 +211,7 @@ public final class Utils {
                 sp.getString("phone", ""),
                 sp.getString("dob", ""),
                 sp.getString("sex", ""),
+                null,
                 null
         );
     }

@@ -25,6 +25,7 @@ public final class Constants {
     public final static String REWARDS_URL = SERVER_URL + "/api/reward/" + API_VERSION + "/rewards/";
     public final static String DOCUMENTS_URL = SERVER_URL + "/api/treatment/" + API_VERSION + "/records/";
     public final static String QUESTION_URL = SERVER_URL + "/api/treatment/" + API_VERSION + "/questions/";
+    public final static String CONTACTS_URL = SERVER_URL + "/accounts/contacts/";
 
     public final static String PERSONAL_DETAIL_SHARED_PREFERENCE_NAME = "personal_detail";
     public final static String CLINIC_DETAIL_SHARED_PREFERENCE_NAME = "clinic_detail";
@@ -48,4 +49,10 @@ public final class Constants {
     public final static int FEEDBACK_NOTIFICATION_ID = 5;
     public final static int FOLLOWUP_NOTIFICATION_ID = 6;
     public final static int EDUCATION_NOTIFICATION_ID = 7;
+
+    public final static String PROFILE_PIC_URL = "profile_pic_url";
+    public final static String DISPLAY_NAME = "display_name";
+    public final static String LAST_SEEN="last_seen";
+    public final static String USER_ID = "user_id";
+    public final static String ID = "id";
 }

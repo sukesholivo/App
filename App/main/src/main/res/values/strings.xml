@@ -88,7 +88,7 @@
     <string name="nav_item_profile">Profile</string>
     <string name="nav_item_logout">Log Out</string>
     <string name="nav_item_documents">Reports</string>
-    <string name="nav_item_questions">Questions</string>
+    <string name="nav_item_threads">Chat</string>
 
     <string name="notification_default_title">Message from DOCTL.</string>
     <string name="notification_education_title">New education material.</string>
@@ -104,4 +104,7 @@
     <string name="title_string">Title</string>
     <string name="description_string">Description</string>
     <string name="delete_string">Delete</string>
+
+    <string name="search_hint">Search Contacts</string>
+    <string name="attach"> Attachment</string>
 </resources>

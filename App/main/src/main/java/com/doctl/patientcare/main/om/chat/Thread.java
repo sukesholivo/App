@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by Administrator on 5/4/2015.
  */
-public class Question {
+public class Thread {
     @SerializedName("id")
     private String id;
 

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:background="@color/color_white"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:weightSum="1">
+
+    <com.doctl.patientcare.main.controls.RoundedImageView
+        android:id="@+id/profile_pic"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:src="@drawable/profile_dummy" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="0.68"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/display_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.03"
+            android:gravity="left"
+            android:text="New Text" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/latest_message_time"
+                android:layout_width="82dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.30"
+                android:text="New Text" />
+
+
+            <TextView
+                android:id="@+id/latest_message_text"
+                android:layout_width="151dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="New Text" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/role_image"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_gravity="center"
+        android:src="@drawable/profile_dummy"/>
+
+    <TextView
+        android:id="@+id/num_of_unread_messages"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center" />
+
+</LinearLayout>

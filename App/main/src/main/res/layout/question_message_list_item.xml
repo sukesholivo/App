@@ -40,7 +40,9 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imgMessage"/>
+                android:id="@+id/imgMessage"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"/>
 
         </LinearLayout>
     </LinearLayout>

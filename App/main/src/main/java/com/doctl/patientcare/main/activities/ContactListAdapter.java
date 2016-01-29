@@ -1,6 +1,12 @@
 package com.doctl.patientcare.main.activities;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,27 +15,32 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.doctl.patientcare.main.R;
-import com.doctl.patientcare.main.om.contact.User;
+import com.doctl.patientcare.main.om.UserProfile;
 import com.doctl.patientcare.main.services.DownloadImageTask;
+import com.doctl.patientcare.main.utility.Constants;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Created by satya on 19/1/16.
  */
-public class ContactListAdapter extends ArrayAdapter<User> {
+public class ContactListAdapter extends ArrayAdapter<UserProfile> {
 
+    private static final String TAG = ContactListAdapter.class.getSimpleName();
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_SEPARATOR = 1;
     private LayoutInflater li ;
+    private List<UserProfile> items;
+    private String filter;
 
     private Map<Integer, String> categoryPositions;
 
-    public ContactListAdapter(Context context, List<User> users, Map<Integer, String> categoryPositions) {
-        super(context, 0, users);
+    public ContactListAdapter(Context context, List<UserProfile> userProfiles, Map<Integer, String> categoryPositions) {
+
+        super(context, 0, userProfiles);
         this.categoryPositions = categoryPositions;
+        this.items = userProfiles;
         li = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -70,18 +81,32 @@ public class ContactListAdapter extends ArrayAdapter<User> {
             }
         }
 
-        User user = getItem(position);
+        UserProfile userProfile = getItem(position);
         //add regular item
         if( rowType == TYPE_ITEM && holder instanceof ListItemViewHolder){
             ListItemViewHolder listItemViewHolder = (ListItemViewHolder) holder;
-            ListItemViewHolder.loadData(listItemViewHolder, user);
+            ListItemViewHolder.loadData(listItemViewHolder, userProfile, filter);
         //add item with heading
         }else if(rowType == TYPE_SEPARATOR && holder != null){
             ListCategoryViewHolder listCategoryViewHolder = (ListCategoryViewHolder) holder;
-            ListCategoryViewHolder.loadData(listCategoryViewHolder, user, categoryPositions.get(position));
+            ListCategoryViewHolder.loadData(listCategoryViewHolder, userProfile, categoryPositions.get(position), filter);
         }
 
         return convertView;
+    }
+
+    public void updateData(List<UserProfile> items, Map<Integer, String> categoryPositions, String filter){
+
+        this.items.clear();
+        if( items != null ){
+            this.items.addAll(items);
+        }
+
+        this.categoryPositions.clear();
+        if( categoryPositions != null ){
+            this.categoryPositions.putAll(categoryPositions);
+        }
+        this.filter = filter;
     }
 
     public static class ListItemViewHolder {
@@ -102,14 +127,29 @@ public class ContactListAdapter extends ArrayAdapter<User> {
             return holder;
         }
 
-        public static void loadData(ListItemViewHolder holder, User user){
+        public static void loadData(ListItemViewHolder holder, UserProfile userProfile, String filter){
 
-            if( user.getProfilePicUrl() != null && !user.getProfilePicUrl().isEmpty()){
-                new DownloadImageTask(holder.profilePic).execute(user.getProfilePicUrl());
+            if( userProfile.getProfilePicUrl() != null && !userProfile.getProfilePicUrl().isEmpty()){
+                new DownloadImageTask(holder.profilePic).execute(Constants.SERVER_URL + userProfile.getProfilePicUrl());
             }
 
-            if(user.getName() != null && !user.getName().isEmpty()){
-                holder.name.setText(user.getName());
+            if(userProfile.getDisplayName() != null && !userProfile.getDisplayName().isEmpty()){
+
+                if( filter != null && userProfile.getDisplayName().toLowerCase().contains(filter.toLowerCase()) ) {
+                    int startPos = userProfile.getDisplayName().toLowerCase().indexOf(filter.toLowerCase());
+                    int endPos = startPos + filter.length();
+                    Spannable spannable = new SpannableString(userProfile.getDisplayName());
+                    ColorStateList blueColor = new ColorStateList(new int[][] { new int[] {}}, new int[] { Color.rgb(112, 165, 196) });
+                    TextAppearanceSpan highlightSpan = new TextAppearanceSpan(null, Typeface.BOLD, -1, blueColor, null);
+                    spannable.setSpan(highlightSpan, startPos, endPos, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    holder.name.setText(spannable);
+                }else{
+                    holder.name.setText(userProfile.getDisplayName());
+                }
+            }
+
+            if( userProfile.getAbout() != null){
+                holder.about.setText(userProfile.getAbout());//TODO define what to display fot about
             }
         }
     }
@@ -123,8 +163,8 @@ public class ContactListAdapter extends ArrayAdapter<User> {
             return holder;
         }
 
-        public static void loadData(ListCategoryViewHolder holder, User user, String categoryName){
-            ListItemViewHolder.loadData(holder, user);
+        public static void loadData(ListCategoryViewHolder holder, UserProfile userProfile, String categoryName, String filter){
+            ListItemViewHolder.loadData(holder, userProfile, filter);
             holder.categoryName.setText(categoryName);
         }
     }

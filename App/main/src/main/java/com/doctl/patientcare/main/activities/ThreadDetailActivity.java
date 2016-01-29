@@ -6,13 +6,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +28,8 @@ import com.doctl.patientcare.main.MainActivity;
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.chat.Message;
 import com.doctl.patientcare.main.om.chat.MessageListAdapter;
-import com.doctl.patientcare.main.om.chat.Question;
+import com.doctl.patientcare.main.om.chat.Thread;
+import com.doctl.patientcare.main.services.DownloadImageTask;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.HttpFileUpload;
@@ -46,44 +46,36 @@ import java.util.List;
 /**
  * Created by Administrator on 5/4/2015.
  */
-public class QuestionDetailActivity extends BaseActivity {
-    private static final String TAG = QuestionDetailActivity.class.getSimpleName();
+public class ThreadDetailActivity extends BaseActivity {
+    private static final String TAG = ThreadDetailActivity.class.getSimpleName();
     MessageListAdapter mMessageListAdapter;
-    Menu mMenu;
-    boolean askMode = false;
-    String questionId;
+    ListView messageListView;
+    String userId="1";
 
     private static final int IMAGE_ATTACH_BUTTON = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_detail);
         Toolbar mToolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
         setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
+        Bundle bundle = getIntent().getExtras();
         if (actionBar != null){
-            actionBar.setTitle("Questions");
+            actionBar.setCustomView(R.layout.thread_action_bar);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowCustomEnabled(true);
+            updateActionBarView(actionBar.getCustomView(), bundle);
         }
-        Bundle bundle = getIntent().getExtras();
+
         if (bundle != null){
-            askMode = false;
-            String questionId = bundle.getString("question_id");
-            this.questionId = questionId;
-            String questionData = bundle.getString("question_data");
-            hideNewQuestionLayout();
-            if (questionId != null && !questionId.isEmpty()) {
-                new GetQuestionDetail().execute(questionId);
-                addActionToAttachButton(questionId);
-            } else if (questionData != null && !questionData.isEmpty()){
-                final Question question = parseQuestionData(questionData);
-                updateQuestionData(question);
+            String userId ="2";// bundle.getString(Constants.USER_ID);
+            this.userId = userId;
+            if (userId != null && !userId.isEmpty()) {
+                new GetThreadContent().execute(userId);
             }
-        } else {
-            askMode = true;
-            showNewQuestionLayout();
         }
         final EditText messageEditText = (EditText) findViewById(R.id.etMessage);
         ImageButton sendButton = (ImageButton) findViewById(R.id.btSend);
@@ -96,29 +88,51 @@ public class QuestionDetailActivity extends BaseActivity {
                     msg.setText(message);
                     msg.setTimestamp(new Date());
                     mMessageListAdapter.add(msg);
-                    new SendText().execute(questionId, message);
+                    mMessageListAdapter.notifyDataSetChanged();
+                    new SendText().execute(userId, message);
                     System.out.println("Message " + message);
                     messageEditText.setText("");
+                    scrollMyListViewToBottom();
                 }
             }
         });
-
     }
 
-    private void addActionToAttachButton(final String questionId){
+    private void updateActionBarView(View view, Bundle bundle){
 
-        ImageButton attachItemButton = (ImageButton) findViewById(R.id.attach_button);
-        attachItemButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                intent.putExtra("questionId", questionId);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_ATTACH_BUTTON);
+        ActionBarViewHolder viewHolder=new ActionBarViewHolder(view);
+        viewHolder.update(bundle);
+    }
+
+    class ActionBarViewHolder{
+        ImageView profilePic;
+        TextView displayName;
+        TextView lastSeen;
+
+        public ActionBarViewHolder(View view){
+
+            profilePic = (ImageView) view.findViewById(R.id.profile_pic);
+            displayName = (TextView) view.findViewById(R.id.display_name);
+            lastSeen = (TextView) view.findViewById(R.id.last_seen);
+        }
+
+        public void update(Bundle bundle){
+
+
+            if( bundle == null){
+                return;
             }
-        });
+            if( bundle.containsKey(Constants.PROFILE_PIC_URL)) {
+                new DownloadImageTask(profilePic).execute(Constants.SERVER_URL + bundle.getString(Constants.PROFILE_PIC_URL));
+            }
+            if( bundle.containsKey(Constants.DISPLAY_NAME)){
+                displayName.setText(bundle.getString(Constants.DISPLAY_NAME));
+            }
+            //TODO add last seen
+        }
     }
+
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -126,14 +140,11 @@ public class QuestionDetailActivity extends BaseActivity {
             if (resultCode == RESULT_OK) {
                 if (data != null) {
                     try {
-                        //String questionId=data.getExtras().getString("questionId");
-                        String questionURL = Constants.QUESTION_URL+questionId+"/";
+                        //String userId=data.getExtras().getString("userId");
+                        String questionURL = Constants.QUESTION_URL+ userId +"/"; //TODO add userId
                         String filePath = getRealPathFromURI_API19(this,data.getData());
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
-
-
                         System.out.println("File name"+ filePath + bitmap);
-
                         new SendFile().execute(questionURL, filePath);
 
                     }catch (Exception e){
@@ -149,16 +160,15 @@ public class QuestionDetailActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.question_detail, menu);
-        return super.onCreateOptionsMenu(menu);
+        inflater.inflate(R.menu.thread_menu, menu);
+        return true;
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu){
-        if (!askMode) {
-            menu.getItem(0).setVisible(false);
-        }
+
         super.onPrepareOptionsMenu(menu);
         return true;
     }
@@ -171,96 +181,44 @@ public class QuestionDetailActivity extends BaseActivity {
                 mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(mainActivityIntent);
                 return true;
-            case R.id.action_question_send:
-                EditText editText = (EditText) this.findViewById(R.id.ask_question_edit_text);
-                String questionText = editText.getText().toString();
-                new AskQuestion().execute(questionText);
-                return true;
+            case R.id.attach_button:
+                clickedAttachButton(null);
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void showNewQuestionLayout(){
-        EditText askQuestionEditText = (EditText) this.findViewById(R.id.ask_question_edit_text);
-        CardView questionCardview = (CardView) this.findViewById(R.id.question_text_layout);
-        CardView chatListLayout = (CardView) this.findViewById(R.id.message_list_layout);
-        askQuestionEditText.setVisibility(View.VISIBLE);
-        questionCardview.setVisibility(View.GONE);
-        chatListLayout.setVisibility(View.GONE);
-    }
 
-    private void hideNewQuestionLayout(){
-        EditText askQuestionEditText = (EditText) this.findViewById(R.id.ask_question_edit_text);
-        CardView questionCardview = (CardView) this.findViewById(R.id.question_text_layout);
-        CardView chatListLayout = (CardView) this.findViewById(R.id.message_list_layout);
-        askQuestionEditText.setVisibility(View.GONE);
-        questionCardview.setVisibility(View.VISIBLE);
-        chatListLayout.setVisibility(View.VISIBLE);
 
-    }
-
-    private void refreshActivity(String questionId) {
-        String jsonStr = downloadQuestionData(questionId);
+    private void refreshActivity(String userId) {
+        String jsonStr = downloadThreadContent(userId);
         if (jsonStr != null && !jsonStr.isEmpty()) {
-            final Question questionData = parseQuestionData(jsonStr);
+            final Thread threadData = parseThreadData(jsonStr);
             runOnUiThread(new Runnable() {
                 public void run() {
-                    updateQuestionData(questionData);
+                    updateThreadData(threadData);
                 }
             });
         }
     }
 
-    private String downloadQuestionData(String questionId) {
-        String url = Constants.QUESTION_URL + questionId;
+    private String downloadThreadContent(String userId) {
+        String url = Constants.QUESTION_URL + userId;
         HTTPServiceHandler serviceHandler = new HTTPServiceHandler(this);
         return serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.GET, null, null);
     }
 
-    private Question parseQuestionData(String jsonStr){
-        return new Gson().fromJson(jsonStr, Question.class);
+    private Thread parseThreadData(String jsonStr){
+        return new Gson().fromJson(jsonStr, Thread.class);
     }
 
-    private void updateQuestionData(Question question){
-        TextView questionTextView = (TextView) this.findViewById(R.id.question_text);
-        questionTextView.setText(question.getText());
+    private void updateThreadData(Thread thread){
 
-        List<Message> messageList = question.getMessages();
+        List<Message> messageList = thread.getMessages();
         mMessageListAdapter = new MessageListAdapter(this, messageList);
-        ListView messageListView = (ListView) this.findViewById(R.id.message_list);
+        messageListView = (ListView) this.findViewById(R.id.message_list);
         messageListView.setAdapter(mMessageListAdapter);
-    }
-
-    private class AskQuestion extends AsyncTask<String, Void, Void> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(String... arg0) {
-            String url = Constants.QUESTION_URL;
-            JSONObject data = new JSONObject();
-            try {
-                data.put("question", arg0[0]);
-                HTTPServiceHandler serviceHandler = new HTTPServiceHandler(QuestionDetailActivity.this);
-                String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.POST, null, data);
-                Intent intent = new Intent(QuestionDetailActivity.this, QuestionDetailActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("question_data", response);
-                startActivity(intent);
-            } catch (JSONException e){
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-        }
+        scrollMyListViewToBottom();
     }
 
 
@@ -269,7 +227,6 @@ public class QuestionDetailActivity extends BaseActivity {
         protected void onPreExecute() {
             super.onPreExecute();
         }
-
         @Override
         protected Void doInBackground(String... arg0) {
             String serverUrl = arg0[0];
@@ -286,7 +243,7 @@ public class QuestionDetailActivity extends BaseActivity {
         public void uploadFile(String serverUrl, String imageFile){
             try {
                 FileInputStream fstrm = new FileInputStream(imageFile);
-                HttpFileUpload hfu = new HttpFileUpload(QuestionDetailActivity.this, serverUrl);
+                HttpFileUpload hfu = new HttpFileUpload(ThreadDetailActivity.this, serverUrl);
                 JSONObject jsonResponse= hfu.Send_Now("msg_attach.jpg", fstrm);
                 if(jsonResponse == null) throw new Exception("upload failed");
                 String fileURL = jsonResponse.getString("fileURL");
@@ -305,9 +262,9 @@ public class QuestionDetailActivity extends BaseActivity {
 
         @Override
         protected Void doInBackground(String... arg0) {
-            String questionId= arg0[0];
+            String userId= arg0[0];
             String text = arg0[1];
-            sendToServer(questionId, text);
+            sendToServer(userId, text);
             return null;
         }
 
@@ -316,13 +273,13 @@ public class QuestionDetailActivity extends BaseActivity {
             super.onPostExecute(result);
         }
 
-        public void sendToServer(String questionId, String text){
+        public void sendToServer(String userId, String text){
 
             try {
-                String url = Constants.QUESTION_URL + questionId + "/";
+                String url = Constants.QUESTION_URL + userId + "/";
                 JSONObject data = new JSONObject();
                 data.put("text", text);
-                HTTPServiceHandler serviceHandler = new HTTPServiceHandler(QuestionDetailActivity.this);
+                HTTPServiceHandler serviceHandler = new HTTPServiceHandler(ThreadDetailActivity.this);
                 String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.POST, null, data);
                 System.out.println(" Response " + response);
             }catch (JSONException e){
@@ -332,7 +289,7 @@ public class QuestionDetailActivity extends BaseActivity {
         }
     }
 
-    private class GetQuestionDetail extends AsyncTask<String, Void, Void> {
+    private class GetThreadContent extends AsyncTask<String, Void, Void> {
 
         @Override
         protected void onPreExecute() {
@@ -341,8 +298,8 @@ public class QuestionDetailActivity extends BaseActivity {
 
         @Override
         protected Void doInBackground(String... arg0) {
-            String questionId = arg0[0];
-            refreshActivity(questionId);
+            String userId = arg0[0];
+            refreshActivity(userId);
             return null;
         }
 
@@ -375,5 +332,23 @@ public class QuestionDetailActivity extends BaseActivity {
         }
         cursor.close();
         return filePath;
+    }
+
+    public void clickedAttachButton(View v){
+
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.putExtra("userId", userId); //
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_ATTACH_BUTTON);
+    }
+    private void scrollMyListViewToBottom() {
+        messageListView.post(new Runnable() {
+            @Override
+            public void run() {
+                // Select the last row so it will scroll into view...
+                messageListView.setSelection(mMessageListAdapter.getCount() - 1);
+            }
+        });
     }
 }
