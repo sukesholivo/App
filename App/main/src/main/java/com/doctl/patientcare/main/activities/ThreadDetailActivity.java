@@ -45,12 +45,14 @@ import java.util.List;
 
 /**
  * Created by Administrator on 5/4/2015.
+ *
  */
 public class ThreadDetailActivity extends BaseActivity {
     private static final String TAG = ThreadDetailActivity.class.getSimpleName();
     MessageListAdapter mMessageListAdapter;
     ListView messageListView;
     String userId="1";
+    List<Message> messageList;
 
     private static final int IMAGE_ATTACH_BUTTON = 1;
     @Override
@@ -82,15 +84,14 @@ public class ThreadDetailActivity extends BaseActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (messageEditText.getText() != null) {
+                if (messageEditText.getText() != null && messageEditText.getText().length() != 0 ) {
                     String message = messageEditText.getText().toString();
                     Message msg = new Message();
                     msg.setText(message);
                     msg.setTimestamp(new Date());
-                    mMessageListAdapter.add(msg);
+                    messageList.add(msg);
                     mMessageListAdapter.notifyDataSetChanged();
                     new SendText().execute(userId, message);
-                    System.out.println("Message " + message);
                     messageEditText.setText("");
                     scrollMyListViewToBottom();
                 }
@@ -144,6 +145,7 @@ public class ThreadDetailActivity extends BaseActivity {
                         String questionURL = Constants.QUESTION_URL+ userId +"/"; //TODO add userId
                         String filePath = getRealPathFromURI_API19(this,data.getData());
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+                        //TODO add image to listview before sending
                         System.out.println("File name"+ filePath + bitmap);
                         new SendFile().execute(questionURL, filePath);
 
@@ -151,9 +153,9 @@ public class ThreadDetailActivity extends BaseActivity {
                         e.printStackTrace();
                     }
 
-                } else if (resultCode == RESULT_CANCELED) {
-                    Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show();
                 }
+            }else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -214,7 +216,7 @@ public class ThreadDetailActivity extends BaseActivity {
 
     private void updateThreadData(Thread thread){
 
-        List<Message> messageList = thread.getMessages();
+        messageList = thread.getMessages();
         mMessageListAdapter = new MessageListAdapter(this, messageList);
         messageListView = (ListView) this.findViewById(R.id.message_list);
         messageListView.setAdapter(mMessageListAdapter);
@@ -346,7 +348,6 @@ public class ThreadDetailActivity extends BaseActivity {
         messageListView.post(new Runnable() {
             @Override
             public void run() {
-                // Select the last row so it will scroll into view...
                 messageListView.setSelection(mMessageListAdapter.getCount() - 1);
             }
         });

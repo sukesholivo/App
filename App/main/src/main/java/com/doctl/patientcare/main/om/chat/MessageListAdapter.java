@@ -22,17 +22,13 @@ import java.util.List;
  * Created by Administrator on 5/4/2015.
  */
 public class MessageListAdapter  extends ArrayAdapter<Message> {
+    private final static String TAG = MessageListAdapter.class.getSimpleName();
     String sourceId="0";
     public MessageListAdapter(Context context, List<Message> objects) {
         super(context, 0, objects);
         if( objects.size() > 0 ){
             sourceId=objects.get(0).getSource().getId();
         }
-    }
-
-    @Override
-    public Message getItem(int position) {
-        return super.getItem(getCount() - 1 - position);
     }
 
     @Override
@@ -89,12 +85,12 @@ public class MessageListAdapter  extends ArrayAdapter<Message> {
             layoutParams.gravity = Gravity.START;
             holder.txtInfo.setLayoutParams(layoutParams);
         }
+        holder.txtMessage.setText("");
+        holder.imgMessage.setImageDrawable(null);
 
         if(item.getFileUrl() != null && !item.getFileUrl().isEmpty()) {
-            holder.txtMessage.setText("");
             new DownloadImageTask(holder.imgMessage).execute(Constants.SERVER_URL + item.getFileUrl());
         }else if (item.getText() != null && !item.getText().isEmpty()) {
-            holder.imgMessage.setImageDrawable(null);
             holder.txtMessage.setText(item.getText());
         }
 
