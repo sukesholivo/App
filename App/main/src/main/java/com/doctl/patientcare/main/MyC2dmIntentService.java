@@ -16,6 +16,7 @@ import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -119,6 +120,23 @@ public class MyC2dmIntentService extends IntentService {
                 e.printStackTrace();
             }
             Utils.showNotification(this, Constants.MESSAGE_NOTIFICATION_ID, title, message);
+        }else if(type.toLowerCase().equals("chat")){
+
+            //TODO if activity is not live push notification
+
+            try {
+                Logger.e(TAG, " Received message "+ data);
+                JSONTokener tokener = new JSONTokener(data);
+                JSONObject jsonResponse = new JSONObject(tokener);
+                Intent intent = new Intent(Constants.BROADCAST_INTENT_CHAT_MESSAGE_RECEIVED);
+                intent.putExtra(Constants.CHAT_MESSAGE,jsonResponse.getString("message"));
+                this.sendBroadcast(intent);
+                String title = "Message";
+//            String message =
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 }

@@ -55,4 +55,10 @@ public final class Constants {
     public final static String LAST_SEEN="last_seen";
     public final static String USER_ID = "user_id";
     public final static String ID = "id";
+    public final static String RECEIVER_ID = "receiver_id";
+    public final static String THREAD_ID="thread_id";
+
+    public final static String SENT_TOKEN_TO_SERVER = "send_token_to_server";
+    public final static String BROADCAST_INTENT_CHAT_MESSAGE_RECEIVED = "chat_message_received";
+    public final static String CHAT_MESSAGE = "chat_message";
 }

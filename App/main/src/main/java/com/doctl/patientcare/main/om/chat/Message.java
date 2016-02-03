@@ -24,6 +24,13 @@ public class Message {
     @SerializedName("fileUrl")
     private String fileUrl;
 
+    public Message(UserProfile source, Date timestamp, String text, String fileUrl) {
+        this.source = source;
+        this.timestamp = timestamp;
+        this.text = text;
+        this.fileUrl = fileUrl;
+    }
+
     public String getId() {
         return id;
     }

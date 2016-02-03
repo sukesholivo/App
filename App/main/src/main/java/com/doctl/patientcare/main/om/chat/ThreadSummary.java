@@ -14,7 +14,8 @@ public class ThreadSummary {
      * role : role1
      */
 
-    private UserProfile userProfile;
+    private String id;
+    private UserProfile user;
     /**
      * timestamp : 2016-01-14T13:45:42Z
      * fileUrl : null
@@ -49,11 +50,19 @@ public class ThreadSummary {
         return numOfUnreadMessage;
     }
 
-    public UserProfile getUserProfile() {
-        return userProfile;
+    public UserProfile getUser() {
+        return user;
     }
 
-    public void setUserProfile(UserProfile userProfile) {
-        this.userProfile = userProfile;
+    public void setUser(UserProfile user) {
+        this.user = user;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

@@ -1,10 +1,11 @@
 package com.doctl.patientcare.main.activities;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,8 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.doctl.patientcare.main.BaseActivity;
-import com.doctl.patientcare.main.MainActivity;
 import com.doctl.patientcare.main.R;
+import com.doctl.patientcare.main.om.UserProfile;
 import com.doctl.patientcare.main.om.chat.Message;
 import com.doctl.patientcare.main.om.chat.MessageListAdapter;
 import com.doctl.patientcare.main.om.chat.Thread;
@@ -34,6 +35,7 @@ import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.HttpFileUpload;
 import com.doctl.patientcare.main.utility.Logger;
+import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -51,8 +53,9 @@ public class ThreadDetailActivity extends BaseActivity {
     private static final String TAG = ThreadDetailActivity.class.getSimpleName();
     MessageListAdapter mMessageListAdapter;
     ListView messageListView;
-    String userId="1";
+    String threadId ="1", receiverId;
     List<Message> messageList;
+    UserProfile userProfile;
 
     private static final int IMAGE_ATTACH_BUTTON = 1;
     @Override
@@ -73,30 +76,45 @@ public class ThreadDetailActivity extends BaseActivity {
         }
 
         if (bundle != null){
-            String userId ="2";// bundle.getString(Constants.USER_ID);
-            this.userId = userId;
-            if (userId != null && !userId.isEmpty()) {
-                new GetThreadContent().execute(userId);
+            String userId ="1";// bundle.getString(Constants.USER_ID);
+            threadId = bundle.getString(Constants.THREAD_ID);
+            if (threadId != null && !threadId.isEmpty()) {
+                new GetThreadContent().execute(threadId);
+            }else{ // create new thread
+
+
             }
+            receiverId = bundle.getString(Constants.USER_ID);
         }
+        userProfile = Utils.getPatientDataFromSharedPreference(this);
         final EditText messageEditText = (EditText) findViewById(R.id.etMessage);
         ImageButton sendButton = (ImageButton) findViewById(R.id.btSend);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (messageEditText.getText() != null && messageEditText.getText().length() != 0 ) {
-                    String message = messageEditText.getText().toString();
-                    Message msg = new Message();
-                    msg.setText(message);
-                    msg.setTimestamp(new Date());
-                    messageList.add(msg);
-                    mMessageListAdapter.notifyDataSetChanged();
-                    new SendText().execute(userId, message);
+
+                    String messageText = messageEditText.getText().toString();
+                    Message msg = new Message(userProfile, new Date(), messageText, null);
+                    addMessageToAdapter(msg);
+                    new SendText().execute(threadId, messageText);
                     messageEditText.setText("");
-                    scrollMyListViewToBottom();
                 }
             }
         });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.registerReceiver(mMessageReceiver, new IntentFilter(Constants.BROADCAST_INTENT_CHAT_MESSAGE_RECEIVED));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        this.unregisterReceiver(mMessageReceiver);
     }
 
     private void updateActionBarView(View view, Bundle bundle){
@@ -141,12 +159,10 @@ public class ThreadDetailActivity extends BaseActivity {
             if (resultCode == RESULT_OK) {
                 if (data != null) {
                     try {
-                        //String userId=data.getExtras().getString("userId");
-                        String questionURL = Constants.QUESTION_URL+ userId +"/"; //TODO add userId
-                        String filePath = getRealPathFromURI_API19(this,data.getData());
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+                        String threadId=data.getExtras().getString("threadId");
+                        String questionURL = Constants.QUESTION_URL+ threadId +"/"; //TODO add threadId
+                        String filePath = getRealPathFromURI_API19(this, data.getData());
                         //TODO add image to listview before sending
-                        System.out.println("File name"+ filePath + bitmap);
                         new SendFile().execute(questionURL, filePath);
 
                     }catch (Exception e){
@@ -179,9 +195,9 @@ public class ThreadDetailActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.home:
-                Intent mainActivityIntent = new Intent(this, MainActivity.class);
-                mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(mainActivityIntent);
+                Intent intent = new Intent(this, ThreadListActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 return true;
             case R.id.attach_button:
                 clickedAttachButton(null);
@@ -217,42 +233,41 @@ public class ThreadDetailActivity extends BaseActivity {
     private void updateThreadData(Thread thread){
 
         messageList = thread.getMessages();
-        mMessageListAdapter = new MessageListAdapter(this, messageList);
+        mMessageListAdapter = new MessageListAdapter(this, messageList, userProfile.getId());
         messageListView = (ListView) this.findViewById(R.id.message_list);
         messageListView.setAdapter(mMessageListAdapter);
         scrollMyListViewToBottom();
     }
 
 
-    private class SendFile extends AsyncTask<String, Void, Void> {
+    private class SendFile extends AsyncTask<String, Void, Message> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
         @Override
-        protected Void doInBackground(String... arg0) {
+        protected Message doInBackground(String... arg0) {
             String serverUrl = arg0[0];
             String imageUrl = arg0[1];
-            uploadFile(serverUrl, imageUrl);
-            return null;
+            return uploadFile(serverUrl, imageUrl);
         }
 
         @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
+        protected void onPostExecute(Message message) {
+            super.onPostExecute(message);
+            addMessageToAdapter(message);
         }
 
-        public void uploadFile(String serverUrl, String imageFile){
+        public Message uploadFile(String serverUrl, String imageFile){
             try {
                 FileInputStream fstrm = new FileInputStream(imageFile);
                 HttpFileUpload hfu = new HttpFileUpload(ThreadDetailActivity.this, serverUrl);
                 JSONObject jsonResponse= hfu.Send_Now("msg_attach.jpg", fstrm);
-                if(jsonResponse == null) throw new Exception("upload failed");
-                String fileURL = jsonResponse.getString("fileURL");
-                System.out.println(fileURL);
+                return new Gson().fromJson(jsonResponse.toString(), Message.class);
             } catch (Exception e) {
                 Logger.e(TAG, e.getMessage());
             }
+            return null;
         }
     }
 
@@ -281,13 +296,13 @@ public class ThreadDetailActivity extends BaseActivity {
                 String url = Constants.QUESTION_URL + userId + "/";
                 JSONObject data = new JSONObject();
                 data.put("text", text);
+                data.put("receiver_id", receiverId);
                 HTTPServiceHandler serviceHandler = new HTTPServiceHandler(ThreadDetailActivity.this);
                 String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.POST, null, data);
-                System.out.println(" Response " + response);
+                Logger.d(TAG, response);
             }catch (JSONException e){
                 Logger.e(TAG, e.getMessage());
             }
-
         }
     }
 
@@ -341,7 +356,7 @@ public class ThreadDetailActivity extends BaseActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        intent.putExtra("userId", userId); //
+        intent.putExtra("threadId", threadId); //
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), IMAGE_ATTACH_BUTTON);
     }
     private void scrollMyListViewToBottom() {
@@ -351,5 +366,55 @@ public class ThreadDetailActivity extends BaseActivity {
                 messageListView.setSelection(mMessageListAdapter.getCount() - 1);
             }
         });
+    }
+    private void addMessageToAdapter(Message message){
+        if(message == null) return;
+        mMessageListAdapter.add(message);
+        mMessageListAdapter.notifyDataSetChanged();
+        scrollMyListViewToBottom();
+    }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            String message = intent.getStringExtra(Constants.CHAT_MESSAGE);
+            Message message1 = new Gson().fromJson(message, Message.class);
+            if( userProfile.getId().equals(message1.getSource().getId())) {
+                addMessageToAdapter(message1);
+            }
+        }
+    };
+
+
+    private class CreateThread extends AsyncTask<String, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(String... arg0) {
+            String url = Constants.QUESTION_URL;
+            JSONObject data = new JSONObject();
+            try {
+                data.put("question", arg0[0]);
+                HTTPServiceHandler serviceHandler = new HTTPServiceHandler(ThreadDetailActivity.this);
+                String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.POST, null, data);
+                Intent intent = new Intent(ThreadDetailActivity.this, ThreadDetailActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("question_data", response);
+                startActivity(intent);
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+        }
     }
 }

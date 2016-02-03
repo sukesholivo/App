@@ -12,10 +12,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.doctl.patientcare.main.R;
-import com.doctl.patientcare.main.services.DownloadImageTask;
+import com.doctl.patientcare.main.services.image.ImageLoader;
 import com.doctl.patientcare.main.utility.Constants;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,12 +25,12 @@ import java.util.List;
  */
 public class MessageListAdapter  extends ArrayAdapter<Message> {
     private final static String TAG = MessageListAdapter.class.getSimpleName();
-    String sourceId="0";
-    public MessageListAdapter(Context context, List<Message> objects) {
+    String sourceId;
+    ImageLoader imageLoader;
+    public MessageListAdapter(Context context, List<Message> objects, String sourceId) {
         super(context, 0, objects);
-        if( objects.size() > 0 ){
-            sourceId=objects.get(0).getSource().getId();
-        }
+        this.sourceId = sourceId;
+        imageLoader = new ImageLoader(getContext());
     }
 
     @Override
@@ -45,11 +47,11 @@ public class MessageListAdapter  extends ArrayAdapter<Message> {
         }
 
         // change it later to get from OM directly
-        String userId = item.getSource() == null? "1":item.getSource().getId();
+        String userId = item.getSource() == null?sourceId:item.getSource().getId();
         boolean isMe = userId.equals(sourceId);
 
-        if (!isMe) {
-            holder.contentWithBG.setBackgroundResource(R.drawable.in_message_bg);
+        if (isMe) {
+            holder.contentWithBG.setBackgroundResource(R.drawable.in_chat);
 
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) holder.contentWithBG.getLayoutParams();
             layoutParams.gravity = Gravity.END;
@@ -67,7 +69,7 @@ public class MessageListAdapter  extends ArrayAdapter<Message> {
             layoutParams.gravity = Gravity.END;
             holder.txtInfo.setLayoutParams(layoutParams);
         } else {
-            holder.contentWithBG.setBackgroundResource(R.drawable.out_message_bg);
+            holder.contentWithBG.setBackgroundResource(R.drawable.out_chat);
 
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) holder.contentWithBG.getLayoutParams();
             layoutParams.gravity = Gravity.START;
@@ -89,14 +91,43 @@ public class MessageListAdapter  extends ArrayAdapter<Message> {
         holder.imgMessage.setImageDrawable(null);
 
         if(item.getFileUrl() != null && !item.getFileUrl().isEmpty()) {
-            new DownloadImageTask(holder.imgMessage).execute(Constants.SERVER_URL + item.getFileUrl());
+//            new DownloadImageTask(holder.imgMessage).execute(Constants.SERVER_URL + item.getFileUrl());
+            imageLoader.DisplayImage(Constants.SERVER_URL + item.getFileUrl(), R.drawable.profile_dummy, holder.imgMessage);
         }else if (item.getText() != null && !item.getText().isEmpty()) {
             holder.txtMessage.setText(item.getText());
         }
 
-        String timeStr = new SimpleDateFormat("MMM dd, HH:mm").format(item.getTimestamp());
-        holder.txtInfo.setText(timeStr);
+//        String timeStr = new SimpleDateFormat("MMM dd, HH:mm").format(item.getTimestamp());
+        holder.txtInfo.setText(convertToDisplayTime(item.getTimestamp()));
         return convertView;
+    }
+
+    private String convertToDisplayTime(Date date){
+
+       String result;
+        if(date == null){
+            return "";
+        }
+        if( isSameDateByIgnoringTime(date, new Date())){
+            result =  new SimpleDateFormat("hh:mm a").format(date);
+        }else {
+            result = new SimpleDateFormat("MMM dd, hh:mm a").format(date);
+        }
+        return result;
+    }
+
+    private boolean isSameDateByIgnoringTime(Date date1, Date date2){
+
+        Calendar calendar1= Calendar.getInstance(), calendar2=Calendar.getInstance();
+        calendar1.setTime(date1);
+        calendar2.setTime(date2);
+
+        if( calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH)  &&
+                calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH) &&
+                calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR)){
+            return true;
+        }
+        return false;
     }
 
     private ViewHolder createViewHolder(View v) {

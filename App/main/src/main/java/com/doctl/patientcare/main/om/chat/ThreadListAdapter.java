@@ -65,7 +65,7 @@ public class ThreadListAdapter extends ArrayAdapter<ThreadSummary> {
 
         public void updateViewHolder( ThreadSummary threadSummary){
 
-            UserProfile userProfile= threadSummary.getUserProfile();
+            UserProfile userProfile= threadSummary.getUser();
 
             if( userProfile != null) {
                 if( userProfile.getProfilePicUrl() != null && !userProfile.getProfilePicUrl().isEmpty()) {

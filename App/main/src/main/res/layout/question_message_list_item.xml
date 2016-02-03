@@ -3,33 +3,29 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="70dp"
     android:padding="10dp"
-    android:background="@color/color_white">
+    android:background="@color/color_gray">
     <LinearLayout
         android:id="@+id/content"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/txtInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="30sp"
-            android:layout_gravity="end"
-            android:textSize="12sp"
-            android:textColor="@android:color/darker_gray" />
+        android:orientation="vertical"
+        android:weightSum="10">
+
         <LinearLayout
             android:id="@+id/contentWithBackground"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             android:layout_gravity="end"
-            android:background="@drawable/in_message_bg"
+            android:background="@drawable/in_chat"
             android:paddingLeft="10dp"
             android:paddingStart="10dp"
             android:paddingRight="10dp"
             android:paddingEnd="10dp"
             android:paddingBottom="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:adjustViewBounds="true">
 
             <TextView
                 android:id="@+id/txtMessage"
@@ -43,7 +39,14 @@
                 android:id="@+id/imgMessage"
                 android:adjustViewBounds="true"
                 android:scaleType="centerInside"/>
-
+            <TextView
+                android:id="@+id/txtInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:layout_gravity="end"
+                android:textSize="12sp"
+                android:textColor="@android:color/darker_gray" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
