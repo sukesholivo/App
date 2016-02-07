@@ -5,7 +5,7 @@ package com.doctl.patientcare.main.utility;
  */
 public final class Constants {
 //    TODO: Change this server URL to production server url
-     public final static String SERVER_URL = "https://www.test.doctl.com/";
+     public final static String SERVER_URL = "http://www.test.doctl.com/";
    // public final static String SERVER_URL = "https://olivo.doctl.com";
    // public final static String SERVER_URL = "http://192.168.43.143:8000";
 //    public final static String SERVER_URL = "https://www.doctl.com";
@@ -57,6 +57,9 @@ public final class Constants {
     public final static String ID = "id";
     public final static String RECEIVER_ID = "receiver_id";
     public final static String THREAD_ID="thread_id";
+    public final static String TEXT="text";
+    public final static String IMAGE="image";
+
 
     public final static String SENT_TOKEN_TO_SERVER = "send_token_to_server";
     public final static String BROADCAST_INTENT_CHAT_MESSAGE_RECEIVED = "chat_message_received";

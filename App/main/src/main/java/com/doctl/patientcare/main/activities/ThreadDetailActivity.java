@@ -95,7 +95,7 @@ public class ThreadDetailActivity extends BaseActivity {
                 if (messageEditText.getText() != null && messageEditText.getText().length() != 0 ) {
 
                     String messageText = messageEditText.getText().toString();
-                    Message msg = new Message(userProfile, new Date(), messageText, null);
+                    Message msg = new Message(userProfile, new Date(), messageText, null, null);
                     addMessageToAdapter(msg);
                     new SendText().execute(threadId, messageText);
                     messageEditText.setText("");
@@ -159,7 +159,7 @@ public class ThreadDetailActivity extends BaseActivity {
             if (resultCode == RESULT_OK) {
                 if (data != null) {
                     try {
-                        String threadId=data.getExtras().getString("threadId");
+                        String threadId=data.getStringExtra("threadId");
                         String questionURL = Constants.QUESTION_URL+ threadId +"/"; //TODO add threadId
                         String filePath = getRealPathFromURI_API19(this, data.getData());
                         //TODO add image to listview before sending
@@ -300,6 +300,46 @@ public class ThreadDetailActivity extends BaseActivity {
                 HTTPServiceHandler serviceHandler = new HTTPServiceHandler(ThreadDetailActivity.this);
                 String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.POST, null, data);
                 Logger.d(TAG, response);
+                /*try
+                {
+                    int CONNECTION_TIMEOUT_MILLISEC = 7000; // = 7 seconds
+                    int SOCKET_TIMEOUT_MILLISEC = 10000; // = 10 seconds
+                    HttpParams httpParams = new BasicHttpParams();
+                    HttpConnectionParams.setConnectionTimeout(httpParams, CONNECTION_TIMEOUT_MILLISEC);
+                    HttpConnectionParams.setSoTimeout(httpParams, SOCKET_TIMEOUT_MILLISEC);
+
+                    HttpClient client = new DefaultHttpClient(httpParams);
+                    HttpPost post = new HttpPost(url);
+
+                    String serverAccessToken = Utils.getAuthTokenFromSharedPreference(getBaseContext());
+                    Logger.e(TAG, "server access token: " + serverAccessToken);
+                    post.setHeader("Authorization", "Token " + serverAccessToken);
+                    post.setHeader("Content-type","application/json");
+
+                    MultipartEntityBuilder entityBuilder = MultipartEntityBuilder.create();
+                    entityBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+                    entityBuilder.addTextBody(Constants.TEXT, text);
+                    entityBuilder.addTextBody(Constants.RECEIVER_ID, receiverId);
+
+                    *//*if(file != null)
+                    {
+                        entityBuilder.addBinaryBody(Constants., file);
+                    }*//*
+
+                    HttpEntity entity = entityBuilder.build();
+                    post.setEntity(entity);
+                    HttpResponse response = client.execute(post);
+                    HttpEntity httpEntity = response.getEntity();
+                    String res = EntityUtils.toString(httpEntity);
+                    int statusCode = response.getStatusLine().getStatusCode();
+                    Logger.d(TAG, "statusCode: " + statusCode);
+                    Logger.e(TAG, res);
+                }
+                catch(Exception e)
+                {
+                    e.printStackTrace();
+                }*/
             }catch (JSONException e){
                 Logger.e(TAG, e.getMessage());
             }
@@ -329,10 +369,12 @@ public class ThreadDetailActivity extends BaseActivity {
     @SuppressLint("NewApi")
     public static String getRealPathFromURI_API19(Context context, Uri uri){
         String filePath = "";
+        System.out.println(uri);
         String wholeID = DocumentsContract.getDocumentId(uri);
 
         // Split at colon, use second item in the array
-        String id = wholeID.split(":")[1];
+        System.out.println("Whole id: "+ wholeID);
+        String id = wholeID.split(";")[1];
 
         String[] column = { MediaStore.Images.Media.DATA };
 
@@ -380,41 +422,12 @@ public class ThreadDetailActivity extends BaseActivity {
 
             String message = intent.getStringExtra(Constants.CHAT_MESSAGE);
             Message message1 = new Gson().fromJson(message, Message.class);
-            if( userProfile.getId().equals(message1.getSource().getId())) {
+            if( threadId.equals(message1.getThreadId())) {
                 addMessageToAdapter(message1);
             }
         }
     };
 
 
-    private class CreateThread extends AsyncTask<String, Void, Void> {
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(String... arg0) {
-            String url = Constants.QUESTION_URL;
-            JSONObject data = new JSONObject();
-            try {
-                data.put("question", arg0[0]);
-                HTTPServiceHandler serviceHandler = new HTTPServiceHandler(ThreadDetailActivity.this);
-                String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.POST, null, data);
-                Intent intent = new Intent(ThreadDetailActivity.this, ThreadDetailActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("question_data", response);
-                startActivity(intent);
-            } catch (JSONException e){
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-        }
-    }
 }

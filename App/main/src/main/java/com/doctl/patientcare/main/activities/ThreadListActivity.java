@@ -15,10 +15,12 @@ import android.widget.ListView;
 import com.doctl.patientcare.main.BaseActivity;
 import com.doctl.patientcare.main.MainActivity;
 import com.doctl.patientcare.main.R;
+import com.doctl.patientcare.main.om.UserProfile;
 import com.doctl.patientcare.main.om.chat.ThreadListAdapter;
 import com.doctl.patientcare.main.om.chat.ThreadSummary;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
+import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ import java.util.List;
  */
 public class ThreadListActivity extends BaseActivity {
 
+    private UserProfile currUserProfile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -42,6 +45,7 @@ public class ThreadListActivity extends BaseActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        currUserProfile = Utils.getPatientDataFromSharedPreference(this);
         refresh();
     }
 
@@ -86,7 +90,7 @@ public class ThreadListActivity extends BaseActivity {
     }
 
     private String downloadThreads() {
-       // return "[{\"userProfile\":{\"id\":\"3d1e85\",\"displayName\":\"name1\",\"profilePicUrl\":\"/static/files/uploaded_files/1432672583_34_Akansha.jpg\",\"role\":\"role1\"},\"latestMessage\":{\"timestamp\":\"2016-01-14T13:45:42Z\",\"fileUrl\":null,\"id\":23,\"text\":\"aa\"},\"numOfUnreadMessage\":2}, {\"userProfile\":{\"id\":\"3d1e89\",\"displayName\":\"other Name\",\"profilePicUrl\":\"/static/files/uploaded_files/1432672583_34_Akansha.jpg\",\"role\":\"role2\"},\"latestMessage\":{\"timestamp\":\"2016-01-14T15:45:42Z\",\"fileUrl\":null,\"id\":22,\"text\":\"bfdgdf\"},\"numOfUnreadMessage\":1}]";
+       // return "[{\"currUserProfile\":{\"id\":\"3d1e85\",\"displayName\":\"name1\",\"profilePicUrl\":\"/static/files/uploaded_files/1432672583_34_Akansha.jpg\",\"role\":\"role1\"},\"latestMessage\":{\"timestamp\":\"2016-01-14T13:45:42Z\",\"fileUrl\":null,\"id\":23,\"text\":\"aa\"},\"numOfUnreadMessage\":2}, {\"currUserProfile\":{\"id\":\"3d1e89\",\"displayName\":\"other Name\",\"profilePicUrl\":\"/static/files/uploaded_files/1432672583_34_Akansha.jpg\",\"role\":\"role2\"},\"latestMessage\":{\"timestamp\":\"2016-01-14T15:45:42Z\",\"fileUrl\":null,\"id\":22,\"text\":\"bfdgdf\"},\"numOfUnreadMessage\":1}]";
 //        return dummyJSON;
         String url = Constants.QUESTION_URL;
         HTTPServiceHandler serviceHandler = new HTTPServiceHandler(this);
@@ -114,10 +118,14 @@ public class ThreadListActivity extends BaseActivity {
                 Intent intent = new Intent(ThreadListActivity.this, ThreadDetailActivity.class);
                 // sending data to new activity
                 intent.putExtra(Constants.THREAD_ID, item.getId());
-                if(item.getUser() != null) {
-                    intent.putExtra(Constants.USER_ID, item.getUser().getId());
-                    intent.putExtra(Constants.PROFILE_PIC_URL, item.getUser().getProfilePicUrl());
-                    intent.putExtra(Constants.DISPLAY_NAME, item.getUser().getDisplayName());
+                if(item.getUsers() !=null ) {
+                    for (UserProfile userProfile : item.getUsers()) {
+                        if( !currUserProfile.getId().equals(userProfile.getId())) {
+                            intent.putExtra(Constants.USER_ID, userProfile.getId());
+                            intent.putExtra(Constants.PROFILE_PIC_URL, userProfile.getProfilePicUrl());
+                            intent.putExtra(Constants.DISPLAY_NAME, userProfile.getDisplayName());
+                        }
+                    }
                 }
                 startActivity(intent);
             }

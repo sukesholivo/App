@@ -2,6 +2,8 @@ package com.doctl.patientcare.main.om.chat;
 
 import com.doctl.patientcare.main.om.UserProfile;
 
+import java.util.List;
+
 /**
  * Created by satya on 28/1/16.
  */
@@ -15,7 +17,7 @@ public class ThreadSummary {
      */
 
     private String id;
-    private UserProfile user;
+    private List<UserProfile> users;
     /**
      * timestamp : 2016-01-14T13:45:42Z
      * fileUrl : null
@@ -50,12 +52,12 @@ public class ThreadSummary {
         return numOfUnreadMessage;
     }
 
-    public UserProfile getUser() {
-        return user;
+    public List<UserProfile> getUsers() {
+        return users;
     }
 
-    public void setUser(UserProfile user) {
-        this.user = user;
+    public void setUsers(List<UserProfile> users) {
+        this.users = users;
     }
 
     public String getId() {

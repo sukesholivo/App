@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.doctl.patientcare.main.BaseActivity;
 import com.doctl.patientcare.main.MainActivity;
@@ -21,7 +22,11 @@ import com.doctl.patientcare.main.om.UserProfile;
 import com.doctl.patientcare.main.om.contact.ContactData;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
+import com.doctl.patientcare.main.utility.Logger;
+import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +37,8 @@ import java.util.HashMap;
 public class ContactsActivity extends BaseActivity {
 
     private ContactListAdapter mAdapter;
+    private final String TAG = ContactsActivity.class.getSimpleName();
+    UserProfile currUserProfile;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,18 +57,20 @@ public class ContactsActivity extends BaseActivity {
         new GetContacts().execute(Constants.CONTACTS_URL);
         ListView contactListView = (ListView) this.findViewById(R.id.list);
         contactListView.setAdapter(mAdapter);
-        contactListView.setOnItemClickListener(new ListView.OnItemClickListener(){
+        contactListView.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final UserProfile item = (UserProfile) parent.getItemAtPosition(position);
-                Intent intent = new Intent(ContactsActivity.this, ThreadDetailActivity.class);
+               /* Intent intent = new Intent(ContactsActivity.this, ThreadDetailActivity.class);
                 // sending data to new activity
                 intent.putExtra(Constants.USER_ID, item.getId());
                 intent.putExtra(Constants.PROFILE_PIC_URL, item.getProfilePicUrl());
                 intent.putExtra(Constants.DISPLAY_NAME, item.getDisplayName());
-                startActivity(intent);
+                startActivity(intent);*/
+                new CreateThread().execute(item.getId(), item.getProfilePicUrl(), item.getDisplayName());
             }
         });
+        currUserProfile = Utils.getPatientDataFromSharedPreference(this);
     }
 
     @Override
@@ -121,10 +130,13 @@ public class ContactsActivity extends BaseActivity {
     private void updateContactList(String baseURL, String filter) {
 
         ContactData contactData = parseContactData(downloadContacts(baseURL, filter));
-        mAdapter.updateData(contactData.getAllUserProfiles(), contactData.getListPositions(), filter);
+        if(contactData!= null) {
+            mAdapter.updateData(contactData.getAllUserProfiles(), contactData.getListPositions(), filter);
+        }
     }
 
     private ContactData parseContactData(String jsonStr) {
+        System.out.println("Response " + jsonStr);
         return new Gson().fromJson(jsonStr, ContactData.class);
     }
 
@@ -144,6 +156,50 @@ public class ContactsActivity extends BaseActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private class CreateThread extends AsyncTask<String, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(String... arg0) {
+            String userId=arg0[0], displayName=arg0[2],profilePicURL=arg0[1];
+            String url = Constants.QUESTION_URL;
+            JSONObject data = new JSONObject();
+
+            try {
+                data.put("user_ids", userId+","+currUserProfile.getId());
+                HTTPServiceHandler serviceHandler = new HTTPServiceHandler(ContactsActivity.this);
+                String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.POST, null, data);
+                JSONObject jsonObject=new JSONObject(response);
+                Logger.d(TAG, " Resopnse "+response);
+                if(response ==null ) {
+                    throw new Exception("No response from server");
+                }
+                String threadId = jsonObject.getInt("id") + "";
+                Intent intent = new Intent(ContactsActivity.this, ThreadDetailActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra(Constants.THREAD_ID, threadId);
+                intent.putExtra(Constants.USER_ID, userId);
+                intent.putExtra(Constants.DISPLAY_NAME, displayName);
+                intent.putExtra(Constants.PROFILE_PIC_URL, profilePicURL);
+                startActivity(intent);
+
+            } catch (Exception e){
+                Toast.makeText(getBaseContext(), "some error occurred", Toast.LENGTH_SHORT).show();
+                Logger.e(TAG, e.getMessage());
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
         }
     }
 }

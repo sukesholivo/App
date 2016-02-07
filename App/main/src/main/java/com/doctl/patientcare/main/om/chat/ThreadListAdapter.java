@@ -38,7 +38,9 @@ public class ThreadListAdapter extends ArrayAdapter<ThreadSummary> {
             viewHolder = new ViewHolder(view);
         }else {
             viewHolder =(ViewHolder) view.getTag();
-
+            if(viewHolder == null){ //todo this should not be null
+                viewHolder = new ViewHolder(view);
+            }
         }
         viewHolder.updateViewHolder(item);
         return view;
@@ -65,7 +67,7 @@ public class ThreadListAdapter extends ArrayAdapter<ThreadSummary> {
 
         public void updateViewHolder( ThreadSummary threadSummary){
 
-            UserProfile userProfile= threadSummary.getUser();
+            UserProfile userProfile= (threadSummary.getUsers() != null && !threadSummary.getUsers().isEmpty())?threadSummary.getUsers().get(0):null;
 
             if( userProfile != null) {
                 if( userProfile.getProfilePicUrl() != null && !userProfile.getProfilePicUrl().isEmpty()) {

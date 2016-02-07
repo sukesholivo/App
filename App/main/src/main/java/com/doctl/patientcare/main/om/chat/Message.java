@@ -24,12 +24,16 @@ public class Message {
     @SerializedName("fileUrl")
     private String fileUrl;
 
-    public Message(UserProfile source, Date timestamp, String text, String fileUrl) {
+    @SerializedName("threadId")
+    private String threadId;
+    public Message(UserProfile source, Date timestamp, String text, String fileUrl, String threadId) {
         this.source = source;
         this.timestamp = timestamp;
         this.text = text;
         this.fileUrl = fileUrl;
+        this.threadId=threadId;
     }
+
 
     public String getId() {
         return id;
@@ -80,5 +84,9 @@ public class Message {
 
     public void setFileUrl(String fileUrl) {
         this.fileUrl = fileUrl;
+    }
+
+    public String getThreadId() {
+        return threadId;
     }
 }

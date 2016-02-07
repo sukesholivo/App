@@ -23,7 +23,7 @@ public class Thread {
     private String fileUrl;
 
     @SerializedName("source")
-    private UserProfile source;
+    private List<UserProfile> userProfiles;
 
     @SerializedName("messages")
     private List<Message> messages;
@@ -32,8 +32,8 @@ public class Thread {
         return id;
     }
 
-    public UserProfile getSource() {
-        return source;
+    public List<UserProfile> getUserProfiles() {
+        return userProfiles;
     }
 
     public Date getTimestamp() {
