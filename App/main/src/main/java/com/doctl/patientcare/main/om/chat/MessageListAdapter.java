@@ -14,10 +14,8 @@ import android.widget.TextView;
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.services.image.ImageLoader;
 import com.doctl.patientcare.main.utility.Constants;
+import com.doctl.patientcare.main.utility.DateUtils;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -98,37 +96,12 @@ public class MessageListAdapter  extends ArrayAdapter<Message> {
         }
 
 //        String timeStr = new SimpleDateFormat("MMM dd, HH:mm").format(item.getTimestamp());
-        holder.txtInfo.setText(convertToDisplayTime(item.getTimestamp()));
+        holder.txtInfo.setText(DateUtils.messageTimeInThread(item.getTimestamp()));
         return convertView;
     }
 
-    private String convertToDisplayTime(Date date){
 
-       String result;
-        if(date == null){
-            return "";
-        }
-        if( isSameDateByIgnoringTime(date, new Date())){
-            result =  new SimpleDateFormat("hh:mm a").format(date);
-        }else {
-            result = new SimpleDateFormat("MMM dd, hh:mm a").format(date);
-        }
-        return result;
-    }
 
-    private boolean isSameDateByIgnoringTime(Date date1, Date date2){
-
-        Calendar calendar1= Calendar.getInstance(), calendar2=Calendar.getInstance();
-        calendar1.setTime(date1);
-        calendar2.setTime(date2);
-
-        if( calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH)  &&
-                calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH) &&
-                calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR)){
-            return true;
-        }
-        return false;
-    }
 
     private ViewHolder createViewHolder(View v) {
         ViewHolder holder = new ViewHolder();

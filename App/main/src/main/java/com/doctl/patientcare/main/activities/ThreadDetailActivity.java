@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -420,14 +421,58 @@ public class ThreadDetailActivity extends BaseActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            String message = intent.getStringExtra(Constants.CHAT_MESSAGE);
-            Message message1 = new Gson().fromJson(message, Message.class);
-            if( threadId.equals(message1.getThreadId())) {
-                addMessageToAdapter(message1);
+            String jsonStringMessage = intent.getStringExtra(Constants.CHAT_MESSAGE);
+            Message message = Message.createMessage(jsonStringMessage);
+            if( threadId.equals(message.getThreadId())) {
+                addMessageToAdapter(message);
+            }else{
+                showMessageNotification(context, message);
             }
         }
     };
 
 
+    public static void showMessageNotification(Context context, Message message){
+
+        String notificationTitle = "Message from ";
+        notificationTitle= message.getSource() != null? message.getSource().getDisplayName(): " unknown";
+        String notificationMessage = message.getText() != null? message.getText(): "File";
+        UserProfile source= message.getSource();
+        if(source != null) {
+            Utils.showChatNotification(context, Constants.MESSAGE_NOTIFICATION_ID, notificationTitle, notificationMessage, message.getThreadId(), source.getId(), source.getDisplayName(), source.getProfilePicUrl());
+        }
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Store our shared preference
+        SharedPreferences sp = getSharedPreferences(Constants.IS_THREAD_DETAIL_ACTIVITY_FOREGROUND, MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putBoolean("active", true);
+        ed.apply();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        // Store our shared preference
+        SharedPreferences sp = getSharedPreferences(Constants.IS_THREAD_DETAIL_ACTIVITY_FOREGROUND, MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putBoolean("active", false);
+        ed.apply();
+    }
+
+    public static Intent createThreadDetailIntent(Context context, String threadId, String userId, String userDisplayName, String userProfilePicURL){
+
+        Intent intent = new Intent(context, ThreadDetailActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(Constants.THREAD_ID, threadId);
+        intent.putExtra(Constants.USER_ID, userId);
+        intent.putExtra(Constants.DISPLAY_NAME, userDisplayName);
+        intent.putExtra(Constants.PROFILE_PIC_URL, userProfilePicURL);
+        return intent;
+    }
 
 }

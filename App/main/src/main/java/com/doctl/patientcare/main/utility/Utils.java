@@ -23,6 +23,7 @@ import com.doctl.patientcare.main.Cards.CardHeaderInnerView;
 import com.doctl.patientcare.main.MainActivity;
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.StartPageActivity;
+import com.doctl.patientcare.main.activities.ThreadDetailActivity;
 import com.doctl.patientcare.main.om.BaseTask;
 import com.doctl.patientcare.main.om.GraphData;
 import com.doctl.patientcare.main.om.TreatmentInfo;
@@ -396,6 +397,28 @@ public final class Utils {
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setContentTitle(title)
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText(message))
+                        .setContentText(message);
+        mBuilder.setVibrate(new long[] { 0, 100, 200, 200});
+        mBuilder.setLights(Color.GREEN, 3000, 3000);
+        Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        mBuilder.setSound(uri);
+
+        mBuilder.setContentIntent(contentIntent);
+        mNotificationManager.notify(notificationId, mBuilder.build());
+    }
+
+    public static void showChatNotification(Context context, int notificationId, String title, String message, String threadId, String userId, String userDisplayName, String userProfiPicURL){
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, ThreadDetailActivity.createThreadDetailIntent(context, threadId, userId, userDisplayName, userProfiPicURL), 0);
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)

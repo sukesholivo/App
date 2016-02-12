@@ -2,12 +2,15 @@ package com.doctl.patientcare.main;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.Html;
 
+import com.doctl.patientcare.main.activities.ThreadDetailActivity;
 import com.doctl.patientcare.main.om.BaseTask;
 import com.doctl.patientcare.main.om.UserProfile;
+import com.doctl.patientcare.main.om.chat.Message;
 import com.doctl.patientcare.main.om.education.EducationTask;
 import com.doctl.patientcare.main.om.followup.FollowupTask;
 import com.doctl.patientcare.main.om.message.MessageTask;
@@ -125,14 +128,19 @@ public class MyC2dmIntentService extends IntentService {
             //TODO if activity is not live push notification
 
             try {
-                Logger.e(TAG, " Received message "+ data);
+                Logger.e(TAG, " Received message " + data);
                 JSONTokener tokener = new JSONTokener(data);
                 JSONObject jsonResponse = new JSONObject(tokener);
-                Intent intent = new Intent(Constants.BROADCAST_INTENT_CHAT_MESSAGE_RECEIVED);
-                intent.putExtra(Constants.CHAT_MESSAGE,jsonResponse.getString("message"));
-                this.sendBroadcast(intent);
-                String title = "Message";
-//            String message =
+
+                SharedPreferences sp=getSharedPreferences(Constants.IS_THREAD_DETAIL_ACTIVITY_FOREGROUND, MODE_PRIVATE);
+                boolean isActive = sp.getBoolean("active", false);
+                if(isActive) {
+                    Intent intent = new Intent(Constants.BROADCAST_INTENT_CHAT_MESSAGE_RECEIVED);
+                    intent.putExtra(Constants.CHAT_MESSAGE, jsonResponse.getString("message"));
+                    this.sendBroadcast(intent);
+                }else{
+                    ThreadDetailActivity.showMessageNotification(this, Message.createMessage(jsonResponse.getString("message")));
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }

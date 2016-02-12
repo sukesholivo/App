@@ -182,12 +182,7 @@ public class ContactsActivity extends BaseActivity {
                     throw new Exception("No response from server");
                 }
                 String threadId = jsonObject.getInt("id") + "";
-                Intent intent = new Intent(ContactsActivity.this, ThreadDetailActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra(Constants.THREAD_ID, threadId);
-                intent.putExtra(Constants.USER_ID, userId);
-                intent.putExtra(Constants.DISPLAY_NAME, displayName);
-                intent.putExtra(Constants.PROFILE_PIC_URL, profilePicURL);
+                Intent intent = ThreadDetailActivity.createThreadDetailIntent(ContactsActivity.this, threadId, userId, displayName, profilePicURL);
                 startActivity(intent);
 
             } catch (Exception e){

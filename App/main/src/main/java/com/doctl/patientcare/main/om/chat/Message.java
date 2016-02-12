@@ -1,6 +1,7 @@
 package com.doctl.patientcare.main.om.chat;
 
 import com.doctl.patientcare.main.om.UserProfile;
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
@@ -88,5 +89,9 @@ public class Message {
 
     public String getThreadId() {
         return threadId;
+    }
+
+    public static Message createMessage(String jsonStringMessage){
+        return  new Gson().fromJson(jsonStringMessage, Message.class);
     }
 }

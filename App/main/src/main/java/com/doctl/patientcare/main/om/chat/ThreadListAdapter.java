@@ -1,6 +1,7 @@
 package com.doctl.patientcare.main.om.chat;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,8 @@ import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.UserProfile;
 import com.doctl.patientcare.main.services.DownloadImageTask;
 import com.doctl.patientcare.main.utility.Constants;
+import com.doctl.patientcare.main.utility.DateUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -21,8 +22,12 @@ import java.util.List;
  */
 
 public class ThreadListAdapter extends ArrayAdapter<ThreadSummary> {
-    public ThreadListAdapter(Context context, List<ThreadSummary> objects) {
+    String currUserId;
+    Context context;
+    public ThreadListAdapter(Context context, List<ThreadSummary> objects, String currUserId) {
         super(context, 0, objects);
+        this.currUserId=currUserId;
+        this.context=context;
     }
 
     @Override
@@ -87,13 +92,38 @@ public class ThreadListAdapter extends ArrayAdapter<ThreadSummary> {
                 }
 
                 if( message.getTimestamp() != null ){
-                    //TODO format time as per req
-                    latestMessageTime.setText(new SimpleDateFormat("HH:mm").format(message.getTimestamp()));
+                    latestMessageTime.setText(DateUtils.messageTimeForLatestMessage(message.getTimestamp()));
                 }
             }
 
-            if(threadSummary.getNumOfUnreadMessage()!=null){
+            if(threadSummary.getNumOfUnreadMessage() != null && threadSummary.getNumOfUnreadMessage() != 0){
                 numOfUnreadMessages.setText(threadSummary.getNumOfUnreadMessage()+"");
+            }else {
+                numOfUnreadMessages.setVisibility(View.GONE);
+            }
+
+            if(threadSummary.getUsers() != null && !threadSummary.getUsers().isEmpty()){
+                UserProfile otherUserProfile = null;
+                for(UserProfile userProfile1: threadSummary.getUsers()){
+                    if(currUserId != userProfile1.getId()){
+                        otherUserProfile=userProfile1;
+                        break;
+                    }
+                }
+                if(otherUserProfile != null){
+
+                    String uri = "@drawable/myresource";
+                    if("DOCTOR".equalsIgnoreCase(otherUserProfile.getRole())){
+                        uri="@drawable/doctor";
+                    }else if("LAB".equalsIgnoreCase(otherUserProfile.getRole())){
+                        uri="@drawable/lab";
+                    }else {
+                        uri="@drawable/pharmacy";
+                    }
+                    int imageResource = context.getResources().getIdentifier(uri, null, context.getPackageName());
+                    Drawable res = context.getResources().getDrawable(imageResource);
+                    roleImage.setImageDrawable(res);
+                }
             }
         }
     }

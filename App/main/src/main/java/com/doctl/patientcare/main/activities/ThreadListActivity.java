@@ -106,7 +106,7 @@ public class ThreadListActivity extends BaseActivity {
         for (ThreadSummary q : threadSummaries){
             threadSummaryList.add(q);
         }
-        ThreadListAdapter threadListAdapter = new ThreadListAdapter(this, threadSummaryList);
+        ThreadListAdapter threadListAdapter = new ThreadListAdapter(this, threadSummaryList, currUserProfile.getId());
         ListView threadListView = (ListView) this.findViewById(R.id.thread_list);
         threadListView.setAdapter(threadListAdapter);
 

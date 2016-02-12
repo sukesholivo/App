@@ -64,4 +64,5 @@ public final class Constants {
     public final static String SENT_TOKEN_TO_SERVER = "send_token_to_server";
     public final static String BROADCAST_INTENT_CHAT_MESSAGE_RECEIVED = "chat_message_received";
     public final static String CHAT_MESSAGE = "chat_message";
+    public final static String IS_THREAD_DETAIL_ACTIVITY_FOREGROUND = "is_thread_detail_activity_foreground";
 }
