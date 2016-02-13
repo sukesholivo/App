@@ -118,14 +118,13 @@ public class ThreadListActivity extends BaseActivity {
                 Intent intent = new Intent(ThreadListActivity.this, ThreadDetailActivity.class);
                 // sending data to new activity
                 intent.putExtra(Constants.THREAD_ID, item.getId());
-                if(item.getUsers() !=null ) {
-                    for (UserProfile userProfile : item.getUsers()) {
-                        if( !currUserProfile.getId().equals(userProfile.getId())) {
+                if(item.getUsers() != null ) {
+                    UserProfile userProfile=UserProfile.getOtherUserProfile(currUserProfile.getId(), item.getUsers());
+                        if( userProfile != null) {
                             intent.putExtra(Constants.USER_ID, userProfile.getId());
                             intent.putExtra(Constants.PROFILE_PIC_URL, userProfile.getProfilePicUrl());
                             intent.putExtra(Constants.DISPLAY_NAME, userProfile.getDisplayName());
                         }
-                    }
                 }
                 startActivity(intent);
             }

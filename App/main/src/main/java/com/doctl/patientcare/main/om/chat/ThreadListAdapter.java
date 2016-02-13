@@ -72,7 +72,7 @@ public class ThreadListAdapter extends ArrayAdapter<ThreadSummary> {
 
         public void updateViewHolder( ThreadSummary threadSummary){
 
-            UserProfile userProfile= (threadSummary.getUsers() != null && !threadSummary.getUsers().isEmpty())?threadSummary.getUsers().get(0):null;
+            UserProfile userProfile= (threadSummary.getUsers() != null && !threadSummary.getUsers().isEmpty())?UserProfile.getOtherUserProfile(currUserId, threadSummary.getUsers()):null;
 
             if( userProfile != null) {
                 if( userProfile.getProfilePicUrl() != null && !userProfile.getProfilePicUrl().isEmpty()) {
@@ -96,8 +96,22 @@ public class ThreadListAdapter extends ArrayAdapter<ThreadSummary> {
                 }
             }
 
-            if(threadSummary.getNumOfUnreadMessage() != null && threadSummary.getNumOfUnreadMessage() != 0){
-                numOfUnreadMessages.setText(threadSummary.getNumOfUnreadMessage()+"");
+            if(threadSummary.getReadLogs() != null && threadSummary.getReadLogs().size() != 0){
+                List<ThreadSummary.ReadLog> readLogs=threadSummary.getReadLogs();
+                boolean foundCurrUser = false;
+                for(ThreadSummary.ReadLog readLog:readLogs){
+                    if( currUserId.equals(readLog.getUser().getId()) ){
+                        if(readLog.getUnreadCount() != 0) {
+                            numOfUnreadMessages.setText(Integer.toString(readLog.getUnreadCount()));
+                            foundCurrUser = true;
+                        }
+                        break;
+                    }
+                }
+                if(!foundCurrUser){
+                    numOfUnreadMessages.setVisibility(View.GONE);
+                }
+
             }else {
                 numOfUnreadMessages.setVisibility(View.GONE);
             }

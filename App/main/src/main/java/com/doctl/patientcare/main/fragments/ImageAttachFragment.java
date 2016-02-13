@@ -26,7 +26,7 @@ public class ImageAttachFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         //super.onCreateView(inflater, container, savedInstanceState);
-        View v = inflater.inflate(R.layout.activity_question_detail,container, false);
+        View v = inflater.inflate(R.layout.activity_thread_detail,container, false);
         ImageButton attachButton = (ImageButton) v.findViewById(R.id.list_cardId);
         System.out.println(" ########  Button #########3" + attachButton);
 

@@ -2,6 +2,7 @@ package com.doctl.patientcare.main.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -11,10 +12,24 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.doctl.patientcare.main.BaseActivity;
 import com.doctl.patientcare.main.R;
+import com.doctl.patientcare.main.om.UserProfile;
+import com.doctl.patientcare.main.services.HTTPServiceHandler;
+import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.Logger;
+import com.doctl.patientcare.main.utility.Utils;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by satya on 27/1/16.
@@ -50,7 +65,7 @@ public class AddPatientActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()){
-            case R.id.home:
+            case android.R.id.home:
                 Intent contactActivity = new Intent(this, ContactsActivity.class);
                 startActivity(contactActivity);
                 return true;
@@ -64,10 +79,42 @@ public class AddPatientActivity extends BaseActivity {
 
     public void saveData(){
 
+        UserProfile userProfile = Utils.getPatientDataFromSharedPreference(this);
+        List<NameValuePair> data=new ArrayList<>();
+        data.add(new BasicNameValuePair("role", userProfile.getRole()));
+        data.add(new BasicNameValuePair("creator_uname", userProfile.getEmail()));
+        data.add(new BasicNameValuePair("phone", viewHolder.phone.getText().toString()));
         Logger.d(TAG, viewHolder.name.getText().toString());
         Logger.d(TAG, viewHolder.email.getText().toString());
         Logger.d(TAG, viewHolder.phone.getText().toString());
+        new SavePatient().execute(data.toArray(new NameValuePair[data.size()]));
+        Intent intent=new Intent(this, ContactsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
 
+    }
+    private class SavePatient extends AsyncTask<NameValuePair,Void, Void>{
+        @Override
+        protected Void doInBackground(NameValuePair... params) {
+            List<NameValuePair> data=new ArrayList<>(Arrays.asList(params));
+            JSONObject jsonData=new JSONObject();
+            for(NameValuePair pair:data){
+                try {
+                    jsonData.put(pair.getName(), pair.getValue());
+                    HTTPServiceHandler httpServiceHandler=new HTTPServiceHandler(AddPatientActivity.this);
+                    String response = httpServiceHandler.makeServiceCall(Constants.ADD_PATIENT_API_URL, HTTPServiceHandler.HTTPMethod.POST, null, jsonData);
+                    if(response != null){
+                        Toast.makeText(AddPatientActivity.this, "Added Patient Successfully!", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(AddPatientActivity.this, "Adding Patient Failed!", Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
     }
     static class ViewHolder{
         ImageView profilePic;
@@ -84,6 +131,7 @@ public class AddPatientActivity extends BaseActivity {
             profilePicAddButton.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
+
                     
                 }
             });

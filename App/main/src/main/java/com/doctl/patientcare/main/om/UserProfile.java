@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 7/28/2014.
  */
@@ -226,5 +228,15 @@ public class UserProfile {
                     ", latitude='" + latitude + '\'' +
                     '}';
         }
+    }
+    
+    public static UserProfile getOtherUserProfile(String currUserId, List<UserProfile> userProfiles){
+
+        for (UserProfile userProfile : userProfiles) {
+            if( !currUserId.equals(userProfile.getId())) {
+                return userProfile;
+            }
+        }
+        return null;
     }
 }

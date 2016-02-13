@@ -1,6 +1,7 @@
 package com.doctl.patientcare.main.utility;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -427,13 +428,15 @@ public final class Utils {
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(message))
                         .setContentText(message);
-        mBuilder.setVibrate(new long[] { 0, 100, 200, 200});
+        mBuilder.setVibrate(new long[]{0, 100, 200, 200});
         mBuilder.setLights(Color.GREEN, 3000, 3000);
         Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         mBuilder.setSound(uri);
 
         mBuilder.setContentIntent(contentIntent);
-        mNotificationManager.notify(notificationId, mBuilder.build());
+        Notification notification= mBuilder.build();
+        notification.flags |=Notification.FLAG_AUTO_CANCEL;
+        mNotificationManager.notify(notificationId, notification);
     }
 
     public static BaseTask parseCardData(String jsonStr) {

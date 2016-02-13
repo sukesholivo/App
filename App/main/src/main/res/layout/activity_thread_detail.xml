@@ -40,7 +40,7 @@
             android:layout_weight="6"
             android:gravity="top"
             android:hint="Type here"
-            android:inputType="textCapSentences"
+            android:inputType="textCapSentences|textMultiLine"
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp">
             <requestFocus android:layout_width="wrap_content" />

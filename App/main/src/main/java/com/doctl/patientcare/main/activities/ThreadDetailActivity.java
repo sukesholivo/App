@@ -43,6 +43,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileInputStream;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class ThreadDetailActivity extends BaseActivity {
     private static final String TAG = ThreadDetailActivity.class.getSimpleName();
     MessageListAdapter mMessageListAdapter;
     ListView messageListView;
-    String threadId ="1", receiverId;
+    String threadId;
     List<Message> messageList;
     UserProfile userProfile;
 
@@ -63,7 +64,7 @@ public class ThreadDetailActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_question_detail);
+        setContentView(R.layout.activity_thread_detail);
         Toolbar mToolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
         setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -77,15 +78,10 @@ public class ThreadDetailActivity extends BaseActivity {
         }
 
         if (bundle != null){
-            String userId ="1";// bundle.getString(Constants.USER_ID);
             threadId = bundle.getString(Constants.THREAD_ID);
             if (threadId != null && !threadId.isEmpty()) {
                 new GetThreadContent().execute(threadId);
-            }else{ // create new thread
-
-
             }
-            receiverId = bundle.getString(Constants.USER_ID);
         }
         userProfile = Utils.getPatientDataFromSharedPreference(this);
         final EditText messageEditText = (EditText) findViewById(R.id.etMessage);
@@ -195,13 +191,14 @@ public class ThreadDetailActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.home:
+            case android.R.id.home:
                 Intent intent = new Intent(this, ThreadListActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 return true;
             case R.id.attach_button:
                 clickedAttachButton(null);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -234,6 +231,7 @@ public class ThreadDetailActivity extends BaseActivity {
     private void updateThreadData(Thread thread){
 
         messageList = thread.getMessages();
+        Collections.reverse(messageList);
         mMessageListAdapter = new MessageListAdapter(this, messageList, userProfile.getId());
         messageListView = (ListView) this.findViewById(R.id.message_list);
         messageListView.setAdapter(mMessageListAdapter);
@@ -297,7 +295,6 @@ public class ThreadDetailActivity extends BaseActivity {
                 String url = Constants.QUESTION_URL + userId + "/";
                 JSONObject data = new JSONObject();
                 data.put("text", text);
-                data.put("receiver_id", receiverId);
                 HTTPServiceHandler serviceHandler = new HTTPServiceHandler(ThreadDetailActivity.this);
                 String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.POST, null, data);
                 Logger.d(TAG, response);
@@ -347,6 +344,17 @@ public class ThreadDetailActivity extends BaseActivity {
         }
     }
 
+    private class ReadThreadContent extends AsyncTask<String, Void, Void>{
+        @Override
+        protected Void doInBackground(String... params) {
+            String threadId = params[0];
+            String url = Constants.READ_THREAD_CONTENT_URL+threadId+"/";
+
+            HTTPServiceHandler httpServiceHandler=new HTTPServiceHandler(ThreadDetailActivity.this);
+            httpServiceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.POST, null, null);
+            return null;
+        }
+    }
     private class GetThreadContent extends AsyncTask<String, Void, Void> {
 
         @Override
@@ -364,6 +372,7 @@ public class ThreadDetailActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
+            new ReadThreadContent().execute(threadId);
         }
     }
 
