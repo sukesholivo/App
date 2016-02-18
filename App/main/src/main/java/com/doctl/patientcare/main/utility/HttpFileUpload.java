@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class HttpFileUpload {
     URL connectURL;
-    FileInputStream fileInputStream = null;
+    InputStream fileInputStream = null;
     List<NameValuePair> nameValuePairs;
     private Context c;
     private String fileName;
@@ -36,7 +36,7 @@ public class HttpFileUpload {
         }
     }
 
-    public JSONObject Send_Now(String fileName, FileInputStream fStream){
+    public JSONObject Send_Now(String fileName, InputStream fStream){
         this.fileName = fileName;
         fileInputStream = fStream;
         this.nameValuePairs = new ArrayList<>();

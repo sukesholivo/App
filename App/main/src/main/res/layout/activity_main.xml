@@ -1,5 +1,6 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_parent_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -40,6 +41,36 @@
                 layout="@layout/treatment_dashboard"
                 />
         </RelativeLayout>
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/fab_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            style="@style/FabMenuStyle"
+            >
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/record_vital_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add_vital_white_36dp"
+                fab:fab_size="mini"
+                fab:fab_label="Record Vital" />
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/upload_report_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_document_add_white_24dp"
+                fab:fab_size="mini"
+                fab:fab_label="Upload reports" />
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/add_patient_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_add_patient"
+                fab:fab_size="mini"
+                fab:fab_label="Add patient" />
+
+        </com.github.clans.fab.FloatingActionMenu>
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">

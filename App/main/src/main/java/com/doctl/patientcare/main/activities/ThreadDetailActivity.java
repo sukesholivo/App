@@ -42,7 +42,8 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -57,7 +58,7 @@ public class ThreadDetailActivity extends BaseActivity {
     ListView messageListView;
     String threadId;
     List<Message> messageList;
-    UserProfile userProfile;
+    UserProfile userProfile, otherUserProfile;
 
     private static final int IMAGE_ATTACH_BUTTON = 1;
     @Override
@@ -65,6 +66,7 @@ public class ThreadDetailActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thread_detail);
+        userProfile = Utils.getPatientDataFromSharedPreference(this);
         Toolbar mToolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
         setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -74,7 +76,6 @@ public class ThreadDetailActivity extends BaseActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowCustomEnabled(true);
-            updateActionBarView(actionBar.getCustomView(), bundle);
         }
 
         if (bundle != null){
@@ -83,7 +84,7 @@ public class ThreadDetailActivity extends BaseActivity {
                 new GetThreadContent().execute(threadId);
             }
         }
-        userProfile = Utils.getPatientDataFromSharedPreference(this);
+
         final EditText messageEditText = (EditText) findViewById(R.id.etMessage);
         ImageButton sendButton = (ImageButton) findViewById(R.id.btSend);
         sendButton.setOnClickListener(new View.OnClickListener() {
@@ -92,7 +93,7 @@ public class ThreadDetailActivity extends BaseActivity {
                 if (messageEditText.getText() != null && messageEditText.getText().length() != 0 ) {
 
                     String messageText = messageEditText.getText().toString();
-                    Message msg = new Message(userProfile, new Date(), messageText, null, null);
+                    Message msg = new Message(userProfile, new Date(), messageText, null, null,null);
                     addMessageToAdapter(msg);
                     new SendText().execute(threadId, messageText);
                     messageEditText.setText("");
@@ -114,10 +115,10 @@ public class ThreadDetailActivity extends BaseActivity {
         this.unregisterReceiver(mMessageReceiver);
     }
 
-    private void updateActionBarView(View view, Bundle bundle){
+    private void updateActionBarView(View view, UserProfile userProfile){
 
         ActionBarViewHolder viewHolder=new ActionBarViewHolder(view);
-        viewHolder.update(bundle);
+        viewHolder.update(userProfile);
     }
 
     class ActionBarViewHolder{
@@ -132,17 +133,19 @@ public class ThreadDetailActivity extends BaseActivity {
             lastSeen = (TextView) view.findViewById(R.id.last_seen);
         }
 
-        public void update(Bundle bundle){
+        public void update(UserProfile userProfile){
 
 
-            if( bundle == null){
+            if( userProfile == null){
                 return;
             }
-            if( bundle.containsKey(Constants.PROFILE_PIC_URL)) {
-                new DownloadImageTask(profilePic).execute(Constants.SERVER_URL + bundle.getString(Constants.PROFILE_PIC_URL));
+            if( userProfile.getProfilePicUrl() != null) {
+                new DownloadImageTask(profilePic).execute(Constants.SERVER_URL + userProfile.getProfilePicUrl());
             }
-            if( bundle.containsKey(Constants.DISPLAY_NAME)){
-                displayName.setText(bundle.getString(Constants.DISPLAY_NAME));
+            if( userProfile.getDisplayName() != null && !userProfile.getDisplayName().isEmpty()){
+                displayName.setText(userProfile.getDisplayName());
+            }else if(userProfile.getPhone() != null && !userProfile.getPhone().isEmpty()){
+                displayName.setText(userProfile.getPhone());
             }
             //TODO add last seen
         }
@@ -156,12 +159,8 @@ public class ThreadDetailActivity extends BaseActivity {
             if (resultCode == RESULT_OK) {
                 if (data != null) {
                     try {
-                        String threadId=data.getStringExtra("threadId");
-                        String questionURL = Constants.QUESTION_URL+ threadId +"/"; //TODO add threadId
-                        String filePath = getRealPathFromURI_API19(this, data.getData());
                         //TODO add image to listview before sending
-                        new SendFile().execute(questionURL, filePath);
-
+                        new SendFile().execute(data.getData());
                     }catch (Exception e){
                         e.printStackTrace();
                     }
@@ -236,32 +235,41 @@ public class ThreadDetailActivity extends BaseActivity {
         messageListView = (ListView) this.findViewById(R.id.message_list);
         messageListView.setAdapter(mMessageListAdapter);
         scrollMyListViewToBottom();
+        otherUserProfile = UserProfile.getOtherUserProfile(userProfile.getId(), thread.getUserProfiles());
     }
 
 
-    private class SendFile extends AsyncTask<String, Void, Message> {
+    private class SendFile extends AsyncTask<Uri, Void, Message> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
         @Override
-        protected Message doInBackground(String... arg0) {
-            String serverUrl = arg0[0];
-            String imageUrl = arg0[1];
-            return uploadFile(serverUrl, imageUrl);
+        protected Message doInBackground(Uri... arg0) {
+            String serverUrl = Constants.QUESTION_URL+ threadId +"/";
+            Uri fileUri = arg0[0];
+            InputStream is = null;
+            try {
+                is = getContentResolver().openInputStream(fileUri);
+                return uploadFile(serverUrl, is);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+           return null;
         }
 
         @Override
         protected void onPostExecute(Message message) {
             super.onPostExecute(message);
-            addMessageToAdapter(message);
+            if(message != null) {
+                addMessageToAdapter(message);
+            }
         }
 
-        public Message uploadFile(String serverUrl, String imageFile){
+        public Message uploadFile(String serverUrl, InputStream is){
             try {
-                FileInputStream fstrm = new FileInputStream(imageFile);
                 HttpFileUpload hfu = new HttpFileUpload(ThreadDetailActivity.this, serverUrl);
-                JSONObject jsonResponse= hfu.Send_Now("msg_attach.jpg", fstrm);
+                JSONObject jsonResponse= hfu.Send_Now("msg_attach.jpg", is);
                 return new Gson().fromJson(jsonResponse.toString(), Message.class);
             } catch (Exception e) {
                 Logger.e(TAG, e.getMessage());
@@ -360,6 +368,7 @@ public class ThreadDetailActivity extends BaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -372,6 +381,10 @@ public class ThreadDetailActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
+            findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+            if(getSupportActionBar() != null) {
+                updateActionBarView(getSupportActionBar().getCustomView(), otherUserProfile);
+            }
             new ReadThreadContent().execute(threadId);
         }
     }
@@ -437,6 +450,7 @@ public class ThreadDetailActivity extends BaseActivity {
             }else{
                 showMessageNotification(context, message);
             }
+            new ReadThreadContent().execute(threadId);
         }
     };
 

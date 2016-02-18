@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:weightSum="1">
     <include layout="@layout/toolbar"/>
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/profile_dummy"
-        android:id="@+id/profile_pic"/>
+        android:id="@+id/profile_pic"
+        android:visibility="gone" />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/profile_pic_add_button"
         android:layout_gravity="right"
-        android:src="@drawable/abc_switch_thumb_material"/>
+        android:src="@drawable/abc_switch_thumb_material"
+        android:visibility="gone" />
 
     <EditText
         android:layout_width="match_parent"
@@ -22,16 +25,8 @@
         android:inputType="textPersonName"
         android:hint="Name"
         android:ems="10"
-        android:id="@+id/name" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="phone"
-        android:ems="10"
-        android:id="@+id/phone"
-        android:hint="phone"
-        android:layout_gravity="center_horizontal" />
+        android:id="@+id/name"
+        android:visibility="gone" />
 
     <EditText
         android:layout_width="match_parent"
@@ -39,7 +34,50 @@
         android:inputType="textEmailAddress"
         android:hint="email id"
         android:ems="10"
-        android:id="@+id/email" />
+        android:id="@+id/email"
+        android:visibility="gone" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mobile number"
+        android:id="@+id/textView"
+        android:textSize="20dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:textAlignment="center"
+        android:layout_marginTop="50dp"
+        android:singleLine="true"
+        android:phoneNumber="true"
+        android:autoText="false"
+        android:layout_gravity="center_horizontal" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:ems="10"
+        android:id="@+id/phone"
+        android:textSize="40dp"
+        android:paddingRight="0dp"
+        android:paddingLeft="0dp"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:layout_marginLeft="68dp"
+        android:layout_marginRight="68dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="add"
+        android:id="@+id/add_button"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#ffffff"
+        android:background="#18acf4"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:layout_marginTop="20dp"
+        android:textStyle="normal" />
 
 
 </LinearLayout>

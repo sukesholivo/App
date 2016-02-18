@@ -80,6 +80,8 @@ public class ThreadListAdapter extends ArrayAdapter<ThreadSummary> {
                 }
                 if(userProfile.getDisplayName() != null && !userProfile.getDisplayName().isEmpty()){
                     displayName.setText(userProfile.getDisplayName());
+                }else if(userProfile.getPhone() != null && !userProfile.getPhone().isEmpty()){
+                    displayName.setText(userProfile.getPhone());
                 }
             }
 

@@ -88,10 +88,13 @@ public class MessageListAdapter  extends ArrayAdapter<Message> {
         holder.txtMessage.setText("");
         holder.imgMessage.setImageDrawable(null);
 
-        if(item.getFileUrl() != null && !item.getFileUrl().isEmpty()) {
+        if(item.getThumbnailUrl() != null && !item.getThumbnailUrl().isEmpty()) {
 //            new DownloadImageTask(holder.imgMessage).execute(Constants.SERVER_URL + item.getFileUrl());
-            imageLoader.DisplayImage(Constants.SERVER_URL + item.getFileUrl(), R.drawable.profile_dummy, holder.imgMessage);
-        }else if (item.getText() != null && !item.getText().isEmpty()) {
+            imageLoader.DisplayImage(Constants.SERVER_URL + item.getThumbnailUrl(), R.drawable.profile_dummy, holder.imgMessage);
+
+        }else{
+            holder.imgMessage.setVisibility(View.GONE);
+        } if (item.getText() != null && !item.getText().isEmpty()) {
             holder.txtMessage.setText(item.getText());
         }
 

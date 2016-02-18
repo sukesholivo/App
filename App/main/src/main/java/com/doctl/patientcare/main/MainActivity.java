@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -21,6 +22,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.doctl.patientcare.main.activities.AddPatientActivity;
+import com.cocosw.bottomsheet.BottomSheet;
+import com.doctl.patientcare.main.activities.DocumentsActivity;
 import com.doctl.patientcare.main.controls.ProgressWheel;
 import com.doctl.patientcare.main.fragments.BaseFragment;
 import com.doctl.patientcare.main.fragments.CardListFragment;
@@ -29,6 +33,8 @@ import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -47,12 +53,22 @@ public class MainActivity extends BaseActivityWithNavigation {
     static boolean active = false;
     GoogleCloudMessaging gcm;
     String regid;
+    FloatingActionMenu mFabMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.setupNavigationDrawer();
+        mFabMenu = (FloatingActionMenu)findViewById(R.id.fab_menu);
+        mFabMenu.setClosedOnTouchOutside(true);
+        FloatingActionButton addPatientButton = (FloatingActionButton) findViewById(R.id.add_patient_btn);
+        addPatientButton.setOnClickListener(clickListener);
+        FloatingActionButton recordVitalBtn = (FloatingActionButton) findViewById(R.id.upload_report_btn);
+        recordVitalBtn.setOnClickListener(clickListener);
+        FloatingActionButton uploadReportBtn = (FloatingActionButton) findViewById(R.id.upload_report_btn);
+        uploadReportBtn.setOnClickListener(clickListener);
+
         refresh();
         setupGCMRegistration();
     }
@@ -139,6 +155,15 @@ public class MainActivity extends BaseActivityWithNavigation {
 //                return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mFabMenu.isOpened()){
+            mFabMenu.close(true);
+        } else {
+            super.onBackPressed();
         }
     }
 
@@ -332,6 +357,88 @@ public class MainActivity extends BaseActivityWithNavigation {
             fragmentTransaction.commit();
         }
     }
+
+    private void handleVitalClick(){
+        new BottomSheet.Builder(this).title("Pick vital").sheet(R.menu.vital_list).listener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent;
+                Context c = MainActivity.this;
+                switch (which) {
+                    case R.id.blood_sugar:
+                        intent = new Intent(c, VitalDetailActivity.class);
+                        intent.putExtra("show_add_dialog", true);
+                        intent.putExtra("vitalType", "sugar");
+                        intent.putExtra("vitalName", "Blood Sugar");
+                        c.startActivity(intent);
+                        break;
+                    case R.id.blood_pressure:
+                        intent = new Intent(c, VitalDetailActivity.class);
+                        intent.putExtra("show_add_dialog", true);
+                        intent.putExtra("vitalType", "bp");
+                        intent.putExtra("vitalName", "Blood Pressure");
+                        c.startActivity(intent);
+                        break;
+                    case R.id.temperature:
+                        intent = new Intent(c, VitalDetailActivity.class);
+                        intent.putExtra("show_add_dialog", true);
+                        intent.putExtra("vitalType", "temperature");
+                        intent.putExtra("vitalName", "Temperature");
+                        c.startActivity(intent);
+                        break;
+                    case R.id.pulse:
+                        intent = new Intent(c, VitalDetailActivity.class);
+                        intent.putExtra("show_add_dialog", true);
+                        intent.putExtra("vitalType", "pulse");
+                        intent.putExtra("vitalName", "Pulse");
+                        c.startActivity(intent);
+                        break;
+                    case R.id.weight:
+                        intent = new Intent(c, VitalDetailActivity.class);
+                        intent.putExtra("show_add_dialog", true);
+                        intent.putExtra("vitalType", "weight");
+                        intent.putExtra("vitalName", "Weight");
+                        c.startActivity(intent);
+                        break;
+                }
+            }
+        }).show();
+
+    }
+
+    private void handleReportClick(){
+        Intent intent = new Intent(this, DocumentsActivity.class);
+        intent.putExtra("show_add_dialog", true);
+        this.startActivity(intent);
+    }
+
+    private void handlePatientAddClick(){
+        Intent intent = new Intent(this, AddPatientActivity.class);
+        intent.putExtra("show_add_dialog", true);
+        this.startActivity(intent);
+    }
+
+    private View.OnClickListener clickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            switch (v.getId()) {
+                case R.id.record_vital_btn:
+                    handleVitalClick();
+                    Logger.e("", "Record Vital");
+                    break;
+                case R.id.upload_report_btn:
+                    handleReportClick();
+                    Logger.e("", "Upload report");
+                    break;
+                case R.id.add_patient_btn:
+                    handlePatientAddClick();
+                    Logger.e("", "Add patient");
+                    break;
+            }
+            mFabMenu.close(true);
+        }
+    };
 
     private class GetProgress extends AsyncTask<Void, Void, Void> {
 

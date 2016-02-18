@@ -81,6 +81,12 @@
 
     </style>
 
+    <style name="FabMenuStyle">
+        <item name="menu_shadowColor">#444</item>
+        <item name="android:padding">10dp</item>
+        <item name="menu_backgroundColor">#ccFFFFFF</item>
+    </style>
+
     <style name="FabButtonsStyle">
         <item name="fab_size">normal</item>
         <item name="fab_showAnimation">@anim/jump_from_down</item>

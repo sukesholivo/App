@@ -74,11 +74,11 @@ public class HTTPServiceHandler {
             HttpClient httpClient = new DefaultHttpClient(httpParams);
             HttpEntity httpEntity;
             HttpResponse httpResponse = null;
-            String ServerAccessToken = "";
+            String serverAccessToken = "";
             //Extract the auth token from user preferences
             if (!anonymous) {
-                ServerAccessToken = Utils.getAuthTokenFromSharedPreference(context);
-                if (ServerAccessToken == null || ServerAccessToken.isEmpty()) {
+                serverAccessToken = Utils.getAuthTokenFromSharedPreference(context);
+                if (serverAccessToken == null || serverAccessToken.isEmpty()) {
                     return null;
                 }
             }
@@ -97,7 +97,7 @@ public class HTTPServiceHandler {
                 }
                 httpPost.setHeader("Content-type","application/json");
                 if (!anonymous) {
-                    httpPost.setHeader("Authorization", "Token " + ServerAccessToken);
+                    httpPost.setHeader("Authorization", "Token " + serverAccessToken);
                 }
                 httpResponse = httpClient.execute(httpPost);
             } else if (method == HTTPMethod.PATCH) {
@@ -112,7 +112,7 @@ public class HTTPServiceHandler {
                 }
                 httpPatch.setHeader("Content-type","application/json");
                 if (!anonymous) {
-                    httpPatch.setHeader("Authorization", "Token " + ServerAccessToken);
+                    httpPatch.setHeader("Authorization", "Token " + serverAccessToken);
                 }
                 httpResponse = httpClient.execute(httpPatch);
             } else if (method == HTTPMethod.GET) {
@@ -126,7 +126,7 @@ public class HTTPServiceHandler {
                 Logger.d(TAG, "URL: " + url);
                 HttpGet httpGet = new HttpGet(url);
                 if (!anonymous) {
-                    httpGet.setHeader("Authorization", "Token " + ServerAccessToken);
+                    httpGet.setHeader("Authorization", "Token " + serverAccessToken);
                 }
 
                 httpResponse = httpClient.execute(httpGet);
@@ -136,7 +136,7 @@ public class HTTPServiceHandler {
                 // adding post params
                 httpDelete.setHeader("Content-type","application/json");
                 if (!anonymous) {
-                    httpDelete.setHeader("Authorization", "Token " + ServerAccessToken);
+                    httpDelete.setHeader("Authorization", "Token " + serverAccessToken);
                 }
                 httpResponse = httpClient.execute(httpDelete);
                 return null;

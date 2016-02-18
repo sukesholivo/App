@@ -97,16 +97,16 @@ public class ImageLoader {
             BitmapFactory.decodeStream(new FileInputStream(f),null,o);
 
             //Find the correct scale value. It should be the power of 2.
-            final int REQUIRED_SIZE=70;
+            final int REQUIRED_SIZE=250;
             int width_tmp=o.outWidth, height_tmp=o.outHeight;
             int scale=1;
-            /*while(true){
+            while(true){
                 if(width_tmp/2<REQUIRED_SIZE || height_tmp/2<REQUIRED_SIZE)
                     break;
                 width_tmp/=2;
                 height_tmp/=2;
                 scale*=2;
-            }*/
+            }
 
             //decode with inSampleSize
             BitmapFactory.Options o2 = new BitmapFactory.Options();

@@ -214,11 +214,12 @@ public final class Utils {
                 sp.getString("dob", ""),
                 sp.getString("sex", ""),
                 null,
-                null
+                sp.getString("role", "")
         );
     }
 
     public static void saveUserDataToSharedPreference(Context context, String preference_name,  UserProfile userProfile){
+        if(userProfile == null) return;
         SharedPreferences sp = context.getSharedPreferences(preference_name, Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putString("id", userProfile.getId());
@@ -228,6 +229,7 @@ public final class Utils {
         editor.putString("phone", userProfile.getPhone());
         editor.putString("sex", userProfile.getSex());
         editor.putString("profilePicUrl", userProfile.getProfilePicUrl());
+        editor.putString("role", userProfile.getRole());
         editor.commit();
     }
 

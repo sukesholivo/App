@@ -27,12 +27,17 @@ public class Message {
 
     @SerializedName("threadId")
     private String threadId;
-    public Message(UserProfile source, Date timestamp, String text, String fileUrl, String threadId) {
+
+    @SerializedName("thumbnailUrl")
+    private String thumbnailUrl;
+
+    public Message(UserProfile source, Date timestamp, String text, String fileUrl, String threadId, String thumbnailUrl) {
         this.source = source;
         this.timestamp = timestamp;
         this.text = text;
         this.fileUrl = fileUrl;
         this.threadId=threadId;
+        this.thumbnailUrl=thumbnailUrl;
     }
 
 
@@ -85,6 +90,14 @@ public class Message {
 
     public void setFileUrl(String fileUrl) {
         this.fileUrl = fileUrl;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
     }
 
     public String getThreadId() {
