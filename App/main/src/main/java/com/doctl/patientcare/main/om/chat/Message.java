@@ -1,5 +1,7 @@
 package com.doctl.patientcare.main.om.chat;
 
+import android.net.Uri;
+
 import com.doctl.patientcare.main.om.UserProfile;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
@@ -10,6 +12,7 @@ import java.util.Date;
  * Created by Administrator on 5/4/2015.
  */
 public class Message {
+
     @SerializedName("id")
     private String id;
 
@@ -31,13 +34,19 @@ public class Message {
     @SerializedName("thumbnailUrl")
     private String thumbnailUrl;
 
-    public Message(UserProfile source, Date timestamp, String text, String fileUrl, String threadId, String thumbnailUrl) {
+    private Uri localUri;
+
+    private MessageStatus status=MessageStatus.SENT;
+
+    public Message(UserProfile source, Date timestamp, String text, String fileUrl, String threadId, String thumbnailUrl, MessageStatus status, Uri localUri) {
         this.source = source;
         this.timestamp = timestamp;
         this.text = text;
         this.fileUrl = fileUrl;
         this.threadId=threadId;
         this.thumbnailUrl=thumbnailUrl;
+        this.status=status;
+        this.localUri=localUri;
     }
 
 
@@ -104,7 +113,37 @@ public class Message {
         return threadId;
     }
 
+    public MessageStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(MessageStatus status) {
+        this.status = status;
+    }
+
+    public Uri getLocalUri() {
+        return localUri;
+    }
+
     public static Message createMessage(String jsonStringMessage){
         return  new Gson().fromJson(jsonStringMessage, Message.class);
     }
+
+
+    public enum MessageStatus{
+        SENDING, FAILED, SENT
+    }
+
+    public static String statusSymbol(MessageStatus status){
+        if(status == null || status == MessageStatus.SENT){
+            return "";
+        }else if( status == MessageStatus.FAILED){
+            return "failed";
+        }else{
+            return "sending";
+        }
+    }
+
+
+
 }

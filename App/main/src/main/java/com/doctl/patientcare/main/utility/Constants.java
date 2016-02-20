@@ -61,6 +61,8 @@ public final class Constants {
     public final static String THREAD_ID="thread_id";
     public final static String TEXT="text";
     public final static String IMAGE="image";
+    public final static String CAPTION="caption";
+    public final static String IMAGE_URL="image_url";
 
 
     public final static String SENT_TOKEN_TO_SERVER = "send_token_to_server";

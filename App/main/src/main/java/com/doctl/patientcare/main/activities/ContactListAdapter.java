@@ -130,7 +130,7 @@ public class ContactListAdapter extends ArrayAdapter<UserProfile> {
         public static void loadData(ListItemViewHolder holder, UserProfile userProfile, String filter){
 
             if( userProfile.getProfilePicUrl() != null && !userProfile.getProfilePicUrl().isEmpty()){
-                new DownloadImageTask(holder.profilePic).execute(Constants.SERVER_URL + userProfile.getProfilePicUrl());
+                new DownloadImageTask(holder.profilePic, null).execute(Constants.SERVER_URL + userProfile.getProfilePicUrl());
             }
 
             if(userProfile.getDisplayName() != null && !userProfile.getDisplayName().isEmpty()){

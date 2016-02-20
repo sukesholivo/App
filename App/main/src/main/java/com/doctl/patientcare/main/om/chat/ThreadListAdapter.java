@@ -76,7 +76,7 @@ public class ThreadListAdapter extends ArrayAdapter<ThreadSummary> {
 
             if( userProfile != null) {
                 if( userProfile.getProfilePicUrl() != null && !userProfile.getProfilePicUrl().isEmpty()) {
-                    new DownloadImageTask(profilePic).execute(Constants.SERVER_URL + userProfile.getProfilePicUrl());
+                    new DownloadImageTask(profilePic, null).execute(Constants.SERVER_URL + userProfile.getProfilePicUrl());
                 }
                 if(userProfile.getDisplayName() != null && !userProfile.getDisplayName().isEmpty()){
                     displayName.setText(userProfile.getDisplayName());
@@ -91,6 +91,8 @@ public class ThreadListAdapter extends ArrayAdapter<ThreadSummary> {
 
                 if(message.getText() != null && !message.getText().isEmpty()){
                     latestMessageText.setText(message.getText());
+                }else if(message.getFileUrl() != null){
+                    latestMessageText.setText("**image**");
                 }
 
                 if( message.getTimestamp() != null ){
@@ -117,15 +119,9 @@ public class ThreadListAdapter extends ArrayAdapter<ThreadSummary> {
             }else {
                 numOfUnreadMessages.setVisibility(View.GONE);
             }
-
             if(threadSummary.getUsers() != null && !threadSummary.getUsers().isEmpty()){
-                UserProfile otherUserProfile = null;
-                for(UserProfile userProfile1: threadSummary.getUsers()){
-                    if(currUserId != userProfile1.getId()){
-                        otherUserProfile=userProfile1;
-                        break;
-                    }
-                }
+
+                UserProfile otherUserProfile = UserProfile.getOtherUserProfile(currUserId, threadSummary.getUsers());
                 if(otherUserProfile != null){
 
                     String uri = "@drawable/myresource";
@@ -133,7 +129,9 @@ public class ThreadListAdapter extends ArrayAdapter<ThreadSummary> {
                         uri="@drawable/doctor";
                     }else if("LAB".equalsIgnoreCase(otherUserProfile.getRole())){
                         uri="@drawable/lab";
-                    }else {
+                    }else if("PATIENT".equalsIgnoreCase(otherUserProfile.getRole())){
+                        uri="@drawable/profile_dummy";
+                    }else{
                         uri="@drawable/pharmacy";
                     }
                     int imageResource = context.getResources().getIdentifier(uri, null, context.getPackageName());

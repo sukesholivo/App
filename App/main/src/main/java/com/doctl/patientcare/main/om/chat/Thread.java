@@ -22,7 +22,7 @@ public class Thread {
     @SerializedName("fileUrl")
     private String fileUrl;
 
-    @SerializedName("source")
+    @SerializedName("users")
     private List<UserProfile> userProfiles;
 
     @SerializedName("messages")

@@ -8,7 +8,6 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.DataOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -43,7 +42,7 @@ public class HttpFileUpload {
         return Sending();
     }
 
-    public JSONObject Send_Now(String fileName, FileInputStream fStream, List<NameValuePair> nameValuePairs){
+    public JSONObject Send_Now(String fileName, InputStream fStream, List<NameValuePair> nameValuePairs){
         this.fileName = fileName;
         this.nameValuePairs = nameValuePairs;
         fileInputStream = fStream;

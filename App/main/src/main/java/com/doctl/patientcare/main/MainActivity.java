@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.doctl.patientcare.main.activities.AddPatientActivity;
 import com.cocosw.bottomsheet.BottomSheet;
 import com.doctl.patientcare.main.activities.DocumentsActivity;
+import com.doctl.patientcare.main.activities.ThreadListActivity;
 import com.doctl.patientcare.main.controls.ProgressWheel;
 import com.doctl.patientcare.main.fragments.BaseFragment;
 import com.doctl.patientcare.main.fragments.CardListFragment;
@@ -153,6 +154,10 @@ public class MainActivity extends BaseActivityWithNavigation {
 //                        })
 //                        .show();
 //                return true;
+            case R.id.action_chat:
+                Intent intent=new Intent(this, ThreadListActivity.class);
+                startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

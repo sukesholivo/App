@@ -24,6 +24,7 @@ import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -50,6 +51,12 @@ public class ThreadListActivity extends BaseActivity {
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        refresh();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.thread_list, menu);
@@ -67,6 +74,10 @@ public class ThreadListActivity extends BaseActivity {
             case R.id.action_add_thread:
                 Intent intent = new Intent(this, ContactsActivity.class);
                 startActivity(intent);
+                return true;
+            case R.id.action_add_user:
+                Intent addUserIntent = new Intent(this, AddPatientActivity.class);
+                startActivity(addUserIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -102,10 +113,12 @@ public class ThreadListActivity extends BaseActivity {
     }
 
     private void updateList(ThreadSummary[] threadSummaries){
+
         List<ThreadSummary> threadSummaryList = new ArrayList<>();
         for (ThreadSummary q : threadSummaries){
             threadSummaryList.add(q);
         }
+        Collections.sort(threadSummaryList, Collections.reverseOrder(ThreadSummary.ORDER_BY_LATEST_MESSAGE));
         ThreadListAdapter threadListAdapter = new ThreadListAdapter(this, threadSummaryList, currUserProfile.getId());
         ListView threadListView = (ListView) this.findViewById(R.id.thread_list);
         threadListView.setAdapter(threadListAdapter);

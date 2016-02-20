@@ -2,6 +2,7 @@ package com.doctl.patientcare.main.om.chat;
 
 import com.doctl.patientcare.main.om.UserProfile;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -102,6 +103,24 @@ public class ThreadSummary {
 
         public void setUser(UserProfile user) {
             this.user = user;
+        }
+    }
+
+    public static final OrderByLatestMessage ORDER_BY_LATEST_MESSAGE=new OrderByLatestMessage();
+    private static class OrderByLatestMessage implements Comparator<ThreadSummary>{
+        @Override
+        public int compare(ThreadSummary lhs, ThreadSummary rhs) {
+            int res=0;
+            if( lhs.getLatestMessage() == null && rhs.getLatestMessage() == null){
+                return 0;
+            }
+            if(lhs.getLatestMessage() == null ) {
+                return -1;
+            }
+            if(rhs.getLatestMessage() == null){
+                return 1;
+            }
+            return lhs.getLatestMessage().getTimestamp().compareTo(rhs.getLatestMessage().getTimestamp());
         }
     }
 }

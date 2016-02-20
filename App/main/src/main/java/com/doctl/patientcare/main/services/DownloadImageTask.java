@@ -1,7 +1,9 @@
 package com.doctl.patientcare.main.services;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
@@ -18,9 +20,11 @@ import java.net.URL;
  */
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     final ImageView bmImage;
+    final Context context;
     boolean exception = false;
-    public DownloadImageTask(ImageView bmImage) {
+    public DownloadImageTask(ImageView bmImage, Context context) {
         this.bmImage = bmImage;
+        this.context= context;
     }
     protected Bitmap doInBackground(String... args) {
         String url = args[0];
@@ -29,8 +33,21 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
             InputStream in = new URL(url).openStream();
             bmp = BitmapFactory.decodeStream(in);
         } catch (IOException e) {
-            Logger.e("Error", e.getMessage());
-            exception = true;
+
+            if(context != null) {
+                try {
+                    InputStream in = context.getContentResolver().openInputStream(Uri.parse(url));
+                    bmp = BitmapFactory.decodeStream(in);
+                } catch (FileNotFoundException e1) {
+                    Logger.e("Error", e1.getMessage());
+                    exception = true;
+                    e1.printStackTrace();
+                }
+            }else{
+                Logger.e("Error", e.getMessage());
+                exception = true;
+                e.printStackTrace();
+            }
         }
         return bmp;
     }

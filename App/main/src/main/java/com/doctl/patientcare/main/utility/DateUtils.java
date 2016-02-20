@@ -84,7 +84,7 @@ public class DateUtils {
             case 1: result = "Yesterday";
                 break;
             default:
-                result=new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH).format(date);
+                result=new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(date);
         }
         return result;
     }

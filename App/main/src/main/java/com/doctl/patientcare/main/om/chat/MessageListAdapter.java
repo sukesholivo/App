@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.doctl.patientcare.main.R;
+import com.doctl.patientcare.main.services.DownloadImageTask;
 import com.doctl.patientcare.main.services.image.ImageLoader;
 import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.DateUtils;
@@ -37,7 +38,7 @@ public class MessageListAdapter  extends ArrayAdapter<Message> {
         Message item = getItem(position);
         LayoutInflater li = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null) {
-            convertView = li.inflate(R.layout.question_message_list_item, null);
+            convertView = li.inflate(R.layout.thread_message_list_item, null);
             holder = createViewHolder(convertView);
             convertView.setTag(holder);
         } else {
@@ -88,10 +89,13 @@ public class MessageListAdapter  extends ArrayAdapter<Message> {
         holder.txtMessage.setText("");
         holder.imgMessage.setImageDrawable(null);
 
-        if(item.getThumbnailUrl() != null && !item.getThumbnailUrl().isEmpty()) {
-//            new DownloadImageTask(holder.imgMessage).execute(Constants.SERVER_URL + item.getFileUrl());
-            imageLoader.DisplayImage(Constants.SERVER_URL + item.getThumbnailUrl(), R.drawable.profile_dummy, holder.imgMessage);
-
+        if(item.getLocalUri() != null){
+            holder.imgMessage.setImageURI(item.getLocalUri());
+            new DownloadImageTask(holder.imgMessage, getContext()).execute(item.getLocalUri().toString());
+        }
+        else if(item.getThumbnailUrl() != null && !item.getThumbnailUrl().isEmpty()) {
+              new DownloadImageTask(holder.imgMessage, getContext()).execute(Constants.SERVER_URL + item.getThumbnailUrl());
+         //   imageLoader.DisplayImage(Constants.SERVER_URL + item.getThumbnailUrl(), R.drawable.profile_dummy, holder.imgMessage);
         }else{
             holder.imgMessage.setVisibility(View.GONE);
         } if (item.getText() != null && !item.getText().isEmpty()) {
@@ -99,7 +103,8 @@ public class MessageListAdapter  extends ArrayAdapter<Message> {
         }
 
 //        String timeStr = new SimpleDateFormat("MMM dd, HH:mm").format(item.getTimestamp());
-        holder.txtInfo.setText(DateUtils.messageTimeInThread(item.getTimestamp()));
+        String status = Message.statusSymbol(item.getStatus());
+        holder.txtInfo.setText(DateUtils.messageTimeInThread(item.getTimestamp()) +" "+ status);
         return convertView;
     }
 

@@ -30,6 +30,7 @@
         android:text="online"
         android:textSize="13dp"
         android:id="@+id/last_seen"
+        android:visibility="gone"
         android:layout_gravity="bottom"/>
     </LinearLayout>
 
