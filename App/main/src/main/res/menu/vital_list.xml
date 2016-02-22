@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/blood_sugar" android:title="@string/nav_item_sugar" android:icon="@drawable/ic_sugar_black_24dp"/>
+    <item android:id="@+id/blood_pressure" android:title="@string/nav_item_bp" android:icon="@drawable/ic_bloodpressure_black_24dp"/>
+    <item android:id="@+id/temperature" android:title="@string/nav_item_temperature" android:icon="@drawable/ic_temp_black_24dp"/>
+    <item android:id="@+id/pulse" android:title="@string/nav_item_pulse" android:icon="@drawable/ic_pulse_black_24dp"/>
+    <item android:id="@+id/weight" android:title="@string/nav_item_weight" android:icon="@drawable/ic_weight_black_24dp"/>
+</menu>
