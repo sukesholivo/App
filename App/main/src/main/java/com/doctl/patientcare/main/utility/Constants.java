@@ -2,6 +2,8 @@ package com.doctl.patientcare.main.utility;
 
 /**
  * Created by Administrator on 7/11/2014.
+ *
+ * http://docs.aws.amazon.com/lambda/latest/dg/with-s3-example.html
  */
 public final class Constants {
 //    TODO: Change this server URL to production server url
@@ -69,4 +71,17 @@ public final class Constants {
     public final static String BROADCAST_INTENT_CHAT_MESSAGE_RECEIVED = "chat_message_received";
     public final static String CHAT_MESSAGE = "chat_message";
     public final static String IS_THREAD_DETAIL_ACTIVITY_FOREGROUND = "is_thread_detail_activity_foreground";
+
+    public static final String COGNITO_POOL_ID = "us-east-1:463d1fbc-af3c-4cc2-b447-5e2543d1705c";
+
+    public static final String AWS_BUCKET_NAME = "olivo-patient-mobile-app";
+
+    private static final String AWS_THUMBNAIL_BUCKET_SUFFIX = "resized"; // same sufix should be used in AWS lambda createThumbnail
+
+    public static final String AWS_THUMBNAIL_BUCKET = AWS_BUCKET_NAME + AWS_THUMBNAIL_BUCKET_SUFFIX;
+
+    public static final String LOCAL_THUMBNAIL_FOLDER ="olivo/thumbnails";
+    public static final String LOCAL_IMAGE_FOLDER = "olivo/images";
+
+    public static final String PATH_SEPERATOR = "/";
 }

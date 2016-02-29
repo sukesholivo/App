@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,6 +27,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.doctl.patientcare.main.BaseActivity;
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.UserProfile;
@@ -34,23 +38,22 @@ import com.doctl.patientcare.main.om.chat.MessageListAdapter;
 import com.doctl.patientcare.main.om.chat.Thread;
 import com.doctl.patientcare.main.services.DownloadImageTask;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
+import com.doctl.patientcare.main.utility.AWSUtils;
 import com.doctl.patientcare.main.utility.Constants;
-import com.doctl.patientcare.main.utility.HttpFileUpload;
+import com.doctl.patientcare.main.utility.FileUtils;
 import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * Created by Administrator on 5/4/2015.
@@ -137,7 +140,7 @@ public class ThreadDetailActivity extends BaseActivity {
                     String messageText = messageEditText.getText().toString();
                     Message msg = new Message(userProfile, new Date(), messageText, null, threadId, null, Message.MessageStatus.SENDING, null);
                     addMessageToAdapter(msg);
-                    new SendMessage().execute(msg);
+                    new SendMessage(msg, ThreadDetailActivity.this).execute();
                     messageEditText.setText("");
                 }
             }
@@ -186,10 +189,9 @@ public class ThreadDetailActivity extends BaseActivity {
         } else if (requestCode == ADD_CAPTION) {
             if (resultCode == RESULT_OK) {
                 String caption = data.getStringExtra(Constants.CAPTION);
-                Toast.makeText(this, "Caption " + ( caption!= null ? caption : ""), Toast.LENGTH_SHORT).show();
                 Message message=new Message(userProfile, new Date(), caption, null, threadId, null, Message.MessageStatus.SENDING, data.getData());
                 addMessageToAdapter(message);
-                new SendMessage().execute(message);
+                new SendMessage(message, ThreadDetailActivity.this).execute();
             }
         }
 
@@ -394,38 +396,58 @@ public class ThreadDetailActivity extends BaseActivity {
         }
     }
 
-    private class SendMessage extends AsyncTask<Message, Void, Message> {
+    private class SendMessage extends AsyncTask<Void, Void, Message> {
         Message msg;
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
+        Context context;
+
+
+
+        public SendMessage(Message msg, Context context) {
+            this.msg = msg;
+            this.context = context;
         }
 
         @Override
-        protected Message doInBackground(Message... arg0) {
-            String serverUrl = Constants.QUESTION_URL + threadId + "/";
-            msg=arg0[0];
+        protected Message doInBackground(Void... arg0) {
+            final String serverUrl = Constants.QUESTION_URL + threadId + "/";
             Uri fileUri = msg.getLocalUri();
-            String text=msg.getText();
-            if (fileUri != null) { // if msg has file
-                InputStream is = null;
+            final String text=msg.getText();
+            final String fileName = msg.getFileName();
+            if (fileUri != null && fileName == null) { // first upload file to aws
                 try {
-                    is = getContentResolver().openInputStream(fileUri);
-                    return uploadFile(serverUrl, is, text);
-                } catch (FileNotFoundException e) {
+                    AWSUtils.S3FileUploadResponse s3FileUploadResponse=AWSUtils.beginUpload(context, Constants.AWS_BUCKET_NAME, FileUtils.getPath(context, fileUri));
+                    if(s3FileUploadResponse != null) {
+                        final TransferObserver transferObserver = s3FileUploadResponse.getTransferObserver();
+                        final String filePathInBucket = s3FileUploadResponse.getFilePathInBucket();
+                        msg.setTransferObserver(transferObserver);
+                        if(transferObserver != null){
+                            transferObserver.setTransferListener(new AWSUtils.UploadListener<>(AWSUtils.UploadListener.ON_STATE_CAHNGE | AWSUtils.UploadListener.ON_PREGRESS_CHANGE, TAG, new Callable<Integer>() {
+                                @Override
+                                public Integer call() throws Exception {
+                                    if (transferObserver.getState() == TransferState.COMPLETED) {
+                                        msg.setFileName(filePathInBucket);
+                                        new SendMessage(msg, ThreadDetailActivity.this).execute(); // save msg to olivo server
+                                    }else if(transferObserver.getState() == TransferState.FAILED){
+                                        msg.setStatus(Message.MessageStatus.FAILED);
+                                    }
+                                    refreshMessageList();
+                                    return null;
+                                }
+                            }));
+                            return msg;
+                        }
+                    }
+                } catch (URISyntaxException e) {
                     e.printStackTrace();
                 }
-            } else if (text != null && !text.isEmpty()) { // msg has only text
+            } else if ((text != null && !text.isEmpty()) || (fileName !=null && !fileName.isEmpty())) { // msg has  text or filename
                 JSONObject data = new JSONObject();
                 try {
                     data.put("text", text);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                HTTPServiceHandler serviceHandler = new HTTPServiceHandler(ThreadDetailActivity.this);
-                String response = serviceHandler.makeServiceCall(serverUrl, HTTPServiceHandler.HTTPMethod.POST, null, data);
-                Logger.d(TAG, response);
-                try {
+                    data.put("fileName", fileName);
+                    HTTPServiceHandler serviceHandler = new HTTPServiceHandler(ThreadDetailActivity.this);
+                    String response = serviceHandler.makeServiceCall(serverUrl, HTTPServiceHandler.HTTPMethod.POST, null, data);
+                    Logger.d(TAG, response);
                     if (response != null) {
                         JSONObject jsonObject = new JSONObject(response);
                         return new Gson().fromJson(jsonObject.toString(), Message.class);
@@ -441,9 +463,7 @@ public class ThreadDetailActivity extends BaseActivity {
         protected void onPostExecute(Message message) {
             super.onPostExecute(message);
             if (message != null) {
-                msg.setFileUrl(message.getFileUrl());
-                msg.setThumbnailUrl(message.getThumbnailUrl());
-                msg.setStatus(Message.MessageStatus.SENT);
+                msg.setStatus(message.getStatus());
             }else{
                 msg.setStatus(Message.MessageStatus.FAILED);
             }
@@ -451,19 +471,24 @@ public class ThreadDetailActivity extends BaseActivity {
             new ReadThreadContent().execute(threadId);
         }
 
-        public Message uploadFile(String serverUrl, InputStream is, String text) {
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+            mMessageListAdapter.notifyDataSetChanged();
+        }
+
+        public Message uploadFile(String serverUrl, String text, String fileName) {
             try {
-                HttpFileUpload hfu = new HttpFileUpload(ThreadDetailActivity.this, serverUrl);
-                List<NameValuePair> nameValuePairs = new ArrayList<>();
-                if (text != null && !text.isEmpty()) {
-                    nameValuePairs.add(new BasicNameValuePair("text", text));
-                }
-                JSONObject jsonResponse = hfu.Send_Now("msg_attach.jpg", is, nameValuePairs);
-                if (jsonResponse != null) {
-                    return new Gson().fromJson(jsonResponse.toString(), Message.class);
+                JSONObject data = new JSONObject();
+                data.put("text", text);
+                data.put("fileName", fileName);
+                HTTPServiceHandler httpServiceHandler=new HTTPServiceHandler(ThreadDetailActivity.this);
+                String response = httpServiceHandler.makeServiceCall(serverUrl, HTTPServiceHandler.HTTPMethod.POST, null, data);
+                if(response != null){
+                    return Message.createMessage(response);
                 }
             } catch (Exception e) {
-                Logger.e(TAG, e.getMessage());
+                Log.e(TAG, String.format("can't send message text: %s, fileName: %s", text, fileName), e);
             }
             return null;
         }
@@ -504,6 +529,30 @@ public class ThreadDetailActivity extends BaseActivity {
                 updateActionBarView(getSupportActionBar().getCustomView(), otherUserProfile);
             }
             new ReadThreadContent().execute(threadId);
+        }
+    }
+
+
+    private class  DownloadListener implements TransferListener {
+        // Simply updates the list when notified.
+
+        @Override
+        public void onError(int id, Exception e) {
+            Log.e(TAG, "onError: " + id, e);
+            refreshMessageList();
+        }
+
+        @Override
+        public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+            Log.d(TAG, String.format("onProgressChanged: %d, total: %d, current: %d",
+                    id, bytesTotal, bytesCurrent));
+            refreshMessageList();
+        }
+
+        @Override
+        public void onStateChanged(int id, TransferState state) {
+            Log.d(TAG, "onStateChanged: " + id + ", " + state);
+            refreshMessageList();
         }
     }
 

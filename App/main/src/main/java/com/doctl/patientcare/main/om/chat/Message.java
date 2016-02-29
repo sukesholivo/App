@@ -2,6 +2,8 @@ package com.doctl.patientcare.main.om.chat;
 
 import android.net.Uri;
 
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.doctl.patientcare.main.om.UserProfile;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
@@ -34,7 +36,11 @@ public class Message {
     @SerializedName("thumbnailUrl")
     private String thumbnailUrl;
 
+    private String fileName;
+
     private Uri localUri;
+
+    private TransferObserver transferObserver;
 
     private MessageStatus status=MessageStatus.SENT;
 
@@ -125,6 +131,26 @@ public class Message {
         return localUri;
     }
 
+    public void setLocalUri(Uri localUri) {
+        this.localUri = localUri;
+    }
+
+    public TransferObserver getTransferObserver() {
+        return transferObserver;
+    }
+
+    public void setTransferObserver(TransferObserver transferObserver) {
+        this.transferObserver = transferObserver;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
     public static Message createMessage(String jsonStringMessage){
         return  new Gson().fromJson(jsonStringMessage, Message.class);
     }
@@ -134,16 +160,47 @@ public class Message {
         SENDING, FAILED, SENT
     }
 
-    public static String statusSymbol(MessageStatus status){
+    public  String statusSymbol(){
+
+        if( transferObserver != null && status != MessageStatus.SENDING){
+            status = MessageStatus.SENDING;
+            return statusSymbol();
+        }
+
         if(status == null || status == MessageStatus.SENT){
             return "";
         }else if( status == MessageStatus.FAILED){
             return "failed";
         }else{
-            return "sending";
+
+            String res="sending";
+            if( transferObserver != null){
+
+                if(transferObserver.getState() == TransferState.IN_PROGRESS) {
+                    double fraction = transferObserver.getBytesTransferred() / (double) transferObserver.getBytesTotal();
+                    res += " " + (int)(fraction * 100) + "%";
+                }else if(transferObserver.getState() == TransferState.FAILED){
+                    status = MessageStatus.FAILED;
+                    res = statusSymbol();
+                }
+            }
+            return res;
         }
+
     }
 
+    public void override(Message otherMessage){
 
+        this.source = otherMessage.source;
+        this.timestamp = otherMessage.timestamp;
+        this.text = otherMessage.text;
+        this.fileUrl = otherMessage.fileUrl;
+        this.threadId= otherMessage.threadId;
+        this.thumbnailUrl=otherMessage.thumbnailUrl;
+        this.status= otherMessage.status;
+        this.localUri= otherMessage.localUri;
+        this.transferObserver = otherMessage.transferObserver;
+        this.fileName = otherMessage.fileName;
 
+    }
 }
