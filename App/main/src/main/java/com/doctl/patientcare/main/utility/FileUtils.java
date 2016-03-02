@@ -11,6 +11,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
 import java.io.File;
+import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
@@ -116,5 +117,15 @@ public class FileUtils {
     public static boolean isFileExist(String relativePathFromAppDir){
         File file=new File(getExternalStorageAbsolutePath(relativePathFromAppDir));
         return file.exists();
+    }
+
+    public static String getPathFromUrl(String url) throws URISyntaxException {
+        URI uri = new URI(url);
+        String domain = uri.getHost();
+        domain = domain.startsWith("www.") ? domain.substring(4) : domain;
+        String urlPath = uri.getPath().replaceAll("^/+", "").replaceAll("$/+", "");
+        domain = domain.replaceAll("^/+", "").replaceAll("$/+", "");
+        String filePath = Constants.LOCAL_IMAGE_FOLDER + Constants.PATH_SEPERATOR + urlPath;
+        return getExternalStorageAbsolutePath(filePath);
     }
 }

@@ -28,7 +28,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.doctl.patientcare.main.BaseActivity;
 import com.doctl.patientcare.main.R;
@@ -38,22 +37,23 @@ import com.doctl.patientcare.main.om.chat.MessageListAdapter;
 import com.doctl.patientcare.main.om.chat.Thread;
 import com.doctl.patientcare.main.services.DownloadImageTask;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
-import com.doctl.patientcare.main.utility.AWSUtils;
 import com.doctl.patientcare.main.utility.Constants;
-import com.doctl.patientcare.main.utility.FileUtils;
+import com.doctl.patientcare.main.utility.HttpFileUpload;
 import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URISyntaxException;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 /**
  * Created by Administrator on 5/4/2015.
@@ -138,7 +138,7 @@ public class ThreadDetailActivity extends BaseActivity {
                 if (messageEditText.getText() != null && messageEditText.getText().length() != 0) {
 
                     String messageText = messageEditText.getText().toString();
-                    Message msg = new Message(userProfile, new Date(), messageText, null, threadId, null, Message.MessageStatus.SENDING, null);
+                    Message msg = new Message(userProfile, new Date(), messageText, null, threadId, null, Message.MessageStatus.SENDING, null, null);
                     addMessageToAdapter(msg);
                     new SendMessage(msg, ThreadDetailActivity.this).execute();
                     messageEditText.setText("");
@@ -189,7 +189,8 @@ public class ThreadDetailActivity extends BaseActivity {
         } else if (requestCode == ADD_CAPTION) {
             if (resultCode == RESULT_OK) {
                 String caption = data.getStringExtra(Constants.CAPTION);
-                Message message=new Message(userProfile, new Date(), caption, null, threadId, null, Message.MessageStatus.SENDING, data.getData());
+                String fileCategory = data.getStringExtra(Constants.DOC_CATEGORY);
+                Message message=new Message(userProfile, new Date(), caption, null, threadId, null, Message.MessageStatus.SENDING, data.getData(), fileCategory);
                 addMessageToAdapter(message);
                 new SendMessage(message, ThreadDetailActivity.this).execute();
             }
@@ -223,6 +224,9 @@ public class ThreadDetailActivity extends BaseActivity {
             case R.id.attach_button:
                 selectImage();
                 return true;
+            case R.id.remainder:
+                Intent remainderIntent = new Intent(ThreadDetailActivity.this, RemainderActivity.class);
+                startActivity(remainderIntent);
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -328,7 +332,6 @@ public class ThreadDetailActivity extends BaseActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
         // Store our shared preference
         SharedPreferences sp = getSharedPreferences(Constants.IS_THREAD_DETAIL_ACTIVITY_FOREGROUND, MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
@@ -409,11 +412,63 @@ public class ThreadDetailActivity extends BaseActivity {
 
         @Override
         protected Message doInBackground(Void... arg0) {
+            String serverUrl = Constants.QUESTION_URL + threadId + "/";
+            Uri fileUri = msg.getLocalUri();
+            String text=msg.getText();
+            if (fileUri != null) { // if msg has file
+                InputStream is = null;
+                try {
+                    is = getContentResolver().openInputStream(fileUri);
+                    return uploadFile(serverUrl, is, text, null, msg.getFileCategory());
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else if (text != null && !text.isEmpty()) { // msg has only text
+                JSONObject data = new JSONObject();
+                try {
+                    data.put("text", text);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                HTTPServiceHandler serviceHandler = new HTTPServiceHandler(ThreadDetailActivity.this);
+                String response = serviceHandler.makeServiceCall(serverUrl, HTTPServiceHandler.HTTPMethod.POST, null, data);
+
+                try {
+                    if (response != null) {
+                        Logger.d(TAG, response);
+                        JSONObject jsonObject = new JSONObject(response);
+                        return new Gson().fromJson(jsonObject.toString(), Message.class);
+                    }else{
+                        Log.e(TAG, "can't send msg url:"+ serverUrl + " data:" + data);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Message message) {
+            super.onPostExecute(message);
+            if (message != null) {
+                msg.setFileUrl(message.getFileUrl());
+                msg.setThumbnailUrl(message.getThumbnailUrl());
+                msg.setStatus(Message.MessageStatus.SENT);
+            }else{
+                msg.setStatus(Message.MessageStatus.FAILED);
+            }
+            refreshMessageList();
+            new ReadThreadContent().execute(threadId);
+        }
+
+        /*@Override
+        protected Message doInBackground(Void... arg0) {
             final String serverUrl = Constants.QUESTION_URL + threadId + "/";
             Uri fileUri = msg.getLocalUri();
             final String text=msg.getText();
-            final String fileName = msg.getFileName();
-            if (fileUri != null && fileName == null) { // first upload file to aws
+            final String fileName = msg.getFileName(); //key name in s3
+            if (fileUri != null && fileName == null) { // first upload file to s3
                 try {
                     AWSUtils.S3FileUploadResponse s3FileUploadResponse=AWSUtils.beginUpload(context, Constants.AWS_BUCKET_NAME, FileUtils.getPath(context, fileUri));
                     if(s3FileUploadResponse != null) {
@@ -445,9 +500,10 @@ public class ThreadDetailActivity extends BaseActivity {
                 try {
                     data.put("text", text);
                     data.put("fileName", fileName);
+                    //data.put("fileCategory", msg.getFileCategory());
                     HTTPServiceHandler serviceHandler = new HTTPServiceHandler(ThreadDetailActivity.this);
                     String response = serviceHandler.makeServiceCall(serverUrl, HTTPServiceHandler.HTTPMethod.POST, null, data);
-                    Logger.d(TAG, response);
+                    Log.d(TAG, response);
                     if (response != null) {
                         JSONObject jsonObject = new JSONObject(response);
                         return new Gson().fromJson(jsonObject.toString(), Message.class);
@@ -469,7 +525,7 @@ public class ThreadDetailActivity extends BaseActivity {
             }
             refreshMessageList();
             new ReadThreadContent().execute(threadId);
-        }
+        }*/
 
         @Override
         protected void onProgressUpdate(Void... values) {
@@ -492,6 +548,31 @@ public class ThreadDetailActivity extends BaseActivity {
             }
             return null;
         }
+
+        public Message uploadFile(String serverUrl, InputStream is, String text, String fileName, String fileCategory) {
+            try {
+
+                HttpFileUpload hfu = new HttpFileUpload(ThreadDetailActivity.this, serverUrl);
+                List<NameValuePair> nameValuePairs = new ArrayList<>();
+                if (text != null && !text.isEmpty()) {
+                    nameValuePairs.add(new BasicNameValuePair("text", text));
+                }
+                if( fileName != null && !fileName.isEmpty()){
+                    nameValuePairs.add(new BasicNameValuePair("fileName", fileName));
+                }
+                if( fileCategory != null && !fileCategory.isEmpty()){
+                    nameValuePairs.add(new BasicNameValuePair("fileCategory", fileCategory));
+                }
+                JSONObject jsonResponse = hfu.Send_Now("msg_attach.jpg", is, nameValuePairs);
+                if (jsonResponse != null) {
+                    return new Gson().fromJson(jsonResponse.toString(), Message.class);
+                }
+            } catch (Exception e) {
+                Logger.e(TAG, e.getMessage());
+            }
+            return null;
+        }
+
     }
 
     private class ReadThreadContent extends AsyncTask<String, Void, Void> {

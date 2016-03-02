@@ -118,6 +118,7 @@
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="com.doctl.patientcare.main" />
             </intent-filter>
         </receiver>
@@ -133,6 +134,9 @@
             android:theme="@android:style/Theme.Holo.Light.Dialog" />
         <activity android:name=".activities.AddCaptionToFile" />
         <activity android:name=".activities.ShowImage" />
+        <activity
+            android:name=".activities.RemainderActivity"
+            android:label="@string/title_activity_remainder"></activity>
     </application>
 
 </manifest>

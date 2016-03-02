@@ -36,6 +36,8 @@ public class Message {
     @SerializedName("thumbnailUrl")
     private String thumbnailUrl;
 
+    private String fileCategory;
+
     private String fileName;
 
     private Uri localUri;
@@ -44,7 +46,7 @@ public class Message {
 
     private MessageStatus status=MessageStatus.SENT;
 
-    public Message(UserProfile source, Date timestamp, String text, String fileUrl, String threadId, String thumbnailUrl, MessageStatus status, Uri localUri) {
+    public Message(UserProfile source, Date timestamp, String text, String fileUrl, String threadId, String thumbnailUrl, MessageStatus status, Uri localUri, String fileCategory) {
         this.source = source;
         this.timestamp = timestamp;
         this.text = text;
@@ -53,6 +55,7 @@ public class Message {
         this.thumbnailUrl=thumbnailUrl;
         this.status=status;
         this.localUri=localUri;
+        this.fileCategory = fileCategory;
     }
 
 
@@ -145,6 +148,14 @@ public class Message {
 
     public String getFileName() {
         return fileName;
+    }
+
+    public String getFileCategory() {
+        return fileCategory;
+    }
+
+    public void setFileCategory(String fileCategory) {
+        this.fileCategory = fileCategory;
     }
 
     public void setFileName(String fileName) {

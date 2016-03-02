@@ -65,6 +65,7 @@ public final class Constants {
     public final static String IMAGE="image";
     public final static String CAPTION="caption";
     public final static String IMAGE_URL="image_url";
+    public final static String DOC_CATEGORY = "doc_category";
 
 
     public final static String SENT_TOKEN_TO_SERVER = "send_token_to_server";

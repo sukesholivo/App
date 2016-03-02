@@ -7,8 +7,8 @@ import android.widget.ImageView;
 
 import com.doctl.patientcare.main.BaseActivity;
 import com.doctl.patientcare.main.R;
-import com.doctl.patientcare.main.services.DownloadImageTask;
 import com.doctl.patientcare.main.utility.Constants;
+import com.doctl.patientcare.main.utility.ImageUtils;
 
 public class ShowImage extends BaseActivity {
 
@@ -24,7 +24,8 @@ public class ShowImage extends BaseActivity {
         }else{
             String imageUrl = intent.getStringExtra(Constants.IMAGE_URL);
             if(imageUrl != null){
-                new DownloadImageTask(image, getBaseContext()).execute(Constants.SERVER_URL+imageUrl);
+                new ImageUtils.DownloadFileAndDisplay(image, Constants.SERVER_URL+imageUrl, false).execute();
+//                new DownloadImageTask(image, getBaseContext()).execute(Constants.SERVER_URL+imageUrl);
             }
         }
     }

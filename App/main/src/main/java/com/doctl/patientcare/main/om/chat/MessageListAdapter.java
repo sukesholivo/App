@@ -98,14 +98,24 @@ public class MessageListAdapter extends ArrayAdapter<Message> {
 
         String status = item.statusSymbol();
 
-        if( item.getLocalUri() != null ){
+        if(item.getLocalUri() != null){
+            holder.imgMessage.setImageURI(item.getLocalUri());
+        }
+        else if(item.getThumbnailUrl() != null && !item.getThumbnailUrl().isEmpty()) {
+//            new DownloadImageTask(holder.imgMessage, null).execute(Constants.SERVER_URL + item.getThumbnailUrl());
+            //   imageLoader.DisplayImage(Constants.SERVER_URL + item.getThumbnailUrl(), R.drawable.profile_dummy, holder.imgMessage);
+            new ImageUtils.DownloadFileAndDisplay(holder.imgMessage, Constants.SERVER_URL + item.getThumbnailUrl(), false).execute();
+        }else{
+            holder.imgMessage.setVisibility(View.GONE);
+        }
+        /*if( item.getLocalUri() != null ){ aws
             ImageUtils.loadImage(holder.imgMessage, getContext(), item.getLocalUri());
         }
         else if (item.getFileName() != null && !item.getFileName().isEmpty()) {
             new LoadImage(holder.imgMessage, item.getFileName()).execute();
         }else {
             holder.imgMessage.setVisibility(View.GONE);
-        }
+        }*/
         if (item.getText() != null && !item.getText().isEmpty()) {
             holder.txtMessage.setText(item.getText());
         }
