@@ -7,7 +7,7 @@ package com.doctl.patientcare.main.utility;
  */
 public final class Constants {
 //    TODO: Change this server URL to production server url
-     public final static String SERVER_URL = "http://www.test.doctl.com/";
+     public final static String SERVER_URL = "http://13.67.58.77/";
    // public final static String SERVER_URL = "https://olivo.doctl.com";
    // public final static String SERVER_URL = "http://192.168.43.143:8000";
 //    public final static String SERVER_URL = "https://www.doctl.com";

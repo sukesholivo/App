@@ -2,6 +2,7 @@ package com.doctl.patientcare.main.om.documents;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +13,24 @@ import android.widget.TextView;
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.activities.FullScreenViewActivity;
 import com.doctl.patientcare.main.utility.Constants;
+import com.doctl.patientcare.main.utility.DateUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Administrator on 5/11/2015.
  */
 public class DocumentAdapter extends ArrayAdapter<Document> {
 
-    public DocumentAdapter(Context context, List<Document> objects) {
-        super(context, 0, objects);
+    private static final String TAG=DocumentAdapter.class.getSimpleName();
+    private Set<Integer> categoriesStartingIndex;
+    private List<Document> items;
+    public DocumentAdapter(Context context, List<Document> items) {
+        super(context, 0, items);
+        this.items =items;
+        categoriesStartingIndex=Document.getCategoriesStartingIndex(items);
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -35,11 +43,26 @@ public class DocumentAdapter extends ArrayAdapter<Document> {
 
         TextView title = (TextView)view.findViewById(R.id.document_title);
         TextView artist = (TextView)view.findViewById(R.id.document_description);
-        TextView duration = (TextView)view.findViewById(R.id.document_time);
+        TextView createdTime = (TextView)view.findViewById(R.id.document_time);
         ImageView thumb_image=(ImageView) view.findViewById(R.id.document_thumbnail);
-
+        TextView category = (TextView) view.findViewById(R.id.category);
 
         Document document = getItem(position);
+        String currCategory = document.getCategory();
+
+        if(categoriesStartingIndex.contains(position)){
+            category.setText(document.getCategory() == null ? "No category":  document.getCategory()+"s");
+            category.setVisibility(View.VISIBLE);
+        }else{
+            category.setVisibility(View.GONE);
+        }
+
+        if(document.getTimeStamp() != null){
+            createdTime.setText(DateUtils.messageTimeInThread(document.getTimeStamp()));
+        }else{
+            createdTime.setText("");
+        }
+        Log.d(TAG, "position: "+position + "category: "+currCategory);
 
         title.setText(document.getTitle());
         artist.setText(document.getDescription());
@@ -50,6 +73,12 @@ public class DocumentAdapter extends ArrayAdapter<Document> {
 
         view.setOnClickListener(new OnImageClickListener(position));
         return view;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        categoriesStartingIndex = Document.getCategoriesStartingIndex(items);
+        super.notifyDataSetChanged();
     }
 
     class OnImageClickListener implements View.OnClickListener {

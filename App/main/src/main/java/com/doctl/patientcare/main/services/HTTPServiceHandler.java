@@ -1,6 +1,7 @@
 package com.doctl.patientcare.main.services;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
@@ -174,6 +175,7 @@ public class HTTPServiceHandler {
                 return null;
             } else if (statusCode == 500){
                 Utils.showToastOnUiThread(context, "Some error occurred");
+                Log.e(TAG, response!= null?"Response "+response:" Responose is null with status code:" + statusCode);
 //                ((Activity) context).runOnUiThread(new Runnable() {
 //                    public void run() {
 //                        String message = "Server error occurred";
