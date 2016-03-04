@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     android:background="@color/color_white"
     android:theme="@android:style/Theme.Dialog">
+
     <include layout="@layout/toolbar"/>
+
     <it.gmariotti.cardslib.library.view.CardView
         android:id="@+id/card_layout"
         android:layout_width="match_parent"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Olivo</string>
+    <string name="app_name">iKonnect</string>
     <string name="hello_world">Hello world!</string>
 
     <string name="action_settings">Settings</string>
@@ -65,7 +65,7 @@
         <item>Male</item>
         <item>Female</item>
     </string-array>
-    <string name="change_image_title">Change Profile Picture</string>
+    <string name="change_image_title">Change Picture</string>
     <string name="hint_full_name">Full Name</string>
     <string name="hint_phone">Phone</string>
     <string name="hint_dob">Date of Birth</string>

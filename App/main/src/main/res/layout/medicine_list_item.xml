@@ -3,7 +3,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="10dp"
     android:background="@android:color/transparent">
     <ImageView
         android:id="@+id/medicineIcon"
@@ -11,19 +10,18 @@
         android:layout_height="30dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="30dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         />
     <TextView
         android:id="@+id/medicineName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
         android:layout_toRightOf="@id/medicineIcon"
         android:layout_toEndOf="@id/medicineIcon"
-        android:textSize="@dimen/text_size_m"
+        android:textSize="@dimen/text_size_s"
         android:gravity="top"
         android:textColor="@color/card_body_text_main"
         />
@@ -37,7 +35,7 @@
         android:layout_alignLeft="@id/medicineName"
         android:layout_alignStart="@id/medicineName"
         android:textColor="@color/card_body_text_main"
-        android:textSize="@dimen/text_size_xxs"
+        android:textSize="@dimen/text_size_xxxs"
         />
     <TextView
         android:id="@+id/medicineType"
@@ -48,7 +46,7 @@
         android:layout_toEndOf="@id/medicineQuantity"
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
-        android:textSize="@dimen/text_size_xxs"
+        android:textSize="@dimen/text_size_xxxs"
         android:textColor="@color/card_body_text_main"/>
     <TextView
         android:id="@+id/medicineNotes"
@@ -61,7 +59,7 @@
         android:layout_alignStart="@id/medicineQuantity"
         android:layout_marginRight="20dp"
         android:textColor="@color/card_body_text_main"
-        android:textSize="@dimen/text_size_xxs"
+        android:textSize="@dimen/text_size_xxxs"
         android:visibility="gone"
         />
 </RelativeLayout>

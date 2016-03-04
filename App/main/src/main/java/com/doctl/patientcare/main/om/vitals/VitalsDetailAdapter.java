@@ -38,22 +38,22 @@ public class VitalsDetailAdapter extends ArrayAdapter<VitalDetailData.VitalDetai
                 getContext().getResources().getColor(R.color.vital_fine)
                 :getContext().getResources().getColor(R.color.vital_over));
 
-        TextView vitalEntryTime1 = (TextView)view.findViewById(R.id.vitalDataCondition1);
-        vitalEntryTime1.setText("");
-
-        Double vitalEntryValue2 = item.getValue2();
-        TextView vitalEntry2 = (TextView) view.findViewById(R.id.vitalData2);
-        TextView vitalEntryTime2 = (TextView)view.findViewById(R.id.vitalDataCondition2);
-        if (vitalEntryValue2 != null) {
-            vitalEntry2.setText("" + vitalEntryValue2);
-            vitalEntry2.setTextColor(vitalEntryValue1 < 100 ?
-                    getContext().getResources().getColor(R.color.vital_fine)
-                    : getContext().getResources().getColor(R.color.vital_over));
-            vitalEntryTime2.setText("");
-        } else{
-            vitalEntry2.setVisibility(View.GONE);
-            vitalEntryTime2.setVisibility(View.GONE);
-        }
+//        //TextView vitalEntryTime1 = (TextView)view.findViewById(R.id.vitalDataCondition1);
+//        vitalEntryTime1.setText("");
+//
+//        Double vitalEntryValue2 = item.getValue2();
+//        TextView vitalEntry2 = (TextView) view.findViewById(R.id.vitalData2);
+//        //TextView vitalEntryTime2 = (TextView)view.findViewById(R.id.vitalDataCondition2);
+//        if (vitalEntryValue2 != null) {
+//            vitalEntry2.setText("" + vitalEntryValue2);
+//            vitalEntry2.setTextColor(vitalEntryValue1 < 100 ?
+//                    getContext().getResources().getColor(R.color.vital_fine)
+//                    : getContext().getResources().getColor(R.color.vital_over));
+//            vitalEntryTime2.setText("");
+//        } else{
+//            vitalEntry2.setVisibility(View.GONE);
+//            vitalEntryTime2.setVisibility(View.GONE);
+//        }
 
         Calendar c = Calendar.getInstance();
         c.setTime(item.getTime());

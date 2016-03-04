@@ -24,9 +24,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
         android:src="@drawable/ic_arrow_up_white_36dp"
         fab:fab_colorNormal="@color/action_button_primary"
         fab:fab_colorPressed="@color/action_button_pressed"
-        />
+        android:visibility="gone" />
 </RelativeLayout>

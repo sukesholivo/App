@@ -3,36 +3,30 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/transparent">
+    android:layout_height="20dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginLeft="5dp"
+    android:background="@color/color_white">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/timeWhen"
-        android:gravity="top"
-        android:textSize="@dimen/text_size_xxl"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:textColor="@color/card_header_main"/>
+        android:textSize="@dimen/text_size_xxs"
+        android:paddingLeft="5sp"
+        android:textColor="@color/points_secondary"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/timeUnit"
-        android:textSize="@dimen/text_size_xs"
-        android:layout_marginTop="7dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginStart="5dp"
-        android:textColor="@color/card_header_secondary"
-        android:layout_toRightOf="@id/timeWhen"
-        android:layout_toEndOf="@id/timeWhen"/>
+        android:textSize="@dimen/text_size_xxs"
+        android:textColor="@color/points_secondary"
+        android:paddingLeft="30sp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/extraInfo"
-        android:textSize="@dimen/text_size_xs"
-        android:layout_marginLeft="5dp"
-        android:layout_marginStart="5dp"
+        android:textSize="@dimen/text_size_xxs"
         android:textColor="@color/card_header_meta"
         android:layout_toRightOf="@id/timeWhen"
         android:layout_toEndOf="@id/timeWhen"

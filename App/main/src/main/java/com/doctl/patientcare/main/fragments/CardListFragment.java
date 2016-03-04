@@ -267,7 +267,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
                         public void setupInnerViewElements(ViewGroup parent, View view) {
                             TextView textView1 = (TextView)view.findViewById(R.id.timeWhen);
                             textView1.setText(title);
-                            textView1.setTextSize(20);
+                            textView1.setTextSize(12);
                         }
                     };
                     final FollowupCard followupCard = new FollowupCard(getActivity(), followupHeader, followupTask);
@@ -292,7 +292,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
                         public void setupInnerViewElements(ViewGroup parent, View view) {
                             TextView textView1 = (TextView)view.findViewById(R.id.timeWhen);
                             textView1.setText(messageTitle);
-                            textView1.setTextSize(20);
+                            textView1.setTextSize(12);
                         }
                     };
                     MessageCard messageCard = new MessageCard(getActivity(), messageHeader, messageTask);
@@ -306,7 +306,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
                         public void setupInnerViewElements(ViewGroup parent, View view) {
                             TextView textView1 = (TextView)view.findViewById(R.id.timeWhen);
                             textView1.setText(eduTitle);
-                            textView1.setTextSize(20);
+                            textView1.setTextSize(12);
                         }
                     };
                     EducationCard educationCard = new EducationCard(getActivity(), educationHeader, educationTask);

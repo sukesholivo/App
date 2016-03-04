@@ -2,6 +2,6 @@
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
-    <size android:width="25dp" android:height="25dp"/>
-    <solid android:color="@color/color_blue_translucent"/>
+    <size android:width="15dp" android:height="15dp"/>
+    <solid android:color="@color/card_body_text_main"/>
 </shape>

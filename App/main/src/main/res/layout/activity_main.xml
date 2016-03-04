@@ -7,23 +7,27 @@
     android:orientation="vertical"
     android:background="@drawable/page_background"
     android:fitsSystemWindows="true">
+
     <include layout="@layout/toolbar"/>
+
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
+
         <FrameLayout android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                     android:layout_height="match_parent">
+
             <ProgressBar
                 android:id="@+id/loadingIndicator"
                 style="?android:attr/progressBarStyleLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:visibility="gone"
-                />
+                android:visibility="gone" />
+
         </FrameLayout>
+
         <RelativeLayout android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -32,29 +36,29 @@
                 android:id="@+id/fragment_main"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
-                />
+                android:layout_alignParentTop="true" />
             <include
                 android:id="@+id/treatment_dashboard_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                layout="@layout/treatment_dashboard"
-                />
+                layout="@layout/treatment_dashboard" />
+
         </RelativeLayout>
+
         <com.github.clans.fab.FloatingActionMenu
             android:id="@+id/fab_menu"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="10dp"
-            style="@style/FabMenuStyle"
-            >
+            style="@style/FabMenuStyle">
+
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/record_vital_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_add_vital_white_36dp"
                 fab:fab_size="mini"
-                fab:fab_label="Record Vital" />
+                fab:fab_label="Record Vital"
+                android:src="@drawable/ic_add_vital_white_36dp" />
             <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/upload_report_btn"
                 android:layout_width="wrap_content"
@@ -71,6 +75,7 @@
                 fab:fab_label="Add patient" />
 
         </com.github.clans.fab.FloatingActionMenu>
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -78,5 +83,6 @@
         </FrameLayout>
 
         <include layout="@layout/drawer_layout"/>
+
     </android.support.v4.widget.DrawerLayout>
 </LinearLayout>

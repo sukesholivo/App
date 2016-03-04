@@ -30,6 +30,7 @@ import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.HttpFileUpload;
 import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
+import com.github.clans.fab.FloatingActionButton;
 import com.google.gson.Gson;
 import com.soundcloud.android.crop.Crop;
 import com.squareup.picasso.Picasso;
@@ -51,6 +52,7 @@ public class ChangeProfileActivity extends ActionBarActivity {
     UserProfile userProfile;
     private Uri mImageCaptureUri;
     private ImageView mImageView;
+    FloatingActionButton fab;
 
     private static final int PICK_FROM_CAMERA = 1;
 
@@ -132,15 +134,21 @@ public class ChangeProfileActivity extends ActionBarActivity {
         });
 
         final AlertDialog dialog = builder.create();
-        Button button = (Button) findViewById(R.id.btn_crop);
+       // Button button = (Button) findViewById(R.id.btn_crop);
         mImageView = (ImageView) findViewById(R.id.photo);
-
-        button.setOnClickListener(new View.OnClickListener() {
+        fab = (FloatingActionButton) this.findViewById(R.id.btn_crop);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 dialog.show();
             }
         });
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.show();
+//            }
+//        });
     }
 
     @Override

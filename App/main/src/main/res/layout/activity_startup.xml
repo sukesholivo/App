@@ -6,21 +6,21 @@
     >
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="90dp"
+        android:layout_height="160dp"
         android:src="@drawable/doctl_logo_full"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="40dp"
         android:layout_marginBottom="10dp"
         android:contentDescription="@string/app_name"
         />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/doctl_tag_line"
-        android:textSize="20sp"
-        android:layout_marginBottom="20dp"
-        />
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:text="@string/doctl_tag_line"-->
+        <!--android:textSize="20sp"-->
+        <!--android:layout_marginBottom="20dp"-->
+        <!--/>-->
     <RelativeLayout
         android:id="@+id/loadingPanel"
         android:layout_width="match_parent"

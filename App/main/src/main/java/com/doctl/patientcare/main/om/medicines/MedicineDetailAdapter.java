@@ -49,7 +49,7 @@ public class MedicineDetailAdapter extends ArrayAdapter<PrescriptionMedicine> {
                 break;
             case SYRUP:
 //                TODO: get syrup green icon
-                medicineImage.setImageResource(R.drawable.tablet_green);
+                medicineImage.setImageResource(R.drawable.medicine_syrup_green);
                 break;
             case DROPS:
 //                TODO: get drops green icon

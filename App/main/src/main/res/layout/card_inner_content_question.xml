@@ -10,27 +10,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Low in energy"
-        android:textSize="20sp"
-        android:layout_marginBottom="5dp"
+        android:textSize="15sp"
         />
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Dizziness"
-        android:textSize="20sp"
-        android:layout_marginBottom="5dp"/>
+        android:textSize="15sp"
+        />
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Not hungry"
-        android:textSize="20sp"
-        android:layout_marginBottom="5dp"/>
+        android:textSize="15sp"
+        />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Comments"
         style="@style/edit_text_two_line"
-        android:layout_margin="10dp"
-        android:layout_marginBottom="5dp"/>
+        android:layout_margin="15dp"
+        />
 
 </LinearLayout>

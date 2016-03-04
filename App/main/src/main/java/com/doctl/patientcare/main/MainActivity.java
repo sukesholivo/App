@@ -77,6 +77,10 @@ public class MainActivity extends BaseActivityWithNavigation {
     @Override
     public void onStart() {
         super.onStart();
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle("iKonnect");
+        }
         dismissAllNotification();
         active = true;
     }
@@ -98,22 +102,22 @@ public class MainActivity extends BaseActivityWithNavigation {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_share:
-//                Toast.makeText(this,"Shared pressed: " + item.getTitle(), Toast.LENGTH_LONG).show();
-//                Intent intent = new Intent(Intent.ACTION_SEND);
-//                intent.putExtra(Intent.EXTRA_TEXT, "I have been 80% adhered to my diabetes treatment");
-//                intent.setType("text/plain");
-//                startActivity(Intent.createChooser(intent, "Share your adherence"));
-
-                View view = findViewById(R.id.treatment_dashboard_layout);
-                Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
-                Canvas c = new Canvas(bitmap);
-                view.draw(c);
-                File photofile= BitmapUtils.createFileFromBitmap(bitmap);
-                Intent shareIntent = BitmapUtils.createIntentFromImage(photofile);
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "My treatment progress");
-                startActivity(Intent.createChooser(shareIntent, "Share your progress"));
-                return true;
+//            case R.id.action_share:
+////                Toast.makeText(this,"Shared pressed: " + item.getTitle(), Toast.LENGTH_LONG).show();
+////                Intent intent = new Intent(Intent.ACTION_SEND);
+////                intent.putExtra(Intent.EXTRA_TEXT, "I have been 80% adhered to my diabetes treatment");
+////                intent.setType("text/plain");
+////                startActivity(Intent.createChooser(intent, "Share your adherence"));
+//
+//                View view = findViewById(R.id.treatment_dashboard_layout);
+//                Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+//                Canvas c = new Canvas(bitmap);
+//                view.draw(c);
+//                File photofile= BitmapUtils.createFileFromBitmap(bitmap);
+//                Intent shareIntent = BitmapUtils.createIntentFromImage(photofile);
+//                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "My treatment progress");
+//                startActivity(Intent.createChooser(shareIntent, "Share your progress"));
+//                return true;
             case R.id.action_refresh:
                 refresh();
                 return true;
@@ -180,7 +184,8 @@ public class MainActivity extends BaseActivityWithNavigation {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             if (clinicName != null && !clinicName.isEmpty()) {
-                actionBar.setTitle(clinicName);
+                actionBar.setTitle("iKonnect");
+                //actionBar.setTitle(clinicName);
             } else {
                 actionBar.setTitle("DOCTL");
             }

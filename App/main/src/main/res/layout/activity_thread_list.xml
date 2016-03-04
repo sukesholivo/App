@@ -9,6 +9,7 @@
         android:id="@+id/thread_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:divider="@drawable/vital_list_divide"
         android:dividerHeight="1dp"
         android:background="@color/color_gray"
         />

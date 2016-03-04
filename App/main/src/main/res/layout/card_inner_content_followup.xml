@@ -8,10 +8,8 @@
         android:id="@+id/followupNotes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="@dimen/text_size_xs"
         android:textColor="@color/color_darker_gray"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
         android:visibility="gone"/>
     <LinearLayout
         android:id="@+id/followupOptions"
@@ -33,7 +31,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"/>
+        />
     <include layout="@layout/card_footer_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

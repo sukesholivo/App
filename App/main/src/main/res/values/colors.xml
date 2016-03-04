@@ -43,7 +43,7 @@
     <color name="card_footer_secondary">#FF9800</color>
 
     <!-- CARD BODY -->
-    <color name="card_body_text_main">#999999</color>
+    <color name="card_body_text_main">#484848</color>
     <color name="card_body_text_meta">#FF9800</color>
 
     <!-- Vitals Value-->
@@ -58,9 +58,14 @@
     <color name="action_button_primary">#00ACC1</color>
     <color name="action_button_pressed">#4DD0E1</color>
 
-    <color name="action_fab_button_primary">#F44336</color>
-    <color name="action_fab_button_pressed">#D32F2F</color>
-    <color name="action_fab_button_ripple">#B71C1C</color>
+
+    <color name="action_fab_button_primary">#0099CC</color>
+    <color name="action_fab_button_pressed">#00ACC1</color>
+    <color name="action_fab_button_ripple">#0288D1</color>
+
+    <!--<color name="action_fab_button_primary">#F44336</color>-->
+    <!--<color name="action_fab_button_pressed">#D32F2F</color>-->
+    <!--<color name="action_fab_button_ripple">#B71C1C</color>-->
 
     <!-- Vitals Value-->
     <color name="points_green">#23B63D</color>

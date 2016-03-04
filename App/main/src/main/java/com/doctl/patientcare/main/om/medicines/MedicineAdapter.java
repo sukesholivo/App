@@ -46,7 +46,7 @@ public class MedicineAdapter extends ArrayAdapter<Medicine>{
                 medicineImage.setImageResource(R.drawable.injection_green);
                 break;
             default:
-                medicineImage.setImageResource(R.drawable.capsule_green);
+                medicineImage.setImageResource(R.drawable.medicine_syrup_green);
                 break;
         }
 

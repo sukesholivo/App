@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.doctl.patientcare.main.MainActivity">
     <item android:id="@+id/action_chat"
-        android:icon="@drawable/ic_question_answer_black_24dp"
-        android:title="@string/action_refresh"
+        android:icon="@drawable/ic_question_answer_white_24dp"
+        android:title="chat"
         app:showAsAction="ifRoom"
         />
     <item android:id="@+id/action_refresh"
@@ -26,11 +26,11 @@
         <!--</menu>-->
 
     <!--</item>-->
-    <item android:id="@+id/action_share"
-        android:icon="@drawable/ic_share_white_36dp"
-        android:title="@string/action_share"
-        app:showAsAction="ifRoom"
-        />
+    <!--<item android:id="@+id/action_share"-->
+        <!--android:icon="@drawable/ic_share_white_36dp"-->
+        <!--android:title="@string/action_share"-->
+        <!--app:showAsAction="ifRoom"-->
+        <!--/>-->
     <!--<item android:id="@+id/action_settings"-->
         <!--android:title="@string/action_settings"-->
         <!--app:showAsAction="never"/>-->

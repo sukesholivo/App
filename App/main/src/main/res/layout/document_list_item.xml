@@ -20,8 +20,8 @@
 
         <ImageView
             android:id="@+id/document_thumbnail"
-            android:layout_width="80dp"
-            android:layout_height="80dp" />
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_black_light"
-                android:textSize="@dimen/text_size_l" />
+                android:textSize="@dimen/text_size_s" />
 
             <TextView
                 android:id="@+id/document_description"
