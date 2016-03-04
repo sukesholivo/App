@@ -71,7 +71,7 @@ public class ThreadListActivity extends BaseActivity {
                 mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(mainActivityIntent);
                 return true;
-            case R.id.action_add_thread:
+            case R.id.action_search:
                 Intent intent = new Intent(this, ContactsActivity.class);
                 startActivity(intent);
                 return true;

@@ -6,13 +6,13 @@
         android:title="Search"
         android:icon="@drawable/abc_ic_search_api_mtrl_alpha"
         app:showAsAction="ifRoom|collapseActionView"
-        app:actionViewClass="android.support.v7.widget.SearchView" />
+         />
 
-    <item android:id="@+id/action_add_thread"
+  <!--  <item android:id="@+id/action_add_thread"
         android:icon="@drawable/ic_question_answer_white_24dp"
         android:title="@string/action_new"
         app:showAsAction="ifRoom">
-    </item>
+    </item>-->
 
    <!-- <item android:id="@+id/action_add_user"
         android:icon="@drawable/ic_add_white_36dp"

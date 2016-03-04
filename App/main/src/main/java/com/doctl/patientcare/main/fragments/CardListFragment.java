@@ -6,9 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.AbsListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,12 +29,12 @@ import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
+import com.github.clans.fab.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.github.clans.fab.FloatingActionButton;
 import com.nhaarman.listviewanimations.swinginadapters.AnimationAdapter;
 import com.nhaarman.listviewanimations.swinginadapters.prepared.ScaleInAnimationAdapter;
 
@@ -49,7 +46,6 @@ import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 import it.gmariotti.cardslib.library.view.CardListView;
-import it.gmariotti.cardslib.library.view.listener.SwipeOnScrollListener;
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
@@ -76,7 +72,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        fab = (FloatingActionButton) getActivity().findViewById(R.id.buttonTop);
+        /*fab = (FloatingActionButton) getActivity().findViewById(R.id.buttonTop);
 //        fab.attachToListView(listView);
         fab.hide(false);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +80,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
             public void onClick(View view) {
                 listView.smoothScrollToPosition(0);
             }
-        });
+        });*/
         initializeCardList();
     }
 
@@ -113,7 +109,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
 
         mCardArrayAdapter.setEnableUndo(true);
         listView = (CardListView) getActivity().findViewById(R.id.card_list_layout);
-        listView.setOnScrollListener(
+        /*listView.setOnScrollListener(
                 new SwipeOnScrollListener() {
                     int mLastFirstVisibleItem = -1;
                     int mLastVisibleItemCount = -1;
@@ -178,7 +174,7 @@ public class CardListFragment extends BaseFragment implements OnRefreshListener 
                         isDashboardHidden = true;
                     }
                 });
-
+*/
         AnimationAdapter animCardArrayAdapter = new ScaleInAnimationAdapter(mCardArrayAdapter);
         animCardArrayAdapter.setAbsListView(listView);
         listView.setExternalAdapter(animCardArrayAdapter, mCardArrayAdapter);

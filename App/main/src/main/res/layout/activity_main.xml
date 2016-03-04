@@ -66,13 +66,13 @@
                 android:src="@drawable/ic_document_add_white_24dp"
                 fab:fab_size="mini"
                 fab:fab_label="Upload reports" />
-            <com.github.clans.fab.FloatingActionButton
+            <!--<com.github.clans.fab.FloatingActionButton
                 android:id="@+id/add_patient_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_add_patient"
                 fab:fab_size="mini"
-                fab:fab_label="Add patient" />
+                fab:fab_label="Add patient" />-->
 
         </com.github.clans.fab.FloatingActionMenu>
 

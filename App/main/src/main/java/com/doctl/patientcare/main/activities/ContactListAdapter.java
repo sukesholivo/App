@@ -147,9 +147,10 @@ public class ContactListAdapter extends ArrayAdapter<UserProfile> {
                     holder.name.setText(userProfile.getDisplayName());
                 }
             }
-
-            if( userProfile.getAbout() != null){
-                holder.about.setText(userProfile.getAbout());//TODO define what to display fot about
+            if( userProfile.getAddress() != null && userProfile.getAddress().getCity() != null){
+                holder.about.setText(userProfile.getAddress().getCity());
+            }else{
+                holder.about.setVisibility(View.GONE);
             }
         }
     }

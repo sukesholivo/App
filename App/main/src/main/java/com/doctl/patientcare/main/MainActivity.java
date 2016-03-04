@@ -63,8 +63,8 @@ public class MainActivity extends BaseActivityWithNavigation {
         this.setupNavigationDrawer();
         mFabMenu = (FloatingActionMenu)findViewById(R.id.fab_menu);
         mFabMenu.setClosedOnTouchOutside(true);
-        FloatingActionButton addPatientButton = (FloatingActionButton) findViewById(R.id.add_patient_btn);
-        addPatientButton.setOnClickListener(clickListener);
+        /*FloatingActionButton addPatientButton = (FloatingActionButton) findViewById(R.id.add_patient_btn);
+        addPatientButton.setOnClickListener(clickListener);*/
         FloatingActionButton recordVitalBtn = (FloatingActionButton) findViewById(R.id.upload_report_btn);
         recordVitalBtn.setOnClickListener(clickListener);
         FloatingActionButton uploadReportBtn = (FloatingActionButton) findViewById(R.id.upload_report_btn);
@@ -441,10 +441,10 @@ public class MainActivity extends BaseActivityWithNavigation {
                     handleReportClick();
                     Logger.e("", "Upload report");
                     break;
-                case R.id.add_patient_btn:
+               /* case R.id.add_patient_btn:
                     handlePatientAddClick();
                     Logger.e("", "Add patient");
-                    break;
+                    break;*/
             }
             mFabMenu.close(true);
         }
