@@ -75,6 +75,10 @@ public class ThreadListActivity extends BaseActivity {
                 Intent intent = new Intent(this, ContactsActivity.class);
                 startActivity(intent);
                 return true;
+            /*case R.id.action_add_user:
+                Intent addUserIntent = new Intent(this, AddPatientActivity.class);
+                startActivity(addUserIntent);
+                return true;*/
             default:
                 return super.onOptionsItemSelected(item);
         }

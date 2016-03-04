@@ -224,9 +224,9 @@ public class ThreadDetailActivity extends BaseActivity {
             case R.id.attach_button:
                 selectImage();
                 return true;
-            case R.id.remainder:
+            /*case R.id.remainder:
                 Intent remainderIntent = new Intent(ThreadDetailActivity.this, RemainderActivity.class);
-                startActivity(remainderIntent);
+                startActivity(remainderIntent);*/
             default:
                 return super.onOptionsItemSelected(item);
         }

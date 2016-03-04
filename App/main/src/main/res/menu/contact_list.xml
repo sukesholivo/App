@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/action_search"
+    <!--<item android:id="@+id/action_search"
         android:title="Search"
         android:icon="@drawable/abc_ic_search_api_mtrl_alpha"
         app:showAsAction="ifRoom|collapseActionView"
@@ -11,6 +11,6 @@
         android:icon="@drawable/ic_add_white_36dp"
         android:title="@string/action_new"
         app:showAsAction="ifRoom">
-    </item>
+    </item>-->
 
 </menu>

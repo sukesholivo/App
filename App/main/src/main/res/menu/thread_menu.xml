@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/remainder"
+   <!-- <item android:id="@+id/remainder"
         android:icon="@drawable/ic_add_white_36dp"
         android:title="@string/attach"
         app:showAsAction="ifRoom"
-        />
+        />-->
     <item android:id="@+id/attach_button"
         android:icon="@drawable/ic_menu_attachment"
         android:title="@string/attach"

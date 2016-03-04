@@ -1,13 +1,12 @@
 package com.doctl.patientcare.main.activities;
 
-import android.app.SearchManager;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +15,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.doctl.patientcare.main.BaseActivity;
-import com.doctl.patientcare.main.MainActivity;
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.UserProfile;
 import com.doctl.patientcare.main.om.contact.ContactData;
@@ -39,7 +37,7 @@ public class ContactsActivity extends BaseActivity {
     private ContactListAdapter mAdapter;
     private final String TAG = ContactsActivity.class.getSimpleName();
     UserProfile currUserProfile;
-
+    private SearchView msearchView;
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -47,9 +45,35 @@ public class ContactsActivity extends BaseActivity {
         setContentView(R.layout.contact_list);
         Toolbar mToolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
         setSupportActionBar(mToolbar);
+        msearchView = new SearchView(this);
+        //SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        //msearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        msearchView.setIconifiedByDefault(false);
+        msearchView.setFocusable(true);
+        msearchView.requestFocusFromTouch();
+        SearchView.OnQueryTextListener listener = new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                new GetContacts().execute(Constants.CONTACTS_URL, query);
+                Log.d(TAG, "on QueryTextSubmit");
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // newText is text entered by user to SearchView
+                new GetContacts().execute(Constants.CONTACTS_URL, newText);
+                Log.d(TAG, "on QueryTextChange");
+                return false;
+            }
+        };
+
+        msearchView.setOnQueryTextListener(listener);
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){
-            actionBar.setTitle("Contacts");
+            actionBar.setCustomView(msearchView);
+            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+//            actionBar.setTitle("Contacts");
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -61,12 +85,6 @@ public class ContactsActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final UserProfile item = (UserProfile) parent.getItemAtPosition(position);
-               /* Intent intent = new Intent(ContactsActivity.this, ThreadDetailActivity.class);
-                // sending data to new activity
-                intent.putExtra(Constants.USER_ID, item.getId());
-                intent.putExtra(Constants.PROFILE_PIC_URL, item.getProfilePicUrl());
-                intent.putExtra(Constants.DISPLAY_NAME, item.getDisplayName());
-                startActivity(intent);*/
                 new CreateThread().execute(item.getId(), item.getProfilePicUrl(), item.getDisplayName());
             }
         });
@@ -78,10 +96,12 @@ public class ContactsActivity extends BaseActivity {
 
         getMenuInflater().inflate(R.menu.contact_list, menu);
         // Retrieve the SearchView and plug it into SearchManager
-        final SearchView msearchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        /*msearchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         msearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         msearchView.setIconifiedByDefault(false);
+        msearchView.setFocusable(true);
+        msearchView.requestFocusFromTouch();
         SearchView.OnQueryTextListener listener = new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -97,22 +117,22 @@ public class ContactsActivity extends BaseActivity {
             }
         };
 
-        msearchView.setOnQueryTextListener(listener);
+        msearchView.setOnQueryTextListener(listener);*/
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case android.R.id.home:
-                Intent mainActivityIntent = new Intent(this, MainActivity.class);
+                case android.R.id.home:
+                Intent mainActivityIntent = new Intent(this, ThreadListActivity.class);
                 mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(mainActivityIntent);
                 return true;
-            case R.id.action_add_contact:
+            /*case R.id.action_add_contact:
                 Intent intent = new Intent(this, AddPatientActivity.class);
                 startActivity(intent);
-                return true;
+                return true;*/
             default:
                 return super.onOptionsItemSelected(item);
         }
