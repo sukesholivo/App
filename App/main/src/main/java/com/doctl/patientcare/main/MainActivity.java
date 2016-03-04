@@ -275,7 +275,9 @@ public class MainActivity extends BaseActivityWithNavigation {
     }
 
     private void updateProgress(Dashboard dashboardData) {
-        setupActionBar(dashboardData.getClinic().getDisplayName());
+        if(dashboardData.getClinic() != null ) {
+            setupActionBar(dashboardData.getClinic().getDisplayName());
+        }
         updateAdherencePercentage(dashboardData.getAdherence().intValue());
 
         updateTotalPoints(dashboardData.getPoints());
