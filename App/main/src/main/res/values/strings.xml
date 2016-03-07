@@ -90,6 +90,7 @@
     <string name="nav_item_logout">Log Out</string>
     <string name="nav_item_documents">Reports</string>
     <string name="nav_item_threads">Chat</string>
+    <string name="nav_item_visits">Visits</string>
 
     <string name="notification_default_title">Message from Olivo.</string>
     <string name="notification_education_title">New education material.</string>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    >
+<LinearLayout
+    android:id="@+id/doclayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="7dp"
+    android:paddingLeft="7dp"
+    android:paddingBottom="7dp"
+    android:paddingRight="7dp"
+    android:background="#FFFFFF"
+    >
+    <com.doctl.patientcare.main.controls.RoundedImageView
+        android:id="@+id/doctorpic"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/profile_dummy"
+        />
+
+    <TextView
+        android:id="@+id/doctorname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_alignLeft="@id/header"
+        android:layout_alignStart="@id/header"
+        android:layout_below="@id/header"
+        android:layout_toRightOf="@id/doctorpic"
+        android:layout_toEndOf="@id/doctorpic"
+        android:text="Doctor's Name" />
+
+    <TextView
+        android:id="@+id/doctordegree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="#FF9800"
+        android:text="Specialisation"
+        android:layout_toRightOf="@id/doctorpic"
+        android:layout_toEndOf="@id/doctorpic"
+        android:layout_below="@+id/doctorname"
+        android:layout_alignLeft="@id/doctorname"
+        android:layout_alignStart="@id/doctorname"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/doctorpic"
+        android:layout_toEndOf="@id/doctorpic"
+        android:layout_below="@+id/doctordegree"
+        android:layout_alignLeft="@id/doctorname"
+        android:layout_alignStart="@id/doctorname">
+        <TextView
+            android:id="@+id/contact_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:paddingRight="10sp"
+            />
+        <TextView
+            android:id="@+id/doctorhospital"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="Hospital" />
+
+    <!--<TextView-->
+        <!--android:id="@+id/contact_about"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textSize="12sp"-->
+        <!--android:text="Visit Date -"-->
+        <!--android:layout_alignBottom="@+id/contact_name"-->
+        <!--android:layout_alignLeft="@id/doctorname"-->
+        <!--android:layout_alignStart="@id/doctorname" />-->
+    </LinearLayout>
+</LinearLayout>
+    </LinearLayout>

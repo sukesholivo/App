@@ -40,6 +40,7 @@ import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.HttpFileUpload;
 import com.doctl.patientcare.main.utility.Logger;
+import com.doctl.patientcare.main.utility.OfflineCacheUtil;
 import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
 
@@ -232,10 +233,13 @@ public class ThreadDetailActivity extends BaseActivity {
         }
     }
 
-    private void refreshActivity(String userId) {
-        String jsonStr = downloadThreadContent(userId);
-        if (jsonStr != null && !jsonStr.isEmpty()) {
-            final Thread threadData = parseThreadData(jsonStr);
+    private void refreshActivity() {
+        String jsonStr = downloadThreadContent();
+        updateUI(jsonStr);
+    }
+    private void updateUI(String jsonString){
+        if (jsonString != null && !jsonString.isEmpty()) {
+            final Thread threadData = parseThreadData(jsonString);
             runOnUiThread(new Runnable() {
                 public void run() {
                     updateThreadData(threadData);
@@ -244,10 +248,14 @@ public class ThreadDetailActivity extends BaseActivity {
         }
     }
 
-    private String downloadThreadContent(String userId) {
-        String url = Constants.QUESTION_URL + userId;
+    private String downloadThreadContent() {
+        String url = Constants.QUESTION_URL + threadId;
         HTTPServiceHandler serviceHandler = new HTTPServiceHandler(this);
-        return serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.GET, null, null);
+        String jsonResponse = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.GET, null, null);
+        if(jsonResponse != null){
+            OfflineCacheUtil.saveResponse(ThreadDetailActivity.this, url, jsonResponse);
+        }
+        return jsonResponse;
     }
 
     private Thread parseThreadData(String jsonStr) {
@@ -589,6 +597,7 @@ public class ThreadDetailActivity extends BaseActivity {
 
     private class GetThreadContent extends AsyncTask<String, Void, Void> {
 
+        String url = Constants.QUESTION_URL + threadId;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -597,9 +606,18 @@ public class ThreadDetailActivity extends BaseActivity {
 
         @Override
         protected Void doInBackground(String... arg0) {
-            String userId = arg0[0];
-            refreshActivity(userId);
+            publishProgress(null);
+            refreshActivity();
             return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+            OfflineCacheUtil.ResponseDetails responseDetails = OfflineCacheUtil.getResponse(ThreadDetailActivity.this, url);
+            if(responseDetails != null && responseDetails.getResponse() != null){
+                updateUI(responseDetails.getResponse());
+            }
         }
 
         @Override

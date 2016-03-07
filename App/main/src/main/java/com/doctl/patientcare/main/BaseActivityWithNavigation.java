@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import com.doctl.patientcare.main.visit.VisitListActivity;
 import com.doctl.patientcare.main.activities.DocumentsActivity;
 import com.doctl.patientcare.main.activities.ThreadListActivity;
 import com.doctl.patientcare.main.om.vitals.VitalTask;
@@ -240,6 +241,11 @@ public class BaseActivityWithNavigation extends BaseActivity implements ListView
                 intent = new Intent(this, ThreadListActivity.class);
                 this.startActivity(intent);
                 break;
+            case 14:
+                Logger.d("BaseActivityWithNavigation: ", "Visits Clicked");
+                intent = new Intent(this, VisitListActivity.class);
+                this.startActivity(intent);
+                break;
             default:
                 break;
         }
@@ -277,6 +283,7 @@ public class BaseActivityWithNavigation extends BaseActivity implements ListView
         dataList.add(new DrawerItem(2, getResources().getString(R.string.nav_item_prescription), R.drawable.ic_prescription_black_24dp));
         dataList.add(new DrawerItem(12, getResources().getString(R.string.nav_item_documents), R.drawable.ic_action_storage));
         dataList.add(new DrawerItem(13, getResources().getString(R.string.nav_item_threads), R.drawable.ic_question_answer_black_24dp));
+        dataList.add(new DrawerItem(14, getResources().getString(R.string.nav_item_visits), R.drawable.ic_person_black_24dp));
         ArrayList<VitalTask.VitalData> vitals = Utils.getVitalDataFromSharedPreference(this);
         if (!vitals.isEmpty()) {
             dataList.add(new DrawerItem(3, getResources().getString(R.string.nav_item_vital)));

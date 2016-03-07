@@ -19,6 +19,7 @@ import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.UserProfile;
 import com.doctl.patientcare.main.om.contact.ContactData;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
+import com.doctl.patientcare.main.utility.OfflineCacheUtil;
 import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
@@ -144,12 +145,20 @@ public class ContactsActivity extends BaseActivity {
             url = baseURL+"?search_str=" + filter;
         }
         HTTPServiceHandler serviceHandler = new HTTPServiceHandler(this);
-        return serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.GET, null, null);
+        String jsonResponse = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.GET, null, null);
+        if(jsonResponse != null && filter == null){
+            OfflineCacheUtil.saveResponse(ContactsActivity.this, baseURL, jsonResponse);
+        }
+        return jsonResponse;
     }
 
     private void updateContactList(String baseURL, String filter) {
 
-        ContactData contactData = parseContactData(downloadContacts(baseURL, filter));
+        String jsonResponse = downloadContacts(baseURL, filter);
+        updateUI(jsonResponse, filter);
+    }
+    private void updateUI(String jsonResponse, String filter){
+        ContactData contactData = parseContactData(jsonResponse);
         if(contactData!= null) {
             mAdapter.updateData(contactData.getAllUserProfiles(), contactData.getListPositions(), filter);
         }
@@ -168,8 +177,20 @@ public class ContactsActivity extends BaseActivity {
             if(arg0.length ==  2){
                 filter = arg0[1];
             }
+            if( filter == null){
+                publishProgress(null);
+            }
             updateContactList(baseURL, filter);
             return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+
+            OfflineCacheUtil.ResponseDetails responseDetails = OfflineCacheUtil.getResponse(ContactsActivity.this, Constants.CONTACTS_URL);
+            if(responseDetails != null && responseDetails.getResponse() != null){
+                updateUI(responseDetails.getResponse(), null);
+            }
         }
 
         @Override

@@ -1,13 +1,15 @@
 package com.doctl.patientcare.main.utility;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.util.LruCache;
 import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -26,37 +28,11 @@ import java.net.URLConnection;
  */
 public class ImageUtils {
 
-    private static LruCache<String, Bitmap> mMemoryCache;
-
-    static {
-        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-
-        // Use 1/8th of the available memory for this memory cache.
-        final int cacheSize = maxMemory / 8;
-
-        mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
-            @Override
-            protected int sizeOf(String key, Bitmap bitmap) {
-                // The cache size will be measured in kilobytes rather than
-                // number of items.
-                return bitmap.getByteCount() / 1024;
-            }
-        };
-    }
-    public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
-        if (getBitmapFromMemCache(key) == null) {
-            mMemoryCache.put(key, bitmap);
-        }
-    }
-
-    public Bitmap getBitmapFromMemCache(String key) {
-        return mMemoryCache.get(key);
-    }
 
     private static final String TAG = ImageUtils.class.getSimpleName();
 
-    public static void loadImage(ImageView imageView, String filePath) {
-        new LoadImage(imageView, filePath, null, null, null).execute();
+    public static void loadImage(ImageView imageView, String filePath, Context context) {
+        new LoadImage(imageView, filePath, context, null, null).execute();
     }
 
     public static void loadImage(ImageView imageView, Context context, Uri uri) {
@@ -88,18 +64,42 @@ public class ImageUtils {
         @Override
         protected Void doInBackground(Void... params) {
             if (filePath != null) {
-                File imgFile = new File(filePath);
+                final File imgFile = new File(filePath);
 
                 if (imgFile.exists()) {
-                    bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+//                    bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                     Log.d(TAG, "Loading image from path: " + filePath);
+                    if( context instanceof Activity) {
+                        ((Activity) context).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Picasso.with(context)
+                                        .load(imgFile)
+                                        .into(imageView);
+                            }
+                        });
+
+                    }else{
+                        bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                    }
                 }else{
                     Log.e(TAG, "Not found image path: "+  filePath);
                 }
             } else if (uri != null) {
                 try {
-                    InputStream imageStream = context.getContentResolver().openInputStream(uri);
-                    bitmap = BitmapFactory.decodeStream(imageStream);
+                    if( context instanceof Activity){
+                        ((Activity) context).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Picasso.with(context)
+                                        .load(uri)
+                                        .into(imageView);
+                            }
+                        });
+                    }else {
+                        InputStream imageStream = context.getContentResolver().openInputStream(uri);
+                        bitmap = BitmapFactory.decodeStream(imageStream);
+                    }
                     Log.d(TAG, "Loading image from Uri:" + uri);
                 } catch (FileNotFoundException e) {
                     Log.e(TAG, "cann't open stream for Uri: " + uri, e);
@@ -107,8 +107,19 @@ public class ImageUtils {
             } else if (url != null) {
                 InputStream in = null;
                 try {
-                    in = new URL(url).openStream();
-                    bitmap = BitmapFactory.decodeStream(in);
+                    if(context !=null && context instanceof Activity){
+                        ((Activity) context).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Picasso.with(context)
+                                        .load(url)
+                                        .into(imageView);
+                            }
+                        });
+                    }else {
+                        in = new URL(url).openStream();
+                        bitmap = BitmapFactory.decodeStream(in);
+                    }
                 } catch (IOException e) {
                     Log.e(TAG, "failed to load image from:" + url, e);
                 }
@@ -130,11 +141,13 @@ public class ImageUtils {
         ImageView imageView;
         String url;
         boolean overwrite;
+        Context context;
 
-        public DownloadFileAndDisplay(ImageView imageView, String url, boolean overwrite) {
+        public DownloadFileAndDisplay(ImageView imageView, String url, boolean overwrite, Context context) {
             this.imageView = imageView;
             this.url = url;
             this.overwrite = overwrite;
+            this.context = context;
         }
 
         @Override
@@ -143,7 +156,7 @@ public class ImageUtils {
             try {
                 String localPath = FileUtils.getPathFromUrl(url);
                 downloadFile(localPath, url, overwrite);
-                ImageUtils.loadImage(imageView, localPath);
+                ImageUtils.loadImage(imageView, localPath, context);
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }

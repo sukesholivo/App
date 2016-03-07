@@ -24,7 +24,7 @@ public class ShowImage extends BaseActivity {
         }else{
             String imageUrl = intent.getStringExtra(Constants.IMAGE_URL);
             if(imageUrl != null){
-                new ImageUtils.DownloadFileAndDisplay(image, Constants.SERVER_URL+imageUrl, false).execute();
+                new ImageUtils.DownloadFileAndDisplay(image, Constants.SERVER_URL+imageUrl, false, ShowImage.this).execute();
 //                new DownloadImageTask(image, getBaseContext()).execute(Constants.SERVER_URL+imageUrl);
             }
         }

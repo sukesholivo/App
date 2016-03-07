@@ -19,6 +19,7 @@ import com.doctl.patientcare.main.om.UserProfile;
 import com.doctl.patientcare.main.om.chat.ThreadListAdapter;
 import com.doctl.patientcare.main.om.chat.ThreadSummary;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
+import com.doctl.patientcare.main.utility.OfflineCacheUtil;
 import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
@@ -90,8 +91,11 @@ public class ThreadListActivity extends BaseActivity {
 
     private void refreshActivity() {
         String jsonStr = downloadThreads();
-        if (jsonStr != null && !jsonStr.isEmpty()) {
-            final ThreadSummary[] threadSummaryList = parseThreadList(jsonStr);
+        updateUi(jsonStr);
+    }
+    private void updateUi(String jsonResponse){
+        if (jsonResponse != null && !jsonResponse.isEmpty()) {
+            final ThreadSummary[] threadSummaryList = parseThreadList(jsonResponse);
             runOnUiThread(new Runnable() {
                 public void run() {
                     updateList(threadSummaryList);
@@ -105,7 +109,11 @@ public class ThreadListActivity extends BaseActivity {
 //        return dummyJSON;
         String url = Constants.QUESTION_URL;
         HTTPServiceHandler serviceHandler = new HTTPServiceHandler(this);
-        return serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.GET, null, null);
+        String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.GET, null, null);
+        if(response != null){
+            OfflineCacheUtil.saveResponse(ThreadListActivity.this, url, response);
+        }
+        return response;
     }
 
     private ThreadSummary[] parseThreadList(String jsonStr){
@@ -148,9 +156,19 @@ public class ThreadListActivity extends BaseActivity {
 
         @Override
         protected Void doInBackground(Void... arg0) {
+            publishProgress(null);
             refreshActivity();
             return null;
         }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            OfflineCacheUtil.ResponseDetails responseDetails = OfflineCacheUtil.getResponse(ThreadListActivity.this, Constants.QUESTION_URL);
+            if(responseDetails != null && responseDetails.getResponse() != null){
+                updateUi(responseDetails.getResponse());
+            }
+        }
+
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);

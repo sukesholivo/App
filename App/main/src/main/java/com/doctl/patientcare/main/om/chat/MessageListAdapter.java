@@ -100,11 +100,13 @@ public class MessageListAdapter extends ArrayAdapter<Message> {
 
         if(item.getLocalUri() != null){
             holder.imgMessage.setImageURI(item.getLocalUri());
+            holder.imgMessage.setVisibility(View.VISIBLE);
         }
         else if(item.getThumbnailUrl() != null && !item.getThumbnailUrl().isEmpty()) {
 //            new DownloadImageTask(holder.imgMessage, null).execute(Constants.SERVER_URL + item.getThumbnailUrl());
             //   imageLoader.DisplayImage(Constants.SERVER_URL + item.getThumbnailUrl(), R.drawable.profile_dummy, holder.imgMessage);
-            new ImageUtils.DownloadFileAndDisplay(holder.imgMessage, Constants.SERVER_URL + item.getThumbnailUrl(), false).execute();
+            new ImageUtils.DownloadFileAndDisplay(holder.imgMessage, Constants.SERVER_URL + item.getThumbnailUrl(), false, getContext()).execute();
+            holder.imgMessage.setVisibility(View.VISIBLE);
         }else{
             holder.imgMessage.setVisibility(View.GONE);
         }
@@ -144,7 +146,7 @@ public class MessageListAdapter extends ArrayAdapter<Message> {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             if(s != null){
-                ImageUtils.loadImage(imageView, FileUtils.getExternalStorageAbsolutePath(s));
+                ImageUtils.loadImage(imageView, FileUtils.getExternalStorageAbsolutePath(s), getContext());
             }
         }
     }

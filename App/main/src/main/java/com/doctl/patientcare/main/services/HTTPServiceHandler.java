@@ -60,10 +60,10 @@ public class HTTPServiceHandler {
      * @params - http request params
      * */
     public String makeServiceCall(String url, HTTPMethod method, List<NameValuePair> getParams, JSONObject postParams, boolean anonymous) {
-        if (!Utils.isNetworkAvailable(context)){
+       /* if (!Utils.isNetworkAvailable(context)){
             Utils.showToastOnUiThread(context, "No Network Connection");
             return null;
-        }
+        }*/
         try {
             // http client
             int CONNECTION_TIMEOUT_MILLISEC = 7000; // = 7 seconds
@@ -193,12 +193,15 @@ public class HTTPServiceHandler {
             }
 
         } catch (UnknownHostException ex){
+            Log.e(TAG, " UnknownHostException ", ex);
             Utils.showToastOnUiThread(context, "No Network Connection");
             return null;
         } catch (ConnectTimeoutException e){
+            Log.e(TAG, " ConnectionTimeout ", e);
             Utils.showToastOnUiThread(context, "No Network Connection");
             return null;
         } catch (IOException  e) {
+            Log.e(TAG, " IO Exception ", e);
             Utils.showToastOnUiThread(context, "Some error occurred");
             return null;
         }
