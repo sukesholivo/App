@@ -19,8 +19,8 @@ import com.doctl.patientcare.main.om.UserProfile;
 import com.doctl.patientcare.main.om.chat.ThreadListAdapter;
 import com.doctl.patientcare.main.om.chat.ThreadSummary;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
-import com.doctl.patientcare.main.utility.OfflineCacheUtil;
 import com.doctl.patientcare.main.utility.Constants;
+import com.doctl.patientcare.main.utility.OfflineCacheUtil;
 import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
 
@@ -32,6 +32,8 @@ import java.util.List;
  * Created by Administrator on 5/4/2015.
  */
 public class ThreadListActivity extends BaseActivity {
+
+    private static final String TAG = ThreadListActivity.class.getSimpleName();
 
     private UserProfile currUserProfile;
     @Override
@@ -48,6 +50,7 @@ public class ThreadListActivity extends BaseActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         currUserProfile = Utils.getPatientDataFromSharedPreference(this);
+        //Log.d(TAG, "database path "+getDatabasePath("offline.db"));
         refresh();
     }
 

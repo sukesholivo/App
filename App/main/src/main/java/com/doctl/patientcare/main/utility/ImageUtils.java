@@ -39,9 +39,9 @@ public class ImageUtils {
         new LoadImage(imageView, null, context, uri, null);
     }
 
-    public static void loadImageFromUrl(ImageView imageView, String url) {
+    public static void loadImageFromUrl(Context context, ImageView imageView, String url) {
 
-        new LoadImage(imageView, null, null, null, url).execute();
+        new LoadImage(imageView, null, context, null, url).execute();
     }
 
 

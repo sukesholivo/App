@@ -1,52 +1,41 @@
 package com.doctl.patientcare.main.visit;
 
+import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.doctl.patientcare.main.BaseActivityWithNavigation;
+import com.doctl.patientcare.main.MainActivity;
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.UserProfile;
-import com.doctl.patientcare.main.om.medicines.Prescription;
-import com.doctl.patientcare.main.services.HTTPServiceHandler;
-import com.doctl.patientcare.main.utility.Constants;
+import com.doctl.patientcare.main.utility.Logger;
+import com.doctl.patientcare.main.utility.OfflineCacheAsyncTask;
 import com.doctl.patientcare.main.utility.Utils;
+import com.doctl.patientcare.main.visit.om.Visit;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.squareup.picasso.Picasso;
+
+import org.apache.http.NameValuePair;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class VisitListActivity extends BaseActivityWithNavigation {
-//    public final static String EXTRA_MESSAGE = "in.co.example.rmg.myfirstapp.MESSAGE";
+//    public final static String VISIT_URI = "in.co.example.rmg.myfirstapp.MESSAGE";
 
-    public final static String EXTRA_MESSAGE = VisitListActivity.EXTRA_MESSAGE;
-    ListView list;
-    public UserProfile doctor;
-    public final static String TAG = VisitListActivity.class.getSimpleName();
-    static boolean active = false;
-    private String contactId = "";
-
-    Integer[] imageId = {
-
-    };
-//
-
-   String[] values = new String[] { "01/11/15", "23/11/15", "23/12/15", "12/01/16", "24/01/16", "15/02/16"};
-    String[] hospname = new String[] { "Rajini Health Clinics", "Olivo Hospital",
-            "Apolo Hospital", "Olivo Hospital", "CHL Apolo", "Sanjivani Hospital"};
-    String[] spec = new String[] { "Physiotherapist", "Endocrinologist",
-            "Oncologist", "Cardiologist", "Physiotherapist", "Oncologist"};
-    String[] docname = new String[] { "Dr. Rajini", "Dr. Ritesh D", "Dr. Kailash S",
-            "Dr. Priya Jha", "Dr. Sayali Mahajan", "Dr. Rahul M"};
+    private final static String TAG = VisitListActivity.class.getSimpleName();
+    public final static String VISIT_URI = "visit_uri";
+    private ListView listView;
+    private UserProfile userProfile;
+    private List<Visit> visits;
+    private VisitListAdapter listAdapter;
 
 
 
@@ -60,139 +49,70 @@ public class VisitListActivity extends BaseActivityWithNavigation {
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle("Olivo");
-//            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
-//            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle("Visits");
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        VisitListAdapter adapter = new VisitListAdapter(VisitListActivity.this, values, imageId, docname, hospname, spec);
-        list = (ListView) findViewById(R.id.SubjectList);
-        list.setAdapter(adapter);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        visits = new ArrayList<>();
+        listAdapter = new VisitListAdapter(VisitListActivity.this, visits);
+        listView = (ListView) findViewById(R.id.visit_list);
+        listView.setAdapter(listAdapter);
+        listView.setEmptyView(findViewById(R.id.emptyElement));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Toast.makeText(VisitListActivity.this, "You Clicked at " + values[+position], Toast.LENGTH_SHORT).show();
-                Intent intent;
-                        intent = new Intent(VisitListActivity.this, VisitDetailActivity.class);
-//                        EditText editText = (EditText) findViewById(R.id.edit_message);
-
-                        String message = values[position].toString();
-                        intent.putExtra(EXTRA_MESSAGE, message);
-                        VisitListActivity.this.startActivity(intent);
-
+                Intent intent = new Intent(VisitListActivity.this, VisitDetailActivity.class);
+                Visit visit =(Visit)parent.getItemAtPosition(position);
+                if(visit != null) {
+                    intent.putExtra(VISIT_URI, visit.getUri());
+                    startActivity(intent);
+                }else{
+                    Logger.e(TAG, "visit is null at position "+ position);
+                    Toast.makeText(VisitListActivity.this, "visit is null at position "+ position, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
 
-        doctor = Utils.getPatientDataFromSharedPreference(this);
-        int i = list.getCount();
-        contactId = "";
-        active = true;
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            contactId = bundle.getString("contactId");
-        }
-//        while (i-- !=0){
-//            refresh();
-//        }
-//        updateUI();
-    }
-
-    /*public UserProfile getDoctor() {
-        return doctor;
-    }*/
-
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        ActionBar actionBar = getSupportActionBar();
-//        if (actionBar != null) {
-//            actionBar.setTitle("Olivo");
-//        }
-//        contactId = "";
-//        active = true;
-//        Bundle bundle = getIntent().getExtras();
-//        if (bundle != null){
-//            contactId = bundle.getString("prescriptionId");
-//        }
-//        refresh();
-//    }
-
-
-
-    private String downloadPrescriptionData(String contactId) {
-        if (contactId == null){
-            contactId = "";
-        }
-        String url = Constants.PRESCRIPTION_URL + contactId;
-        HTTPServiceHandler serviceHandler = new HTTPServiceHandler(this);
-        return serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.GET, null, null);
-    }
-
-    private Prescription parsePrescriptionData(String jsonStr){
-        JsonParser parser = new JsonParser();
-        JsonObject jsonObject = parser.parse(jsonStr).getAsJsonObject();
-
-        return new Gson().fromJson(jsonObject, Prescription.class);
+        userProfile = Utils.getPatientDataFromSharedPreference(this);
+        refresh();
     }
 
     private void refresh(){
-        if (Utils.isNetworkAvailable(this)){
-            new GetContact().execute(contactId);
-        } else {
-            Toast.makeText(this, "No Network Connection", Toast.LENGTH_LONG).show();
-        }
+        String userId = Utils.getPatientIdFromSharedPreference(this);
+        if(userId == null) return;
+        //TODO add user id to URL
+       String getVisitsUrl = "http://test.doctl.com/teledos/v1.0/visits/013b7432e6d749129431bef02173f965/";
+       new GetVisits(VisitListActivity.this, getVisitsUrl, null).execute();
     }
 
-    private class GetContact extends AsyncTask<String, Void, Void> {
+    private class GetVisits extends OfflineCacheAsyncTask<Void, Void> {
 
-        @Override
-        protected Void doInBackground(String... arg0) {
-            refreshActivity(arg0[0]);
-            return null;
+        public GetVisits(Context context, String url, List<NameValuePair> getParams) {
+            super(context, url, getParams);
         }
 
         @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-        }
-    }
-
-    private void refreshActivity(String contactId) {
-        String jsonStr = downloadPrescriptionData(contactId);
-        if (jsonStr != null && !jsonStr.isEmpty()) {
-            final Prescription prescription = parsePrescriptionData(jsonStr);
-
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    updateUI(prescription);
-                }
-            });
-        }
-    }
-
-    private void updateUI(final Prescription contact) {
-    //private void updateUI() {
-        LinearLayout doctorLayout = (LinearLayout) findViewById(R.id.doclayout);
-        if (contact.getDoctor() != null) {
-            doctorLayout.setVisibility(View.VISIBLE);
-            TextView doctorName = (TextView) findViewById(R.id.doctorname);
-            doctorName.setText(contact.getDoctor().getDisplayName());
-
-            TextView doctorAddress = (TextView) findViewById(R.id.doctorhospital);
-            UserProfile.Address address = contact.getDoctor().getAddress();
-            if (address != null) {
-                doctorAddress.setText(address.getPrintableAddress());
+        protected void updateUI(String response) {
+            if(response != null) {
+                visits.clear();
+                visits.addAll(Arrays.asList(new Gson().fromJson(response, Visit[].class)));
+                listAdapter.notifyDataSetChanged();
             }
-
-            Picasso.with(this)
-                    .load(Constants.SERVER_URL + contact.getDoctor().getProfilePicUrl())
-                    .into((ImageView) findViewById(R.id.doctorpic));
-        } else {
-            doctorLayout.setVisibility(View.GONE);
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:
+                Intent intent = new Intent(VisitListActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

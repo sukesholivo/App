@@ -109,7 +109,7 @@ public class ContactListAdapter extends ArrayAdapter<UserProfile> {
         this.filter = filter;
     }
 
-    public static class ListItemViewHolder {
+    private static class ListItemViewHolder {
         public ImageView profilePic;
         public TextView name;
         public TextView about;
@@ -155,7 +155,7 @@ public class ContactListAdapter extends ArrayAdapter<UserProfile> {
         }
     }
 
-    public static class ListCategoryViewHolder extends  ListItemViewHolder{
+    private static class ListCategoryViewHolder extends  ListItemViewHolder{
         public TextView categoryName;
         public static ListCategoryViewHolder createView(View view){
             ListCategoryViewHolder holder = new ListCategoryViewHolder();

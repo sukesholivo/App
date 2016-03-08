@@ -11,9 +11,9 @@ import android.widget.TextView;
 
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.UserProfile;
-import com.doctl.patientcare.main.services.DownloadImageTask;
 import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.DateUtils;
+import com.doctl.patientcare.main.utility.ImageUtils;
 
 import java.util.List;
 
@@ -76,7 +76,8 @@ public class ThreadListAdapter extends ArrayAdapter<ThreadSummary> {
 
             if( userProfile != null) {
                 if( userProfile.getProfilePicUrl() != null && !userProfile.getProfilePicUrl().isEmpty()) {
-                    new DownloadImageTask(profilePic, null).execute(Constants.SERVER_URL + userProfile.getProfilePicUrl());
+                    ImageUtils.loadImageFromUrl(getContext(), profilePic, Constants.SERVER_URL + userProfile.getProfilePicUrl());
+//                    new DownloadImageTask(profilePic, null).execute(Constants.SERVER_URL + userProfile.getProfilePicUrl());
                 }
                 if(userProfile.getDisplayName() != null && !userProfile.getDisplayName().isEmpty()){
                     displayName.setText(userProfile.getDisplayName());

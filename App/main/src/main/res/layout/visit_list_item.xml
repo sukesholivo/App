@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:background="#FFFFFF">
+
+    <com.doctl.patientcare.main.controls.RoundedImageView
+        android:id="@+id/doctorpic"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="@drawable/profile_dummy" />
+
+    <LinearLayout
+        android:id="@+id/doclayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingStart="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/doctor_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Doctor's Name"
+
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/clinic_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Specialisation"
+            android:textColor="#FF9800"
+            android:textSize="12sp" />
+        <TextView
+            android:id="@+id/visit_date"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Hospital"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+
+</LinearLayout>

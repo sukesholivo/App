@@ -239,6 +239,13 @@ public final class Utils {
         return getUserDataFromSharedPreference(context, Constants.PERSONAL_DETAIL_SHARED_PREFERENCE_NAME);
     }
 
+    public static String getPatientIdFromSharedPreference(Context context){
+        UserProfile userProfile = getUserDataFromSharedPreference(context, Constants.PERSONAL_DETAIL_SHARED_PREFERENCE_NAME);
+        if(userProfile != null){
+            return userProfile.getId();
+        }
+        return null;
+    }
     public static void savePatientDataToSharedPreference(Context context, UserProfile userProfile){
         saveUserDataToSharedPreference(context, Constants.PERSONAL_DETAIL_SHARED_PREFERENCE_NAME, userProfile);
     }

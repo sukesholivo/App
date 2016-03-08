@@ -5,29 +5,15 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.webkit.WebView;
 
 import com.doctl.patientcare.main.BaseActivity;
 import com.doctl.patientcare.main.R;
 
 public class VisitDetailActivity extends BaseActivity {
 
-        ListView list;
-//    public final static String TAG = VisitDetailActivity.class.getSimpleName();
-//    static boolean active = false;
-
-
-            String[] values = new String[] { "Complaints:", "Diagnosis:", "Examinations:", "Medication:" };
-    String[] data = new String[] { "Body Pain\nHeadache\nCold\nCough\nFever",
-            "Body Temperature\nPhysical Tests\nBlood Test",
-            "Sugar Level\nBlood Pressure\nPrevious Treatment Results", "1. Tablets\n2. Syrup\n3. Capsules" };
-
-
-
+    public final static String TAG = VisitDetailActivity.class.getSimpleName();
+    private WebView visitDetails;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,35 +28,25 @@ public class VisitDetailActivity extends BaseActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        visitDetails = (WebView) findViewById(R.id.visit_details);
+//        visitDetails.loadDataWithBaseURL(visitUri, null, "text/html", HTTP.UTF_8, null);
 
-        VisitDetailAdapter adapter = new
-//                VisitListAdapter(VisitListActivity.this, values, imageId);
-                VisitDetailAdapter(VisitDetailActivity.this, values, data);
-        list = (ListView) findViewById(R.id.visitview);
-        list.setAdapter(adapter);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                Toast.makeText(VisitDetailActivity.this, "You Clicked at " + values[+position], Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-        Intent myintent2 = getIntent();
-        String message = myintent2.getStringExtra(VisitListActivity.EXTRA_MESSAGE);
-        TextView textView = (TextView) findViewById(R.id.textView6);
-        textView.setText(message);
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        String visitUri = getIntent().getStringExtra(VisitListActivity.VISIT_URI);
+        visitDetails.loadUrl(visitUri);
+    }
+
+    /*  @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, VisitListActivity.class);
         startActivity(intent);
 
         super.onBackPressed();
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
