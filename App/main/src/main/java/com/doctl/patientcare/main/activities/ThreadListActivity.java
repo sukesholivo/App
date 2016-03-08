@@ -1,7 +1,7 @@
 package com.doctl.patientcare.main.activities;
 
+import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -18,11 +18,12 @@ import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.UserProfile;
 import com.doctl.patientcare.main.om.chat.ThreadListAdapter;
 import com.doctl.patientcare.main.om.chat.ThreadSummary;
-import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
-import com.doctl.patientcare.main.utility.OfflineCacheUtil;
+import com.doctl.patientcare.main.utility.OfflineCacheAsyncTask;
 import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
+
+import org.apache.http.NameValuePair;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,6 +37,7 @@ public class ThreadListActivity extends BaseActivity {
     private static final String TAG = ThreadListActivity.class.getSimpleName();
 
     private UserProfile currUserProfile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -44,7 +46,7 @@ public class ThreadListActivity extends BaseActivity {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
         setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null){
+        if (actionBar != null) {
             actionBar.setTitle("Chat");
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -89,14 +91,11 @@ public class ThreadListActivity extends BaseActivity {
     }
 
     private void refresh() {
-        new GetThreads().execute();
+        new GetThreads(ThreadListActivity.this, Constants.QUESTION_URL, null).execute();
     }
 
-    private void refreshActivity() {
-        String jsonStr = downloadThreads();
-        updateUi(jsonStr);
-    }
-    private void updateUi(String jsonResponse){
+
+    private void updateUi(String jsonResponse) {
         if (jsonResponse != null && !jsonResponse.isEmpty()) {
             final ThreadSummary[] threadSummaryList = parseThreadList(jsonResponse);
             runOnUiThread(new Runnable() {
@@ -107,26 +106,14 @@ public class ThreadListActivity extends BaseActivity {
         }
     }
 
-    private String downloadThreads() {
-       // return "[{\"currUserProfile\":{\"id\":\"3d1e85\",\"displayName\":\"name1\",\"profilePicUrl\":\"/static/files/uploaded_files/1432672583_34_Akansha.jpg\",\"role\":\"role1\"},\"latestMessage\":{\"timestamp\":\"2016-01-14T13:45:42Z\",\"fileUrl\":null,\"id\":23,\"text\":\"aa\"},\"numOfUnreadMessage\":2}, {\"currUserProfile\":{\"id\":\"3d1e89\",\"displayName\":\"other Name\",\"profilePicUrl\":\"/static/files/uploaded_files/1432672583_34_Akansha.jpg\",\"role\":\"role2\"},\"latestMessage\":{\"timestamp\":\"2016-01-14T15:45:42Z\",\"fileUrl\":null,\"id\":22,\"text\":\"bfdgdf\"},\"numOfUnreadMessage\":1}]";
-//        return dummyJSON;
-        String url = Constants.QUESTION_URL;
-        HTTPServiceHandler serviceHandler = new HTTPServiceHandler(this);
-        String response = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.GET, null, null);
-        if(response != null){
-            OfflineCacheUtil.saveResponse(ThreadListActivity.this, url, response);
-        }
-        return response;
-    }
-
-    private ThreadSummary[] parseThreadList(String jsonStr){
+    private ThreadSummary[] parseThreadList(String jsonStr) {
         return new Gson().fromJson(jsonStr, ThreadSummary[].class);
     }
 
-    private void updateList(ThreadSummary[] threadSummaries){
+    private void updateList(ThreadSummary[] threadSummaries) {
 
         List<ThreadSummary> threadSummaryList = new ArrayList<>();
-        for (ThreadSummary q : threadSummaries){
+        for (ThreadSummary q : threadSummaries) {
             threadSummaryList.add(q);
         }
         Collections.sort(threadSummaryList, Collections.reverseOrder(ThreadSummary.ORDER_BY_LATEST_MESSAGE));
@@ -142,39 +129,28 @@ public class ThreadListActivity extends BaseActivity {
                 Intent intent = new Intent(ThreadListActivity.this, ThreadDetailActivity.class);
                 // sending data to new activity
                 intent.putExtra(Constants.THREAD_ID, item.getId());
-                if(item.getUsers() != null ) {
-                    UserProfile userProfile=UserProfile.getOtherUserProfile(currUserProfile.getId(), item.getUsers());
-                        if( userProfile != null) {
-                            intent.putExtra(Constants.USER_ID, userProfile.getId());
-                            intent.putExtra(Constants.PROFILE_PIC_URL, userProfile.getProfilePicUrl());
-                            intent.putExtra(Constants.DISPLAY_NAME, userProfile.getDisplayName());
-                        }
+                if (item.getUsers() != null) {
+                    UserProfile userProfile = UserProfile.getOtherUserProfile(currUserProfile.getId(), item.getUsers());
+                    if (userProfile != null) {
+                        intent.putExtra(Constants.USER_ID, userProfile.getId());
+                        intent.putExtra(Constants.PROFILE_PIC_URL, userProfile.getProfilePicUrl());
+                        intent.putExtra(Constants.DISPLAY_NAME, userProfile.getDisplayName());
+                    }
                 }
                 startActivity(intent);
             }
         });
     }
 
-    private class GetThreads extends AsyncTask<Void, Void, Void> {
+    private class GetThreads extends OfflineCacheAsyncTask<Void, Void> {
 
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            publishProgress(null);
-            refreshActivity();
-            return null;
+        public GetThreads(Context context, String url, List<NameValuePair> getParams) {
+            super(context, url, getParams, true);
         }
 
         @Override
-        protected void onProgressUpdate(Void... values) {
-            OfflineCacheUtil.ResponseDetails responseDetails = OfflineCacheUtil.getResponse(ThreadListActivity.this, Constants.QUESTION_URL);
-            if(responseDetails != null && responseDetails.getResponse() != null){
-                updateUi(responseDetails.getResponse());
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
+        protected void onResponseReceived(String response) {
+            updateUi(response);
         }
     }
 }

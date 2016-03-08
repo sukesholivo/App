@@ -40,6 +40,7 @@ import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.HttpFileUpload;
 import com.doctl.patientcare.main.utility.Logger;
+import com.doctl.patientcare.main.utility.OfflineCacheAsyncTask;
 import com.doctl.patientcare.main.utility.OfflineCacheUtil;
 import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
@@ -127,7 +128,7 @@ public class ThreadDetailActivity extends BaseActivity {
         if (bundle != null) {
             threadId = bundle.getString(Constants.THREAD_ID);
             if (threadId != null && !threadId.isEmpty()) {
-                new GetThreadContent().execute(threadId);
+                new GetThreadContent(ThreadDetailActivity.this, Constants.QUESTION_URL + threadId, null, threadId).execute();
             }
         }
 
@@ -595,39 +596,42 @@ public class ThreadDetailActivity extends BaseActivity {
         }
     }
 
-    private class GetThreadContent extends AsyncTask<String, Void, Void> {
+    private class GetThreadContent extends OfflineCacheAsyncTask< Void, Void> {
 
-        String url = Constants.QUESTION_URL + threadId;
+        //String url = Constants.QUESTION_URL + threadId;
+        String threadId;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
         }
 
+        public GetThreadContent(Context context, String url, List<NameValuePair> getParams, String threadId) {
+            super(context, url, getParams, true);
+            this.threadId = threadId;
+        }
+
         @Override
-        protected Void doInBackground(String... arg0) {
-            publishProgress(null);
-            refreshActivity();
-            return null;
+        protected void onResponseReceived(String response) {
+            updateUI(response);
         }
 
         @Override
         protected void onProgressUpdate(Void... values) {
             findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-            OfflineCacheUtil.ResponseDetails responseDetails = OfflineCacheUtil.getResponse(ThreadDetailActivity.this, url);
-            if(responseDetails != null && responseDetails.getResponse() != null){
-                updateUI(responseDetails.getResponse());
-            }
+            super.onProgressUpdate();
         }
 
         @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
+        protected void onPostExecute(String result) {
             findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+            super.onPostExecute(result);
             if (getSupportActionBar() != null) {
                 updateActionBarView(getSupportActionBar().getCustomView(), otherUserProfile);
             }
-            new ReadThreadContent().execute(threadId);
+            if(result != null) {
+                new ReadThreadContent().execute(threadId);
+            }
         }
     }
 

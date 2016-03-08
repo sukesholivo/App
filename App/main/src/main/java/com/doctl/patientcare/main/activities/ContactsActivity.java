@@ -1,5 +1,6 @@
 package com.doctl.patientcare.main.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,16 +20,18 @@ import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.UserProfile;
 import com.doctl.patientcare.main.om.contact.ContactData;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
-import com.doctl.patientcare.main.utility.OfflineCacheUtil;
 import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.Logger;
+import com.doctl.patientcare.main.utility.OfflineCacheAsyncTask;
 import com.doctl.patientcare.main.utility.Utils;
 import com.google.gson.Gson;
 
+import org.apache.http.NameValuePair;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by satya on 19/1/16.
@@ -55,15 +58,14 @@ public class ContactsActivity extends BaseActivity {
         SearchView.OnQueryTextListener listener = new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                new GetContacts().execute(Constants.CONTACTS_URL, query);
+                new GetContacts(ContactsActivity.this, Constants.CONTACTS_URL, null, query).execute();
                 Log.d(TAG, "on QueryTextSubmit");
                 return false;
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                // newText is text entered by user to SearchView
-                new GetContacts().execute(Constants.CONTACTS_URL, newText);
+            public boolean onQueryTextChange(String query) {
+                new GetContacts(ContactsActivity.this, Constants.CONTACTS_URL, null, query).execute();
                 Log.d(TAG, "on QueryTextChange");
                 return false;
             }
@@ -79,7 +81,8 @@ public class ContactsActivity extends BaseActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         mAdapter = new ContactListAdapter(this, new ArrayList<UserProfile>(), new HashMap<Integer, String>());
-        new GetContacts().execute(Constants.CONTACTS_URL);
+        // newText is text entered by user to SearchView
+        new GetContacts(ContactsActivity.this, Constants.CONTACTS_URL, null, null).execute();
         ListView contactListView = (ListView) this.findViewById(R.id.list);
         contactListView.setAdapter(mAdapter);
         contactListView.setOnItemClickListener(new ListView.OnItemClickListener() {
@@ -139,64 +142,37 @@ public class ContactsActivity extends BaseActivity {
         }
     }
 
-    private String downloadContacts(String baseURL, String filter) {
-        String url = baseURL;
-        if( filter != null && !filter.isEmpty()){
-            url = baseURL+"?search_str=" + filter;
-        }
-        HTTPServiceHandler serviceHandler = new HTTPServiceHandler(this);
-        String jsonResponse = serviceHandler.makeServiceCall(url, HTTPServiceHandler.HTTPMethod.GET, null, null);
-        if(jsonResponse != null && filter == null){
-            OfflineCacheUtil.saveResponse(ContactsActivity.this, baseURL, jsonResponse);
-        }
-        return jsonResponse;
-    }
 
-    private void updateContactList(String baseURL, String filter) {
 
-        String jsonResponse = downloadContacts(baseURL, filter);
-        updateUI(jsonResponse, filter);
-    }
     private void updateUI(String jsonResponse, String filter){
         ContactData contactData = parseContactData(jsonResponse);
         if(contactData!= null) {
             mAdapter.updateData(contactData.getAllUserProfiles(), contactData.getListPositions(), filter);
+            mAdapter.notifyDataSetChanged();
         }
     }
 
     private ContactData parseContactData(String jsonStr) {
-        System.out.println("Response " + jsonStr);
         return new Gson().fromJson(jsonStr, ContactData.class);
     }
 
-    private class GetContacts extends AsyncTask<String, Void, Void> {
-        @Override
-        protected Void doInBackground(String... arg0) {
-            String baseURL = arg0[0];
-            String filter = null;
-            if(arg0.length ==  2){
-                filter = arg0[1];
-            }
-            if( filter == null){
-                publishProgress(null);
-            }
-            updateContactList(baseURL, filter);
-            return null;
-        }
+    private class GetContacts extends OfflineCacheAsyncTask<Void, Void> {
 
-        @Override
-        protected void onProgressUpdate(Void... values) {
-
-            OfflineCacheUtil.ResponseDetails responseDetails = OfflineCacheUtil.getResponse(ContactsActivity.this, Constants.CONTACTS_URL);
-            if(responseDetails != null && responseDetails.getResponse() != null){
-                updateUI(responseDetails.getResponse(), null);
+        private String filter;
+        public GetContacts(Context context, String baseUrl, List<NameValuePair> getParams,String filter) {
+            super(context, baseUrl, getParams, true);
+            this.filter = filter;
+            if(filter == null || filter.isEmpty()){
+                this.saveToLocal = true;
+            }else{
+                this.url = this.url+"?search_str=" + filter;
+                this.saveToLocal = false;
             }
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            mAdapter.notifyDataSetChanged();
+        protected void onResponseReceived(String response) {
+            updateUI(response, filter);
         }
     }
 

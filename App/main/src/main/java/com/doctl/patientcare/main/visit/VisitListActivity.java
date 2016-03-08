@@ -92,11 +92,11 @@ public class VisitListActivity extends BaseActivityWithNavigation {
     private class GetVisits extends OfflineCacheAsyncTask<Void, Void> {
 
         public GetVisits(Context context, String url, List<NameValuePair> getParams) {
-            super(context, url, getParams);
+            super(context, url, getParams, true);
         }
 
         @Override
-        protected void updateUI(String response) {
+        protected void onResponseReceived(String response) {
             if(response != null) {
                 visits.clear();
                 visits.addAll(Arrays.asList(new Gson().fromJson(response, Visit[].class)));
