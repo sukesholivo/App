@@ -77,10 +77,11 @@ public class GetServerAuthTokenAsync extends AsyncTask<Void, String, String> {
                         getPersonalDetail(c);
                         UserProfile userProfile = Utils.getPatientDataFromSharedPreference(c);
                         if( userProfile.getRole() == null || !"patient".equalsIgnoreCase(userProfile.getRole())){
+                            Utils.cleanupSharedPreference(c);
                             result = null;
                             throw new Exception("Only Patients can login!");
                         }
-                        Utils.cleanupSharedPreference(c);
+
                     } else {
                         throw new Exception("Error:Invalid response");
                     }
