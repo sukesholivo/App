@@ -75,6 +75,13 @@
         <item>Take from camera</item>
         <item>Select from gallery</item>
     </string-array>
+    <string-array name="option">
+        <item>Prescription</item>
+        <item>Report</item>
+        <item>Bill</item>
+        <item>Food</item>
+        <item>Other</item>
+    </string-array>
 
     <string name="nav_item_home">Home</string>
     <string name="nav_item_prescription">Prescription</string>
