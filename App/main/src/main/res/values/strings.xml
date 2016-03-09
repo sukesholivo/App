@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/tools">
+<resources>
 
     <string name="app_name">iKonnect</string>
     <string name="hello_world">Hello world!</string>
@@ -76,14 +76,6 @@
         <item>Select from gallery</item>
     </string-array>
 
-    <string-array name="option">
-        <item>Prescription</item>
-        <item>Report</item>
-        <item>Bill</item>
-        <item>Food</item>
-        <item>Other</item>
-    </string-array>
-
     <string name="nav_item_home">Home</string>
     <string name="nav_item_prescription">Prescription</string>
     <string name="nav_item_vital">Vitals</string>
@@ -124,7 +116,7 @@
     <string-array name="doc_type">
         <item>Bill</item>
         <item>Report</item>
-        <item>Other</item>
         <item>Prescription</item>
+        <item>Other</item>
     </string-array>
 </resources>

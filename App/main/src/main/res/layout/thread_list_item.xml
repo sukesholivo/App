@@ -4,12 +4,12 @@
     android:layout_height="wrap_content"
     android:background="@color/color_white"
     android:orientation="horizontal"
-    android:padding="10dp">
+    android:padding="15dp">
 
     <com.doctl.patientcare.main.controls.RoundedImageView
         android:id="@+id/profile_pic"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:src="@drawable/profile_dummy" />
 
     <LinearLayout
@@ -26,7 +26,7 @@
             android:layout_weight="1.03"
             android:gravity="left"
             android:paddingLeft="10dp"
-            android:textSize="@dimen/text_size_s"
+            android:textSize="@dimen/text_size_xs"
             android:text="New Text" />
 
         <LinearLayout
@@ -41,7 +41,7 @@
                 android:paddingLeft="10dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.30"
-                android:textSize="@dimen/text_size_xxs"
+                android:textSize="@dimen/text_size_xxxs"
                 android:textColor="@color/color_dark_gray"
                 android:text="" />
 
@@ -49,10 +49,13 @@
                 android:id="@+id/latest_message_text"
                 android:layout_width="151dp"
                 android:layout_height="wrap_content"
-                android:gravity="end"
+                android:gravity="center_vertical|start|center_horizontal"
                 android:maxLines="1"
+                android:textSize="@dimen/text_size_xxs"
                 android:ellipsize="end"
-                android:text="Hi" />
+                android:text="Hi"
+                android:textAlignment="textStart"
+                android:paddingLeft="5sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -61,7 +64,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_gravity="center"
-        android:src="@drawable/profile_dummy"
+        android:src="@drawable/patient_dummy"
         android:paddingEnd="8dp"
         android:paddingRight="8dp"/>
 
