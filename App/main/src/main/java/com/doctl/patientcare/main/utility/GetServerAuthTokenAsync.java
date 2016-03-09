@@ -74,6 +74,7 @@ public class GetServerAuthTokenAsync extends AsyncTask<Void, String, String> {
                         Utils.setAuthTokenFromSharedPreference(c, serverAccessToken);
                         result = serverAccessToken;
                         getTreatmentDetail(c);
+                        getPersonalDetail(c);
                     } else {
                         throw new Exception("Error:Invalid response");
                     }

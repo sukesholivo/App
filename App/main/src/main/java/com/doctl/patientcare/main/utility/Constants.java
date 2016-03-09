@@ -30,6 +30,7 @@ public final class Constants {
     public final static String CONTACTS_URL = SERVER_URL + "/accounts/contacts/";
     public final static String READ_THREAD_CONTENT_URL = SERVER_URL + "/api/treatment/" + API_VERSION + "/questions_read_log/";
     public final static String ADD_PATIENT_API_URL=SERVER_URL+"/api/add_patient/";
+    public final static String VISITS_URL = SERVER_URL + "/teledos/" + API_VERSION + "/visits/";
 
     public final static String PERSONAL_DETAIL_SHARED_PREFERENCE_NAME = "personal_detail";
     public final static String CLINIC_DETAIL_SHARED_PREFERENCE_NAME = "clinic_detail";

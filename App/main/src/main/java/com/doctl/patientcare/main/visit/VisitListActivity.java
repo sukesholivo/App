@@ -15,6 +15,7 @@ import com.doctl.patientcare.main.BaseActivityWithNavigation;
 import com.doctl.patientcare.main.MainActivity;
 import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.UserProfile;
+import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.OfflineCacheAsyncTask;
 import com.doctl.patientcare.main.utility.Utils;
@@ -84,8 +85,7 @@ public class VisitListActivity extends BaseActivityWithNavigation {
     private void refresh(){
         String userId = Utils.getPatientIdFromSharedPreference(this);
         if(userId == null) return;
-        //TODO add user id to URL
-       String getVisitsUrl = "http://test.doctl.com/teledos/v1.0/visits/013b7432e6d749129431bef02173f965/";
+       String getVisitsUrl = Constants.VISITS_URL + userId;
        new GetVisits(VisitListActivity.this, getVisitsUrl, null).execute();
     }
 
