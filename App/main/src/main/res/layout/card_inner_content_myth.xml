@@ -18,13 +18,13 @@
         android:id="@+id/mythTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="19sp"
+        android:textSize="12sp"
         android:text="asdsad sd fsdfsd f sdf sd fsdsd f sd fsdfsd f sdf sdfsdfsdf"/>
     <TextView
         android:id="@+id/mythDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:textSize="12sp"
         android:layout_marginTop="100dp"
         android:text="asdasfsdf sdfsd f sdf sd fsd f sdf sd fsdfsd fsd fsdfsdfsd f sdf sd fsdfsd
         dfsdfsdfsf sd fsd f sdf sd f sdf sd fd f "
