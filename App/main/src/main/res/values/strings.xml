@@ -48,8 +48,8 @@
     <string name="hint_login_password">password</string>
     <string name="hint_register_email">email id given to hospital</string>
     <string name="hint_register_code">code from hospital sms or email</string>
-    <string name="hint_register_password">set a password</string>
-    <string name="hint_register_password_confirm">set the password again</string>
+    <string name="hint_register_password">New password</string>
+    <string name="hint_register_password_confirm">Re-type new password</string>
 
     <string name="signout_title">Signout</string>
     <string name="signout_body">Are you sure?</string>

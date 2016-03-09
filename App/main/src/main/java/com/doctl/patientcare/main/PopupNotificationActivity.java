@@ -98,7 +98,7 @@ public class PopupNotificationActivity extends Activity {
             public void setupInnerViewElements(ViewGroup parent, View view) {
                 TextView textView1 = (TextView)view.findViewById(R.id.timeWhen);
                 textView1.setText("Its time for your medicine. Have you taken?");
-                textView1.setTextSize(20);
+                textView1.setTextSize(12);
             }
         };
         final MedicineCard card = new MedicineCard(this, cardHeader,task, false, false, false);
@@ -138,7 +138,7 @@ public class PopupNotificationActivity extends Activity {
             public void setupInnerViewElements(ViewGroup parent, View view) {
                 TextView textView1 = (TextView)view.findViewById(R.id.timeWhen);
                 textView1.setText("Please enter vital values");
-                textView1.setTextSize(20);
+                textView1.setTextSize(12);
             }
         };
         final VitalCard card = new VitalCard(this, cardHeader,task, false, false, false);
