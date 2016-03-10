@@ -34,7 +34,7 @@
         android:layout_marginStart="5dp"/>
     <EditText
         android:id="@+id/vitalValue"
-        android:layout_width="150sp"
+        android:layout_width="80sp"
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"
         android:gravity="center"
