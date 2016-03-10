@@ -1,7 +1,6 @@
 package com.doctl.patientcare.main.activities;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,15 +10,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -31,19 +26,18 @@ import com.doctl.patientcare.main.om.documents.DocumentAdapter;
 import com.doctl.patientcare.main.services.HTTPServiceHandler;
 import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.HttpFileUpload;
+import com.doctl.patientcare.main.utility.ImageUtils;
 import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
-import com.google.gson.Gson;
 import com.github.clans.fab.FloatingActionButton;
+import com.google.gson.Gson;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.view.CardView;
@@ -95,20 +89,24 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
         if (resultCode == RESULT_OK) {
             if (requestCode == CAMERA_REQUEST) {
                 filePath = imageUri.getPath();
-                bitmap = BitmapFactory.decodeFile(imageUri.getPath(), options);
-                showFilePreviewDialog(bitmap);
+//                bitmap = BitmapFactory.decodeFile(imageUri.getPath(), options);
+                showFilePreviewDialog(imageUri);
+                //showFilePreviewDialog(Utils.getThumbnailUriForMediaUri(this, imageUri));
             } else if (requestCode == SELECT_FILE) {
                 selectedImageUri = data.getData();
+                showFilePreviewDialog(selectedImageUri);
+//                showFilePreviewDialog(Utils.getThumbnailUriForMediaUri(this, selectedImageUri));
                 filePath = Utils.getRealPathFromURI(this, selectedImageUri);
-                try {
+                /*try {
                     bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
                     showFilePreviewDialog(bitmap);
                 } catch (IOException e) {
                     e.printStackTrace();
-                }
+                }*/
             }
         }
     }
+
 
     private void showFilePickerDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
@@ -118,6 +116,16 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
                 .setItems(R.array.image_picker_array, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int item) {
                         if (item == 0) {
+                            /* String fileName = "olivo_image.jpg";
+                            ContentValues values = new ContentValues();
+                            values.put(MediaStore.Images.Media.TITLE, fileName);
+                            values.put(MediaStore.Images.Media.DESCRIPTION,
+                                    "Image capture by camera");
+
+                            imageUri = getContentResolver().insert(
+                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//                            imageUri = Uri.fromFile(Utils.getImageUrlForImageSave("document"));*/
                             Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                             imageUri = Uri.fromFile(Utils.getImageUrlForImageSave("document"));
                             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
@@ -132,10 +140,12 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
         dialog.show();
     }
 
-    private void showFilePreviewDialog(Bitmap bitmap) {
+    private void showFilePreviewDialog(Uri imageUri) {
         View view = getLayoutInflater().inflate(R.layout.dialog_file_upload_preview, null);
         ImageView imageView = (ImageView) view.findViewById(R.id.file_preview);
-        imageView.setImageBitmap(bitmap);
+//        imageView.setImageBitmap(bitmap);
+
+        ImageUtils.loadImage(imageView, this, imageUri);
         final EditText titleEditText = (EditText) view.findViewById(R.id.file_title);
         final EditText descriptionEditText = (EditText) view.findViewById(R.id.file_description);
         final Spinner spinText = (Spinner)view.findViewById(R.id.viewspin);

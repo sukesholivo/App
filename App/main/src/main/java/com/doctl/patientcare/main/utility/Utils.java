@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.CursorLoader;
 import android.util.DisplayMetrics;
 import android.widget.Toast;
 
@@ -55,6 +56,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -71,6 +76,7 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
  * Created by Administrator on 7/28/2014.
  */
 public final class Utils {
+    private static final String TAG = Utils.class.getSimpleName();
     public static Date parseFromString(String iso8601string) {
         try {
             String s = iso8601string.replace("Z", "+00:00");
@@ -376,6 +382,51 @@ public final class Utils {
         }
     }
 
+    /*public static String getThumbnailUriForMediaUri(Context context, Uri mediaUri){
+        String uri = null;
+        Cursor cursor = MediaStore.Images.Thumbnails.queryMiniThumbnails(
+                context.getContentResolver(), mediaUri,
+                MediaStore.Images.Thumbnails.MINI_KIND,
+                null );
+        if( cursor != null && cursor.getCount() > 0 ) {
+            cursor.moveToFirst();/*//**EDIT**
+            uri = cursor.getString( cursor.getColumnIndex( MediaStore.Images.Thumbnails.DATA ) );
+            Logger.d(TAG, "thumbnail url = "+ uri + " for media Uri "+ mediaUri);
+        }
+        return uri;
+    }*/
+
+    public  static String getThumbnailUriForMediaUri(Context context, Uri uri) {
+
+        String[] proj = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID };
+
+        // This method was deprecated in API level 11
+        // Cursor cursor = managedQuery(contentUri, proj, null, null, null);
+
+        CursorLoader cursorLoader = new CursorLoader(context, uri, proj, null, null, null);
+        Cursor cursor = cursorLoader.loadInBackground();
+
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID);
+
+        cursor.moveToFirst();
+        long imageId = cursor.getLong(column_index);
+        //cursor.close();
+        String result = null;
+        try {
+            cursor = MediaStore.Images.Thumbnails.queryMiniThumbnail(context.getContentResolver(), imageId,
+                    MediaStore.Images.Thumbnails.MINI_KIND, null);
+            if (cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                result = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails.DATA));
+            }
+        }finally {
+            if(cursor != null)
+                cursor.close();
+        }
+        Logger.d(TAG, "thumbnail url = "+ result + " for media Uri "+ uri);
+        return result;
+    }
+
     public static int getAppVersion(Context context) {
         try {
             PackageInfo packageInfo = context.getPackageManager()
@@ -493,5 +544,18 @@ public final class Utils {
 
     public static boolean isImageFile(String url){
         return (url.toLowerCase().endsWith(".jpg") || url.toLowerCase().endsWith(".jpeg") || url.toLowerCase().endsWith(".png"));
+    }
+
+    public static String encodeURL(String urlString){
+        URL url = null;
+        try {
+            url = new URL(urlString);
+            URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+            url = uri.toURL();
+            urlString = url.toString();
+        } catch (MalformedURLException  | URISyntaxException e ) {
+            Logger.e(TAG, "failed to encode URL "+ urlString);
+        }
+        return urlString;
     }
 }

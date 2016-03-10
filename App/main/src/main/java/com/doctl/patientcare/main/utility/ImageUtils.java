@@ -36,7 +36,7 @@ public class ImageUtils {
     }
 
     public static void loadImage(ImageView imageView, Context context, Uri uri) {
-        new LoadImage(imageView, null, context, uri, null);
+        new LoadImage(imageView, null, context, uri, null).execute();
     }
 
     public static void loadImageFromUrl(Context context, ImageView imageView, String url) {
@@ -68,7 +68,7 @@ public class ImageUtils {
 
                 if (imgFile.exists()) {
 //                    bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                    Log.d(TAG, "Loading image from path: " + filePath);
+                    Log.v(TAG, "Loading image from path: " + filePath);
                     if( context instanceof Activity) {
                         ((Activity) context).runOnUiThread(new Runnable() {
                             @Override
@@ -100,7 +100,7 @@ public class ImageUtils {
                         InputStream imageStream = context.getContentResolver().openInputStream(uri);
                         bitmap = BitmapFactory.decodeStream(imageStream);
                     }
-                    Log.d(TAG, "Loading image from Uri:" + uri);
+                    Log.v(TAG, "Loading image from Uri:" + uri);
                 } catch (FileNotFoundException e) {
                     Log.e(TAG, "cann't open stream for Uri: " + uri, e);
                 }
@@ -123,6 +123,8 @@ public class ImageUtils {
                 } catch (IOException e) {
                     Log.e(TAG, "failed to load image from:" + url, e);
                 }
+            }else{
+                Logger.e(TAG, "failed to Load image to: "+ toString() );
             }
             return null;
         }
@@ -133,6 +135,18 @@ public class ImageUtils {
             if (bitmap != null) {
                 imageView.setImageBitmap(bitmap);
             }
+        }
+
+        @Override
+        public String toString() {
+            return "LoadImage{" +
+                    "filePath='" + filePath + '\'' +
+                    ", url='" + url + '\'' +
+                    ", uri=" + uri +
+                    ", context=" + context +
+                    ", imageView=" + imageView +
+                    ", bitmap=" + bitmap +
+                    '}';
         }
     }
 

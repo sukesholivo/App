@@ -83,6 +83,7 @@ public class HTTPServiceHandler {
                     return null;
                 }
             }
+            url = Utils.encodeURL(url);
             Logger.d(TAG, url);
 
             // Checking http request method type
