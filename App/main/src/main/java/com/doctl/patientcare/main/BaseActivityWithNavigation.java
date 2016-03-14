@@ -280,7 +280,7 @@ public class BaseActivityWithNavigation extends BaseActivity implements ListView
 
         dataList.add(new DrawerItem(0, true));
         dataList.add(new DrawerItem(1, getResources().getString(R.string.nav_item_home), R.drawable.ic_home_black_24dp));
-        dataList.add(new DrawerItem(2, getResources().getString(R.string.nav_item_prescription), R.drawable.ic_prescription_black_24dp));
+        dataList.add(new DrawerItem(2, getResources().getString(R.string.nav_item_medicine), R.drawable.ic_prescription_black_24dp));
         dataList.add(new DrawerItem(12, getResources().getString(R.string.nav_item_documents), R.drawable.ic_action_storage));
         dataList.add(new DrawerItem(13, getResources().getString(R.string.nav_item_threads), R.drawable.ic_question_answer_black_24dp));
         dataList.add(new DrawerItem(14, getResources().getString(R.string.nav_item_visits), R.drawable.ic_person_black_24dp));

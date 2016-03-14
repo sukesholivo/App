@@ -64,7 +64,7 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
         this.setupNavigationDrawer();
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle("Reports");
+            actionBar.setTitle(R.string.nav_item_documents);
         }
         mDocumentArrayList = new ArrayList<>();
         mDocumentAdapter = new DocumentAdapter(DocumentsActivity.this, mDocumentArrayList);

@@ -87,4 +87,6 @@ public final class Constants {
     public static final String LOCAL_IMAGE_FOLDER = "olivo/images";
 
     public static final String PATH_SEPERATOR = "/";
+
+    public static final String GOOGLE_ANALYTICS_TRACKING_ID="UA-75075673-1";
 }

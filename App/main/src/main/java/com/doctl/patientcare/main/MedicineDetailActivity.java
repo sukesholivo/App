@@ -43,7 +43,7 @@ public class MedicineDetailActivity extends BaseActivityWithNavigation {
         super.onStart();
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle("Prescription");
+            actionBar.setTitle(R.string.nav_item_medicine);
         }
         prescriptionId = "";
         active = true;

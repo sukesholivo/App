@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <resources>
+        <string name="ga_trackingId">UA-75075673-1</string>
+        <bool name="ga_autoActivityTracking">true</bool>
+    <screenName name="com.doctl.patientcare.main.activities.ThreadListActivity">
+        Chat List
+    </screenName>
+    <screenName name="com.doctl.patientcare.main.activities.ThreadDetailActivity">
+        Chatting
+    </screenName>
+    <screenName name="com.doctl.patientcare.main.activities.ContactsActivity">
+        Contacts
+    </screenName>
+
+    <screenName name="com.doctl.patientcare.main.MainActivity">
+        Home Screen
+    </screenName>
+
+    <screenName name="com.doctl.patientcare.main.activities.DocumentsActivity">
+        Documents
+    </screenName>
+
+    <screenName name="com.doctl.patientcare.main.MedicineDetailActivity">
+        Medicine
+    </screenName>
+
+    <screenName name="com.doctl.patientcare.main.visit.VisitListActivity">
+        Visit List
+    </screenName>
+
+    <screenName name="com.doctl.patientcare.main.visit.VisitDetailActivity">
+        Visit Detail
+    </screenName>
+
+    <screenName name="com.doctl.patientcare.main.StartPageActivity">
+        Login Page
+    </screenName>
+
+    </resources>

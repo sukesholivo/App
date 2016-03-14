@@ -85,6 +85,7 @@
 
     <string name="nav_item_home">Home</string>
     <string name="nav_item_prescription">Prescription</string>
+    <string name="nav_item_medicine">Medicine</string>
     <string name="nav_item_vital">Vitals</string>
     <string name="nav_item_sugar">Blood Sugar</string>
     <string name="nav_item_bp">Blood Pressure</string>
@@ -95,7 +96,7 @@
     <string name="nav_item_rewards">Points</string>
     <string name="nav_item_profile">Profile</string>
     <string name="nav_item_logout">Log Out</string>
-    <string name="nav_item_documents">Reports</string>
+    <string name="nav_item_documents">Documents</string>
     <string name="nav_item_threads">Chat</string>
     <string name="nav_item_visits">Visits</string>
 

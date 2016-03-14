@@ -42,6 +42,7 @@ public class StartPageActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((MainApplication)getApplication()).startTracker();
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null){
             actionBar.hide();
