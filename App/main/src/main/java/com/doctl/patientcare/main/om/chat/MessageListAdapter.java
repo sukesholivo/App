@@ -99,7 +99,10 @@ public class MessageListAdapter extends ArrayAdapter<Message> {
         String status = item.statusSymbol();
 
         if(item.getLocalUri() != null){
-            holder.imgMessage.setImageURI(item.getLocalUri());
+//            holder.imgMessage.setImageURI(item.getLocalUri());
+            ImageUtils.loadImage(holder.imgMessage, getContext(), item.getLocalUri());
+            /*ViewTreeObserver vto = holder.imgMessage.getViewTreeObserver();
+            vto.addOnPreDrawListener(new ImageUtils.LoadOnPreDraw(getContext(), holder.imgMessage, item.getLocalUri()));*/
             holder.imgMessage.setVisibility(View.VISIBLE);
         }
         else if(item.getThumbnailUrl() != null && !item.getThumbnailUrl().isEmpty()) {

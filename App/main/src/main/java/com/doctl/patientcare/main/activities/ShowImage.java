@@ -20,11 +20,12 @@ public class ShowImage extends BaseActivity {
         Intent intent=getIntent();
         Uri imageUri=intent.getData();
         if(imageUri != null) {
-            image.setImageURI(imageUri);
+//            image.setImageURI(imageUri);
+            ImageUtils.loadImage(image, this, imageUri);
         }else{
             String imageUrl = intent.getStringExtra(Constants.IMAGE_URL);
             if(imageUrl != null){
-                new ImageUtils.DownloadFileAndDisplay(image, Constants.SERVER_URL+imageUrl, false, ShowImage.this).execute();
+                new ImageUtils.DownloadFileAndDisplay(image, Constants.SERVER_URL+imageUrl, false, this).execute();
 //                new DownloadImageTask(image, getBaseContext()).execute(Constants.SERVER_URL+imageUrl);
             }
         }

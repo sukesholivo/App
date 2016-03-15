@@ -173,17 +173,20 @@ public class ThreadDetailActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SELECT_FILE || requestCode == REQUEST_CAMERA) {
             if (resultCode == RESULT_OK) {
-                if (data != null) {
+                if (data != null || mPhotoUri != null ) {
                     try {
                         //TODO add image to listview before sending
                         Intent captionActivity = new Intent(this, AddCaptionToFile.class);
                         captionActivity.setData(requestCode == REQUEST_CAMERA ? mPhotoUri : data.getData());
+                        mPhotoUri = null;
                         startActivityForResult(captionActivity, ADD_CAPTION);
                         //new SendMessage().execute(data.getData());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
+                }else{
+                    Logger.e(TAG, "Intent data and mPhotoUri are null");
                 }
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show();
@@ -361,6 +364,7 @@ public class ThreadDetailActivity extends BaseActivity {
                             new ContentValues());
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoUri);
+                    intent.putExtra(MediaStore.EXTRA_SIZE_LIMIT, 2 * 1024 * 1024); // 2 mb
                     startActivityForResult(intent, REQUEST_CAMERA);
                 } else if (items[item].equals("Choose from gallery")) {
                     Intent intent = new Intent(

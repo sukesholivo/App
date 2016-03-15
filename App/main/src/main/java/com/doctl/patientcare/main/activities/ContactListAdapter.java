@@ -18,6 +18,8 @@ import com.doctl.patientcare.main.R;
 import com.doctl.patientcare.main.om.UserProfile;
 import com.doctl.patientcare.main.services.DownloadImageTask;
 import com.doctl.patientcare.main.utility.Constants;
+import com.doctl.patientcare.main.utility.ImageUtils;
+import com.doctl.patientcare.main.utility.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -30,7 +32,7 @@ public class ContactListAdapter extends ArrayAdapter<UserProfile> {
     private static final String TAG = ContactListAdapter.class.getSimpleName();
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_SEPARATOR = 1;
-    private LayoutInflater li ;
+    private LayoutInflater li;
     private List<UserProfile> items;
     private String filter;
 
@@ -47,115 +49,116 @@ public class ContactListAdapter extends ArrayAdapter<UserProfile> {
 
     @Override
     public int getItemViewType(int position) {
-        return categoryPositions.containsKey(position)? TYPE_SEPARATOR: TYPE_ITEM;
+        return categoryPositions.containsKey(position) ? TYPE_SEPARATOR : TYPE_ITEM;
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
 
         int rowType = getItemViewType(position);
 
-        Object holder=null;
+        ListItemViewHolder holder = null;
 
         // should create new one if convert view is other type
-        if( convertView != null){
-
-            holder = convertView.getTag();
-            if( (rowType == TYPE_ITEM && holder instanceof ListCategoryViewHolder) || ( rowType == TYPE_SEPARATOR && !(holder instanceof ListCategoryViewHolder))){
-                convertView = null;
-            }
-        }
-
-        if (convertView == null) {
-
-            switch (rowType) {
-                case TYPE_ITEM:
-                    convertView = li.inflate(R.layout.contact_list_item, null);
-                    holder = ListItemViewHolder.createView(convertView);
-                    convertView.setTag(holder);
-                    break;
-                case TYPE_SEPARATOR:
-                    convertView = li.inflate(R.layout.contact_list_category, null);
-                    holder = ListCategoryViewHolder.createView(convertView);
-                    convertView.setTag(holder);
-                    break;
-            }
+        if (convertView != null) {
+            holder = (ListItemViewHolder) convertView.getTag();
+        } else {
+            convertView = li.inflate(R.layout.contact_list_item, null);
+            holder = ListItemViewHolder.createView(convertView, getContext());
+            convertView.setTag(holder);
         }
 
         UserProfile userProfile = getItem(position);
         //add regular item
-        if( rowType == TYPE_ITEM && holder instanceof ListItemViewHolder){
-            ListItemViewHolder listItemViewHolder = (ListItemViewHolder) holder;
-            ListItemViewHolder.loadData(listItemViewHolder, userProfile, filter);
-        //add item with heading
-        }else if(rowType == TYPE_SEPARATOR && holder != null){
-            ListCategoryViewHolder listCategoryViewHolder = (ListCategoryViewHolder) holder;
-            ListCategoryViewHolder.loadData(listCategoryViewHolder, userProfile, categoryPositions.get(position), filter);
+        if (rowType == TYPE_ITEM) {
+            holder.categoryName.setVisibility(View.GONE);
+        } else if (rowType == TYPE_SEPARATOR) {
+            holder.categoryName.setVisibility(View.VISIBLE);
         }
+
+        holder.loadData(userProfile, filter);
 
         return convertView;
     }
 
-    public void updateData(List<UserProfile> items, Map<Integer, String> categoryPositions, String filter){
+    public void updateData(List<UserProfile> items, Map<Integer, String> categoryPositions, String filter) {
 
         this.items.clear();
-        if( items != null ){
+        if (items != null) {
             this.items.addAll(items);
         }
 
         this.categoryPositions.clear();
-        if( categoryPositions != null ){
+        if (categoryPositions != null) {
             this.categoryPositions.putAll(categoryPositions);
         }
         this.filter = filter;
     }
 
     private static class ListItemViewHolder {
+        public TextView categoryName;
         public ImageView profilePic;
         public TextView name;
         public TextView about;
+        public Context context;
 
-        public static ListItemViewHolder createView(View view){
+        public static ListItemViewHolder createView(View view, Context context) {
 
             ListItemViewHolder holder = new ListItemViewHolder();
+            holder.context = context;
             return createView(view, holder);
         }
 
-        public static ListItemViewHolder createView(View view, ListItemViewHolder holder){
+        public static ListItemViewHolder createView(View view, ListItemViewHolder holder) {
             holder.profilePic = (ImageView) view.findViewById(R.id.contact_profile_pic);
             holder.name = (TextView) view.findViewById(R.id.contact_name);
             holder.about = (TextView) view.findViewById(R.id.contact_about);
+            holder.categoryName = (TextView) view.findViewById(R.id.textSeparator);
             return holder;
         }
 
-        public static void loadData(ListItemViewHolder holder, UserProfile userProfile, String filter){
+        public void loadData(UserProfile userProfile, String filter) {
 
-            if( userProfile.getProfilePicUrl() != null && !userProfile.getProfilePicUrl().isEmpty()){
-                new DownloadImageTask(holder.profilePic, null).execute(Constants.SERVER_URL + userProfile.getProfilePicUrl());
+            if (userProfile.getProfilePicUrl() != null && !userProfile.getProfilePicUrl().isEmpty()) {
+                new ImageUtils.DownloadFileAndDisplay(this.profilePic, Constants.SERVER_URL + userProfile.getProfilePicUrl(), false, context).execute();
+                new DownloadImageTask(this.profilePic, null).execute(Constants.SERVER_URL + userProfile.getProfilePicUrl());
             }
 
-            if(userProfile.getDisplayName() != null && !userProfile.getDisplayName().isEmpty()){
+            if (userProfile.getDisplayName() != null && !userProfile.getDisplayName().isEmpty()) {
 
-                if( filter != null && userProfile.getDisplayName().toLowerCase().contains(filter.toLowerCase()) ) {
+                if (filter != null && userProfile.getDisplayName().toLowerCase().contains(filter.toLowerCase())) {
                     int startPos = userProfile.getDisplayName().toLowerCase().indexOf(filter.toLowerCase());
                     int endPos = startPos + filter.length();
                     Spannable spannable = new SpannableString(userProfile.getDisplayName());
-                    ColorStateList blueColor = new ColorStateList(new int[][] { new int[] {}}, new int[] { Color.rgb(112, 165, 196) });
+                    ColorStateList blueColor = new ColorStateList(new int[][]{new int[]{}}, new int[]{Color.rgb(112, 165, 196)});
                     TextAppearanceSpan highlightSpan = new TextAppearanceSpan(null, Typeface.BOLD, -1, blueColor, null);
                     spannable.setSpan(highlightSpan, startPos, endPos, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    holder.name.setText(spannable);
-                }else{
-                    holder.name.setText(userProfile.getDisplayName());
+                    this.name.setText(spannable);
+                } else {
+                    this.name.setText(userProfile.getDisplayName());
                 }
             }
-            if( userProfile.getAddress() != null && userProfile.getAddress().getCity() != null){
-                holder.about.setText(userProfile.getAddress().getCity());
-            }else{
-                holder.about.setVisibility(View.GONE);
+
+            if (userProfile.getPhone() != null && !userProfile.getPhone().isEmpty()) {
+                if (filter != null && userProfile.getPhone().toLowerCase().contains(filter.toLowerCase())) {
+                    int startPos = userProfile.getPhone().toLowerCase().indexOf(filter.toLowerCase());
+                    int endPos = startPos + filter.length();
+                    Spannable spannable = new SpannableString(userProfile.getPhone());
+                    ColorStateList blueColor = new ColorStateList(new int[][]{new int[]{}}, new int[]{Color.rgb(112, 165, 196)});
+                    TextAppearanceSpan highlightSpan = new TextAppearanceSpan(null, Typeface.BOLD, -1, blueColor, null);
+                    spannable.setSpan(highlightSpan, startPos, endPos, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    this.about.setText(spannable);
+                } else {
+                    this.about.setText(userProfile.getPhone());
+                }
+            }
+
+            if (userProfile.getRole() != null && !userProfile.getRole().isEmpty()) {
+                this.categoryName.setText(StringUtils.toDisplayCase(userProfile.getRole()) + "s");
             }
         }
     }
 
-    private static class ListCategoryViewHolder extends  ListItemViewHolder{
+    /*public static class ListCategoryViewHolder extends  ListItemViewHolder{
         public TextView categoryName;
         public static ListCategoryViewHolder createView(View view){
             ListCategoryViewHolder holder = new ListCategoryViewHolder();
@@ -168,5 +171,5 @@ public class ContactListAdapter extends ArrayAdapter<UserProfile> {
             ListItemViewHolder.loadData(holder, userProfile, filter);
             holder.categoryName.setText(categoryName);
         }
-    }
+    }*/
 }
