@@ -26,6 +26,7 @@ import org.apache.http.NameValuePair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class VisitListActivity extends BaseActivityWithNavigation {
@@ -99,7 +100,9 @@ public class VisitListActivity extends BaseActivityWithNavigation {
         protected void onResponseReceived(String response) {
             if(response != null) {
                 visits.clear();
-                visits.addAll(Arrays.asList(new Gson().fromJson(response, Visit[].class)));
+                List<Visit> visitList=Arrays.asList(new Gson().fromJson(response, Visit[].class));
+                Collections.sort(visitList, Collections.reverseOrder());
+                visits.addAll(visitList);
                 listAdapter.notifyDataSetChanged();
             }
         }

@@ -8,11 +8,11 @@ import java.util.Date;
  * Created by Satya Madala on 5/3/16.
  * email : satya.madala@olivo.in
  */
-public class Visit {
+public class Visit implements Comparable<Visit>{
 
 
     /**
-     * date : 2016-03-07T15:57:30
+     * date : 2016-03-07T15:57:30Z
      * uri : http://test.doctl.com/teledos/v1.0/telidos-oncology/visits/10566957939208/visit/4f74764f-a7a5-4f98-a6f7-03c36ede05b3/
      * clinicName : Manas Maheshwari Clinic
      * doctorName : Dr.Manas Maheshwari
@@ -62,6 +62,13 @@ public class Visit {
 
     public String getDoctorName() {
         return doctorName;
+    }
+
+    @Override
+    public int compareTo(Visit another) {
+        if(another == null || another.getDate() == null) return -1;
+        if(getDate() == null) return 1;
+        return getDate().compareTo(another.getDate());
     }
 }
 
