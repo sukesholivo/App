@@ -120,6 +120,8 @@ public class ThreadListActivity extends BaseActivity {
         ThreadListAdapter threadListAdapter = new ThreadListAdapter(this, threadSummaryList, currUserProfile.getId());
         ListView threadListView = (ListView) this.findViewById(R.id.thread_list);
         threadListView.setAdapter(threadListAdapter);
+        threadListView.setEmptyView(findViewById(R.id.emptyElement));
+
 
         threadListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

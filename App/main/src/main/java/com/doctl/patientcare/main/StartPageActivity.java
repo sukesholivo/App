@@ -86,7 +86,7 @@ public class StartPageActivity extends BaseActivity {
         TextView textView =(TextView)this.findViewById(R.id.tosLink);
         textView.setClickable(true);
         textView.setMovementMethod(LinkMovementMethod.getInstance());
-        String text = "By using this app, I agree to the <a href='http://www.doctl.com/tos'> Terms of Use </a>";
+        String text = "By using this app, I agree to the <a href='http://ikonnect.olivo.in/tos'> Terms of Use </a>";
         textView.setText(Html.fromHtml(text));
 
         View.OnClickListener clickListener = new View.OnClickListener() {

@@ -20,6 +20,7 @@ import java.util.List;
  * Created by Administrator on 1/1/2015.
  */
 public class HttpFileUpload {
+    private static final String TAG = HttpFileUpload.class.getSimpleName();
     URL connectURL;
     InputStream fileInputStream = null;
     List<NameValuePair> nameValuePairs;
@@ -86,8 +87,11 @@ public class HttpFileUpload {
             int bufferSize = Math.min(bytesAvailable, maxBufferSize);
             byte[ ] buffer = new byte[bufferSize];
             int bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+            int uploadedData = 0;
             while (bytesRead > 0) {
                 dos.write(buffer, 0, bufferSize);
+                uploadedData += bytesRead;
+                Logger.v(TAG, String.format("uploaded bytes = %d and remaining bytes = %d", uploadedData, bytesAvailable));
                 bytesAvailable = fileInputStream.available();
                 bufferSize = Math.min(bytesAvailable,maxBufferSize);
                 bytesRead = fileInputStream.read(buffer, 0,bufferSize);

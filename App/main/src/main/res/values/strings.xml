@@ -44,7 +44,7 @@
     <string name="login">Login</string>
     <string name="register">Register</string>
     <string name="forgot_password">Forgot Password?</string>
-    <string name="hint_login_email">email id</string>
+    <string name="hint_login_email">username</string>
     <string name="hint_login_password">password</string>
     <string name="hint_register_email">email id given to hospital</string>
     <string name="hint_register_code">code from hospital sms or email</string>
@@ -127,4 +127,5 @@
         <item>Prescription</item>
         <item>Other</item>
     </string-array>
+    <string name="no_chats_message">No chats Available, you can add chat by selecting user from search</string>
 </resources>

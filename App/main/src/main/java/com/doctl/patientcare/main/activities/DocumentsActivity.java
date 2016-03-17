@@ -36,7 +36,8 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import it.gmariotti.cardslib.library.internal.Card;
@@ -50,7 +51,7 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
     private static final int CAMERA_REQUEST = 101;
     private static final int SELECT_FILE = 102;
     private Uri imageUri;
-    String filePath = null;
+    InputStream fileStream = null;
     DocumentAdapter mDocumentAdapter;
     ListView mDocumentListView;
     ArrayList<Document> mDocumentArrayList;
@@ -88,15 +89,26 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
         options.inSampleSize = 8;
         if (resultCode == RESULT_OK) {
             if (requestCode == CAMERA_REQUEST) {
-                filePath = imageUri.getPath();
+                try {
+                    fileStream = getContentResolver().openInputStream(imageUri);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    Logger.e(TAG, e.getMessage());
+                }
 //                bitmap = BitmapFactory.decodeFile(imageUri.getPath(), options);
                 showFilePreviewDialog(imageUri);
                 //showFilePreviewDialog(Utils.getThumbnailUriForMediaUri(this, imageUri));
             } else if (requestCode == SELECT_FILE) {
                 selectedImageUri = data.getData();
+                try {
+                    fileStream = getContentResolver().openInputStream(selectedImageUri);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    Logger.e(TAG, e.getMessage());
+                }
                 showFilePreviewDialog(selectedImageUri);
 //                showFilePreviewDialog(Utils.getThumbnailUriForMediaUri(this, selectedImageUri));
-                filePath = Utils.getRealPathFromURI(this, selectedImageUri);
+
                 /*try {
                     bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
                     showFilePreviewDialog(bitmap);
@@ -167,8 +179,7 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
                             Toast.makeText(DocumentsActivity.this, "Title is required", Toast.LENGTH_SHORT).show();
                         } else {
 
-                            Logger.e("", filePath);
-                            new SaveDocuments().execute(Constants.DOCUMENTS_URL, filePath, title, description, category);
+                            new SaveDocuments(fileStream).execute(Constants.DOCUMENTS_URL,  title, description, category);
                         }
                     }
                 })
@@ -291,6 +302,13 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
     }
 
     private class SaveDocuments extends AsyncTask<String, Void, Void> {
+
+        private InputStream fileStream;
+
+        public SaveDocuments(InputStream fileStream) {
+            this.fileStream = fileStream;
+        }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -299,11 +317,10 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
         @Override
         protected Void doInBackground(String... arg0) {
             String serverUrl = arg0[0];
-            String imageUrl = arg0[1];
-            String title = arg0[2];
-            String description = arg0[3];
-            String category = arg0[4];
-            uploadFile(serverUrl, imageUrl, title, description, category);
+            String title = arg0[1];
+            String description = arg0[2];
+            String category = arg0[3];
+            uploadFile(serverUrl, fileStream, title, description, category);
             return null;
         }
 
@@ -312,19 +329,19 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
             super.onPostExecute(result);
         }
 
-        public void uploadFile(String serverUrl, String imageFile, String title, String description, String category) {
+        public void uploadFile(String serverUrl, InputStream fileStream, String title, String description, String category) {
             try {
-                FileInputStream fstrm = new FileInputStream(imageFile);
                 ArrayList<NameValuePair> nameValuePairs = new ArrayList<>();
                 nameValuePairs.add(new BasicNameValuePair("title", title));
                 nameValuePairs.add(new BasicNameValuePair("description", description));
                 nameValuePairs.add(new BasicNameValuePair("category", category));
                 HttpFileUpload hfu = new HttpFileUpload(DocumentsActivity.this, serverUrl);
-                JSONObject response = hfu.Send_Now("document.jpg", fstrm, nameValuePairs);
+                JSONObject response = hfu.Send_Now("document.jpg", fileStream, nameValuePairs);
                 if (response == null) throw new Exception("Error in uploading image");
                 String docURL = response.getString("profilePicUrl");
                 showAddedDocument(docURL);
             } catch (Exception e) {
+                e.printStackTrace();
                 Logger.e(TAG, e.getMessage());
             }
         }
