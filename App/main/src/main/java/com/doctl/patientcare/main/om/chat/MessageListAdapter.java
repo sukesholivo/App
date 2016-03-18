@@ -99,8 +99,8 @@ public class MessageListAdapter extends ArrayAdapter<Message> {
         String status = item.statusSymbol();
 
         if(item.getLocalUri() != null){
-//            holder.imgMessage.setImageURI(item.getLocalUri());
-            ImageUtils.loadImage(holder.imgMessage, getContext(), item.getLocalUri(), false);
+            holder.imgMessage.setImageURI(item.getLocalUri());
+//            ImageUtils.loadImage(holder.imgMessage, getContext(), item.getLocalUri(), false);
             /*ViewTreeObserver vto = holder.imgMessage.getViewTreeObserver();
             vto.addOnPreDrawListener(new ImageUtils.LoadOnPreDraw(getContext(), holder.imgMessage, item.getLocalUri()));*/
             holder.imgMessage.setVisibility(View.VISIBLE);

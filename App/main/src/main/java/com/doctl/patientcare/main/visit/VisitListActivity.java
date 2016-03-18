@@ -87,6 +87,7 @@ public class VisitListActivity extends BaseActivityWithNavigation {
         String userId = Utils.getPatientIdFromSharedPreference(this);
         if(userId == null) return;
        String getVisitsUrl = Constants.VISITS_URL + userId;
+//        String getVisitsUrl = "http://test.doctl.com/teledos/v1.0/visits/013b7432e6d749129431bef02173f965/";
        new GetVisits(VisitListActivity.this, getVisitsUrl, null).execute();
     }
 

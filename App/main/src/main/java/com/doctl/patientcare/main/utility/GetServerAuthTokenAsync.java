@@ -165,7 +165,7 @@ public class GetServerAuthTokenAsync extends AsyncTask<Void, String, String> {
                 err = "NetError: Some error, please try again later";
             } catch (IOException e) {
                 e.printStackTrace();
-                err = "NetError: Please report this error to DocTL team";
+                err = "NetError: Please report this error to Olivo team";
             }
             String responseString;
             if (response != null) {

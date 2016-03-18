@@ -81,7 +81,7 @@ public class WriteGCMRegistrationId extends AsyncTask<String, String, String> {
                     result = "NetError: Some error, please try again later";
                 } catch (IOException e) {
                     e.printStackTrace();
-                    result = "NetError: Please report this error to DocTL team";
+                    result = "NetError: Please report this error to Olivo team";
                 }
                 finally {
                     if(response != null) {
