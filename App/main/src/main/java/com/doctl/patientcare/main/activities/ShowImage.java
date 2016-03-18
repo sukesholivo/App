@@ -21,7 +21,7 @@ public class ShowImage extends BaseActivity {
         Uri imageUri=intent.getData();
         if(imageUri != null) {
 //            image.setImageURI(imageUri);
-            ImageUtils.loadImage(image, this, imageUri);
+            ImageUtils.loadImage(image, this, imageUri, true);
         }else{
             String imageUrl = intent.getStringExtra(Constants.IMAGE_URL);
             if(imageUrl != null){

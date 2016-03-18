@@ -76,7 +76,7 @@ public class ThreadListAdapter extends ArrayAdapter<ThreadSummary> {
 
             if( userProfile != null) {
                 if( userProfile.getProfilePicUrl() != null && !userProfile.getProfilePicUrl().isEmpty()) {
-                    ImageUtils.loadImageFromUrl(getContext(), profilePic, Constants.SERVER_URL + userProfile.getProfilePicUrl());
+                    ImageUtils.loadImageFromUrl(getContext(), profilePic, Constants.SERVER_URL + userProfile.getProfilePicUrl(), true);
 //                    new DownloadImageTask(profilePic, null).execute(Constants.SERVER_URL + userProfile.getProfilePicUrl());
                 }
                 if(userProfile.getDisplayName() != null && !userProfile.getDisplayName().isEmpty()){

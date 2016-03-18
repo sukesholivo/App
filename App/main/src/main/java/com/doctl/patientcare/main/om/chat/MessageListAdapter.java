@@ -100,7 +100,7 @@ public class MessageListAdapter extends ArrayAdapter<Message> {
 
         if(item.getLocalUri() != null){
 //            holder.imgMessage.setImageURI(item.getLocalUri());
-            ImageUtils.loadImage(holder.imgMessage, getContext(), item.getLocalUri());
+            ImageUtils.loadImage(holder.imgMessage, getContext(), item.getLocalUri(), false);
             /*ViewTreeObserver vto = holder.imgMessage.getViewTreeObserver();
             vto.addOnPreDrawListener(new ImageUtils.LoadOnPreDraw(getContext(), holder.imgMessage, item.getLocalUri()));*/
             holder.imgMessage.setVisibility(View.VISIBLE);
@@ -149,7 +149,7 @@ public class MessageListAdapter extends ArrayAdapter<Message> {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             if(s != null){
-                ImageUtils.loadImage(imageView, FileUtils.getExternalStorageAbsolutePath(s), getContext());
+                ImageUtils.loadImage(imageView, FileUtils.getExternalStorageAbsolutePath(s), getContext(), true);
             }
         }
     }

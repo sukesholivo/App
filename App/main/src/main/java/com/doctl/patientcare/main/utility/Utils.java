@@ -541,6 +541,13 @@ public final class Utils {
             }
         });
     }
+    public static void showToastOnUiThread(final Context c, final String message, final int length){
+        ((Activity) c).runOnUiThread(new Runnable() {
+            public void run() {
+                Toast.makeText(c, message, length).show();
+            }
+        });
+    }
 
     public static boolean isImageFile(String url){
         return (url.toLowerCase().endsWith(".jpg") || url.toLowerCase().endsWith(".jpeg") || url.toLowerCase().endsWith(".png"));

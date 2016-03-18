@@ -11,6 +11,7 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -32,17 +33,17 @@ public class ImageUtils {
 
     private static final String TAG = ImageUtils.class.getSimpleName();
 
-    public static void loadImage(ImageView imageView, String filePath, Context context) {
-        new LoadImage(imageView, filePath, context, null, null).execute();
+    public static void loadImage(ImageView imageView, String filePath, Context context, boolean fit) {
+        new LoadImage(imageView, filePath, context, null, null, fit).execute();
     }
 
-    public static void loadImage(ImageView imageView, Context context, Uri uri) {
-        new LoadImage(imageView, null, context, uri, null).execute();
+    public static void loadImage(ImageView imageView, Context context, Uri uri, boolean fit) {
+        new LoadImage(imageView, null, context, uri, null, fit).execute();
     }
 
-    public static void loadImageFromUrl(Context context, ImageView imageView, String url) {
+    public static void loadImageFromUrl(Context context, ImageView imageView, String url, boolean fit) {
 
-        new LoadImage(imageView, null, context, null, url).execute();
+        new LoadImage(imageView, null, context, null, url, fit).execute();
     }
 
 
@@ -53,13 +54,15 @@ public class ImageUtils {
         Context context;
         ImageView imageView;
         Bitmap bitmap;
+        boolean fit; // scales down image to imageview dimensions ( uses less memory, gives less quality)
 
-        public LoadImage(ImageView imageView, String filePath, Context context, Uri uri, String url) {
+        public LoadImage(ImageView imageView, String filePath, Context context, Uri uri, String url, boolean fit) {
             this.filePath = filePath;
             this.uri = uri;
             this.context = context;
             this.imageView = imageView;
             this.url = url;
+            this.fit = fit;
         }
 
         @Override
@@ -74,10 +77,12 @@ public class ImageUtils {
                         ((Activity) context).runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Picasso.with(context)
-                                        .load(imgFile)
-                                        .fit()
-                                        .into(imageView);
+                           RequestCreator requestCreator = Picasso.with(context)
+                                        .load(imgFile);
+                                   if(fit){
+                                       requestCreator.fit();
+                                   }
+                                requestCreator.into(imageView);
                             }
                         });
 
@@ -93,10 +98,12 @@ public class ImageUtils {
                         ((Activity) context).runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Picasso.with(context)
-                                        .load(uri)
-                                        .fit()
-                                        .into(imageView);
+                                RequestCreator requestCreator = Picasso.with(context)
+                                        .load(uri);
+                                if(fit){
+                                    requestCreator.fit();
+                                }
+                                requestCreator.into(imageView);
                             }
                         });
                     }else {
@@ -114,10 +121,12 @@ public class ImageUtils {
                         ((Activity) context).runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Picasso.with(context)
-                                        .load(url)
-                                        .fit()
-                                        .into(imageView);
+                                RequestCreator requestCreator = Picasso.with(context)
+                                        .load(url);
+                                if(fit){
+                                    requestCreator.fit();
+                                }
+                                requestCreator.into(imageView);
                             }
                         });
                     }else {
@@ -174,7 +183,7 @@ public class ImageUtils {
             try {
                 String localPath = FileUtils.getPathFromUrl(url);
                 downloadFile(localPath, url, overwrite);
-                ImageUtils.loadImage(imageView, localPath, context);
+                ImageUtils.loadImage(imageView, localPath, context, true);
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }

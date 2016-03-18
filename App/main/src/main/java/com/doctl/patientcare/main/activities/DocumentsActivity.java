@@ -157,7 +157,7 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
         ImageView imageView = (ImageView) view.findViewById(R.id.file_preview);
 //        imageView.setImageBitmap(bitmap);
 
-        ImageUtils.loadImage(imageView, this, imageUri);
+        ImageUtils.loadImage(imageView, this, imageUri, true);
         final EditText titleEditText = (EditText) view.findViewById(R.id.file_title);
         final EditText descriptionEditText = (EditText) view.findViewById(R.id.file_description);
         final Spinner spinText = (Spinner)view.findViewById(R.id.viewspin);
@@ -261,7 +261,18 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
             public void run() {
                 hideUploadLayout();
                 Document document = new Gson().fromJson(jsonStr, Document.class);
-                mDocumentAdapter.add(document);
+
+                if(document != null && document.getCategory() != null){
+                    int i;
+                    for( i=0;i<mDocumentArrayList.size(); i++){
+                        if(document.getCategory().equalsIgnoreCase(mDocumentArrayList.get(i).getCategory())){
+                          break;
+                        }
+                    }
+                    mDocumentArrayList.add(i, document);
+                }else if( document != null){
+                    mDocumentArrayList.add(document);
+                }
                 mDocumentAdapter.notifyDataSetChanged();
             }
         });
@@ -331,15 +342,22 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
 
         public void uploadFile(String serverUrl, InputStream fileStream, String title, String description, String category) {
             try {
+                Utils.showToastOnUiThread(DocumentsActivity.this, "Saving Document", Toast.LENGTH_LONG);
                 ArrayList<NameValuePair> nameValuePairs = new ArrayList<>();
                 nameValuePairs.add(new BasicNameValuePair("title", title));
                 nameValuePairs.add(new BasicNameValuePair("description", description));
                 nameValuePairs.add(new BasicNameValuePair("category", category));
                 HttpFileUpload hfu = new HttpFileUpload(DocumentsActivity.this, serverUrl);
                 JSONObject response = hfu.Send_Now("document.jpg", fileStream, nameValuePairs);
-                if (response == null) throw new Exception("Error in uploading image");
-                String docURL = response.getString("profilePicUrl");
-                showAddedDocument(docURL);
+                if (response == null) {
+                    Utils.showToastOnUiThread(DocumentsActivity.this, "Failed to Save Document", Toast.LENGTH_LONG);
+                }
+                else{
+                    Utils.showToastOnUiThread(DocumentsActivity.this, "Document Saved", Toast.LENGTH_LONG);
+                    showAddedDocument(response.toString());
+                }
+//                String docURL = response.getString("thumbnailUrl");
+
             } catch (Exception e) {
                 e.printStackTrace();
                 Logger.e(TAG, e.getMessage());

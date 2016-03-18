@@ -54,7 +54,7 @@ public class AddCaptionToFile extends BaseActivity implements AdapterView.OnItem
 
         //ViewTreeObserver vto = imagePreview.getViewTreeObserver();
         //vto.addOnPreDrawListener(new ImageUtils.LoadOnPreDraw(this, imagePreview, imageUri));
-        ImageUtils.loadImage(imagePreview, this, imageUri);
+        ImageUtils.loadImage(imagePreview, this, imageUri, true);
 //        imagePreview.setImageURI(imageUri);
 
 
