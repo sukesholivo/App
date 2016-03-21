@@ -37,6 +37,7 @@ import java.util.List;
 
 public class WriteGCMRegistrationId extends AsyncTask<String, String, String> {
     private Context c;
+    private static final String TAG = WriteGCMRegistrationId.class.getSimpleName();
 
     public WriteGCMRegistrationId(Context c) {
         this.c = c;
@@ -50,6 +51,7 @@ public class WriteGCMRegistrationId extends AsyncTask<String, String, String> {
             if(params.length > 0) {
                 String registration = params[0];
                 String username = params[1];
+                Logger.e(TAG, " reg id "+ registration + " username "+ username);
                 HttpParams httpParams = new BasicHttpParams();
                 httpParams.setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
                 int timeoutConnection = 4000;

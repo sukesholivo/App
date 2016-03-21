@@ -121,7 +121,7 @@ public class StartPageActivity extends BaseActivity {
         nameValuePairs.add(new BasicNameValuePair("password", password));
         //Validate username and password here before proceeding
         StartPageActivity.this.findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
-        new GetServerAuthTokenAsync(StartPageActivity.this, Constants.LOGIN_URL, nameValuePairs).execute();
+        new GetServerAuthTokenAsync(StartPageActivity.this, Constants.LOGIN_URL, nameValuePairs, username).execute();
     }
 
     private void getUsernameAndPasswordFromSms(){

@@ -9,7 +9,6 @@ import android.text.Html;
 
 import com.doctl.patientcare.main.activities.ThreadDetailActivity;
 import com.doctl.patientcare.main.om.BaseTask;
-import com.doctl.patientcare.main.om.UserProfile;
 import com.doctl.patientcare.main.om.chat.Message;
 import com.doctl.patientcare.main.om.education.EducationTask;
 import com.doctl.patientcare.main.om.followup.FollowupTask;
@@ -60,10 +59,11 @@ public class MyC2dmIntentService extends IntentService {
         if(ServerAccessToken.isEmpty()) {
             return;
         }
-        UserProfile userProfile = Utils.getPatientDataFromSharedPreference(this);
+
         String type = msg.getString("type");
         String username = msg.getString("username");
-        if (!username.equals(userProfile.getEmail())){
+        String usernameInDevice = Utils.getUserNameFromSharedPreference(this);
+       if (!usernameInDevice.equals(username)){
             return;
         }
 

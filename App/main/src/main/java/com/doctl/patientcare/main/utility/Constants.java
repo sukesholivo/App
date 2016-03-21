@@ -8,8 +8,8 @@ package com.doctl.patientcare.main.utility;
 public final class Constants {
 //    TODO: Change this server URL to production server url
 //     public final static String SERVER_URL = "http://test.doctl.com/";
-       public final static String SERVER_URL = "http://13.67.58.77/";
-//     public final static String SERVER_URL = "http://ikonnect.olivo.in/";
+//       public final static String SERVER_URL = "http://13.67.58.77/";
+     public final static String SERVER_URL = "http://ikonnect.olivo.in/";
    // public final static String SERVER_URL = "https://olivo.doctl.com";
    // public final static String SERVER_URL = "http://192.168.43.143:8000";
 //    public final static String SERVER_URL = "https://www.doctl.com";
@@ -40,6 +40,8 @@ public final class Constants {
     public final static String VITALS_SHARED_PREFERENCE_NAME = "vitals_detail";
     public final static String AUTH_SHARED_PREFERENCE_NAME = "auth_prefs";
     public final static String AUTH_SHARED_PREFERENCE_KEY = "serveraccesstoken";
+    public final static String USER_NAME_KEY = "user_name";
+    public final static String APP_DATA_KEY = "app_data_file";
 
     public final static String GCM_SHARED_PREFERENCE_KEY = "gcm_appdata";
     public final static String PROPERTY_GCM_REGISTRATION_ID = "gcm_registration_id";

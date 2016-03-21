@@ -333,6 +333,24 @@ public final class Utils {
         }
         return null;
     }
+    public static String getUserNameFromSharedPreference(Context context){
+        if (context != null) {
+            SharedPreferences sp = context.getSharedPreferences(Constants.APP_DATA_KEY, Activity.MODE_PRIVATE);
+            return sp.getString(Constants.USER_NAME_KEY, "");
+        }
+        return null;
+    }
+
+    public static String setUserNameToSharedPreference(Context context, String userName){
+        if (context != null) {
+            SharedPreferences sp = context.getSharedPreferences(Constants.APP_DATA_KEY, Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString(Constants.USER_NAME_KEY, userName);
+            editor.commit();
+            return sp.getString(Constants.USER_NAME_KEY, "");
+        }
+        return null;
+    }
 
     public static void cleanupSharedPreference(Context context){
         if (context != null) {

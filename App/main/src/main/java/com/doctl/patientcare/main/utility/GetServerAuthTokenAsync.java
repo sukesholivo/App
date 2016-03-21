@@ -47,14 +47,16 @@ public class GetServerAuthTokenAsync extends AsyncTask<Void, String, String> {
     private String err = "";
     private String url;
     private List<NameValuePair> nameValuePairs;
+    private String username;
     public GetServerAuthTokenAsync(Context c) {
         this.c = c;
     }
 
-    public GetServerAuthTokenAsync(Context c, String url, List<NameValuePair> nameValuePairs) {
+    public GetServerAuthTokenAsync(Context c, String url, List<NameValuePair> nameValuePairs, String username) {
         this.c = c;
         this.url = url;
         this.nameValuePairs = nameValuePairs;
+        this.username = username;
     }
 
     @Override
@@ -81,6 +83,7 @@ public class GetServerAuthTokenAsync extends AsyncTask<Void, String, String> {
                             result = null;
                             throw new Exception("Only Patients can login!");
                         }
+                        Utils.setUserNameToSharedPreference(c, username);
 
                     } else {
                         throw new Exception("Error:Invalid response");

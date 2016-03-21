@@ -483,8 +483,7 @@ public class MainActivity extends BaseActivityWithNavigation {
                     }
                     regid = gcm.register(Constants.SENDER_ID);
                     msg = "Device registered, registration ID=" + regid;
-                    SharedPreferences sp = context.getSharedPreferences(Constants.PERSONAL_DETAIL_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE);
-                    String username = sp.getString("email","");
+                    String username = Utils.getUserNameFromSharedPreference(context);
 
                     new WriteGCMRegistrationId(context).execute(regid, username);
 
