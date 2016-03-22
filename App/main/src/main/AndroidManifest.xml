@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.doctl.patientcare.main">
+    package="in.olivo.patientcare.main">
 
     <permission
-        android:name="com.doctl.patientcare.main.permission.C2D_MESSAGE"
+        android:name="in.olivo.patientcare.main.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.doctl.patientcare.main.permission.C2D_MESSAGE" />
+    <uses-permission android:name="in.olivo.patientcare.main.permission.C2D_MESSAGE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -21,7 +21,7 @@
         android:required="true" />
 
     <application
-        android:name=".MainApplication"
+        android:name="in.olivo.patientcare.main.MainApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -31,7 +31,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".StartPageActivity"
+            android:name="in.olivo.patientcare.main.StartPageActivity"
             android:label="@string/app_name"
             android:noHistory="true"
             android:screenOrientation="portrait"
@@ -43,73 +43,73 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="in.olivo.patientcare.main.MainActivity"
             android:label="iKonnect"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".VitalDetailActivity"
+            android:name="in.olivo.patientcare.main.VitalDetailActivity"
             android:label=""
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".RichTextEducationDetailActivity"
+            android:name="in.olivo.patientcare.main.RichTextEducationDetailActivity"
             android:label=""
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".MedicineDetailActivity"
+            android:name="in.olivo.patientcare.main.MedicineDetailActivity"
             android:label=""
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ChangeProfileActivity"
+            android:name="in.olivo.patientcare.main.ChangeProfileActivity"
             android:label=""
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".RewardsActivity"
+            android:name="in.olivo.patientcare.main.RewardsActivity"
             android:label=""
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.DocumentsActivity"
+            android:name="in.olivo.patientcare.main.activities.DocumentsActivity"
             android:label=""
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.FullScreenViewActivity"
+            android:name="in.olivo.patientcare.main.activities.FullScreenViewActivity"
             android:theme="@android:style/Theme.Holo.NoActionBar" />
         <activity
-            android:name=".activities.ThreadListActivity"
+            android:name="in.olivo.patientcare.main.activities.ThreadListActivity"
             android:label=""
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".visit.VisitListActivity"
+            android:name="in.olivo.patientcare.main.visit.VisitListActivity"
             android:label="Visit"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".visit.VisitDetailActivity"
+            android:name="in.olivo.patientcare.main.visit.VisitDetailActivity"
             android:label="Visit Details"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.ThreadDetailActivity"
+            android:name="in.olivo.patientcare.main.activities.ThreadDetailActivity"
             android:label=""
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.AddPatientActivity"
+            android:name="in.olivo.patientcare.main.activities.AddPatientActivity"
             android:label=""
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.ContactsActivity"
+            android:name="in.olivo.patientcare.main.activities.ContactsActivity"
             android:label=""
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustPan">
@@ -124,33 +124,33 @@
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
 
         <receiver
-            android:name=".MyC2dmReceiver"
+            android:name="in.olivo.patientcare.main.MyC2dmReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
 
-                <category android:name="com.doctl.patientcare.main" />
+                <category android:name="in.olivo.patientcare.main" />
             </intent-filter>
         </receiver>
 
-        <service android:name=".MyC2dmIntentService" />
+        <service android:name="in.olivo.patientcare.main.MyC2dmIntentService" />
         <service
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
             android:enabled="true" />
 
         <activity
-            android:name=".PopupNotificationActivity"
+            android:name="in.olivo.patientcare.main.PopupNotificationActivity"
             android:noHistory="true"
             android:theme="@android:style/Theme.Holo.Light.Dialog" />
-        <activity android:name=".activities.AddCaptionToFile" />
-        <activity android:name=".activities.ShowImage" />
+        <activity android:name="in.olivo.patientcare.main.activities.AddCaptionToFile" />
+        <activity android:name="in.olivo.patientcare.main.activities.ShowImage" />
         <activity
-            android:name=".activities.RemainderActivity"
+            android:name="in.olivo.patientcare.main.activities.RemainderActivity"
             android:label="@string/title_activity_remainder"></activity>
 
         <provider
-            android:authorities="com.doctl.patientcare.main"
-            android:name=".data.ResponseProvider" />
+            android:name="in.olivo.patientcare.main.data.ResponseProvider"
+            android:authorities="in.olivo.patientcare.main" />
     </application>
 
 </manifest>

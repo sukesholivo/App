@@ -1,37 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="horizontal"
     >
 
 
-    <com.doctl.patientcare.main.controls.RoundedImageView
+    <in.olivo.patientcare.main.controls.RoundedImageView
+        android:id="@+id/profile_pic"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:id="@+id/profile_pic"
         android:layout_gravity="start"/>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp">
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical">
 
     <TextView
+        android:id="@+id/display_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name"
-        android:textSize="@dimen/text_size_s"
-        android:id="@+id/display_name" />
+        android:textSize="@dimen/text_size_s" />
 
     <TextView
+        android:id="@+id/last_seen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:text="online"
         android:textSize="12sp"
-        android:id="@+id/last_seen"
-        android:visibility="gone"
-        android:layout_gravity="bottom"/>
+        android:visibility="gone" />
     </LinearLayout>
 
 </LinearLayout>

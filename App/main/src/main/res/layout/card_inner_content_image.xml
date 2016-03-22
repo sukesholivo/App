@@ -10,11 +10,12 @@
         android:adjustViewBounds="true"
         android:src="@drawable/motivationcard_backgroundpic4_lesssugar"
         />
-    <com.doctl.patientcare.main.controls.RoundedImageView
+
+    <in.olivo.patientcare.main.controls.RoundedImageView
         android:id="@+id/influencerImage"
         android:layout_width="@dimen/influencer_image_width"
         android:layout_height="@dimen/influencer_image_height"
-        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
         android:layout_marginRight="20dp"/>
 </RelativeLayout>

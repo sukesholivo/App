@@ -2,11 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 android:layout_width="fill_parent"
 android:layout_height="wrap_content"
-android:gravity="left"
     android:background="#ffffff"
-    android:paddingTop="10dp"
+    android:gravity="left"
+    android:orientation="vertical"
     android:paddingBottom="10dp"
-    android:orientation="vertical">
+    android:paddingTop="10dp">
     <TextView
         android:id="@+id/textSeparator"
         android:layout_width="fill_parent"
@@ -26,36 +26,37 @@ android:gravity="left"
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <com.doctl.patientcare.main.controls.RoundedImageView
+
+        <in.olivo.patientcare.main.controls.RoundedImageView
         android:id="@+id/contact_profile_pic"
-        android:layout_gravity="center"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:src="@drawable/profile_dummy"
-        android:layout_marginLeft="10sp" />
+            android:layout_gravity="center"
+            android:layout_marginLeft="10sp"
+            android:src="@drawable/profile_dummy" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:gravity="center"
+        android:orientation="vertical"
         android:paddingLeft="@dimen/abc_dropdownitem_text_padding_left">
     <TextView
         android:id="@+id/contact_name"
-        android:layout_gravity="center|left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_s"
+        android:layout_gravity="center|left"
+        android:text="name"
         android:textColor="#444444"
-        android:text="name" />
+        android:textSize="@dimen/text_size_s" />
     <TextView
         android:id="@+id/contact_about"
-        android:layout_gravity="center|left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
+        android:layout_gravity="center|left"
+        android:text="about"
         android:textColor="#8A8A8A"
-        android:text="about" />
+        android:textSize="14sp" />
     </LinearLayout>
      </LinearLayout>
 

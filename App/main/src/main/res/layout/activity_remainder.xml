@@ -7,18 +7,18 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.doctl.patientcare.main.activities.RemainderActivity">
+    tools:context="in.olivo.patientcare.main.activities.RemainderActivity">
 
     <EditText
+        android:id="@+id/date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/date"
-        android:id="@+id/date"/>
+        android:text="@string/date" />
 
     <EditText
+        android:id="@+id/time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/time"
-        android:id="@+id/time"/>
+        android:text="@string/time" />
 
 </RelativeLayout>

@@ -3,9 +3,9 @@
     android:id="@+id/main_parent_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/page_background"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
     <include layout="@layout/toolbar"/>
 
@@ -15,23 +15,23 @@
         android:layout_height="match_parent" >
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             >
 
             <RelativeLayout
                 android:id="@+id/doctorLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:paddingLeft="10dp"
-                android:paddingBottom="10dp"
-                android:paddingRight="10dp"
                 android:background="#E6E6E6"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
                 android:visibility="gone">
 
-                <com.doctl.patientcare.main.controls.RoundedImageView
+                <in.olivo.patientcare.main.controls.RoundedImageView
                     android:id="@+id/doctorPic"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
@@ -43,30 +43,30 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginStart="20dp"
-                    android:textSize="0sp"
-                    android:layout_toRightOf="@id/doctorPic"
                     android:layout_toEndOf="@id/doctorPic"
+                    android:layout_toRightOf="@id/doctorPic"
+                    android:textSize="0sp"
                     />
 
                 <TextView
                     android:id="@+id/doctorName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_size_s"
                     android:layout_alignLeft="@id/header"
                     android:layout_alignStart="@id/header"
                     android:layout_below="@id/header"
+                    android:layout_toEndOf="@id/doctorPic"
                     android:layout_toRightOf="@id/doctorPic"
-                    android:layout_toEndOf="@id/doctorPic"/>
+                    android:textSize="@dimen/text_size_s" />
                 <TextView
                     android:id="@+id/doctorHospital"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/doctorPic"
-                    android:layout_toEndOf="@id/doctorPic"
-                    android:layout_below="@id/doctorName"
                     android:layout_alignLeft="@id/doctorName"
                     android:layout_alignStart="@id/doctorName"
+                    android:layout_below="@id/doctorName"
+                    android:layout_toEndOf="@id/doctorPic"
+                    android:layout_toRightOf="@id/doctorPic"
                     android:text="Olivo Hospital"
                     android:textSize="@dimen/text_size_xxs"/>
                 <!--<TextView-->
@@ -86,50 +86,50 @@
                 android:id="@+id/progressLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:paddingLeft="10dp"
-                android:paddingBottom="10dp"
-                android:paddingRight="10dp"
                 android:background="#F3F2F2"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
                 android:visibility="gone"
                 >
                 <TextView
                     android:id="@+id/dateText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
                     android:textColor="@color/color_mustard"
                     android:textSize="@dimen/text_size_xxs"
-                    android:layout_alignParentTop="true"
                     />
                 <TextView
                     android:id="@+id/planText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_size_s"
-                    android:layout_below="@id/dateText"
                     android:layout_alignLeft="@id/dateText"
-                    android:layout_alignStart="@id/dateText"/>
+                    android:layout_alignStart="@id/dateText"
+                    android:layout_below="@id/dateText"
+                    android:textSize="@dimen/text_size_s" />
                 <ProgressBar
                     android:id="@+id/treatmentProgress"
-                    android:layout_below="@id/planText"
+                    style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="8dp"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:progressDrawable="@drawable/custom_progressbar1"
                     android:layout_alignLeft="@id/planText"
                     android:layout_alignStart="@id/planText"
+                    android:layout_below="@id/planText"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:progressDrawable="@drawable/custom_progressbar1"
                     />
             </RelativeLayout>
             <ListView
                 android:id="@+id/medicineDetailList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="#FFFFFF"
                 android:divider="@null"
                 android:dividerHeight="0dp"
-                android:background="#FFFFFF"
                 />
 
         </LinearLayout>
