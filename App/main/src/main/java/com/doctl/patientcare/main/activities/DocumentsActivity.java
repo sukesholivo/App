@@ -1,6 +1,7 @@
 package com.doctl.patientcare.main.activities;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -28,6 +29,7 @@ import com.doctl.patientcare.main.utility.Constants;
 import com.doctl.patientcare.main.utility.HttpFileUpload;
 import com.doctl.patientcare.main.utility.ImageUtils;
 import com.doctl.patientcare.main.utility.Logger;
+import com.doctl.patientcare.main.utility.OfflineCacheAsyncTask;
 import com.doctl.patientcare.main.utility.Utils;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.gson.Gson;
@@ -50,13 +52,12 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
     private static final String TAG = DocumentsActivity.class.getSimpleName();
     private static final int CAMERA_REQUEST = 101;
     private static final int SELECT_FILE = 102;
-    private Uri imageUri;
     InputStream fileStream = null;
     DocumentAdapter mDocumentAdapter;
     ListView mDocumentListView;
     ArrayList<Document> mDocumentArrayList;
     FloatingActionButton fab;
-
+    private Uri imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,14 +198,14 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
 
     private void refresh() {
         if (Utils.isNetworkAvailable(this)) {
-            new GetDocuments().execute();
+            new GetDocuments(this, Constants.DOCUMENTS_URL).execute();
         } else {
             Toast.makeText(this, "No Network Connection", Toast.LENGTH_LONG).show();
         }
     }
 
-    protected void refreshDocuments() {
-        String data = downloadDocumentsData();
+    protected void refreshDocuments(String data) {
+//        String data = downloadDocumentsData();
         if (data != null && !data.isEmpty()) {
             ArrayList<Document> documents = parseDocumentsData(data);
             Logger.e("", "Total documents: " + documents.size());
@@ -294,7 +295,7 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
         });
     }
 
-    private class GetDocuments extends AsyncTask<Void, Void, Void> {
+    /*private class GetDocuments extends AsyncTask<Void, Void, Void> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -309,6 +310,18 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
+        }
+    }*/
+
+    private class GetDocuments extends OfflineCacheAsyncTask<Void, Void> {
+
+        public GetDocuments(Context context, String url) {
+            super(context, url, null, true);
+        }
+
+        @Override
+        protected void onResponseReceived(String response) {
+            refreshDocuments(response);
         }
     }
 
