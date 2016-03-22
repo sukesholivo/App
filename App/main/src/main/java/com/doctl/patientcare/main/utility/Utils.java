@@ -335,7 +335,7 @@ public final class Utils {
     }
     public static String getUserNameFromSharedPreference(Context context){
         if (context != null) {
-            SharedPreferences sp = context.getSharedPreferences(Constants.APP_DATA_KEY, Activity.MODE_PRIVATE);
+            SharedPreferences sp = context.getSharedPreferences(Constants.APP_DATA_FILE, Activity.MODE_PRIVATE);
             return sp.getString(Constants.USER_NAME_KEY, "");
         }
         return null;
@@ -343,13 +343,66 @@ public final class Utils {
 
     public static String setUserNameToSharedPreference(Context context, String userName){
         if (context != null) {
-            SharedPreferences sp = context.getSharedPreferences(Constants.APP_DATA_KEY, Activity.MODE_PRIVATE);
+            SharedPreferences sp = context.getSharedPreferences(Constants.APP_DATA_FILE, Activity.MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
             editor.putString(Constants.USER_NAME_KEY, userName);
             editor.commit();
             return sp.getString(Constants.USER_NAME_KEY, "");
         }
         return null;
+    }
+
+    public static String geGCMRegIdFromSharedPreference(Context context) {
+        if (context != null) {
+            SharedPreferences sp = context.getSharedPreferences(Constants.APP_DATA_FILE, Activity.MODE_PRIVATE);
+            return sp.getString(Constants.PROPERTY_GCM_REGISTRATION_ID, "");
+        }
+        return null;
+    }
+
+    public static String setGCMRegIdToSharedPreference(Context context, String gcmRegId) {
+        if (context != null) {
+            SharedPreferences sp = context.getSharedPreferences(Constants.APP_DATA_FILE, Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString(Constants.PROPERTY_GCM_REGISTRATION_ID, gcmRegId);
+            editor.commit();
+            return sp.getString(Constants.PROPERTY_GCM_REGISTRATION_ID, "");
+        }
+        return null;
+    }
+
+    public static String getFromSharedPreference(Context context, String fileName, String key) {
+        if (context != null) {
+            SharedPreferences sp = context.getSharedPreferences(fileName, Activity.MODE_PRIVATE);
+            return sp.getString(key, "");
+        }
+        return null;
+    }
+
+    public static void setToSharedPreference(Context context, String fileName, String key, String value) {
+        if (context != null) {
+            SharedPreferences sp = context.getSharedPreferences(fileName, Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString(key, value);
+            editor.apply();
+        }
+    }
+
+    public static Integer getFromSharedPreferenceInt(Context context, String fileName, String key) {
+        if (context != null) {
+            SharedPreferences sp = context.getSharedPreferences(fileName, Activity.MODE_PRIVATE);
+            return sp.getInt(key, Integer.MIN_VALUE);
+        }
+        return null;
+    }
+
+    public static void setToSharedPreference(Context context, String fileName, String key, int value) {
+        if (context != null) {
+            SharedPreferences sp = context.getSharedPreferences(fileName, Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putInt(key, value);
+            editor.apply();
+        }
     }
 
     public static void cleanupSharedPreference(Context context){
@@ -360,6 +413,7 @@ public final class Utils {
             context.getSharedPreferences(Constants.PRESCRIPTION_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE).edit().clear().commit();
             context.getSharedPreferences(Constants.VITALS_SHARED_PREFERENCE_NAME, Activity.MODE_PRIVATE).edit().clear().commit();
             context.getSharedPreferences(Constants.GCM_SHARED_PREFERENCE_KEY, Activity.MODE_PRIVATE).edit().clear().commit();
+            context.getSharedPreferences(Constants.APP_DATA_FILE, Activity.MODE_PRIVATE).edit().clear().commit();
         }
     }
 

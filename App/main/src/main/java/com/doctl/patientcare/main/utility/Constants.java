@@ -40,11 +40,11 @@ public final class Constants {
     public final static String VITALS_SHARED_PREFERENCE_NAME = "vitals_detail";
     public final static String AUTH_SHARED_PREFERENCE_NAME = "auth_prefs";
     public final static String AUTH_SHARED_PREFERENCE_KEY = "serveraccesstoken";
-    public final static String USER_NAME_KEY = "user_name";
-    public final static String APP_DATA_KEY = "app_data_file";
+    public final static String APP_DATA_FILE = "app_data_file";
 
     public final static String GCM_SHARED_PREFERENCE_KEY = "gcm_appdata";
     public final static String PROPERTY_GCM_REGISTRATION_ID = "gcm_registration_id";
+    public final static String PROPERTY_GCM_REGISTRATION_ID_APP_VERSION = "gcm_registration_id_app_version";
     public final static String PROPERTY_APP_VERSION = "app_version";
     public final static String SENDER_ID = "258383232963";
     public final static String ANDROID_DEVELOPER_KEY = "AIzaSyAWocbee6JmNy1KShjdNWy_v8_xEq0-gE0";
@@ -61,8 +61,11 @@ public final class Constants {
 
     public final static String PROFILE_PIC_URL = "profile_pic_url";
     public final static String DISPLAY_NAME = "display_name";
+    public final static String NAME = "display_name";
+    public final static String MOBILE_NUMBER = "mobile_number";
     public final static String LAST_SEEN="last_seen";
     public final static String USER_ID = "user_id";
+    public final static String USER_PROFILE = "user_profile";
     public final static String ID = "id";
     public final static String RECEIVER_ID = "receiver_id";
     public final static String THREAD_ID="thread_id";
@@ -71,6 +74,8 @@ public final class Constants {
     public final static String CAPTION="caption";
     public final static String IMAGE_URL="image_url";
     public final static String DOC_CATEGORY = "doc_category";
+    public final static String PATIENT_ID = "patient_id";
+    public final static String USER_NAME_KEY = "user_name";
 
 
     public final static String SENT_TOKEN_TO_SERVER = "send_token_to_server";
@@ -81,15 +86,10 @@ public final class Constants {
     public static final String COGNITO_POOL_ID = "us-east-1:463d1fbc-af3c-4cc2-b447-5e2543d1705c";
 
     public static final String AWS_BUCKET_NAME = "olivo-patient-mobile-app";
-
-    private static final String AWS_THUMBNAIL_BUCKET_SUFFIX = "resized"; // same sufix should be used in AWS lambda createThumbnail
-
-    public static final String AWS_THUMBNAIL_BUCKET = AWS_BUCKET_NAME + AWS_THUMBNAIL_BUCKET_SUFFIX;
-
     public static final String LOCAL_THUMBNAIL_FOLDER ="olivo/thumbnails";
     public static final String LOCAL_IMAGE_FOLDER = "olivo/images";
-
     public static final String PATH_SEPERATOR = "/";
-
     public static final String GOOGLE_ANALYTICS_TRACKING_ID="UA-75075673-1";
+    private static final String AWS_THUMBNAIL_BUCKET_SUFFIX = "resized"; // same sufix should be used in AWS lambda createThumbnail
+    public static final String AWS_THUMBNAIL_BUCKET = AWS_BUCKET_NAME + AWS_THUMBNAIL_BUCKET_SUFFIX;
 }

@@ -1,8 +1,6 @@
 package com.doctl.patientcare.main;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
 import com.doctl.patientcare.main.utility.Constants;
@@ -36,8 +34,8 @@ import java.util.List;
  */
 
 public class WriteGCMRegistrationId extends AsyncTask<String, String, String> {
-    private Context c;
     private static final String TAG = WriteGCMRegistrationId.class.getSimpleName();
+    private Context c;
 
     public WriteGCMRegistrationId(Context c) {
         this.c = c;
@@ -93,11 +91,8 @@ public class WriteGCMRegistrationId extends AsyncTask<String, String, String> {
 
                         if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                             //Save the registration id
-                            SharedPreferences sp = c.getSharedPreferences(Constants.GCM_SHARED_PREFERENCE_KEY, Activity.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sp.edit();
-                            editor.putString(Constants.PROPERTY_GCM_REGISTRATION_ID, registration);
-                            editor.putInt(Constants.PROPERTY_APP_VERSION, Utils.getAppVersion(c));
-                            editor.commit();
+                            Utils.setToSharedPreference(c, Constants.APP_DATA_FILE, Constants.PROPERTY_GCM_REGISTRATION_ID, registration);
+                            Utils.setToSharedPreference(c, Constants.APP_DATA_FILE, Constants.PROPERTY_GCM_REGISTRATION_ID_APP_VERSION, Utils.getAppVersion(c));
                         }
                     }
                 }

@@ -11,6 +11,8 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.util.Log;
 
+import com.doctl.patientcare.main.utility.Logger;
+
 /**
  * Created by Satya Madala on 7/3/16.
  * email : satya.madala@olivo.in
@@ -18,15 +20,16 @@ import android.util.Log;
 
 public class ResponseProvider extends ContentProvider {
 
+    static final int RESPONSE = 100;
+    static final int RESPONSE_WITH_URL_AND_USER_ID = 200;
     private static final String TAG = ResponseProvider.class.getSimpleName();
     // The URI Matcher used by this content provider.
     private static final UriMatcher sUriMatcher = buildUriMatcher();
-    private ResponseCacheDbHelper mOpenHelper;
-
-    static final int RESPONSE = 100;
-    static final int RESPONSE_WITH_URL_AND_USER_ID = 200;
-
     private static final SQLiteQueryBuilder sResponseQueryBuilder;
+    //url = ? AND user_id = ?
+    private static final String sURLAndUserIdSelection =
+            ResponseContract.ResponseEntry.COLUMN_URL + " = ? AND " +
+                    ResponseContract.ResponseEntry.COLUMN_USER_ID + " = ? ";
 
     static{
         sResponseQueryBuilder = new SQLiteQueryBuilder();
@@ -34,30 +37,7 @@ public class ResponseProvider extends ContentProvider {
         sResponseQueryBuilder.setTables(ResponseContract.ResponseEntry.TABLE_NAME);
     }
 
-    //url = ? AND user_id = ?
-    private static final String sURLAndUserIdSelection =
-             ResponseContract.ResponseEntry.COLUMN_URL + " = ? AND " +
-                    ResponseContract.ResponseEntry.COLUMN_USER_ID + " = ? ";
-
-
-
-
-    private Cursor getResponseByURLAndUserId(
-            Uri uri, String[] projection, String sortOrder) {
-        String url = ResponseContract.ResponseEntry.getURLFromUri(uri);
-        String userId = ResponseContract.ResponseEntry.getUserIdFromUri(uri);
-
-        Log.d(TAG, "querying data from response for url = "+ url +" userId = "+userId);
-        return sResponseQueryBuilder.query(mOpenHelper.getReadableDatabase(),
-                projection,
-                sURLAndUserIdSelection,
-                new String[]{url, userId},
-                null,
-                null,
-                sortOrder
-        );
-    }
-
+    private ResponseCacheDbHelper mOpenHelper;
 
     static UriMatcher buildUriMatcher() {
         // I know what you're thinking.  Why create a UriMatcher when you can use regular
@@ -70,10 +50,26 @@ public class ResponseProvider extends ContentProvider {
         final String authority = ResponseContract.CONTENT_AUTHORITY;
 
         // For each type of URI you want to add, create a corresponding code.
-        matcher.addURI(authority, ResponseContract.PATH_RESPONSE+"/*/*", RESPONSE_WITH_URL_AND_USER_ID);
+        matcher.addURI(authority, ResponseContract.PATH_RESPONSE + "/*/*", RESPONSE_WITH_URL_AND_USER_ID);
         matcher.addURI(authority, ResponseContract.PATH_RESPONSE, RESPONSE);
 
         return matcher;
+    }
+
+    private Cursor getResponseByURLAndUserId(
+            Uri uri, String[] projection, String sortOrder) {
+        String url = ResponseContract.ResponseEntry.getURLFromUri(uri);
+        String userId = ResponseContract.ResponseEntry.getUserIdFromUri(uri);
+
+        Log.d(TAG, "querying data from response for url = " + url + " userId = " + userId);
+        return sResponseQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                projection,
+                sURLAndUserIdSelection,
+                new String[]{url, userId},
+                null,
+                null,
+                sortOrder
+        );
     }
 
     /*
@@ -114,7 +110,7 @@ public class ResponseProvider extends ContentProvider {
         // Here's the switch statement that, given a URI, will determine what kind of request it is,
         // and query the database accordingly.
         Log.d(TAG, "querying uri = "+ uri );
-        Cursor retCursor;
+        Cursor retCursor = null;
         switch (sUriMatcher.match(uri)) {
             // "response/*/*
             case RESPONSE_WITH_URL_AND_USER_ID:
@@ -123,9 +119,12 @@ public class ResponseProvider extends ContentProvider {
                 break;
             }
             default:
-                throw new UnsupportedOperationException("Unknown uri: " + uri);
+                Logger.e(TAG, "Unknown uri: " + uri);
+                break;
         }
-        retCursor.setNotificationUri(getContext().getContentResolver(), uri);
+        if (retCursor != null) {
+            retCursor.setNotificationUri(getContext().getContentResolver(), uri);
+        }
         return retCursor;
     }
 

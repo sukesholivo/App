@@ -17,12 +17,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-import com.doctl.patientcare.main.visit.VisitListActivity;
 import com.doctl.patientcare.main.activities.DocumentsActivity;
 import com.doctl.patientcare.main.activities.ThreadListActivity;
 import com.doctl.patientcare.main.om.vitals.VitalTask;
+import com.doctl.patientcare.main.utility.AsyncTaskUtils;
 import com.doctl.patientcare.main.utility.Logger;
 import com.doctl.patientcare.main.utility.Utils;
+import com.doctl.patientcare.main.visit.VisitListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,12 +32,12 @@ import java.util.List;
  * Created by Administrator on 8/11/2014.
  */
 public class BaseActivityWithNavigation extends BaseActivity implements ListView.OnItemClickListener{
+    Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private RelativeLayout mDrawerListLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private List<DrawerItem> dataList;
-    Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -266,10 +267,7 @@ public class BaseActivityWithNavigation extends BaseActivity implements ListView
                 .setPositiveButton(R.string.signout_yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Utils.cleanupSharedPreference(ctx);
-                        Intent intent = new Intent(ctx, StartPageActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        ctx.startActivity(intent);
+                        new AsyncTaskUtils.DeleteGCMRegistrationId(ctx).execute();
                     }
                 })
                 .setNegativeButton(R.string.signout_no, null)

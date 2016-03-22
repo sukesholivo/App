@@ -78,7 +78,12 @@ public class ThreadDetailActivity extends BaseActivity {
             String jsonStringMessage = intent.getStringExtra(Constants.CHAT_MESSAGE);
             Message message = Message.createMessage(jsonStringMessage);
             if (threadId.equals(message.getThreadId())) {
-                addMessageToAdapter(message);
+                if (isDuplicate(message)) {
+                    return;
+                }
+                Integer pos = getMessagePosition(message);
+                addMessageToAdapter(message, pos);
+
             } else {
                 showMessageNotification(context, message);
             }
@@ -141,7 +146,7 @@ public class ThreadDetailActivity extends BaseActivity {
 
                     String messageText = messageEditText.getText().toString();
                     Message msg = new Message(userProfile, new Date(), messageText, null, threadId, null, Message.MessageStatus.SENDING, null, null);
-                    addMessageToAdapter(msg);
+                    addMessageToAdapter(msg, null);
                     new SendMessage(msg, ThreadDetailActivity.this).execute();
                     messageEditText.setText("");
                 }
@@ -196,7 +201,7 @@ public class ThreadDetailActivity extends BaseActivity {
                 String caption = data.getStringExtra(Constants.CAPTION);
                 String fileCategory = data.getStringExtra(Constants.DOC_CATEGORY);
                 Message message=new Message(userProfile, new Date(), caption, null, threadId, null, Message.MessageStatus.SENDING, data.getData(), fileCategory);
-                addMessageToAdapter(message);
+                addMessageToAdapter(message, null);
                 new SendMessage(message, ThreadDetailActivity.this).execute();
             }
         }
@@ -287,13 +292,13 @@ public class ThreadDetailActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Message message = (Message) parent.getItemAtPosition(position);
-                if(message.getLocalUri() == null && message.getFileUrl() == null){
+                if (message.getLocalUri() == null && message.getFileUrl() == null) {
                     return;
                 }
-                Intent intent=new Intent(ThreadDetailActivity.this, ShowImage.class);
-                if( message.getLocalUri() != null){
+                Intent intent = new Intent(ThreadDetailActivity.this, ShowImage.class);
+                if (message.getLocalUri() != null) {
                     intent.setData(message.getLocalUri());
-                }else{
+                } else {
                     intent.putExtra(Constants.IMAGE_URL, message.getFileUrl());
                 }
                 startActivity(intent);
@@ -318,11 +323,14 @@ public class ThreadDetailActivity extends BaseActivity {
         });
     }
 
-    private void addMessageToAdapter(Message message) {
+    private void addMessageToAdapter(Message message, Integer pos) {
         if (message == null) return;
+        if (pos == null) {
         mMessageListAdapter.add(message);
-        mMessageListAdapter.notifyDataSetChanged();
-        scrollMyListViewToBottom();
+        } else {
+            messageList.add(pos, message);
+        }
+        refreshMessageList();
     }
 
     private void refreshMessageList(){
@@ -380,6 +388,45 @@ public class ThreadDetailActivity extends BaseActivity {
             }
         });
         builder.show();
+    }
+
+    private Integer getMessagePosition(Message message) {
+        int size = messageList.size();
+        int res = size;
+        for (int i = size - 1; i >= 0; i++) {
+            Message listMessage = messageList.get(i);
+            if (listMessage.getTimestamp() == null) {
+                return size;
+            }
+            int less = listMessage.getTimestamp().compareTo(message.getTimestamp());
+            if (less == 1) { // listMessage is latest
+                res = i;
+            } else if (less == -1) {
+                break;
+            }
+        }
+        return res;
+    }
+
+    private boolean isDuplicate(Message message) {
+
+        boolean duplicate = false;
+        int size = messageList.size();
+        for (int i = size - 1; i >= 0; i++) {
+            Message listMessage = messageList.get(i);
+            if (listMessage.getTimestamp() == null) {
+                continue;
+            }
+            int less = message.getTimestamp().compareTo(listMessage.getTimestamp());
+            if (less == 1) { // message is latest
+                break;
+            } else if (less == 0 && listMessage.equals(message)) {
+                duplicate = true;
+                Logger.e(TAG, "message is duplicate " + message);
+                break;
+            }
+        }
+        return duplicate;
     }
 
     class ActionBarViewHolder {
@@ -468,6 +515,7 @@ public class ThreadDetailActivity extends BaseActivity {
                 msg.setFileUrl(message.getFileUrl());
                 msg.setThumbnailUrl(message.getThumbnailUrl());
                 msg.setStatus(Message.MessageStatus.SENT);
+                msg.setTimestamp(message.getTimestamp());
             }else{
                 msg.setStatus(Message.MessageStatus.FAILED);
             }
@@ -604,15 +652,16 @@ public class ThreadDetailActivity extends BaseActivity {
 
         //String url = Constants.QUESTION_URL + threadId;
         String threadId;
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
-        }
 
         public GetThreadContent(Context context, String url, List<NameValuePair> getParams, String threadId) {
             super(context, url, getParams, true);
             this.threadId = threadId;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -639,7 +688,6 @@ public class ThreadDetailActivity extends BaseActivity {
         }
     }
 
-
     private class  DownloadListener implements TransferListener {
         // Simply updates the list when notified.
 
@@ -662,6 +710,5 @@ public class ThreadDetailActivity extends BaseActivity {
             refreshMessageList();
         }
     }
-
 
 }

@@ -58,25 +58,48 @@ public class Message {
         this.fileCategory = fileCategory;
     }
 
+    public static Message createMessage(String jsonStringMessage) {
+        return new Gson().fromJson(jsonStringMessage, Message.class);
+    }
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public UserProfile getSource() {
         return source;
     }
 
+    public void setSource(UserProfile source) {
+        this.source = source;
+    }
+
     public Date getTimestamp() {
         return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getFileUrl() {
         return fileUrl;
     }
 
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+    }
+
     public String getText() {
         return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     @Override
@@ -88,26 +111,6 @@ public class Message {
                 ", text='" + text + '\'' +
                 ", fileUrl='" + fileUrl + '\'' +
                 '}';
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setSource(UserProfile source) {
-        this.source = source;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public void setFileUrl(String fileUrl) {
-        this.fileUrl = fileUrl;
     }
 
     public String getThumbnailUrl() {
@@ -150,6 +153,10 @@ public class Message {
         return fileName;
     }
 
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
     public String getFileCategory() {
         return fileCategory;
     }
@@ -158,39 +165,26 @@ public class Message {
         this.fileCategory = fileCategory;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
+    public String statusSymbol() {
 
-    public static Message createMessage(String jsonStringMessage){
-        return  new Gson().fromJson(jsonStringMessage, Message.class);
-    }
-
-
-    public enum MessageStatus{
-        SENDING, FAILED, SENT
-    }
-
-    public  String statusSymbol(){
-
-        if( transferObserver != null && status != MessageStatus.SENDING){
+        if (transferObserver != null && status != MessageStatus.SENDING) {
             status = MessageStatus.SENDING;
             return statusSymbol();
         }
 
-        if(status == null || status == MessageStatus.SENT){
+        if (status == null || status == MessageStatus.SENT) {
             return "";
-        }else if( status == MessageStatus.FAILED){
+        } else if (status == MessageStatus.FAILED) {
             return "failed";
-        }else{
+        } else {
 
-            String res="sending";
-            if( transferObserver != null){
+            String res = "sending";
+            if (transferObserver != null) {
 
-                if(transferObserver.getState() == TransferState.IN_PROGRESS) {
+                if (transferObserver.getState() == TransferState.IN_PROGRESS) {
                     double fraction = transferObserver.getBytesTransferred() / (double) transferObserver.getBytesTotal();
-                    res += " " + (int)(fraction * 100) + "%";
-                }else if(transferObserver.getState() == TransferState.FAILED){
+                    res += " " + (int) (fraction * 100) + "%";
+                } else if (transferObserver.getState() == TransferState.FAILED) {
                     status = MessageStatus.FAILED;
                     res = statusSymbol();
                 }
@@ -213,5 +207,21 @@ public class Message {
         this.transferObserver = otherMessage.transferObserver;
         this.fileName = otherMessage.fileName;
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        boolean e = false;
+        if (o instanceof Message) {
+            Message other = (Message) o;
+            if (id != null && other.getId() != null && id.equals(other.getId())) {
+                e = true;
+            }
+        }
+        return e;
+    }
+
+    public enum MessageStatus {
+        SENDING, FAILED, SENT
     }
 }
