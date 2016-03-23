@@ -650,7 +650,7 @@ public class ThreadDetailActivity extends BaseActivity {
         }
     }
 
-    private class GetThreadContent extends OfflineCacheAsyncTask<Void, Void> {
+    private class GetThreadContent extends OfflineCacheAsyncTask {
 
         //String url = Constants.QUESTION_URL + threadId;
         String threadId;
@@ -661,25 +661,12 @@ public class ThreadDetailActivity extends BaseActivity {
         }
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
-        }
-
-        @Override
         protected void onResponseReceived(String response) {
             updateUI(response);
         }
 
         @Override
-        protected void onProgressUpdate(Void... values) {
-            findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-            super.onProgressUpdate();
-        }
-
-        @Override
         protected void onPostExecute(String result) {
-            findViewById(R.id.loadingPanel).setVisibility(View.GONE);
             super.onPostExecute(result);
             if (getSupportActionBar() != null) {
                 updateActionBarView(getSupportActionBar().getCustomView(), otherUserProfile);

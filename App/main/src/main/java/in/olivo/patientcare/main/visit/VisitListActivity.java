@@ -102,7 +102,7 @@ public class VisitListActivity extends BaseActivityWithNavigation {
         return super.onOptionsItemSelected(item);
     }
 
-    private class GetVisits extends OfflineCacheAsyncTask<Void, Void> {
+    private class GetVisits extends OfflineCacheAsyncTask{
 
         public GetVisits(Context context, String url, List<NameValuePair> getParams) {
             super(context, url, getParams, true);

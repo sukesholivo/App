@@ -1,12 +1,15 @@
 package in.olivo.patientcare.main.utility;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.view.View;
 
 import org.apache.http.NameValuePair;
 
 import java.util.List;
 
+import in.olivo.patientcare.main.R;
 import in.olivo.patientcare.main.services.HTTPServiceHandler;
 
 /**
@@ -16,10 +19,8 @@ import in.olivo.patientcare.main.services.HTTPServiceHandler;
  * OfflineCacheAsyncTask can use for GET AsyncTasks to provide smooth UI
  * it updates UI with previous cached response for GET URL
  *
- * @param <T1>
- * @param <T2>
  */
-public abstract class OfflineCacheAsyncTask<T1, T2> extends AsyncTask<T1, T2, String> {
+public abstract class OfflineCacheAsyncTask extends AsyncTask<Void, Void, String> {
 
     private static final String TAG = OfflineCacheAsyncTask.class.getSimpleName();
     protected String url; //url for getting data from sqllite from response table in offline.db
@@ -34,8 +35,23 @@ public abstract class OfflineCacheAsyncTask<T1, T2> extends AsyncTask<T1, T2, St
         this.saveToLocal = saveToLocal;
     }
 
+    private void changeStateForLoadingPanel(int state){
+        if(context instanceof Activity){
+            Activity activity = (Activity) context;
+            View loadingView = activity.findViewById(R.id.loadingPanel);
+            if(loadingView != null){
+                loadingView.setVisibility(state);
+            }
+        }
+    }
     @Override
-    protected String doInBackground(T1... params) {
+    protected void onPreExecute() {
+        super.onPreExecute();
+        changeStateForLoadingPanel(View.VISIBLE);
+    }
+
+    @Override
+    protected String doInBackground(Void... params) {
         if (saveToLocal) {
             publishProgress(null);
         }
@@ -44,15 +60,15 @@ public abstract class OfflineCacheAsyncTask<T1, T2> extends AsyncTask<T1, T2, St
     }
 
     @Override
-    protected void onProgressUpdate(T2... values) {
+    protected void onProgressUpdate(Void... values) {
         super.onProgressUpdate(values);
-        if (saveToLocal && context != null && url != null) { // check only when save to local is true
+        changeStateForLoadingPanel(View.GONE);
+        if (context != null && url != null) { // check only when save to local is true
 
             OfflineCacheUtil.ResponseDetails responseDetails = OfflineCacheUtil.getResponse(context, url);
             if (responseDetails != null && responseDetails.getResponse() != null) {
                 onResponseReceived(responseDetails.getResponse());
             }
-
         } else {
             Logger.e(TAG, String.format("Can't update from offline db due to url or context is null url = %s, content = %s ", url, context));
         }
@@ -63,14 +79,15 @@ public abstract class OfflineCacheAsyncTask<T1, T2> extends AsyncTask<T1, T2, St
 
     @Override
     protected void onPostExecute(String response) {
-        if (response == null) return;
-        if (context != null && url != null) {
+
+        if (response!= null && context != null && url != null) {
             if (saveToLocal) {
                 OfflineCacheUtil.saveResponse(context, url, response);
             }
         } else {
             Logger.e(TAG, String.format("Can't update from offline db due to url or context is null url = %s, content = %s, response = %s ", url, context, response));
         }
+        changeStateForLoadingPanel(View.GONE);
         onResponseReceived(response);
     }
 }

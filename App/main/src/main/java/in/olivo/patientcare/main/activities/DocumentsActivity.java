@@ -39,6 +39,7 @@ import in.olivo.patientcare.main.services.HTTPServiceHandler;
 import in.olivo.patientcare.main.utility.Constants;
 import in.olivo.patientcare.main.utility.HttpFileUpload;
 import in.olivo.patientcare.main.utility.ImageUtils;
+import in.olivo.patientcare.main.utility.IntentUtil;
 import in.olivo.patientcare.main.utility.Logger;
 import in.olivo.patientcare.main.utility.OfflineCacheAsyncTask;
 import in.olivo.patientcare.main.utility.Utils;
@@ -58,7 +59,8 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
     ArrayList<Document> mDocumentArrayList;
     FloatingActionButton fab;
     private Uri imageUri;
-
+    private String description;
+    private int categoryId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +81,8 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
                 showFilePickerDialog();
             }
         });
+        description = "";
+        categoryId = 0;
         refresh();
     }
 
@@ -144,8 +148,9 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
                             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                             startActivityForResult(cameraIntent, CAMERA_REQUEST);
                         } else if (item == 1) {
-                            Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                            startActivityForResult(galleryIntent, SELECT_FILE);
+                            Intent galleryIntent = IntentUtil.getPickImageIntent();
+                            startActivityForResult(Intent.createChooser(galleryIntent, "Select Picture"), SELECT_FILE);
+//                            startActivityForResult(galleryIntent, SELECT_FILE);
                         }
                     }
                 });
@@ -153,7 +158,7 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
         dialog.show();
     }
 
-    private void showFilePreviewDialog(Uri imageUri) {
+    private void showFilePreviewDialog(final Uri imageUri) {
         View view = getLayoutInflater().inflate(R.layout.dialog_file_upload_preview, null);
         ImageView imageView = (ImageView) view.findViewById(R.id.file_preview);
 //        imageView.setImageBitmap(bitmap);
@@ -162,6 +167,18 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
         final EditText titleEditText = (EditText) view.findViewById(R.id.file_title);
         final EditText descriptionEditText = (EditText) view.findViewById(R.id.file_description);
         final Spinner spinText = (Spinner) view.findViewById(R.id.viewspin);
+
+        if (descriptionEditText != null) {
+            descriptionEditText.setText(description);
+        }
+        if (spinText != null) {
+            spinText.post(new Runnable() {
+                @Override
+                public void run() {
+                    spinText.setSelection(categoryId);
+                }
+            });
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setIcon(0)
                 .setCancelable(true)
@@ -174,13 +191,19 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
                 .setPositiveButton("Done", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         String title = titleEditText.getText().toString();
-                        String description = descriptionEditText.getText().toString();
+                        description = descriptionEditText.getText().toString();
+
                         String category = spinText.getSelectedItem().toString();
+
                         if (title.isEmpty()) {
                             Toast.makeText(DocumentsActivity.this, "Title is required", Toast.LENGTH_SHORT).show();
+                            categoryId = spinText.getSelectedItemPosition();
+                            Logger.e(TAG, "Category id " + categoryId);
+                            showFilePreviewDialog(imageUri);
                         } else {
-
                             new SaveDocuments(fileStream).execute(Constants.DOCUMENTS_URL, title, description, category);
+                            description = "";
+                            categoryId = 0;
                         }
                     }
                 })
@@ -313,7 +336,7 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
         }
     }*/
 
-    private class GetDocuments extends OfflineCacheAsyncTask<Void, Void> {
+    private class GetDocuments extends OfflineCacheAsyncTask {
 
         public GetDocuments(Context context, String url) {
             super(context, url, null, true);

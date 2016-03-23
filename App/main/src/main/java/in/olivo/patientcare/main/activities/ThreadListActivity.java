@@ -145,7 +145,7 @@ public class ThreadListActivity extends BaseActivity {
         });
     }
 
-    private class GetThreads extends OfflineCacheAsyncTask<Void, Void> {
+    private class GetThreads extends OfflineCacheAsyncTask {
 
         public GetThreads(Context context, String url, List<NameValuePair> getParams) {
             super(context, url, getParams, true);

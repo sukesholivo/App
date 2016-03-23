@@ -1,25 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/color_white">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/color_white"
+    android:orientation="vertical">
     <include layout="@layout/toolbar"/>
+    <RelativeLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" >
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/thread_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/color_gray"
         android:divider="@drawable/vital_list_divide"
         android:dividerHeight="1dp"
-        android:background="@color/color_gray"
         />
 
     <TextView
         android:id="@+id/emptyElement"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:layout_gravity="center_horizontal"
+        android:gravity="center"
         android:text="@string/no_chats_message"
         android:textColor="#525252"
         android:textSize="19.0sp"

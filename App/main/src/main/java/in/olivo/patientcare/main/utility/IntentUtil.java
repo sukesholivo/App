@@ -8,7 +8,7 @@ import android.content.Intent;
  */
 public class IntentUtil {
 
-    public static Intent getImagesIntent() {
+    public static Intent getPickImageIntent() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);

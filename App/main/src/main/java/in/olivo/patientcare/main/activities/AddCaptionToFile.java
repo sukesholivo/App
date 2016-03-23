@@ -47,6 +47,7 @@ public class AddCaptionToFile extends BaseActivity implements AdapterView.OnItem
         categories.add("Prescription");
         categories.add("Report");
         categories.add("Bill");
+        categories.add("Food");
         //categoryPopupContents = new String[categories.size()];
         //categories.toArray(categoryPopupContents);
 

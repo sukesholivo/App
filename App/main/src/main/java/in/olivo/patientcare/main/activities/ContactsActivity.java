@@ -154,10 +154,11 @@ public class ContactsActivity extends BaseActivity {
     }
 
     private ContactData parseContactData(String jsonStr) {
+        if(jsonStr == null) return null;
         return new Gson().fromJson(jsonStr, ContactData.class);
     }
 
-    private class GetContacts extends OfflineCacheAsyncTask<Void, Void> {
+    private class GetContacts extends OfflineCacheAsyncTask{
 
         private String filter;
 
