@@ -31,6 +31,7 @@ import it.gmariotti.cardslib.library.internal.CardHeader;
 
 /**
  * Created by Administrator on 6/12/2014.
+ *
  */
 public class FollowupCard extends BaseCard {
     private static final String TAG = FollowupCard.class.getSimpleName();
@@ -126,7 +127,7 @@ public class FollowupCard extends BaseCard {
                             followupTask.getPayload().setSelected(selected);
                         }
                     });
-                    cb.setTextSize(20);
+                    cb.setTextSize(15);
                     cb.setText(str);
                     list.addView(cb);
                     cb.setChecked(followupTask.getPayload().getSelected() != null && followupTask.getPayload().getSelected().contains(i));
@@ -157,7 +158,7 @@ public class FollowupCard extends BaseCard {
                             followupTask.getPayload().setSelected(selected);
                         }
                     });
-                    rb.setTextSize(20);
+                    rb.setTextSize(15);
                     rb.setText(str);
                     rb.setChecked(followupTask.getPayload().getSelected() != null && followupTask.getPayload().getSelected().contains(i));
                     rg.addView(rb);
