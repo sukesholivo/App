@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,13 +48,13 @@ public class VitalDetailActivity extends BaseActivityWithNavigation {
     String vitalType;
     FloatingActionButton fab;
     private VitalDetailData vitalData;
-
+    private boolean addVital;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vital_detail);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
-//        setSupportActionBar(toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
+        setSupportActionBar(toolbar);
         this.setupNavigationDrawer();
         Bundle bundle = getIntent().getExtras();
         if (bundle == null) {
@@ -61,7 +62,7 @@ public class VitalDetailActivity extends BaseActivityWithNavigation {
         }
         vitalId = bundle.getString("vitalId");
         vitalType = bundle.getString("vitalType");
-        refresh();
+        addVital = bundle.getBoolean(Constants.ADD_VITAL, false);
         fab = (FloatingActionButton) this.findViewById(R.id.button_add);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -216,6 +217,10 @@ public class VitalDetailActivity extends BaseActivityWithNavigation {
                     setTitle(vitalData.getTitle());
                     populateVitalGraphData(vitalData);
                     populateVitalListData(vitalData);
+                    if (addVital) {
+                        addVital = false;
+                        showAddVitalDialog();
+                    }
                 }
             });
         }
@@ -235,10 +240,10 @@ public class VitalDetailActivity extends BaseActivityWithNavigation {
         ArrayList<Double> X2 = new ArrayList<>();
         ArrayList<Double> Y2 = new ArrayList<>();
         for (VitalDetailData.VitalDetailValue vital : vitals) {
-            X1.add(Double.valueOf(vital.getTime().getTime()));
+            X1.add((double) vital.getTime().getTime());
             Y1.add(vital.getValue1());
             if (vital.getValue2() != null) {
-                X2.add(Double.valueOf(vital.getTime().getTime()));
+                X2.add((double) vital.getTime().getTime());
                 Y2.add(vital.getValue2());
             }
         }

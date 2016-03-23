@@ -8,8 +8,8 @@ package in.olivo.patientcare.main.utility;
 public final class Constants {
     //    TODO: Change this server URL to production server url
 //     public final static String SERVER_URL = "http://test.doctl.com/";
-    public final static String SERVER_URL = "http://13.67.58.77/";
-    //     public final static String SERVER_URL = "http://ikonnect.olivo.in/";
+//    public final static String SERVER_URL = "http://13.67.58.77/";
+    public final static String SERVER_URL = "http://ikonnect.olivo.in/";
     // public final static String SERVER_URL = "https://olivo.doctl.com";
     // public final static String SERVER_URL = "http://192.168.43.143:8000";
 //    public final static String SERVER_URL = "https://www.doctl.com";
@@ -76,6 +76,7 @@ public final class Constants {
     public final static String DOC_CATEGORY = "doc_category";
     public final static String PATIENT_ID = "patient_id";
     public final static String USER_NAME_KEY = "user_name";
+    public final static String ADD_VITAL = "add_vital";
 
 
     public final static String SENT_TOKEN_TO_SERVER = "send_token_to_server";

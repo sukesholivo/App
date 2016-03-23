@@ -82,7 +82,7 @@ public class MainActivity extends BaseActivityWithNavigation {
         mFabMenu.setClosedOnTouchOutside(true);
         /*FloatingActionButton addPatientButton = (FloatingActionButton) findViewById(R.id.add_patient_btn);
         addPatientButton.setOnClickListener(clickListener);*/
-        FloatingActionButton recordVitalBtn = (FloatingActionButton) findViewById(R.id.upload_report_btn);
+        FloatingActionButton recordVitalBtn = (FloatingActionButton) findViewById(R.id.record_vital_btn);
         recordVitalBtn.setOnClickListener(clickListener);
         FloatingActionButton uploadReportBtn = (FloatingActionButton) findViewById(R.id.upload_report_btn);
         uploadReportBtn.setOnClickListener(clickListener);
@@ -392,40 +392,31 @@ public class MainActivity extends BaseActivityWithNavigation {
         new BottomSheet.Builder(this).title("Pick vital").sheet(R.menu.vital_list).listener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent;
                 Context c = MainActivity.this;
+                Intent intent = new Intent(c, VitalDetailActivity.class);
+                intent.putExtra(Constants.ADD_VITAL, true);
                 switch (which) {
                     case R.id.blood_sugar:
-                        intent = new Intent(c, VitalDetailActivity.class);
-                        intent.putExtra("show_add_dialog", true);
                         intent.putExtra("vitalType", "sugar");
                         intent.putExtra("vitalName", "Blood Sugar");
                         c.startActivity(intent);
                         break;
                     case R.id.blood_pressure:
-                        intent = new Intent(c, VitalDetailActivity.class);
-                        intent.putExtra("show_add_dialog", true);
                         intent.putExtra("vitalType", "bp");
                         intent.putExtra("vitalName", "Blood Pressure");
                         c.startActivity(intent);
                         break;
                     case R.id.temperature:
-                        intent = new Intent(c, VitalDetailActivity.class);
-                        intent.putExtra("show_add_dialog", true);
                         intent.putExtra("vitalType", "temperature");
                         intent.putExtra("vitalName", "Temperature");
                         c.startActivity(intent);
                         break;
                     case R.id.pulse:
-                        intent = new Intent(c, VitalDetailActivity.class);
-                        intent.putExtra("show_add_dialog", true);
                         intent.putExtra("vitalType", "pulse");
                         intent.putExtra("vitalName", "Pulse");
                         c.startActivity(intent);
                         break;
                     case R.id.weight:
-                        intent = new Intent(c, VitalDetailActivity.class);
-                        intent.putExtra("show_add_dialog", true);
                         intent.putExtra("vitalType", "weight");
                         intent.putExtra("vitalName", "Weight");
                         c.startActivity(intent);
