@@ -645,4 +645,22 @@ public final class Utils {
         }
         return urlString;
     }
+
+    public static  String getFullURL(String hostname, String relativePath){
+        final URI u;
+        String url = "";
+        if(relativePath != null) {
+            try {
+                u = new URI(relativePath);
+                if (u.isAbsolute()) {
+                    url = relativePath;
+                } else {
+                    url = hostname + relativePath;
+                }
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
+        return url;
+    }
 }

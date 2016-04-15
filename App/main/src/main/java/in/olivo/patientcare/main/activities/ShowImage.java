@@ -9,6 +9,7 @@ import in.olivo.patientcare.main.BaseActivity;
 import in.olivo.patientcare.main.R;
 import in.olivo.patientcare.main.utility.Constants;
 import in.olivo.patientcare.main.utility.ImageUtils;
+import in.olivo.patientcare.main.utility.Utils;
 
 public class ShowImage extends BaseActivity {
 
@@ -25,7 +26,7 @@ public class ShowImage extends BaseActivity {
         } else {
             String imageUrl = intent.getStringExtra(Constants.IMAGE_URL);
             if (imageUrl != null) {
-                new ImageUtils.DownloadFileAndDisplay(image, Constants.SERVER_URL + imageUrl, false, this).execute();
+                new ImageUtils.DownloadFileAndDisplay(image, Utils.getFullURL(Constants.SERVER_URL, imageUrl), false, this).execute();
 //                new DownloadImageTask(image, getBaseContext()).execute(Constants.SERVER_URL+imageUrl);
             }
         }

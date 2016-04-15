@@ -19,6 +19,7 @@ import in.olivo.patientcare.main.om.BaseTask;
 import in.olivo.patientcare.main.om.education.EducationTask;
 import in.olivo.patientcare.main.utility.Constants;
 import in.olivo.patientcare.main.utility.Logger;
+import in.olivo.patientcare.main.utility.Utils;
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 
@@ -55,8 +56,8 @@ public class EducationCard extends BaseCard {
 //            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 //            imageView.setImageBitmap(bmp);
             Picasso.with(getContext())
-                    .load(Constants.SERVER_URL + thumbnail_url)
-                    .into(imageView);
+                    .load(Utils.getFullURL(Constants.SERVER_URL, thumbnail_url))
+                            .into(imageView);
 
             //set right icon on thumbnail.
 

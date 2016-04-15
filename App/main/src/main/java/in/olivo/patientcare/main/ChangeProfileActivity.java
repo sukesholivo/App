@@ -180,8 +180,8 @@ public class ChangeProfileActivity extends ActionBarActivity {
         final ImageView photoView = (ImageView) findViewById(R.id.photo);
         if (userProfile.getProfilePicUrl() != null && !userProfile.getProfilePicUrl().isEmpty()) {
             Picasso.with(this)
-                    .load(Constants.SERVER_URL + userProfile.getProfilePicUrl())
-                    .into(photoView);
+                    .load(Utils.getFullURL(Constants.SERVER_URL, userProfile.getProfilePicUrl()))
+                            .into(photoView);
         }
         final EditText nameText = (EditText) findViewById(R.id.name);
         nameText.setText(userProfile.getDisplayName());

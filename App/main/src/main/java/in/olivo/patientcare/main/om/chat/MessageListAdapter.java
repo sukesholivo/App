@@ -25,6 +25,7 @@ import in.olivo.patientcare.main.utility.Constants;
 import in.olivo.patientcare.main.utility.DateUtils;
 import in.olivo.patientcare.main.utility.FileUtils;
 import in.olivo.patientcare.main.utility.ImageUtils;
+import in.olivo.patientcare.main.utility.Utils;
 
 /**
  * Created by Administrator on 5/4/2015.
@@ -108,7 +109,7 @@ public class MessageListAdapter extends ArrayAdapter<Message> {
         } else if (item.getThumbnailUrl() != null && !item.getThumbnailUrl().isEmpty()) {
 //            new DownloadImageTask(holder.imgMessage, null).execute(Constants.SERVER_URL + item.getThumbnailUrl());
             //   imageLoader.DisplayImage(Constants.SERVER_URL + item.getThumbnailUrl(), R.drawable.profile_dummy, holder.imgMessage);
-            new ImageUtils.DownloadFileAndDisplay(holder.imgMessage, Constants.SERVER_URL + item.getThumbnailUrl(), false, getContext()).execute();
+            new ImageUtils.DownloadFileAndDisplay(holder.imgMessage, Utils.getFullURL(Constants.SERVER_URL, item.getThumbnailUrl()), false, getContext()).execute();
             holder.imgMessage.setVisibility(View.VISIBLE);
         } else {
             holder.imgMessage.setVisibility(View.GONE);

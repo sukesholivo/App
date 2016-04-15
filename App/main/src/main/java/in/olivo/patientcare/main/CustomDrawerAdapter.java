@@ -74,8 +74,8 @@ public class CustomDrawerAdapter extends ArrayAdapter<DrawerItem> {
 
             if (!userProfile.getProfilePicUrl().isEmpty()) {
                 Picasso.with(getContext())
-                        .load(Constants.SERVER_URL + userProfile.getProfilePicUrl())
-                        .into(drawerHolder.profilePic);
+                        .load(Utils.getFullURL(Constants.SERVER_URL, userProfile.getProfilePicUrl()))
+                                .into(drawerHolder.profilePic);
             } else {
                 drawerHolder.profilePic.setImageResource(R.drawable.profile_dummy);
             }

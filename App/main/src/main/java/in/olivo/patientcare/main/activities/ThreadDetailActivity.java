@@ -451,7 +451,7 @@ public class ThreadDetailActivity extends BaseActivity {
                 return;
             }
             if (userProfile.getProfilePicUrl() != null) {
-                new DownloadImageTask(profilePic, getBaseContext()).execute(Constants.SERVER_URL + userProfile.getProfilePicUrl());
+                new DownloadImageTask(profilePic, getBaseContext()).execute(Utils.getFullURL(Constants.SERVER_URL,  userProfile.getProfilePicUrl()));
             }
             if (userProfile.getDisplayName() != null && !userProfile.getDisplayName().isEmpty()) {
                 displayName.setText(userProfile.getDisplayName());

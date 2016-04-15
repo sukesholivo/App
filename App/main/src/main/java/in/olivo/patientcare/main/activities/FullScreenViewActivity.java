@@ -10,6 +10,7 @@ import com.squareup.picasso.Picasso;
 import in.olivo.patientcare.main.R;
 import in.olivo.patientcare.main.controls.TouchImageView;
 import in.olivo.patientcare.main.utility.Constants;
+import in.olivo.patientcare.main.utility.Utils;
 
 /**
  * Created by Administrator on 5/11/2015.
@@ -25,7 +26,7 @@ public class FullScreenViewActivity extends Activity {
             return;
         }
         String url = bundle.getString("url");
-        String thumbnail_url = Constants.SERVER_URL + url;
+        String thumbnail_url = Utils.getFullURL(Constants.SERVER_URL, url);
         TouchImageView imgDisplay;
         ImageButton btnClose;
 

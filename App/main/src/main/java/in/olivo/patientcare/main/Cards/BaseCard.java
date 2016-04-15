@@ -15,6 +15,7 @@ import in.olivo.patientcare.main.R;
 import in.olivo.patientcare.main.om.BaseTask;
 import in.olivo.patientcare.main.services.HTTPServiceHandler;
 import in.olivo.patientcare.main.utility.Constants;
+import in.olivo.patientcare.main.utility.Utils;
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardHeader;
 
@@ -89,9 +90,9 @@ public abstract class BaseCard extends Card {
             targetPointTextView.setText("" + task.getPoints());
             if (task.getSource() != null) {
                 Picasso.with(getContext())
-                        .load(Constants.SERVER_URL + task.getSource()
-                                .getProfilePicUrl())
-                        .into(influencerImage);
+                        .load(Utils.getFullURL(Constants.SERVER_URL, task.getSource()
+                                .getProfilePicUrl()))
+                                .into(influencerImage);
             }
             if (primaryActionButtonClickListener != null) {
                 actionButtonPrimary.setVisibility(View.VISIBLE);

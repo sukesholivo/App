@@ -19,10 +19,10 @@ import java.util.Map;
 
 import in.olivo.patientcare.main.R;
 import in.olivo.patientcare.main.om.UserProfile;
-import in.olivo.patientcare.main.services.DownloadImageTask;
 import in.olivo.patientcare.main.utility.Constants;
 import in.olivo.patientcare.main.utility.ImageUtils;
 import in.olivo.patientcare.main.utility.StringUtils;
+import in.olivo.patientcare.main.utility.Utils;
 
 /**
  * Created by satya on 19/1/16.
@@ -119,8 +119,8 @@ public class ContactListAdapter extends ArrayAdapter<UserProfile> {
         public void loadData(UserProfile userProfile, String filter) {
 
             if (userProfile.getProfilePicUrl() != null && !userProfile.getProfilePicUrl().isEmpty()) {
-                new ImageUtils.DownloadFileAndDisplay(this.profilePic, Constants.SERVER_URL + userProfile.getProfilePicUrl(), false, context).execute();
-                new DownloadImageTask(this.profilePic, null).execute(Constants.SERVER_URL + userProfile.getProfilePicUrl());
+                new ImageUtils.DownloadFileAndDisplay(this.profilePic, Utils.getFullURL(Constants.SERVER_URL,  userProfile.getProfilePicUrl()), false, context).execute();
+                //new DownloadImageTask(this.profilePic, null).execute(Utils.getFullURL(Constants.SERVER_URL, userProfile.getProfilePicUrl()));
             }
 
             if (userProfile.getDisplayName() != null && !userProfile.getDisplayName().isEmpty()) {

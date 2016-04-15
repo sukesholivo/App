@@ -99,8 +99,8 @@ public class MedicineDetailActivity extends BaseActivityWithNavigation {
             }
 
             Picasso.with(this)
-                    .load(Constants.SERVER_URL + prescription.getDoctor().getProfilePicUrl())
-                    .into((ImageView) findViewById(R.id.doctorPic));
+                    .load(Utils.getFullURL(Constants.SERVER_URL, prescription.getDoctor().getProfilePicUrl()))
+                            .into((ImageView) findViewById(R.id.doctorPic));
         } else {
             doctorLayout.setVisibility(View.GONE);
         }

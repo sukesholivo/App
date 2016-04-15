@@ -19,6 +19,7 @@ import in.olivo.patientcare.main.R;
 import in.olivo.patientcare.main.activities.FullScreenViewActivity;
 import in.olivo.patientcare.main.utility.Constants;
 import in.olivo.patientcare.main.utility.DateUtils;
+import in.olivo.patientcare.main.utility.Utils;
 
 /**
  * Created by Administrator on 5/11/2015.
@@ -68,7 +69,7 @@ public class DocumentAdapter extends ArrayAdapter<Document> {
 
         title.setText(document.getTitle());
         artist.setText(document.getDescription());
-        String url = Constants.SERVER_URL + document.getThumbnailUrl();
+        String url = Utils.getFullURL(Constants.SERVER_URL, document.getThumbnailUrl());
         Picasso.with(getContext())
                 .load(url)
                 .into(thumb_image);
