@@ -22,6 +22,7 @@ import java.util.List;
 
 import in.olivo.patientcare.main.activities.DocumentsActivity;
 import in.olivo.patientcare.main.activities.ThreadListActivity;
+import in.olivo.patientcare.main.measure.activity.MeasureSchemaListActivity;
 import in.olivo.patientcare.main.om.vitals.VitalTask;
 import in.olivo.patientcare.main.utility.AsyncTaskUtils;
 import in.olivo.patientcare.main.utility.Logger;
@@ -248,6 +249,11 @@ public class BaseActivityWithNavigation extends BaseActivity implements ListView
                 intent = new Intent(this, VisitListActivity.class);
                 this.startActivity(intent);
                 break;
+            case 15:
+                Logger.d("BaseActivityWithNavigation: ", "Measure Clicked");
+                intent = new Intent(this, MeasureSchemaListActivity.class);
+                this.startActivity(intent);
+                break;
             default:
                 break;
         }
@@ -284,6 +290,7 @@ public class BaseActivityWithNavigation extends BaseActivity implements ListView
         dataList.add(new DrawerItem(12, getResources().getString(R.string.nav_item_documents), R.drawable.ic_action_storage));
         dataList.add(new DrawerItem(13, getResources().getString(R.string.nav_item_threads), R.drawable.ic_question_answer_black_24dp));
         dataList.add(new DrawerItem(14, getResources().getString(R.string.nav_item_visits), R.drawable.ic_person_black_24dp));
+        dataList.add(new DrawerItem(15, getResources().getString(R.string.nav_item_measures), R.drawable.ic_person_black_24dp));
         ArrayList<VitalTask.VitalData> vitals = Utils.getVitalDataFromSharedPreference(this);
         if (!vitals.isEmpty()) {
             dataList.add(new DrawerItem(3, getResources().getString(R.string.nav_item_vital)));

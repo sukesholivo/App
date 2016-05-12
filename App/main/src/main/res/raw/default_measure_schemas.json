@@ -1,0 +1,42 @@
+[
+    {
+        "category": "Vital",
+        "classification_schemas": "{\"max_value\": 160, \"min_value\": 120}",
+        "description": "",
+        "id": 1000,
+        "name": "Blood Sugar",
+        "values_schema": "{\"units\": \"mg/dL\", \"data_type\": \"float\"}"
+    },
+    {
+        "category": "Vital",
+        "classification_schemas": "{\"max_value\": 98, \"min_value\": 97}",
+        "description": "Lay down and measure temperature using thermometer",
+        "id": 1001,
+        "name": "Temperature",
+        "values_schema": "{\"units\": \"F\", \"data_type\": \"float\"}"
+    },
+    {
+        "category": "Vital",
+        "classification_schemas": "{\"max_value\": 90, \"min_value\": 70}",
+        "description": "Measure pulse by putting your finger on wrist",
+        "id": 1002,
+        "name": "Pulse",
+        "values_schema": "{\"units\": \"bpm\", \"data_type\": \"float\"}"
+    },
+    {
+        "category": "Vital",
+        "classification_schemas": "{\"max_value\": 200, \"min_value\": 0}",
+        "description": "",
+        "id": 1003,
+        "name": "Weight",
+        "values_schema": "{\"units\": \"kgs\", \"data_type\": \"float\"}"
+    },
+    {
+        "category": "Vital",
+        "classification_schemas": "[{\"max_value\": 85, \"min_value\": 70}, {\"max_value\": 135, \"min_value\": 100}]",
+        "description": "Stay calm and seated when you measure your BP",
+        "id": 1004,
+        "name": "Blood Pressure",
+        "values_schema": "[{\"name\":\"BP Diastolic\", \"units\": \"mmHg\", \"data_type\": \"float\"}, {\"name\":\"BP Systolic\", \"units\": \"mmHg\", \"data_type\": \"float\"}]"
+    }
+]
