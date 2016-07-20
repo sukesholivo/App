@@ -65,6 +65,7 @@ import in.olivo.patientcare.main.om.GraphData;
 import in.olivo.patientcare.main.om.TreatmentInfo;
 import in.olivo.patientcare.main.om.UserProfile;
 import in.olivo.patientcare.main.om.education.EducationTask;
+import in.olivo.patientcare.main.om.education.ObjectiveTask;
 import in.olivo.patientcare.main.om.followup.FollowupTask;
 import in.olivo.patientcare.main.om.medicines.MedicineTask;
 import in.olivo.patientcare.main.om.medicines.Prescription;
@@ -596,6 +597,8 @@ public final class Utils {
                 return new Gson().fromJson(cardJsonObj, MessageTask.class);
             case EDUCATION:
                 return new Gson().fromJson(cardJsonObj, EducationTask.class);
+            case OBJECTIVE:
+                return new Gson().fromJson(cardJsonObj, ObjectiveTask.class);
         }
         return null;
     }

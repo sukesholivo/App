@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/card_layout"
+    >
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/optionList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        >
+        </LinearLayout>
+
+    <include layout="@layout/card_footer_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/optionList"/>
+</RelativeLayout>

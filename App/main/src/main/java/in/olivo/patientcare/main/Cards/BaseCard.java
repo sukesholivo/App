@@ -181,6 +181,7 @@ public abstract class BaseCard extends Card {
         FOLLOWUP_CARD_TYPE,
         MESSAGE_CARD_TYPE,
         EDUCATION_CARD_TYPE,
+        OBJECTIVE_CARD_TYPE
     }
 
     protected static class BaseViewHolder {

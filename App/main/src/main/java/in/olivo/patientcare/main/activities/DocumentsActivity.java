@@ -61,6 +61,7 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
     private Uri imageUri;
     private String description;
     private int categoryId;
+    private Button showCardButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +84,20 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
         });
         description = "";
         categoryId = 0;
+        /*showCardButton = (Button) findViewById(R.id.showCard);
+
+        showCardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent popupIntent = new Intent(DocumentsActivity.this, PopupNotificationActivity.class);
+                popupIntent.putExtra("card", cardData);
+                popupIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                popupIntent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                popupIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                DocumentsActivity.this.startActivity(popupIntent);
+            }
+        });*/
         refresh();
     }
 
@@ -420,4 +435,6 @@ public class DocumentsActivity extends BaseActivityWithNavigation {
             super.onPostExecute(result);
         }
     }
+
+    private static String cardData = "{\"modifiedOn\": \"2016-07-14T10:00:24Z\", \"influencers\": [], \"data\": {\"question\": \"Do you have headache\", \"when\": \"2016-07-15T20:22:19+00:00\", \"id\": \"9244085f4d414ab0a7d9f770c82a0ccd\", \"back_ground_image\": null, \"options\": [{\"id\": \"c209f076d0a34b3e9f786a7eaf9b678f\", \"value\": \"Maybe\"}, {\"id\": \"3df4b89322794fd288a2d6455dba8184\", \"value\": \"No\"}, {\"id\": \"dbc4a3b9247744958529a327156d89bb\", \"value\": \"Yes\"}]}, \"points\": 10, \"createdOn\": \"2016-07-14T10:00:24Z\", \"etaType\": \"NOW\", \"source\": {\"profilePicUrl\": \"/static/app/img/default_patient_pic.png\", \"displayName\": \"Satya\", \"sex\": null, \"phone\": \"8121097151\", \"role\": \"PATIENT\", \"id\": \"a4f360ad49144f40a788c27f90f82a0b\"}, \"state\": \"UNSEEN\", \"eta\": \"2016-07-14T10:00:24Z\", \"cardId\": \"e02f4c9ecdd144d38c68ea308bf76917\", \"type\": \"Objective\"}";
 }

@@ -41,8 +41,14 @@ android {
         incremental true
         javaMaxHeapSize "2048M"
     }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 
 }
+
 
 configurations { all*.exclude group: 'com.google.code.gson', module: 'gson' }
 dependencies {

@@ -13,8 +13,10 @@ import android.widget.TextView;
 
 import in.olivo.patientcare.main.Cards.CardHeaderInnerView;
 import in.olivo.patientcare.main.Cards.MedicineCard;
+import in.olivo.patientcare.main.Cards.ObjectiveCard;
 import in.olivo.patientcare.main.Cards.VitalCard;
 import in.olivo.patientcare.main.om.BaseTask;
+import in.olivo.patientcare.main.om.education.ObjectiveTask;
 import in.olivo.patientcare.main.om.medicines.Medicine;
 import in.olivo.patientcare.main.om.medicines.MedicineTask;
 import in.olivo.patientcare.main.om.vitals.VitalTask;
@@ -86,6 +88,10 @@ public class PopupNotificationActivity extends Activity {
                         inflate(R.layout.fragment_card, null);
                 setInnerContentForVitalPopup((VitalTask) task);
                 break;
+            case OBJECTIVE:
+                mRootLayout = (LinearLayout) LayoutInflater.from(this).
+                        inflate(R.layout.fragment_card, null);
+                setInnerContentForObjectivePopup((ObjectiveTask) task);
             default:
                 break;
         }
@@ -129,6 +135,50 @@ public class PopupNotificationActivity extends Activity {
                 finish();
             }
         };
+    }
+
+    private void setInnerContentForObjectivePopup(final ObjectiveTask task) {
+        CardView cardView = (CardView) mRootLayout.findViewById(R.id.card_layout);
+        CardHeader cardHeader = new CardHeaderInnerView(this) {
+            @Override
+            public void setupInnerViewElements(ViewGroup parent, View view) {
+                TextView textView1 = (TextView) view.findViewById(R.id.timeWhen);
+                textView1.setText(task.getPayload().getQuestion());
+                textView1.setTextSize(18);
+            }
+        };
+        final ObjectiveCard card = new ObjectiveCard(this, cardHeader, task, false, false, false);
+        card.setSwipeable(false);
+        cardView.setCard(card);
+
+        mYesString = "Done";
+        mNoString = "Cancel";
+
+        mYesClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                /*card.setMedicineState(Medicine.MedicineTakenState.TAKEN);*/
+                task.setState(BaseTask.CardState.DONE);
+                card.UpdateTask();
+                finish();
+            }
+        };
+        mNoClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                task.setState(BaseTask.CardState.SEEN);
+                card.UpdateTask();
+                finish();
+            }
+        };/*
+        mLaterClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                card.setMedicineState(Medicine.MedicineTakenState.SNOOZED);
+                card.UpdateTask();
+                finish();
+            }
+        };*/
     }
 
     private void setInnerContentForVitalPopup(final VitalTask task) {

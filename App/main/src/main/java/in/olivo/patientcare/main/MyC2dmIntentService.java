@@ -75,6 +75,8 @@ public class MyC2dmIntentService extends IntentService {
             switch (task.getType()) {
                 case MEDICINE:
                 case VITAL:
+                case RECOMMENDATION:
+                case OBJECTIVE:
                     if (!MainApplication.isActivityVisible()) {
                         Intent popupIntent = new Intent(this, PopupNotificationActivity.class);
                         popupIntent.putExtra("card", data);

@@ -98,6 +98,10 @@ public abstract class BaseTask {
         SIMPLEREMINDER,
         @SerializedName("GenericReminder")
         GENERICREMINDER,
+        @SerializedName("Recommendation")
+        RECOMMENDATION,
+        @SerializedName("Objective")
+        OBJECTIVE,
         DEFAULT;
 
         public static CardType lookup(String type) {
