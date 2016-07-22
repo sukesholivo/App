@@ -84,9 +84,7 @@ public class VisitListActivity extends BaseActivityWithNavigation {
     }
 
     private void refresh() {
-        String userId = Utils.getPatientIdFromSharedPreference(this);
-        if (userId == null) return;
-        String getVisitsUrl = Constants.VISITS_URL + userId;
+        String getVisitsUrl = Constants.VISITS_URL;
 //        String getVisitsUrl = "http://test.doctl.com/teledos/v1.0/visits/013b7432e6d749129431bef02173f965/";
         new GetVisits(VisitListActivity.this, getVisitsUrl, null).execute();
     }
@@ -105,7 +103,7 @@ public class VisitListActivity extends BaseActivityWithNavigation {
     private class GetVisits extends OfflineCacheAsyncTask{
 
         public GetVisits(Context context, String url, List<NameValuePair> getParams) {
-            super(context, url, getParams, true);
+            super(context, url, getParams, false);
         }
 
         @Override
