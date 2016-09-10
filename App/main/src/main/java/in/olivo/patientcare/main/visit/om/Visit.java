@@ -29,6 +29,9 @@ public class Visit implements Comparable<Visit> {
     @SerializedName("doctor_name")
     private String doctorName;
 
+    @SerializedName("profile_pic")
+    private String profile_pic;
+
     public Date getDate() {
         if (date == null) {
             date = new Date();
@@ -62,6 +65,14 @@ public class Visit implements Comparable<Visit> {
 
     public void setDoctorName(String doctorName) {
         this.doctorName = doctorName;
+    }
+
+    public String getProfile_pic() {
+        return profile_pic;
+    }
+
+    public void setProfile_pic(String uri) {
+        this.profile_pic = profile_pic;
     }
 
     @Override

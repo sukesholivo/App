@@ -2,6 +2,7 @@ package in.olivo.patientcare.main;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -17,6 +18,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import com.cocosw.bottomsheet.BottomSheet;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +28,7 @@ import in.olivo.patientcare.main.activities.ThreadListActivity;
 import in.olivo.patientcare.main.measure.activity.MeasureSchemaListActivity;
 import in.olivo.patientcare.main.om.vitals.VitalTask;
 import in.olivo.patientcare.main.utility.AsyncTaskUtils;
+import in.olivo.patientcare.main.utility.Constants;
 import in.olivo.patientcare.main.utility.Logger;
 import in.olivo.patientcare.main.utility.Utils;
 import in.olivo.patientcare.main.visit.VisitListActivity;
@@ -251,8 +255,9 @@ public class BaseActivityWithNavigation extends BaseActivity implements ListView
                 break;
             case 15:
                 Logger.d("BaseActivityWithNavigation: ", "Measure Clicked");
-                intent = new Intent(this, MeasureSchemaListActivity.class);
-                this.startActivity(intent);
+//                intent = new Intent(this, MeasureSchemaListActivity.class);
+//                this.startActivity(intent);
+                handleVitalClick();
                 break;
             default:
                 break;
@@ -314,5 +319,44 @@ public class BaseActivityWithNavigation extends BaseActivity implements ListView
         dataList.add(new DrawerItem(10, getResources().getString(R.string.nav_item_rewards), R.drawable.ic_award_black_24dp));
         dataList.add(new DrawerItem(11, getResources().getString(R.string.nav_item_logout), R.drawable.ic_signout_black_24dp));
         return dataList;
+    }
+
+    private void handleVitalClick() {
+        new BottomSheet.Builder(this).title("Pick vital").sheet(R.menu.vital_list).listener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Context c = BaseActivityWithNavigation.this;
+                Intent intent = new Intent(c, VitalDetailActivity.class);
+//                intent.putExtra(Constants.ADD_VITAL, true);
+                switch (which) {
+                    case R.id.blood_sugar:
+                        intent.putExtra("vitalType", "sugar");
+                        intent.putExtra("vitalName", "Blood Sugar");
+                        c.startActivity(intent);
+                        break;
+                    case R.id.blood_pressure:
+                        intent.putExtra("vitalType", "bp");
+                        intent.putExtra("vitalName", "Blood Pressure");
+                        c.startActivity(intent);
+                        break;
+                    case R.id.temperature:
+                        intent.putExtra("vitalType", "temperature");
+                        intent.putExtra("vitalName", "Temperature");
+                        c.startActivity(intent);
+                        break;
+                    case R.id.pulse:
+                        intent.putExtra("vitalType", "pulse");
+                        intent.putExtra("vitalName", "Pulse");
+                        c.startActivity(intent);
+                        break;
+                    case R.id.weight:
+                        intent.putExtra("vitalType", "weight");
+                        intent.putExtra("vitalName", "Weight");
+                        c.startActivity(intent);
+                        break;
+                }
+            }
+        }).show();
+
     }
 }
