@@ -83,7 +83,7 @@ public class MedicineCard extends BaseCard {
             setListenerToCard();
         }
 
-        updateCardAsSeen();
+//        updateCardAsSeen();
     }
 
     private void setListenerToCard() {

@@ -123,8 +123,8 @@ public class ObjectiveTask  extends BaseTask{
         }
         public JSONObject getDataToPatch() throws JSONException {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("id", id);
-            jsonObject.put("answer_id", answerId);
+            jsonObject.put("id", this.getId());
+            jsonObject.put("answer_id", this.getAnswerId());
             return jsonObject; //No education card specific data to patch
         }
     }

@@ -77,14 +77,14 @@ public class MyC2dmIntentService extends IntentService {
                 case VITAL:
                 case RECOMMENDATION:
                 case OBJECTIVE:
-                    if (!MainApplication.isActivityVisible()) {
+//                    if (!MainApplication.isActivityVisible()) {
                         Intent popupIntent = new Intent(this, PopupNotificationActivity.class);
                         popupIntent.putExtra("card", data);
                         popupIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         popupIntent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
                         popupIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                         this.startActivity(popupIntent);
-                    }
+//                    }
                     break;
                 case SIMPLEREMINDER:
                 case GENERICREMINDER:
