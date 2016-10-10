@@ -2,20 +2,27 @@ package in.olivo.patientcare.main;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import in.olivo.patientcare.main.Cards.CardHeaderInnerView;
 import in.olivo.patientcare.main.Cards.MedicineCard;
 import in.olivo.patientcare.main.Cards.ObjectiveCard;
 import in.olivo.patientcare.main.Cards.VitalCard;
+import in.olivo.patientcare.main.Cards.EducationCard;
 import in.olivo.patientcare.main.om.BaseTask;
+import in.olivo.patientcare.main.om.education.EducationTask;
 import in.olivo.patientcare.main.om.education.ObjectiveTask;
 import in.olivo.patientcare.main.om.medicines.Medicine;
 import in.olivo.patientcare.main.om.medicines.MedicineTask;
@@ -36,6 +43,7 @@ public class PopupNotificationActivity extends Activity {
     String mLaterString = "LATER";
     DialogInterface.OnClickListener mLaterClickListener;
     private LinearLayout mRootLayout;
+    AlertDialog alertDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,7 +64,7 @@ public class PopupNotificationActivity extends Activity {
                         PopupNotificationActivity.this.finish();
                     }
                 })
-                .setCancelable(true)
+                .setCancelable(false)
                 .setView(mRootLayout);
 
         if (mYesClickListener != null) {
@@ -68,7 +76,7 @@ public class PopupNotificationActivity extends Activity {
         if (mLaterClickListener != null) {
             alertDialogBuilder.setNeutralButton(mLaterString, mLaterClickListener);
         }
-        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog = alertDialogBuilder.create();
         alertDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 //        WindowManager.LayoutParams wmlp = alertDialog.getWindow().getAttributes();
 //        wmlp.gravity = Gravity.BOTTOM;
@@ -158,9 +166,14 @@ public class PopupNotificationActivity extends Activity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 /*card.setMedicineState(Medicine.MedicineTakenState.TAKEN);*/
-                task.setState(BaseTask.CardState.DONE);
                 card.UpdateTask();
-                finish();
+                if(task.getPayload().getAnswerId() != null) {
+                    task.setState(BaseTask.CardState.DONE);
+                    card.UpdateTask();
+                    finish();
+                }else {
+                    alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                }
             }
         };
         mNoClickListener = new DialogInterface.OnClickListener() {
