@@ -10,7 +10,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="56dp"
+        android:paddingTop="20dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp">
 
@@ -68,6 +68,8 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:padding="12dp"
+            android:textColor="#555555"
+            android:background="#FFFFFF"
             android:text="Create Account"/>
 
         <TextView android:id="@+id/link_login"
@@ -78,9 +80,6 @@
             android:gravity="center"
             android:textSize="18sp"
             />
-
-
-
 
         <TextView
             android:id="@+id/tosLink"

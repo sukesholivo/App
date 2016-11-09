@@ -81,7 +81,6 @@
                     android:src="@drawable/ic_show_password"
                     android:layout_marginLeft="300sp"
                     android:layout_marginStart="300sp"
-
                     android:layout_alignBottom="@+id/loginPassword" />
 
             </RelativeLayout>
@@ -90,19 +89,20 @@
                 android:id="@+id/loginButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
+                android:textSize="12sp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="20dp"
                 android:textColor="#555555"
-                android:background="@drawable/button_style_white"
+                android:background="#FFFFFF"
                 android:text="@string/login"
                 />
             <com.google.android.gms.common.SignInButton
                 android:layout_centerInParent="true"
                 android:id="@+id/sign_in_button"
-                android:layout_width="371sp"
-
+                android:layout_width="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal" />
 
