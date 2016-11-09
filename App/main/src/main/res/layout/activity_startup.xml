@@ -4,6 +4,8 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
+
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="160dp"
@@ -32,6 +34,8 @@
             android:layout_height="wrap_content"
             android:indeterminate="true" />
     </RelativeLayout>
+
+
     <RelativeLayout
         android:id="@+id/loginPanel"
         android:layout_width="match_parent"
@@ -54,6 +58,10 @@
                 android:textSize="18sp"
 
                 />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/loginPassword"
                 android:layout_width="match_parent"
@@ -65,6 +73,18 @@
                 android:hint="@string/hint_login_password"
                 android:textSize="18sp"
                 />
+                <ImageView
+                    android:id="@+id/eyeImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:src="@drawable/ic_show_password"
+                    android:layout_marginLeft="300sp"
+                    android:layout_marginStart="300sp"
+
+                    android:layout_alignBottom="@+id/loginPassword" />
+
+            </RelativeLayout>
 
             <Button
                 android:id="@+id/loginButton"
@@ -77,6 +97,33 @@
                 android:textColor="#555555"
                 android:background="@drawable/button_style_white"
                 android:text="@string/login"
+                />
+            <com.google.android.gms.common.SignInButton
+                android:layout_centerInParent="true"
+                android:id="@+id/sign_in_button"
+                android:layout_width="371sp"
+
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView android:id="@+id/link_signup"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="24dp"
+                android:text="No account yet? Create one"
+                android:gravity="center"
+                android:textSize="18sp"/>
+
+
+            <TextView
+                android:id="@+id/tv_email"
+                android:layout_marginTop="20sp"
+                android:textColor="#0080ff"
+                android:layout_marginLeft="20sp"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 />
 
             <!--<Button-->

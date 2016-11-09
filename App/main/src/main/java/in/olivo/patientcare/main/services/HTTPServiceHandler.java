@@ -1,6 +1,9 @@
 package in.olivo.patientcare.main.services;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
@@ -19,7 +22,9 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.IOException;
 import java.net.URI;
@@ -156,29 +161,46 @@ public class HTTPServiceHandler {
                 Utils.handleUnauthorizedAccess(context);
                 return null;
             } else if (statusCode == 400) {
-//                final HttpEntity entity = httpResponse.getEntity();
-//                ((Activity) context).runOnUiThread(new Runnable() {
-//                    public void run() {
-//                        String message = "Some error occurred";
-//                        try {
-//                            String responseString = EntityUtils.toString(entity);
-//                            JSONTokener tokener = new JSONTokener(responseString);
-//                            JSONObject jsonObject =  new JSONObject(tokener);
-//                            if (jsonObject.has("message")) {
-//                                message = jsonObject.getString("message");
-//                            } else if (jsonObject.has("error")) {
-//                                message = jsonObject.getString("error");
-//                            }
-//                            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-//                        } catch (IOException | JSONException e) {
-//                            e.printStackTrace();
-//                            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-//                        }
-//                    }
-//                });
+                Log.d(TAG, response);
+                ((Activity) context).runOnUiThread(new Runnable() {
+                    public void run() {
+                        String message = "Some error occurred";
+                        try {
+
+                            JSONTokener tokener = new JSONTokener(response);
+                            JSONObject jsonObject =  new JSONObject(tokener);
+                            if (jsonObject.has("message")) {
+                                message = jsonObject.getString("message");
+                            } else if (jsonObject.has("error")) {
+                                message = jsonObject.getString("error");
+                            }
+
+                            //show modal for error
+                            AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                            String title = message;
+
+
+                            alert.setTitle(title);
+                            alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    dialog.cancel();
+                                }
+                            });
+                            alert.show();
+
+
+
+                            // Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+                        }
+                    }
+
+                });
                 return null;
             } else if (statusCode == 500) {
-                Utils.showToastOnUiThread(context, "Some error occurred");
+//                Utils.showToastOnUiThread(context, "Some error occurred");
                 Log.e(TAG, response != null ? "Response " + response : " Responose is null with status code:" + statusCode);
 //                ((Activity) context).runOnUiThread(new Runnable() {
 //                    public void run() {

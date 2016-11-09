@@ -4,25 +4,22 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.squareup.picasso.Picasso;
 
 import in.olivo.patientcare.main.Cards.CardHeaderInnerView;
 import in.olivo.patientcare.main.Cards.MedicineCard;
 import in.olivo.patientcare.main.Cards.ObjectiveCard;
 import in.olivo.patientcare.main.Cards.VitalCard;
-import in.olivo.patientcare.main.Cards.EducationCard;
 import in.olivo.patientcare.main.om.BaseTask;
-import in.olivo.patientcare.main.om.education.EducationTask;
 import in.olivo.patientcare.main.om.education.ObjectiveTask;
 import in.olivo.patientcare.main.om.medicines.Medicine;
 import in.olivo.patientcare.main.om.medicines.MedicineTask;
@@ -45,6 +42,7 @@ public class PopupNotificationActivity extends Activity {
     private LinearLayout mRootLayout;
     AlertDialog alertDialog;
 
+    Ringtone r;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +80,8 @@ public class PopupNotificationActivity extends Activity {
 //        wmlp.gravity = Gravity.BOTTOM;
 
         alertDialog.show();
+
+        playSound(this, getAlarmUri());
     }
 
     private void setContentViewForActivity(BaseTask task) {
@@ -124,6 +124,8 @@ public class PopupNotificationActivity extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 card.setMedicineState(Medicine.MedicineTakenState.TAKEN);
                 card.UpdateTask();
+
+                r.stop();
                 finish();
             }
         };
@@ -132,6 +134,7 @@ public class PopupNotificationActivity extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 card.setMedicineState(Medicine.MedicineTakenState.DISMISSED);
                 card.UpdateTask();
+                r.stop();
                 finish();
             }
         };
@@ -140,6 +143,7 @@ public class PopupNotificationActivity extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 card.setMedicineState(Medicine.MedicineTakenState.SNOOZED);
                 card.UpdateTask();
+                r.stop();
                 finish();
             }
         };
@@ -170,6 +174,7 @@ public class PopupNotificationActivity extends Activity {
                 if(task.getPayload().getAnswerId() != null) {
                     task.setState(BaseTask.CardState.DONE);
                     card.UpdateTask();
+                    r.stop();
                     finish();
                 }else {
                     alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
@@ -181,6 +186,7 @@ public class PopupNotificationActivity extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 task.setState(BaseTask.CardState.SEEN);
                 card.UpdateTask();
+                r.stop();
                 finish();
             }
         };/*
@@ -212,6 +218,7 @@ public class PopupNotificationActivity extends Activity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 card.UpdateTask();
+                r.stop();
                 finish();
             }
         };
@@ -223,4 +230,43 @@ public class PopupNotificationActivity extends Activity {
             }
         };
     }
+
+    private void playSound(final Context context, Uri alert) {
+
+
+        Thread background = new Thread(new Runnable() {
+            public void run() {
+
+            }
+        });
+        background.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+            }
+    //Get an alarm sound. Try for an alarm. If none set, try notification,
+    //Otherwise, ringtone.
+    private Uri getAlarmUri() {
+
+        Uri alert = RingtoneManager
+                .getDefaultUri(RingtoneManager.TYPE_ALARM);
+         r = RingtoneManager.getRingtone(getBaseContext(), alert);
+
+        if (alert == null) {
+            alert = RingtoneManager
+                    .getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            if (alert == null) {
+                alert = RingtoneManager
+                        .getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+            }
+        }
+        if(r != null)
+            r.play();
+
+        return alert;
+    }
+
+
 }
