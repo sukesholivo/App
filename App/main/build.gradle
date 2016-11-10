@@ -14,10 +14,10 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 7
-        versionName "1.0.2"
+        versionCode 11
+        versionName "1.1.1"
         multiDexEnabled true
-        applicationId = "in.olivo.patientcare.main"
+        applicationId = "in.olivo.patientcare"
     }
     buildTypes {
         release {

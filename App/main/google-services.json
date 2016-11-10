@@ -42,6 +42,45 @@
           "status": 1
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:207879103765:android:295f55a7aa432cc9",
+        "android_client_info": {
+          "package_name": "in.olivo.patientcare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "207879103765-s0qb97iouteu1iev11jtrupf5colgku8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "in.olivo.patientcare",
+            "certificate_hash": "5368176AB6462805667B8AF89059A7835D557901"
+          }
+        },
+        {
+          "client_id": "207879103765-3pi8kt782stfjobs7q6bq5scsdtjiv55.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGvzfnC2ICzAjZIQ2z2uy-0pJizOisbq8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
     }
   ],
   "configuration_version": "1"
