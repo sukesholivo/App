@@ -1,6 +1,7 @@
 package in.olivo.patientcare.main;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -90,7 +91,7 @@ public class GoogleSigninActivity extends BaseActivity implements GoogleApiClien
 
 
         SignInButton google_signin = ((SignInButton) this.findViewById(R.id.sign_in_button));
-
+        setButtonText(google_signin, "SIGN IN WITH GOOGLE");
 
         google_signin.setOnClickListener(new View.OnClickListener() {
 
@@ -123,8 +124,23 @@ public class GoogleSigninActivity extends BaseActivity implements GoogleApiClien
 
     }
 
+    protected void setButtonText(SignInButton signInButton, String buttonText) {
+        for (int i = 0; i < signInButton.getChildCount(); i++) {
+            View v = signInButton.getChildAt(i);
 
+            // if the view is instance of TextView then change the text SignInButton
+            if (v instanceof TextView) {
+                TextView tv = (TextView) v;
 
+                tv.setTextColor(Color.parseColor("#555555"));
+                tv.setText(buttonText);
+
+                //tv.setGravity(Gravity.AXIS_PULL_AFTER);
+
+                return;
+            }
+        }
+    }
 
     // implementing Google sign - in Logic
     @Override

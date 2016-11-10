@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -108,6 +109,8 @@ public class StartPageActivity extends BaseActivity implements GoogleApiClient.O
 
         // Google SignIN onclick action Listener
         SignInButton google_signin = ((SignInButton)StartPageActivity.this.findViewById(R.id.sign_in_button));
+        setButtonText(google_signin, "SIGN IN WITH GOOGLE");
+
         google_signin.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -162,8 +165,24 @@ public class StartPageActivity extends BaseActivity implements GoogleApiClient.O
         tvEmail.setText(intent_email);
         tvEmail.setGravity(Gravity.CENTER);
 
+    }
 
+    protected void setButtonText(SignInButton signInButton, String buttonText) {
+        for (int i = 0; i < signInButton.getChildCount(); i++) {
+            View v = signInButton.getChildAt(i);
 
+            // if the view is instance of TextView then change the text SignInButton
+            if (v instanceof TextView) {
+                TextView tv = (TextView) v;
+
+                tv.setTextColor(Color.parseColor("#555555"));
+                tv.setText(buttonText);
+
+                //tv.setGravity(Gravity.AXIS_PULL_AFTER);
+
+                return;
+            }
+        }
     }
 
     @Override
