@@ -52,9 +52,9 @@ public class ThreadListActivity extends BaseActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        refresh();
         currUserProfile = Utils.getPatientDataFromSharedPreference(this);
         //Log.d(TAG, "database path "+getDatabasePath("offline.db"));
-        refresh();
     }
 
     @Override
